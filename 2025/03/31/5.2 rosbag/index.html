@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="5.2 rosbag在ROS中关于数据的留存以及读取实现，提供了专门的工具: rosbag。 概念是用于录制和回放 ROS 主题的一个工具集。 作用实现了数据的复用，方便调试、测试。 本质rosbag本质也是ros的节点，当录制时，rosbag是一个订阅节点，可以订阅话题消息并将订阅到的数据写入磁盘文件；当重放时，rosbag是一个发布节点，可以读取磁盘文件，发布文件中的话题消息。  5.2.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.2rosbag">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/03/31/5.2%20rosbag/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="5.2 rosbag在ROS中关于数据的留存以及读取实现，提供了专门的工具: rosbag。 概念是用于录制和回放 ROS 主题的一个工具集。 作用实现了数据的复用，方便调试、测试。 本质rosbag本质也是ros的节点，当录制时，rosbag是一个订阅节点，可以订阅话题消息并将订阅到的数据写入磁盘文件；当重放时，rosbag是一个发布节点，可以读取磁盘文件，发布文件中的话题消息。  5.2.1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-31T10:53:09.288Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/03/31/5.2%20rosbag/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/03/31/5.2%20rosbag/","path":"2025/03/31/5.2 rosbag/","title":"5.2rosbag"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>5.2rosbag | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-2-rosbag"><span class="nav-number">1.</span> <span class="nav-text">5.2 rosbag</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E8%B4%A8"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">本质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-1-rosbag-%E4%BD%BF%E7%94%A8-%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-number">1.1.</span> <span class="nav-text">5.2.1 rosbag 使用_命令行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BC%80%E5%A7%8B%E5%BD%95%E5%88%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.开始录制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.3.</span> <span class="nav-text">3.查看文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%9B%9E%E6%94%BE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.4.</span> <span class="nav-text">4.回放文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-2-rosbag%E4%BD%BF%E7%94%A8-%E7%BC%96%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">5.2.2 rosbag使用_编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%86%99bag"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.写bag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AF%BBbag"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.读bag</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/5.2%20rosbag/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="5.2rosbag | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          5.2rosbag
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:53:09" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="5-2-rosbag"><a href="#5-2-rosbag" class="headerlink" title="5.2 rosbag"></a>5.2 rosbag</h1><p>在ROS中关于数据的留存以及读取实现，提供了专门的工具: <strong>rosbag</strong>。</p>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a><strong>概念</strong></h4><p>是用于录制和回放 ROS 主题的一个工具集。</p>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a><strong>作用</strong></h4><p>实现了数据的复用，方便调试、测试。</p>
+<h4 id="本质"><a href="#本质" class="headerlink" title="本质"></a><strong>本质</strong></h4><p>rosbag本质也是ros的节点，当录制时，rosbag是一个订阅节点，可以订阅话题消息并将订阅到的数据写入磁盘文件；当重放时，rosbag是一个发布节点，可以读取磁盘文件，发布文件中的话题消息。</p>
+<hr>
+<h2 id="5-2-1-rosbag-使用-命令行"><a href="#5-2-1-rosbag-使用-命令行" class="headerlink" title="5.2.1 rosbag 使用_命令行"></a>5.2.1 rosbag 使用_命令行</h2><p><strong>需求:</strong></p>
+<p>ROS 内置的乌龟案例并操作，操作过程中使用 rosbag 录制，录制结束后，实现重放</p>
+<p><strong>实现:</strong></p>
+<h3 id="1-准备"><a href="#1-准备" class="headerlink" title="1.准备"></a>1.准备</h3><p>创建目录保存录制的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /bags</span><br></pre></td></tr></table></figure>
+
+<p>然后给目录赋予适当的写权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> -R 777 /bags</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-开始录制"><a href="#2-开始录制" class="headerlink" title="2.开始录制"></a>2.开始录制</h3><p>可以尝试将文件保存到当前用户的主目录中，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosbag record -a -o ~/bags/hello.bag</span><br></pre></td></tr></table></figure>
+
+<p>出现下列信息，代表成功</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30</a> 16-15-26 的屏幕截图.png)</p>
+<h3 id="3-查看文件"><a href="#3-查看文件" class="headerlink" title="3.查看文件"></a>3.查看文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosbag info bags/hello_2025-03-30-16-12-08.bag </span><br></pre></td></tr></table></figure>
+
+<p>可以<code>tab</code>自动补齐。</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30</a> 16-17-50 的屏幕截图.png)</p>
+<h3 id="4-回放文件"><a href="#4-回放文件" class="headerlink" title="4.回放文件"></a>4.回放文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosbag play bags/hello_2025-03-30-16-12-08.bag </span><br></pre></td></tr></table></figure>
+
+<p>之前录制好的轨迹，可以在打开回放的时候，重启乌龟节点，来实现轨迹回放。</p>
+<hr>
+<h2 id="5-2-2-rosbag使用-编码"><a href="#5-2-2-rosbag使用-编码" class="headerlink" title="5.2.2 rosbag使用_编码"></a>5.2.2 rosbag使用_编码</h2><p>新建<code>rosbag_demo</code>功能包，添加依赖：<code>roscpp rospy std_msgs rosbag</code></p>
+<h3 id="1-写bag"><a href="#1-写bag" class="headerlink" title="1.写bag"></a>1.写bag</h3><p>新建可执行文件:<code>demo01_write_bag.cpp</code> </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;rosbag/bag.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">    需求:使用 rosbag 向磁盘文件写出数据(话题 + 消息)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    流程：</span></span><br><span class="line"><span class="comment">        1.导包</span></span><br><span class="line"><span class="comment">        2.初始化</span></span><br><span class="line"><span class="comment">        3.创建rosbag 对象</span></span><br><span class="line"><span class="comment">        4.打开文件流</span></span><br><span class="line"><span class="comment">        5.写数据</span></span><br><span class="line"><span class="comment">        6.关闭文件流</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[] )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//初始化</span></span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;bag_write&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line">    <span class="comment">//创建rosbag对象</span></span><br><span class="line">    rosbag::Bag bag;</span><br><span class="line">    <span class="comment">//打开工作流</span></span><br><span class="line">    bag.<span class="built_in">open</span>(<span class="string">&quot;hello.bag&quot;</span>, rosbag::BagMode::Write);</span><br><span class="line">    <span class="comment">//写数据</span></span><br><span class="line">    std_msgs::String msg;</span><br><span class="line">    msg.data = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">        参数1：话题</span></span><br><span class="line"><span class="comment">        参数2：时间戳</span></span><br><span class="line"><span class="comment">        参数3：消息</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    bag.<span class="built_in">write</span>(<span class="string">&quot;/chatter&quot;</span>,ros::Time::<span class="built_in">now</span>(),msg);</span><br><span class="line">    bag.<span class="built_in">write</span>(<span class="string">&quot;/chatter&quot;</span>,ros::Time::<span class="built_in">now</span>(),msg);</span><br><span class="line">    bag.<span class="built_in">write</span>(<span class="string">&quot;/chatter&quot;</span>,ros::Time::<span class="built_in">now</span>(),msg);</span><br><span class="line">    bag.<span class="built_in">write</span>(<span class="string">&quot;/chatter&quot;</span>,ros::Time::<span class="built_in">now</span>(),msg); </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//关闭文件流</span></span><br><span class="line">    bag.<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-读bag"><a href="#2-读bag" class="headerlink" title="2.读bag"></a>2.读bag</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*  </span></span><br><span class="line"><span class="comment">    读取 bag 文件：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;rosbag/bag.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;rosbag/view.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/Int32.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;bag_read&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建 bag 对象</span></span><br><span class="line">    rosbag::Bag bag;</span><br><span class="line">    <span class="comment">//打开 bag 文件</span></span><br><span class="line">    bag.<span class="built_in">open</span>(<span class="string">&quot;hello.bag&quot;</span>,rosbag::BagMode::Read);</span><br><span class="line">    <span class="comment">//读数据</span></span><br><span class="line">    <span class="comment">// 取出话题、时间戳、消息内容</span></span><br><span class="line">    <span class="comment">// 可以先获取信息的集合，再迭代取出消息的字段</span></span><br><span class="line">    <span class="keyword">for</span> (rosbag::MessageInstance <span class="type">const</span> m : rosbag::<span class="built_in">View</span>(bag))</span><br><span class="line">    &#123;</span><br><span class="line">        std::string topic = m.<span class="built_in">getTopic</span>();</span><br><span class="line">        ros::Time time = m.<span class="built_in">getTime</span>();</span><br><span class="line">        std_msgs::String::ConstPtr p = m.<span class="built_in">instantiate</span>&lt;std_msgs::String&gt;();</span><br><span class="line">        <span class="keyword">if</span>(p != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            <span class="built_in">ROS_INFO</span>(<span class="string">&quot;读取的数据:%s&quot;</span>,p-&gt;data.<span class="built_in">c_str</span>());</span><br><span class="line">            <span class="built_in">ROS_INFO</span>(<span class="string">&quot;话题 %s&quot;</span>,topic.<span class="built_in">c_str</span>());</span><br><span class="line">            <span class="built_in">ROS_INFO</span>(<span class="string">&quot;时间戳 %.2f&quot;</span>,time.<span class="built_in">toSec</span>());</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//关闭文件流</span></span><br><span class="line">    bag.<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30</a> 17-31-32 的屏幕截图.png)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/03/31/5.3%20rqt%E5%B7%A5%E5%85%B7%E7%AE%B1/" rel="prev" title="5.3 rqt工具箱">
+                  <i class="fa fa-angle-left"></i> 5.3 rqt工具箱
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/03/31/4.7%20ROS%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%80%9A%E4%BF%A1/" rel="next" title="4.7 ROS分布式通信">
+                  4.7 ROS分布式通信 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

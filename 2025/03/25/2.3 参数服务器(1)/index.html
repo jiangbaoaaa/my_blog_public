@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="2.3 参数服务器2.3.1 参数服务器理论模型参数服务器在ROS中主要用于实现不同节点之间的数据共享。参数服务器相当于是独立于所有节点的一个公共容器，可以将数据存储在该容器中，被不同的节点调用，当然不同的节点也可以往其中存储数据。 涉及角色：  ROS Master (管理者) Talker (参数设置者) Listener (参数调用者)  ROS Master 作为一个公共容器保存参数，Ta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.3 参数服务器">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/03/25/2.3%20%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8(1)/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="2.3 参数服务器2.3.1 参数服务器理论模型参数服务器在ROS中主要用于实现不同节点之间的数据共享。参数服务器相当于是独立于所有节点的一个公共容器，可以将数据存储在该容器中，被不同的节点调用，当然不同的节点也可以往其中存储数据。 涉及角色：  ROS Master (管理者) Talker (参数设置者) Listener (参数调用者)  ROS Master 作为一个公共容器保存参数，Ta">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/03ROS%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B603_%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg">
+<meta property="article:published_time" content="2025-03-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-31T10:57:20.962Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/03ROS%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B603_%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/03/25/2.3%20%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8(1)/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/03/25/2.3%20%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8(1)/","path":"2025/03/25/2.3 参数服务器(1)/","title":"2.3 参数服务器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2.3 参数服务器 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2-3-%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">2.3 参数服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-1-%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%90%86%E8%AE%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">2.3.1 参数服务器理论模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Talker-%E8%AE%BE%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1.Talker 设置参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Listener-%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">2.Listener 获取参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ROS-Master-%E5%90%91-Listener-%E5%8F%91%E9%80%81%E5%8F%82%E6%95%B0%E5%80%BC"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">3.ROS Master 向 Listener 发送参数值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-2-%E5%8F%82%E6%95%B0%E6%93%8D%E4%BD%9CA-C"><span class="nav-number">1.2.</span> <span class="nav-text">2.3.2 参数操作A(C++)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%B0%E5%A2%9E%EF%BC%88%E4%BF%AE%E6%94%B9%EF%BC%89%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.参数服务器新增（修改）参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%9F%A5%E8%AF%A2%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.查询参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%A0%E9%99%A4%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.参数服务器删除参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AECMakeLists-txt%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.4.</span> <span class="nav-text">4.配置CMakeLists.txt文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%BC%96%E8%AF%91%E6%89%A7%E8%A1%8C"><span class="nav-number">1.2.5.</span> <span class="nav-text">5.编译执行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-3-%E5%8F%82%E6%95%B0%E6%93%8D%E4%BD%9CB-python"><span class="nav-number">1.3.</span> <span class="nav-text">2.3.3 参数操作B(python)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%B0%E5%A2%9E%EF%BC%88%E4%BF%AE%E6%94%B9%EF%BC%89%E5%8F%82%E6%95%B0-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.参数服务器新增（修改）参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AE%BE%E7%BD%AE%E6%9D%83%E9%99%90%E3%80%81%E9%85%8D%E7%BD%AECMakeLists-txt"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.设置权限、配置CMakeLists.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.参数服务器获取参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%A0%E9%99%A4%E5%8F%82%E6%95%B0"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.参数服务器删除参数</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/25/2.3%20%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8(1)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2.3 参数服务器 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2.3 参数服务器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-03-25 00:00:00" itemprop="dateCreated datePublished" datetime="2025-03-25T00:00:00+08:00">2025-03-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-31 18:57:20" itemprop="dateModified" datetime="2025-03-31T18:57:20+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="2-3-参数服务器"><a href="#2-3-参数服务器" class="headerlink" title="2.3 参数服务器"></a>2.3 参数服务器</h1><h2 id="2-3-1-参数服务器理论模型"><a href="#2-3-1-参数服务器理论模型" class="headerlink" title="2.3.1 参数服务器理论模型"></a>2.3.1 参数服务器理论模型</h2><p>参数服务器在ROS中主要用于实现不同节点之间的<strong>数据共享</strong>。参数服务器相当于是独立于所有节点的一个<strong>公共容器</strong>，可以将数据<strong>存储</strong>在该容器中，被不同的节点调用，当然不同的节点也可以往其中存储数据。</p>
+<p><strong>涉及角色</strong>：</p>
+<ul>
+<li>ROS Master (管理者)</li>
+<li>Talker (参数设置者)</li>
+<li>Listener (参数调用者)</li>
+</ul>
+<p>ROS Master 作为一个公共容器保存参数，Talker 可以向容器中设置参数，Listener 可以获取参数。</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/03ROS%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B603_%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg" alt="img"></p>
+<p>整个流程由以下步骤实现:</p>
+<h4 id="1-Talker-设置参数"><a href="#1-Talker-设置参数" class="headerlink" title="1.Talker 设置参数"></a>1.Talker 设置参数</h4><p>Talker 通过 RPC 向参数服务器发送参数(包括参数名与参数值)，ROS Master 将参数保存到参数列表中。</p>
+<h4 id="2-Listener-获取参数"><a href="#2-Listener-获取参数" class="headerlink" title="2.Listener 获取参数"></a>2.Listener 获取参数</h4><p>Listener 通过 RPC 向参数服务器发送参数查找请求，请求中包含要查找的参数名。</p>
+<h4 id="3-ROS-Master-向-Listener-发送参数值"><a href="#3-ROS-Master-向-Listener-发送参数值" class="headerlink" title="3.ROS Master 向 Listener 发送参数值"></a>3.ROS Master 向 Listener 发送参数值</h4><p>ROS Master 根据步骤2请求提供的参数名查找参数值，并将查询结果通过 RPC 发送给 Listener。</p>
+<h2 id="2-3-2-参数操作A-C"><a href="#2-3-2-参数操作A-C" class="headerlink" title="2.3.2 参数操作A(C++)"></a>2.3.2 参数操作A(C++)</h2><p>**需求:**实现参数服务器参数的增删改查操作。</p>
+<p>在 C++ 中实现参数服务器数据的增删改查，可以通过两套 API 实现:</p>
+<ul>
+<li>ros::NodeHandle</li>
+<li>ros::param</li>
+</ul>
+<p>新建功能包<strong>plumbing_param_server</strong> ,添加依赖 <strong>roscpp rospy std_msgs</strong>,在<strong>src</strong>文件夹下新建文件<strong>demo01_param_set.cpp</strong> .</p>
+<h3 id="1-参数服务器新增（修改）参数"><a href="#1-参数服务器新增（修改）参数" class="headerlink" title="1.参数服务器新增（修改）参数"></a>1.参数服务器新增（修改）参数</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    参数服务器操作之新增与修改(二者API一样)_C++实现:</span></span><br><span class="line"><span class="comment">    在 roscpp 中提供了两套 API 实现参数操作</span></span><br><span class="line"><span class="comment">    ros::NodeHandle</span></span><br><span class="line"><span class="comment">        setParam(&quot;键&quot;,值)</span></span><br><span class="line"><span class="comment">    ros::param</span></span><br><span class="line"><span class="comment">        set(&quot;键&quot;,&quot;值&quot;)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    需求：</span></span><br><span class="line"><span class="comment">    首先设置机器人的共享参数、类型、半径（0.15m）再修改半径（0.2m）</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//初始化节点</span></span><br><span class="line">    ros::<span class="built_in">init</span> (argc,argv, <span class="string">&quot;set_param_c&quot;</span>);</span><br><span class="line">    <span class="comment">//创建ROS句柄</span></span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line">    <span class="comment">//实现参数增</span></span><br><span class="line">    <span class="comment">//方案一：nh</span></span><br><span class="line">    nh.<span class="built_in">setParam</span>(<span class="string">&quot;type&quot;</span>,<span class="string">&quot;xiaoHuamg&quot;</span>);</span><br><span class="line">    nh.<span class="built_in">setParam</span>(<span class="string">&quot;radius_param&quot;</span>,<span class="number">0.15</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//方案二：ros::param</span></span><br><span class="line">    ros::param::<span class="built_in">set</span>(<span class="string">&quot;type_param&quot;</span>,<span class="string">&quot;xiaoBai&quot;</span>);</span><br><span class="line">    ros::param::<span class="built_in">set</span>(<span class="string">&quot;radius&quot;</span>,<span class="number">0.15</span>);</span><br><span class="line">    <span class="comment">//实现参数改</span></span><br><span class="line">    <span class="comment">//方案1：nh</span></span><br><span class="line">    nh.<span class="built_in">setParam</span>(<span class="string">&quot;radius&quot;</span>,<span class="number">0.2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//方案2：ros::param</span></span><br><span class="line">    ros::param::<span class="built_in">set</span>(<span class="string">&quot;radius_param&quot;</span>,<span class="number">0.25</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-查询参数"><a href="#2-查询参数" class="headerlink" title="2.查询参数"></a>2.查询参数</h3><p>在src下新建文件demo02_param_get.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    参数服务器操作之查询_C++实现:</span></span><br><span class="line"><span class="comment">    在 roscpp 中提供了两套 API 实现参数操作</span></span><br><span class="line"><span class="comment">    ros::NodeHandle</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        param(键,默认值) </span></span><br><span class="line"><span class="comment">            存在，返回对应结果，否则返回默认值</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        getParam(键,存储结果的变量)</span></span><br><span class="line"><span class="comment">            存在,返回 true,且将值赋值给参数2</span></span><br><span class="line"><span class="comment">            若果键不存在，那么返回值为 false，且不为参数2赋值</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        getParamCached键,存储结果的变量)--提高变量获取效率</span></span><br><span class="line"><span class="comment">            存在,返回 true,且将值赋值给参数2</span></span><br><span class="line"><span class="comment">            若果键不存在，那么返回值为 false，且不为参数2赋值</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        getParamNames(std::vector&lt;std::string&gt;)</span></span><br><span class="line"><span class="comment">            获取所有的键,并存储在参数 vector 中 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        hasParam(键)</span></span><br><span class="line"><span class="comment">            是否包含某个键，存在返回 true，否则返回 false</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        searchParam(参数1，参数2)</span></span><br><span class="line"><span class="comment">            搜索键，参数1是被搜索的键，参数2存储搜索结果的变量</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    ros::param ----- 与 NodeHandle 类似</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;get_param&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//NodeHandle--------------------------------------------------------</span></span><br><span class="line">    </span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line">    <span class="comment">// 1.param 函数</span></span><br><span class="line">    <span class="type">double</span> radius = nh.<span class="built_in">param</span>(<span class="string">&quot;radius&quot;</span>,<span class="number">0.5</span>);</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;param获取结果:%.2f&quot;</span>,radius);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.getParam</span></span><br><span class="line">    <span class="type">double</span> radius2 = <span class="number">0.0</span>;</span><br><span class="line">    <span class="comment">// bool result = nh.getParam(&quot;radius&quot;,radius2);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//3.getParamCached</span></span><br><span class="line">    <span class="type">bool</span> result = nh.<span class="built_in">getParamCached</span>(<span class="string">&quot;radius&quot;</span>,radius2);</span><br><span class="line">    <span class="keyword">if</span>(result)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;获取的半径是： %.2f&quot;</span>,radius2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;获取的半径不存在&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//4.getParamNames</span></span><br><span class="line">    std::vector &lt;std::string&gt; names;</span><br><span class="line">    nh.<span class="built_in">getParamNames</span>(names);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;&amp;name : names)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;遍历的元素： %s&quot;</span>,name.<span class="built_in">c_str</span>());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//5.hasParam</span></span><br><span class="line">    <span class="type">bool</span> flag1 = nh.<span class="built_in">hasParam</span>(<span class="string">&quot;radius&quot;</span>);</span><br><span class="line">    <span class="type">bool</span> flag2 = nh.<span class="built_in">hasParam</span>(<span class="string">&quot;radiuss&quot;</span>);</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;radius 存在吗 %d&quot;</span>,flag1);</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;radiuss 存在吗 %d&quot;</span>,flag2);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//6.searchParam</span></span><br><span class="line">    std::string key;</span><br><span class="line">    nh.<span class="built_in">searchParam</span>(<span class="string">&quot;radiuss&quot;</span>,key);</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;搜索结果： %s&quot;</span>,key.<span class="built_in">c_str</span>());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ros::param</span></span><br><span class="line">    <span class="type">double</span> radius_param = ros::param::<span class="built_in">param</span>(<span class="string">&quot;radius&quot;</span>,<span class="number">100.5</span>);</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;radius_param = %.2f&quot;</span>,radius_param);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-参数服务器删除参数"><a href="#3-参数服务器删除参数" class="headerlink" title="3.参数服务器删除参数"></a>3.参数服务器删除参数</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">    参数服务器操作之删除_C++实现:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    ros::NodeHandle</span></span><br><span class="line"><span class="comment">        deleteParam(&quot;键&quot;)</span></span><br><span class="line"><span class="comment">        根据键删除参数，删除成功，返回 true，否则(参数不存在)，返回 false</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    ros::param</span></span><br><span class="line"><span class="comment">        del(&quot;键&quot;)</span></span><br><span class="line"><span class="comment">        根据键删除参数，删除成功，返回 true，否则(参数不存在)，返回 false</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;param_del_c&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line">    <span class="comment">//删除：NodeHandle</span></span><br><span class="line"></span><br><span class="line">    <span class="type">bool</span> flag1 = nh.<span class="built_in">deleteParam</span>(<span class="string">&quot;radius&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(flag1)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;删除成功！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;删除失败！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//删除：ros::param</span></span><br><span class="line"></span><br><span class="line">    <span class="type">bool</span>  flag2 = ros::param::<span class="built_in">del</span>(<span class="string">&quot;radius_param&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(flag2)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;删除成功！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;删除失败！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-配置CMakeLists-txt文件"><a href="#4-配置CMakeLists-txt文件" class="headerlink" title="4.配置CMakeLists.txt文件"></a>4.配置CMakeLists.txt文件</h3><p>与之前一致</p>
+<h3 id="5-编译执行"><a href="#5-编译执行" class="headerlink" title="5.编译执行"></a>5.编译执行</h3><p>使用 <strong>rosparam list</strong>，可以查看参数列表，使用<strong>rosparam get &#x2F;type</strong>可以查看你参数设置的值。</p>
+<hr>
+<h2 id="2-3-3-参数操作B-python"><a href="#2-3-3-参数操作B-python" class="headerlink" title="2.3.3 参数操作B(python)"></a>2.3.3 参数操作B(python)</h2><h3 id="1-参数服务器新增（修改）参数-1"><a href="#1-参数服务器新增（修改）参数-1" class="headerlink" title="1.参数服务器新增（修改）参数"></a>1.参数服务器新增（修改）参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    参数服务器操作之新增与修改(二者API一样)_Python实现:</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 初始化节点</span></span><br><span class="line">    rospy.init_node(<span class="string">&quot;set_update_paramter_p&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设置各种类型参数</span></span><br><span class="line">    rospy.set_param(<span class="string">&quot;p_int&quot;</span>,<span class="number">10</span>)</span><br><span class="line">    rospy.set_param(<span class="string">&quot;p_double&quot;</span>,<span class="number">3.14</span>)</span><br><span class="line">    rospy.set_param(<span class="string">&quot;p_bool&quot;</span>,<span class="literal">True</span>)</span><br><span class="line">    rospy.set_param(<span class="string">&quot;p_string&quot;</span>,<span class="string">&quot;hello python&quot;</span>)</span><br><span class="line">    rospy.set_param(<span class="string">&quot;p_list&quot;</span>,[<span class="string">&quot;hello&quot;</span>,<span class="string">&quot;haha&quot;</span>,<span class="string">&quot;xixi&quot;</span>])</span><br><span class="line">    rospy.set_param(<span class="string">&quot;p_dict&quot;</span>,&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;hulu&quot;</span>,<span class="string">&quot;age&quot;</span>:<span class="number">8</span>&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 修改</span></span><br><span class="line">    rospy.set_param(<span class="string">&quot;p_int&quot;</span>,<span class="number">100</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-设置权限、配置CMakeLists-txt"><a href="#2-设置权限、配置CMakeLists-txt" class="headerlink" title="2.设置权限、配置CMakeLists.txt"></a>2.设置权限、配置CMakeLists.txt</h3><p>与之前类似</p>
+<h3 id="3-参数服务器获取参数"><a href="#3-参数服务器获取参数" class="headerlink" title="3.参数服务器获取参数"></a>3.参数服务器获取参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    参数服务器操作之查询_Python实现:    </span></span><br><span class="line"><span class="string">        get_param(键,默认值)</span></span><br><span class="line"><span class="string">            当键存在时，返回对应的值，如果不存在返回默认值</span></span><br><span class="line"><span class="string">        get_param_cached</span></span><br><span class="line"><span class="string">        get_param_names</span></span><br><span class="line"><span class="string">        has_param</span></span><br><span class="line"><span class="string">        search_param</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    rospy.init_node(<span class="string">&quot;get_param_p&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#获取参数</span></span><br><span class="line">    int_value = rospy.get_param(<span class="string">&quot;p_int&quot;</span>,<span class="number">10000</span>)</span><br><span class="line">    double_value = rospy.get_param(<span class="string">&quot;p_double&quot;</span>)</span><br><span class="line">    bool_value = rospy.get_param(<span class="string">&quot;p_bool&quot;</span>)</span><br><span class="line">    string_value = rospy.get_param(<span class="string">&quot;p_string&quot;</span>)</span><br><span class="line">    p_list = rospy.get_param(<span class="string">&quot;p_list&quot;</span>)</span><br><span class="line">    p_dict = rospy.get_param(<span class="string">&quot;p_dict&quot;</span>)</span><br><span class="line"></span><br><span class="line">    rospy.loginfo(<span class="string">&quot;获取的数据:%d,%.2f,%d,%s&quot;</span>,</span><br><span class="line">                int_value,</span><br><span class="line">                double_value,</span><br><span class="line">                bool_value,</span><br><span class="line">                string_value)</span><br><span class="line">    <span class="keyword">for</span> ele <span class="keyword">in</span> p_list:</span><br><span class="line">        rospy.loginfo(<span class="string">&quot;ele = %s&quot;</span>, ele)</span><br><span class="line"></span><br><span class="line">    rospy.loginfo(<span class="string">&quot;name = %s, age = %d&quot;</span>,p_dict[<span class="string">&quot;name&quot;</span>],p_dict[<span class="string">&quot;age&quot;</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># get_param_cached</span></span><br><span class="line">    int_cached = rospy.get_param_cached(<span class="string">&quot;p_int&quot;</span>)</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;缓存数据:%d&quot;</span>,int_cached)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># get_param_names</span></span><br><span class="line">    names = rospy.get_param_names()</span><br><span class="line">    <span class="keyword">for</span> name <span class="keyword">in</span> names:</span><br><span class="line">        rospy.loginfo(<span class="string">&quot;name = %s&quot;</span>,name)</span><br><span class="line"></span><br><span class="line">    rospy.loginfo(<span class="string">&quot;-&quot;</span>*<span class="number">80</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># has_param</span></span><br><span class="line">    flag = rospy.has_param(<span class="string">&quot;p_int&quot;</span>)</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;包含p_int吗? %d&quot;</span>,flag)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># search_param</span></span><br><span class="line">    key = rospy.search_param(<span class="string">&quot;p_int&quot;</span>)</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;搜索的键 = %s&quot;</span>,key)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-参数服务器删除参数"><a href="#4-参数服务器删除参数" class="headerlink" title="4.参数服务器删除参数"></a>4.参数服务器删除参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    参数服务器操作之删除_Python实现:</span></span><br><span class="line"><span class="string">    rospy.delete_param(&quot;键&quot;)</span></span><br><span class="line"><span class="string">    键存在时，可以删除成功，键不存在时，会抛出异常</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    rospy.init_node(<span class="string">&quot;delete_param_p&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        rospy.delete_param(<span class="string">&quot;p_int&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        rospy.loginfo(<span class="string">&quot;删除失败&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/03/25/2.5%20%E5%AE%9E%E6%93%8D(1)/" rel="prev" title="2.5 实操">
+                  <i class="fa fa-angle-left"></i> 2.5 实操
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/03/25/2.2%20%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1(1)/" rel="next" title="2.2 服务通信">
+                  2.2 服务通信 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

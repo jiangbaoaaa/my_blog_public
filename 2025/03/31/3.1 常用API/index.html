@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="3.1 常用API**API（Application Programming  Interface，应用程序编程接口）**是一组定义了不同软件系统之间交互规则的接口，使得不同的应用程序能够彼此“沟通”和共享数据或功能。API充当着不同程序之间的中介，允许开发人员调用某些功能而不需要了解其实现细节。 3.1.1 初始化123456789101112131415161718192021222324&#x2F;*">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.1 常用API">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/03/31/3.1%20%E5%B8%B8%E7%94%A8API/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="3.1 常用API**API（Application Programming  Interface，应用程序编程接口）**是一组定义了不同软件系统之间交互规则的接口，使得不同的应用程序能够彼此“沟通”和共享数据或功能。API充当着不同程序之间的中介，允许开发人员调用某些功能而不需要了解其实现细节。 3.1.1 初始化123456789101112131415161718192021222324&#x2F;*">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-31T10:45:02.998Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/03/31/3.1%20%E5%B8%B8%E7%94%A8API/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/03/31/3.1%20%E5%B8%B8%E7%94%A8API/","path":"2025/03/31/3.1 常用API/","title":"3.1 常用API"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>3.1 常用API | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-1-%E5%B8%B8%E7%94%A8API"><span class="nav-number">1.</span> <span class="nav-text">3.1 常用API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-1-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">3.1.1 初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-2-%E8%AF%9D%E9%A2%98%E4%B8%8E%E6%9C%8D%E5%8A%A1%E7%9B%B8%E5%85%B3%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.2.</span> <span class="nav-text">3.1.2 话题与服务相关对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-3-%E5%9B%9E%E6%97%8B%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">3.1.3 回旋函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-spinOnce"><span class="nav-number">1.3.0.0.1.</span> <span class="nav-text">1.spinOnce()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-spin"><span class="nav-number">1.3.0.0.2.</span> <span class="nav-text">2.spin()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E4%BA%8C%E8%80%85%E6%AF%94%E8%BE%83"><span class="nav-number">1.3.0.0.3.</span> <span class="nav-text">3.二者比较</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-4-%E6%97%B6%E9%97%B4"><span class="nav-number">1.4.</span> <span class="nav-text">3.1.4 时间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%97%B6%E5%88%BB"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.时刻</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8C%81%E7%BB%AD%E6%97%B6%E9%97%B4"><span class="nav-number">1.4.2.</span> <span class="nav-text">2. 持续时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%8C%81%E7%BB%AD%E6%97%B6%E9%97%B4%E4%B8%8E%E6%97%B6%E5%88%BB%E8%BF%90%E7%AE%97"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.持续时间与时刻运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AE%BE%E7%BD%AE%E8%BF%90%E8%A1%8C%E9%A2%91%E7%8E%87"><span class="nav-number">1.4.4.</span> <span class="nav-text">4. 设置运行频率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">1.4.5.</span> <span class="nav-text">5. 定时器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-5-%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">3.1.5 其他函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81"><span class="nav-number">1.5.1.</span> <span class="nav-text">1. 节点状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%97%A5%E5%BF%97%E7%9B%B8%E5%85%B3"><span class="nav-number">1.5.2.</span> <span class="nav-text">2.日志相关</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/3.1%20%E5%B8%B8%E7%94%A8API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="3.1 常用API | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3.1 常用API
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:45:02" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="3-1-常用API"><a href="#3-1-常用API" class="headerlink" title="3.1 常用API"></a>3.1 常用API</h1><p>**API（Application Programming  Interface，应用程序编程接口）**是一组定义了不同软件系统之间交互规则的接口，使得不同的应用程序能够彼此“沟通”和共享数据或功能。API充当着不同程序之间的中介，允许开发人员调用某些功能而不需要了解其实现细节。</p>
+<h2 id="3-1-1-初始化"><a href="#3-1-1-初始化" class="headerlink" title="3.1.1 初始化"></a>3.1.1 初始化</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** @brief ROS初始化函数。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 该函数可以解析并使用节点启动时传入的参数(通过参数设置节点名称、命名空间...) </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 该函数有多个重载版本，如果使用NodeHandle建议调用该版本。 </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * \param argc 参数个数 --- 封装实参个数（n+1）</span></span><br><span class="line"><span class="comment"> * \param argv 参数列表 --- 封装参数的数组</span></span><br><span class="line"><span class="comment"> * \param name 节点名称，需要保证其唯一性，不允许包含命名空间</span></span><br><span class="line"><span class="comment"> * \param options 节点启动选项，被封装进了ros::init_options</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> 使用：</span></span><br><span class="line"><span class="comment"> 	1.argc 与 argv 的使用</span></span><br><span class="line"><span class="comment"> 		如果按照ROS的特定格式传入实参，ROS可以加以使用，可以设置全局参数，给节点命名</span></span><br><span class="line"><span class="comment"> 	2.options 的使用</span></span><br><span class="line"><span class="comment"> 		节点名称需要保证唯一，同一个节点不可重复启动</span></span><br><span class="line"><span class="comment"> 		需求：一个节点多次启动</span></span><br><span class="line"><span class="comment"> 		ros::init(argc,argv,&quot;talker&quot;,ros::init_options::AnonymousName);</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> &amp;argc, <span class="type">char</span> **argv, <span class="type">const</span> std::string&amp; name, <span class="type">uint32_t</span> options = <span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>ros::init(argc,argv,&quot;talker&quot;,ros::init_options::AnonymousName);</code>修改这一行代码，这个例子使用的是订阅发布通讯的案例，修改这一行代码之后，即可满足一个节点多次启动的需求。给节点加后缀，避免节点重名。</p>
+<hr>
+<h2 id="3-1-2-话题与服务相关对象"><a href="#3-1-2-话题与服务相关对象" class="headerlink" title="3.1.2 话题与服务相关对象"></a>3.1.2 话题与服务相关对象</h2><p>NodeHandle中有一个重要的作用是可以用于<strong>设置命名空间</strong>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* \brief 根据话题生成发布对象</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* 在 ROS master 注册并返回一个发布者对象，该对象可以发布消息</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* 使用示例如下:</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*   ros::Publisher pub = handle.advertise&lt;std_msgs::Empty&gt;(&quot;my_topic&quot;, 1);</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \param topic 发布消息使用的话题</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \param queue_size 等待发送给订阅者的最大消息数量</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \param latch (optional) 如果为 true,该话题发布的最后一条消息将被保存，并且后期当有订阅者连接时会将该消息发送给订阅者</span></span><br><span class="line"><span class="comment">	使用：</span></span><br><span class="line"><span class="comment">		以静态地图发布为例，可以使用固定频率发送地图数据，但是效率低，可以将latch设置为true，并且发布方之发送一次数据，订阅者连接时，会发送给订阅者，但是只发送一次。</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \return 调用成功时，会返回一个发布对象</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">M</span>&gt;</span><br><span class="line"><span class="function">Publisher <span class="title">advertise</span><span class="params">(<span class="type">const</span> std::string&amp; topic, <span class="type">uint32_t</span> queue_size, <span class="type">bool</span> latch = <span class="literal">false</span>)</span></span></span><br><span class="line"><span class="function"></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-1-3-回旋函数"><a href="#3-1-3-回旋函数" class="headerlink" title="3.1.3 回旋函数"></a>3.1.3 回旋函数</h2><p>在ROS程序中，频繁的使用了 ros::spin() 和 ros::spinOnce() 两个回旋函数，可以用于处理回调函数。</p>
+<h5 id="1-spinOnce"><a href="#1-spinOnce" class="headerlink" title="1.spinOnce()"></a>1.spinOnce()</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * \brief 处理一轮回调</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 一般应用场景:</span></span><br><span class="line"><span class="comment"> *     在循环体内，处理所有可用的回调函数</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">ROSCPP_DECL <span class="type">void</span> <span class="title">spinOnce</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-spin"><a href="#2-spin" class="headerlink" title="2.spin()"></a>2.spin()</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * \brief 进入循环处理回调 </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">ROSCPP_DECL <span class="type">void</span> <span class="title">spin</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-二者比较"><a href="#3-二者比较" class="headerlink" title="3.二者比较"></a>3.二者比较</h5><p>**相同点:**二者都用于处理回调函数；</p>
+<p>**不同点:**ros::spin() 是进入了循环执行回调函数，而 ros::spinOnce() 只会执行一次回调函数(没有循环)，在 ros::spin() 后的语句不会执行到，而 ros::spinOnce() 后的语句可以执行。</p>
+<h2 id="3-1-4-时间"><a href="#3-1-4-时间" class="headerlink" title="3.1.4 时间"></a>3.1.4 时间</h2><p>ROS中时间相关的API是极其常用，比如:获取当前时刻、持续时间的设置、执行频率、休眠、定时器…都与时间相关。</p>
+<h3 id="1-时刻"><a href="#1-时刻" class="headerlink" title="1.时刻"></a>1.时刻</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">    需求: 演示时间相关操作(获取当时时刻 + 设置指定时刻)</span></span><br><span class="line"><span class="comment">    实现:</span></span><br><span class="line"><span class="comment">        1. 准备(头文件\初始化节点\Nh)</span></span><br><span class="line"><span class="comment">        2. 获取当前时刻</span></span><br><span class="line"><span class="comment">        3. 设置指定时刻</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> * argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;hello_time&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;<span class="comment">//必须创建句柄，否则时间没有初始化，导致后续API调用失败</span></span><br><span class="line">    <span class="comment">//获取当前时刻</span></span><br><span class="line">    ros::Time right_now = ros::Time::<span class="built_in">now</span>();<span class="comment">//将当前时刻封装成对象</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;当前时刻:%.2f&quot;</span>,right_now.<span class="built_in">toSec</span>());<span class="comment">//获取距离 1970年01月01日 00:00:00 的秒数</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;当前时刻:%d&quot;</span>,right_now.sec);<span class="comment">//获取距离 1970年01月01日 00:00:00 的秒数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置指定时刻</span></span><br><span class="line">    <span class="function">ros::Time <span class="title">someTime</span><span class="params">(<span class="number">100</span>,<span class="number">100000000</span>)</span></span>;<span class="comment">// 参数1:秒数  参数2:纳秒</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;时刻:%.2f&quot;</span>,someTime.<span class="built_in">toSec</span>()); <span class="comment">//100.10</span></span><br><span class="line">    <span class="function">ros::Time <span class="title">someTime2</span><span class="params">(<span class="number">100.3</span>)</span></span>;<span class="comment">//直接传入 double 类型的秒数</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;时刻:%.2f&quot;</span>,someTime<span class="number">2.</span><span class="built_in">toSec</span>()); <span class="comment">//100.30</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-持续时间"><a href="#2-持续时间" class="headerlink" title="2. 持续时间"></a>2. 持续时间</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//----------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//------------持续时间----------------</span></span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;------------------------------&quot;</span>);</span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;当前时刻:%.2f&quot;</span>,ros::Time::<span class="built_in">now</span>().<span class="built_in">toSec</span>());</span><br><span class="line"><span class="function">ros::Duration <span class="title">du</span><span class="params">(<span class="number">10</span>)</span></span>;<span class="comment">//持续10秒钟,参数是double类型的，以秒为单位</span></span><br><span class="line">du.<span class="built_in">sleep</span>();<span class="comment">//按照指定的持续时间休眠</span></span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;持续时间:%.2f&quot;</span>,du.<span class="built_in">toSec</span>());<span class="comment">//将持续时间换算成秒</span></span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;当前时刻:%.2f&quot;</span>,ros::Time::<span class="built_in">now</span>().<span class="built_in">toSec</span>());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="3-持续时间与时刻运算"><a href="#3-持续时间与时刻运算" class="headerlink" title="3.持续时间与时刻运算"></a>3.持续时间与时刻运算</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;------------------------------&quot;</span>);</span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;------------时间运算---------------&quot;</span>);</span><br><span class="line">ros::Time begin = ros::Time::<span class="built_in">now</span>();</span><br><span class="line"><span class="function">ros::Duration <span class="title">du1</span><span class="params">(<span class="number">5</span>)</span></span>;</span><br><span class="line">ros::Time stop = begin + du1;</span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;开始时刻:%.2f&quot;</span>, begin.<span class="built_in">toSec</span>());</span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;结束时刻:%.2f&quot;</span>, stop.<span class="built_in">toSec</span>());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-设置运行频率"><a href="#4-设置运行频率" class="headerlink" title="4. 设置运行频率"></a>4. 设置运行频率</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ros::Rate <span class="title">rate</span><span class="params">(<span class="number">1</span>)</span></span>;<span class="comment">//指定频率</span></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;-----------code----------&quot;</span>);</span><br><span class="line">    rate.<span class="built_in">sleep</span>();<span class="comment">//休眠，休眠时间 = 1 / 频率。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-定时器"><a href="#5-定时器" class="headerlink" title="5. 定时器"></a>5. 定时器</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">ros::NodeHandle nh;<span class="comment">//必须创建句柄，否则时间没有初始化，导致后续API调用失败</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">// ROS 定时器</span></span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">* \brief 创建一个定时器，按照指定频率调用回调函数。</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \param period 时间间隔</span></span><br><span class="line"><span class="comment">* \param callback 回调函数</span></span><br><span class="line"><span class="comment">* \param oneshot 如果设置为 true,只执行一次回调函数，设置为 false,就循环执行。</span></span><br><span class="line"><span class="comment">* \param autostart 如果为true，返回已经启动的定时器,设置为 false，需要手动启动。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"> <span class="comment">//Timer createTimer(Duration period, const TimerCallback&amp; callback, bool oneshot = false,</span></span><br><span class="line"> <span class="comment">//                bool autostart = true) const;</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">// ros::Timer timer = nh.createTimer(ros::Duration(0.5),doSomeThing);</span></span><br><span class="line"> ros::Timer timer = nh.<span class="built_in">createTimer</span>(ros::<span class="built_in">Duration</span>(<span class="number">0.5</span>),doSomeThing,<span class="literal">true</span>);<span class="comment">//只执行一次</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">// ros::Timer timer = nh.createTimer(ros::Duration(0.5),doSomeThing,false,false);//需要手动启动</span></span><br><span class="line"> <span class="comment">// timer.start();</span></span><br><span class="line"> ros::<span class="built_in">spin</span>(); <span class="comment">//必须 spin</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>定时器的回调函数</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">doSomeThing</span><span class="params">(<span class="type">const</span> ros::TimerEvent &amp;event)</span></span>&#123;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;-------------&quot;</span>);</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;event:%s&quot;</span>,std::<span class="built_in">to_string</span>(event.current_real.<span class="built_in">toSec</span>()).<span class="built_in">c_str</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-1-5-其他函数"><a href="#3-1-5-其他函数" class="headerlink" title="3.1.5 其他函数"></a>3.1.5 其他函数</h2><p>在发布实现时，一般会循环发布消息，循环的判断条件一般由节点状态来控制，C++中可以通过 ros::ok() 来判断节点状态是否正常，而 python 中则通过 rospy.is_shutdown() 来实现判断，导致节点退出的原因主要有如下几种:</p>
+<ul>
+<li>节点接收到了关闭信息，比如常用的 ctrl + c 快捷键就是关闭节点的信号；</li>
+<li>同名节点启动，导致现有节点退出；</li>
+<li>程序中的其他部分调用了节点关闭相关的API(C++中是ros::shutdown()，python中是rospy.signal_shutdown())</li>
+</ul>
+<p>另外，日志相关的函数也是极其常用的，在ROS中日志被划分成如下级别:</p>
+<ul>
+<li><p>DEBUG(调试):只在调试时使用，此类消息不会输出到控制台；</p>
+</li>
+<li><p>INFO(信息):标准消息，一般用于说明系统内正在执行的操作；</p>
+</li>
+<li><p>WARN(警告):提醒一些异常情况，但程序仍然可以执行；</p>
+</li>
+<li><p>ERROR(错误):提示错误信息，此类错误会影响程序运行；</p>
+</li>
+<li><p>FATAL(严重错误):此类错误将阻止节点继续运行</p>
+</li>
+<li><h3 id="1-节点状态"><a href="#1-节点状态" class="headerlink" title="1. 节点状态"></a>1. 节点状态</h3></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/** \brief 检查节点是否已经退出</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  ros::shutdown() 被调用且执行完毕后，该函数将会返回 false</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * \return true 如果节点还健在, false 如果节点已经火化了。</span></span><br><span class="line"><span class="comment"> */</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (count &gt;= <span class="number">20</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ros::<span class="built_in">shutdown</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//---------------------</span></span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+
+<p>发布到20次就自动关闭节点</p>
+<hr>
+<h3 id="2-日志相关"><a href="#2-日志相关" class="headerlink" title="2.日志相关"></a>2.日志相关</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL, <span class="string">&quot;&quot;</span>);</span><br><span class="line">    ros::<span class="built_in">init</span> (argc,argv,<span class="string">&quot;hello_logs&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//日志输出</span></span><br><span class="line">    <span class="built_in">ROS_DEBUG</span>(<span class="string">&quot;hello,DEBUG&quot;</span>); <span class="comment">//不会输出</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;hello,INFO&quot;</span>); <span class="comment">//默认白色字体</span></span><br><span class="line">    <span class="built_in">ROS_WARN</span>(<span class="string">&quot;Hello,WARN&quot;</span>); <span class="comment">//默认黄色字体</span></span><br><span class="line">    <span class="built_in">ROS_ERROR</span>(<span class="string">&quot;hello,ERROR&quot;</span>);<span class="comment">//默认红色字体</span></span><br><span class="line">    <span class="built_in">ROS_FATAL</span>(<span class="string">&quot;hello,FATAL&quot;</span>);<span class="comment">//默认红色字体</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/03/31/4.2%20ROS%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86launch%E6%96%87%E4%BB%B6/" rel="prev" title="4.2 ROS节点运行管理launch文件">
+                  <i class="fa fa-angle-left"></i> 4.2 ROS节点运行管理launch文件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/03/31/3.2%20ROS%E4%B8%AD%E7%9A%84%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6/" rel="next" title="3.2 ROS中的头文件与源文件">
+                  3.2 ROS中的头文件与源文件 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

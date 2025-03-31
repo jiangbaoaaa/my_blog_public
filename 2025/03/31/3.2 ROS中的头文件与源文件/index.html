@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="3.2 ROS中的头文件与源文件 设置头文件，可执行文件作为源文件； 分别设置头文件，源文件与可执行文件。  在ROS中关于头文件的使用，核心内容在于CMakeLists.txt文件的配置，不同的封装方式，配置上也有差异。 3.2.1 自定义头文件调用**需求:**设计头文件，可执行文件本身作为源文件。 流程:  编写头文件； 编写可执行文件(同时也是源文件)； 编辑配置文件并执行。  1. 头文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.2 ROS中的头文件与源文件">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/03/31/3.2%20ROS%E4%B8%AD%E7%9A%84%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="3.2 ROS中的头文件与源文件 设置头文件，可执行文件作为源文件； 分别设置头文件，源文件与可执行文件。  在ROS中关于头文件的使用，核心内容在于CMakeLists.txt文件的配置，不同的封装方式，配置上也有差异。 3.2.1 自定义头文件调用**需求:**设计头文件，可执行文件本身作为源文件。 流程:  编写头文件； 编写可执行文件(同时也是源文件)； 编辑配置文件并执行。  1. 头文">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-31T10:46:11.808Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/03/31/3.2%20ROS%E4%B8%AD%E7%9A%84%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/03/31/3.2%20ROS%E4%B8%AD%E7%9A%84%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6/","path":"2025/03/31/3.2 ROS中的头文件与源文件/","title":"3.2 ROS中的头文件与源文件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>3.2 ROS中的头文件与源文件 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-2-ROS%E4%B8%AD%E7%9A%84%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">3.2 ROS中的头文件与源文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-1-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%A4%B4%E6%96%87%E4%BB%B6%E8%B0%83%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">3.2.1 自定义头文件调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 头文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.可执行文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-2-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%BA%90%E6%96%87%E4%BB%B6%E8%B0%83%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">3.2.2 自定义源文件调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%A4%B4%E6%96%87%E4%BB%B6-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 头文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BA%90%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.源文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">3.可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.1.</span> <span class="nav-text">4.配置文件</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/3.2%20ROS%E4%B8%AD%E7%9A%84%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="3.2 ROS中的头文件与源文件 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3.2 ROS中的头文件与源文件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:46:11" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="3-2-ROS中的头文件与源文件"><a href="#3-2-ROS中的头文件与源文件" class="headerlink" title="3.2 ROS中的头文件与源文件"></a>3.2 ROS中的头文件与源文件</h1><ol>
+<li>设置头文件，可执行文件作为源文件；</li>
+<li>分别设置头文件，源文件与可执行文件。</li>
+</ol>
+<p>在ROS中关于头文件的使用，核心内容在于CMakeLists.txt文件的配置，不同的封装方式，配置上也有差异。</p>
+<h2 id="3-2-1-自定义头文件调用"><a href="#3-2-1-自定义头文件调用" class="headerlink" title="3.2.1 自定义头文件调用"></a>3.2.1 自定义头文件调用</h2><p>**需求:**设计头文件，可执行文件本身作为源文件。</p>
+<p><strong>流程:</strong></p>
+<ol>
+<li>编写头文件；</li>
+<li>编写可执行文件(同时也是源文件)；</li>
+<li>编辑配置文件并执行。</li>
+</ol>
+<h3 id="1-头文件"><a href="#1-头文件" class="headerlink" title="1. 头文件"></a>1. 头文件</h3><p>在功能包下的 include&#x2F;功能包名 目录下新建头文件: hello.h，示例内容如下:</p>
+<figure class="highlight h"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _HELLO_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _HELLO_H</span></span><br><span class="line"></span><br><span class="line">namespace hello_ns&#123;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloPub</span> &#123;</span></span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    <span class="type">void</span> <span class="title function_">run</span><span class="params">()</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意:</strong></p>
+<p>在 VScode 中，为了后续包含头文件时不抛出异常，请配置 .vscode 下 c_cpp_properties.json 的 includepath属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;/home/用户/工作空间/src/功能包/include/**&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-可执行文件"><a href="#2-可执行文件" class="headerlink" title="2.可执行文件"></a>2.可执行文件</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;plumbing_head/hello.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> hello_ns &#123;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">HelloPub::run</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;自定义头文件的使用....&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;test_head_node&quot;</span>);</span><br><span class="line">    hello_ns::HelloPub helloPub;</span><br><span class="line">    helloPub.<span class="built_in">run</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_directories</span>(</span><br><span class="line"><span class="keyword">include</span></span><br><span class="line">  <span class="variable">$&#123;catkin_INCLUDE_DIRS&#125;</span></span><br><span class="line">)</span><br><span class="line">其他类似</span><br></pre></td></tr></table></figure>
+
+<p>最后，编译并执行，控制台可以输出自定义的文本信息。</p>
+<hr>
+<h2 id="3-2-2-自定义源文件调用"><a href="#3-2-2-自定义源文件调用" class="headerlink" title="3.2.2 自定义源文件调用"></a>3.2.2 自定义源文件调用</h2><p>**需求:**设计头文件与源文件，在可执行文件中包含头文件。</p>
+<p><strong>流程:</strong></p>
+<ol>
+<li>编写头文件；</li>
+<li>编写源文件；</li>
+<li>编写可执行文件；</li>
+<li>编辑配置文件并执行。</li>
+</ol>
+<hr>
+<h3 id="1-头文件-1"><a href="#1-头文件-1" class="headerlink" title="1. 头文件"></a>1. 头文件</h3><figure class="highlight h"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _HAHA_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _HAHA_H</span></span><br><span class="line"></span><br><span class="line">namespace hello_ns &#123;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My</span> &#123;</span></span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    <span class="type">void</span> <span class="title function_">run</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-源文件"><a href="#2-源文件" class="headerlink" title="2.源文件"></a>2.源文件</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;plumbing_head_src/hello.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> hello_ns&#123;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">My::run</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;hello,head and src ...&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-可执行文件"><a href="#3-可执行文件" class="headerlink" title="3.可执行文件"></a>3.可执行文件</h2><p>在 src 目录下新建文件: use_hello.cpp，示例内容如下:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;plumbing_head_src/hello.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;hahah&quot;</span>);</span><br><span class="line">    hello_ns::My my;</span><br><span class="line">    my.<span class="built_in">run</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-配置文件"><a href="#4-配置文件" class="headerlink" title="4.配置文件"></a>4.配置文件</h3><p>头文件与源文件相关配置:</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">include_directories(</span><br><span class="line"><span class="keyword">include</span></span><br><span class="line">  $&#123;catkin_INCLUDE_DIRS&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">## 声明C++库</span></span><br><span class="line">add_library(head</span><br><span class="line">  <span class="keyword">include</span>/test_head_src/haha.h</span><br><span class="line">  src/haha.cpp</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">add_dependencies(head $&#123;$&#123;PROJECT_NAME&#125;_EXPORTED_TARGETS&#125; $&#123;catkin_EXPORTED_TARGETS&#125;)</span><br><span class="line"></span><br><span class="line">target_link_libraries(head</span><br><span class="line">  $&#123;catkin_LIBRARIES&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>可执行文件配置:</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">add_executable(use_head src/use_head.cpp)</span><br><span class="line"></span><br><span class="line">add_dependencies(use_head $&#123;$&#123;PROJECT_NAME&#125;_EXPORTED_TARGETS&#125; $&#123;catkin_EXPORTED_TARGETS&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">#此处需要添加之前设置的 head 库</span></span><br><span class="line">target_link_libraries(use_head</span><br><span class="line">  head</span><br><span class="line">  $&#123;catkin_LIBRARIES&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/03/31/3.1%20%E5%B8%B8%E7%94%A8API/" rel="prev" title="3.1 常用API">
+                  <i class="fa fa-angle-left"></i> 3.1 常用API
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

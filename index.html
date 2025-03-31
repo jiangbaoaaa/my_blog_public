@@ -122,7 +122,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/25/2-1-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1/">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/3.2%20ROS%E4%B8%AD%E7%9A%84%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
@@ -184,7 +184,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/25/2-1-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">2.1 话题通信</a>
+          <a href="/2025/03/31/3.2%20ROS%E4%B8%AD%E7%9A%84%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">3.2 ROS中的头文件与源文件</a>
         </h2>
 
         <div class="post-meta-container">
@@ -196,7 +196,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-03-25 20:28:54 / 修改时间：20:48:16" itemprop="dateCreated datePublished" datetime="2025-03-25T20:28:54+08:00">2025-03-25</time>
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:46:11" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -218,393 +218,54 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="2-1-话题通信"><a href="#2-1-话题通信" class="headerlink" title="2.1 话题通信"></a>2.1 话题通信</h1><h2 id="话题通信"><a href="#话题通信" class="headerlink" title="话题通信"></a>话题通信</h2><p>话题通信是ROS中使用频率最高的一种通信模式，话题通信是基于<strong>发布订阅</strong>模式的，也即:一个节点发布消息，另一个节点订阅该消息。话题通信适用于不断更新的数据传输相关的应用场景。</p>
-<h2 id="2-1-1-理论模型"><a href="#2-1-1-理论模型" class="headerlink" title="2.1.1 理论模型"></a>2.1.1 理论模型</h2><p><strong>角色</strong></p>
-<ul>
-<li>ROS Master (管理者——媒婆)</li>
-<li>Talker (发布者——相亲男)</li>
-<li>Listener (订阅者——相亲女)</li>
-</ul>
-<p>![](.&#x2F;home&#x2F;chenguoqing&#x2F;图片&#x2F;2025-03-20 10-37-08 的屏幕截图.png)</p>
-<p><strong>流程</strong></p>
-<ul>
-<li>master 可以根据话题建立发布者和订阅者的连接。</li>
-<li>连接的建立一般都封装好，需要关注两方以及数据即可。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/03/25/2-1-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/25/2-%20ROS%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/25/2-%20ROS%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">2. ROS通信机制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2025-03-25 00:00:00 / 修改时间：20:24:59" itemprop="dateCreated datePublished" datetime="2025-03-25T00:00:00+08:00">2025-03-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="2、-ROS通信机制"><a href="#2、-ROS通信机制" class="headerlink" title="2、 ROS通信机制"></a>2、 ROS通信机制</h1><p><strong>ROS中的基本通信机制</strong></p>
-<ul>
-<li>话题通信（发布订阅模式）</li>
-<li>服务通信（请求响应模式）</li>
-<li>参数服务器（参数共享模式）</li>
-</ul>
-<p><strong>学习目标</strong></p>
-<ul>
-<li>能够熟练介绍ROS中常用的通信机制</li>
-<li>能够理解ROS中每种通信机制的理论模型</li>
-<li>能够以代码的方式实现各种通信机制对应的案例</li>
-<li>能够熟练使用ROS中的一些操作命令</li>
-<li>能够独立完成相关实操案例</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/25/2-2-%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/25/2-2-%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">2.2 服务通信</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2025-03-25 00:00:00 / 修改时间：20:48:01" itemprop="dateCreated datePublished" datetime="2025-03-25T00:00:00+08:00">2025-03-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="2-2-服务通信"><a href="#2-2-服务通信" class="headerlink" title="2.2 服务通信"></a>2.2 服务通信</h1><p>服务通信也是ROS中一种极其常用的通信模式，服务通信是基于<strong>请求响应</strong>模式的，是一种应答机制。也即: 一个节点A向另一个节点B发送请求，B接收处理请求并产生响应结果返回给A。</p>
-<h2 id="2-2-1服务通信理论模型"><a href="#2-2-1服务通信理论模型" class="headerlink" title="2.2.1服务通信理论模型"></a>2.2.1服务通信理论模型</h2><p>服务通信较之于话题通信更简单些，理论模型如下图所示，该模型中涉及到三个角色:</p>
-<ul>
-<li>ROS master(管理者)</li>
-<li>Server(服务端)</li>
-<li>Client(客户端)</li>
-</ul>
-<p>ROS Master 负责保管 Server 和 Client 注册的信息，并匹配话题相同的 Server 与 Client ，帮助 Server 与 Client 建立连接，连接建立后，Client 发送请求信息，Server 返回响应信息。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/03/25/2-2-%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/25/2-4-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/25/2-4-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">2.4 常用命令</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2025-03-25 00:00:00 / 修改时间：20:46:06" itemprop="dateCreated datePublished" datetime="2025-03-25T00:00:00+08:00">2025-03-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>看文档即可</p>
-<p>[常用命令] （<a target="_blank" rel="noopener" href="http://www.autolabor.com.cn/book/ROSTutorials/di-2-zhang-ros-jia-gou-she-ji/24-chang-yong-ming-ling/241-rostopic.html%EF%BC%89">http://www.autolabor.com.cn/book/ROSTutorials/di-2-zhang-ros-jia-gou-she-ji/24-chang-yong-ming-ling/241-rostopic.html）</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/25/2-5-%20%E5%AE%9E%E6%93%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/25/2-5-%20%E5%AE%9E%E6%93%8D/" class="post-title-link" itemprop="url">2.5 实操</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2025-03-25 00:00:00 / 修改时间：20:47:09" itemprop="dateCreated datePublished" datetime="2025-03-25T00:00:00+08:00">2025-03-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="2-5-实操"><a href="#2-5-实操" class="headerlink" title="2.5 实操"></a>2.5 实操</h1><h2 id="2-5-1-实操01-话题发布"><a href="#2-5-1-实操01-话题发布" class="headerlink" title="2.5.1 实操01_话题发布"></a>2.5.1 实操01_话题发布</h2><p>**需求描述:**编码实现乌龟运动控制，让小乌龟做圆周运动</p>
-<img src="http://www.autolabor.com.cn/book/ROSTutorials/assets/01_案例01_乌龟画圆.gif" alt="img" style="zoom:50%;" />
-
-<p><strong>实现流程:</strong></p>
-<ol>
-<li>通过计算图结合ros命令获取话题与消息信息。</li>
-<li>编码实现运动控制节点。</li>
-<li>启动 roscore、turtlesim_node 以及自定义的控制节点，查看运行结果。</li>
+          <h1 id="3-2-ROS中的头文件与源文件"><a href="#3-2-ROS中的头文件与源文件" class="headerlink" title="3.2 ROS中的头文件与源文件"></a>3.2 ROS中的头文件与源文件</h1><ol>
+<li>设置头文件，可执行文件作为源文件；</li>
+<li>分别设置头文件，源文件与可执行文件。</li>
 </ol>
-<h3 id="1-话题与消息获取"><a href="#1-话题与消息获取" class="headerlink" title="1.话题与消息获取"></a>1.话题与消息获取</h3><p><strong>准备:</strong> 先启动键盘控制乌龟运动案例。</p>
+<p>在ROS中关于头文件的使用，核心内容在于CMakeLists.txt文件的配置，不同的封装方式，配置上也有差异。</p>
+<h2 id="3-2-1-自定义头文件调用"><a href="#3-2-1-自定义头文件调用" class="headerlink" title="3.2.1 自定义头文件调用"></a>3.2.1 自定义头文件调用</h2><p>**需求:**设计头文件，可执行文件本身作为源文件。</p>
+<p><strong>流程:</strong></p>
 <ol>
-<li>使用 <code>roscore</code> 启动 ROS 核心。</li>
-<li>使用 <code>rosrun turtlesim turtlesim_node</code> 启动乌龟模拟。</li>
-<li>使用 <code>rosrun turtlesim turtle_teleop_key</code> 来控制乌龟的运动。</li>
+<li>编写头文件；</li>
+<li>编写可执行文件(同时也是源文件)；</li>
+<li>编辑配置文件并执行。</li>
 </ol>
-<h4 id="1-1-话题获取"><a href="#1-1-话题获取" class="headerlink" title="1.1 话题获取"></a>1.1 话题获取</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/03/25/2-5-%20%E5%AE%9E%E6%93%8D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+<h3 id="1-头文件"><a href="#1-头文件" class="headerlink" title="1. 头文件"></a>1. 头文件</h3><p>在功能包下的 include&#x2F;功能包名 目录下新建头文件: hello.h，示例内容如下:</p>
+<figure class="highlight h"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _HELLO_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _HELLO_H</span></span><br><span class="line"></span><br><span class="line">namespace hello_ns&#123;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloPub</span> &#123;</span></span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    <span class="type">void</span> <span class="title function_">run</span><span class="params">()</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意:</strong></p>
+<p>在 VScode 中，为了后续包含头文件时不抛出异常，请配置 .vscode 下 c_cpp_properties.json 的 includepath属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;/home/用户/工作空间/src/功能包/include/**&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-可执行文件"><a href="#2-可执行文件" class="headerlink" title="2.可执行文件"></a>2.可执行文件</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;plumbing_head/hello.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> hello_ns &#123;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">HelloPub::run</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;自定义头文件的使用....&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;test_head_node&quot;</span>);</span><br><span class="line">    hello_ns::HelloPub helloPub;</span><br><span class="line">    helloPub.<span class="built_in">run</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3. 配置文件"></a>3. 配置文件</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_directories</span>(</span><br><span class="line"><span class="keyword">include</span></span><br><span class="line">  <span class="variable">$&#123;catkin_INCLUDE_DIRS&#125;</span></span><br><span class="line">)</span><br><span class="line">其他类似</span><br></pre></td></tr></table></figure>
+
+<p>最后，编译并执行，控制台可以输出自定义的文本信息。</p>
+<hr>
+<h2 id="3-2-2-自定义源文件调用"><a href="#3-2-2-自定义源文件调用" class="headerlink" title="3.2.2 自定义源文件调用"></a>3.2.2 自定义源文件调用</h2><p>**需求:**设计头文件与源文件，在可执行文件中包含头文件。</p>
+<p><strong>流程:</strong></p>
+<ol>
+<li>编写头文件；</li>
+<li>编写源文件；</li>
+<li>编写可执行文件；</li>
+<li>编辑配置文件并执行。</li>
+</ol>
+<hr>
+<h3 id="1-头文件-1"><a href="#1-头文件-1" class="headerlink" title="1. 头文件"></a>1. 头文件</h3><figure class="highlight h"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _HAHA_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _HAHA_H</span></span><br><span class="line"></span><br><span class="line">namespace hello_ns &#123;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My</span> &#123;</span></span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    <span class="type">void</span> <span class="title function_">run</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-源文件"><a href="#2-源文件" class="headerlink" title="2.源文件"></a>2.源文件</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;plumbing_head_src/hello.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> hello_ns&#123;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">My::run</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;hello,head and src ...&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-可执行文件"><a href="#3-可执行文件" class="headerlink" title="3.可执行文件"></a>3.可执行文件</h2><p>在 src 目录下新建文件: use_hello.cpp，示例内容如下:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;plumbing_head_src/hello.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;hahah&quot;</span>);</span><br><span class="line">    hello_ns::My my;</span><br><span class="line">    my.<span class="built_in">run</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-配置文件"><a href="#4-配置文件" class="headerlink" title="4.配置文件"></a>4.配置文件</h3><p>头文件与源文件相关配置:</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">include_directories(</span><br><span class="line"><span class="keyword">include</span></span><br><span class="line">  $&#123;catkin_INCLUDE_DIRS&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">## 声明C++库</span></span><br><span class="line">add_library(head</span><br><span class="line">  <span class="keyword">include</span>/test_head_src/haha.h</span><br><span class="line">  src/haha.cpp</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">add_dependencies(head $&#123;$&#123;PROJECT_NAME&#125;_EXPORTED_TARGETS&#125; $&#123;catkin_EXPORTED_TARGETS&#125;)</span><br><span class="line"></span><br><span class="line">target_link_libraries(head</span><br><span class="line">  $&#123;catkin_LIBRARIES&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>可执行文件配置:</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">add_executable(use_head src/use_head.cpp)</span><br><span class="line"></span><br><span class="line">add_dependencies(use_head $&#123;$&#123;PROJECT_NAME&#125;_EXPORTED_TARGETS&#125; $&#123;catkin_EXPORTED_TARGETS&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">#此处需要添加之前设置的 head 库</span></span><br><span class="line">target_link_libraries(use_head</span><br><span class="line">  head</span><br><span class="line">  $&#123;catkin_LIBRARIES&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -630,7 +291,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/25/2-3-%20%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/3.1%20%E5%B8%B8%E7%94%A8API/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
@@ -648,7 +309,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/25/2-3-%20%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-title-link" itemprop="url">2.3 参数服务器</a>
+          <a href="/2025/03/31/3.1%20%E5%B8%B8%E7%94%A8API/" class="post-title-link" itemprop="url">3.1 常用API</a>
         </h2>
 
         <div class="post-meta-container">
@@ -660,7 +321,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-03-25 00:00:00 / 修改时间：20:47:42" itemprop="dateCreated datePublished" datetime="2025-03-25T00:00:00+08:00">2025-03-25</time>
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:45:02" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -682,23 +343,67 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="2-3-参数服务器"><a href="#2-3-参数服务器" class="headerlink" title="2.3 参数服务器"></a>2.3 参数服务器</h1><h2 id="2-3-1-参数服务器理论模型"><a href="#2-3-1-参数服务器理论模型" class="headerlink" title="2.3.1 参数服务器理论模型"></a>2.3.1 参数服务器理论模型</h2><p>参数服务器在ROS中主要用于实现不同节点之间的<strong>数据共享</strong>。参数服务器相当于是独立于所有节点的一个<strong>公共容器</strong>，可以将数据<strong>存储</strong>在该容器中，被不同的节点调用，当然不同的节点也可以往其中存储数据。</p>
-<p><strong>涉及角色</strong>：</p>
+          <h1 id="3-1-常用API"><a href="#3-1-常用API" class="headerlink" title="3.1 常用API"></a>3.1 常用API</h1><p>**API（Application Programming  Interface，应用程序编程接口）**是一组定义了不同软件系统之间交互规则的接口，使得不同的应用程序能够彼此“沟通”和共享数据或功能。API充当着不同程序之间的中介，允许开发人员调用某些功能而不需要了解其实现细节。</p>
+<h2 id="3-1-1-初始化"><a href="#3-1-1-初始化" class="headerlink" title="3.1.1 初始化"></a>3.1.1 初始化</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** @brief ROS初始化函数。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 该函数可以解析并使用节点启动时传入的参数(通过参数设置节点名称、命名空间...) </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 该函数有多个重载版本，如果使用NodeHandle建议调用该版本。 </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * \param argc 参数个数 --- 封装实参个数（n+1）</span></span><br><span class="line"><span class="comment"> * \param argv 参数列表 --- 封装参数的数组</span></span><br><span class="line"><span class="comment"> * \param name 节点名称，需要保证其唯一性，不允许包含命名空间</span></span><br><span class="line"><span class="comment"> * \param options 节点启动选项，被封装进了ros::init_options</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> 使用：</span></span><br><span class="line"><span class="comment"> 	1.argc 与 argv 的使用</span></span><br><span class="line"><span class="comment"> 		如果按照ROS的特定格式传入实参，ROS可以加以使用，可以设置全局参数，给节点命名</span></span><br><span class="line"><span class="comment"> 	2.options 的使用</span></span><br><span class="line"><span class="comment"> 		节点名称需要保证唯一，同一个节点不可重复启动</span></span><br><span class="line"><span class="comment"> 		需求：一个节点多次启动</span></span><br><span class="line"><span class="comment"> 		ros::init(argc,argv,&quot;talker&quot;,ros::init_options::AnonymousName);</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> &amp;argc, <span class="type">char</span> **argv, <span class="type">const</span> std::string&amp; name, <span class="type">uint32_t</span> options = <span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>ros::init(argc,argv,&quot;talker&quot;,ros::init_options::AnonymousName);</code>修改这一行代码，这个例子使用的是订阅发布通讯的案例，修改这一行代码之后，即可满足一个节点多次启动的需求。给节点加后缀，避免节点重名。</p>
+<hr>
+<h2 id="3-1-2-话题与服务相关对象"><a href="#3-1-2-话题与服务相关对象" class="headerlink" title="3.1.2 话题与服务相关对象"></a>3.1.2 话题与服务相关对象</h2><p>NodeHandle中有一个重要的作用是可以用于<strong>设置命名空间</strong>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* \brief 根据话题生成发布对象</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* 在 ROS master 注册并返回一个发布者对象，该对象可以发布消息</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* 使用示例如下:</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*   ros::Publisher pub = handle.advertise&lt;std_msgs::Empty&gt;(&quot;my_topic&quot;, 1);</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \param topic 发布消息使用的话题</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \param queue_size 等待发送给订阅者的最大消息数量</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \param latch (optional) 如果为 true,该话题发布的最后一条消息将被保存，并且后期当有订阅者连接时会将该消息发送给订阅者</span></span><br><span class="line"><span class="comment">	使用：</span></span><br><span class="line"><span class="comment">		以静态地图发布为例，可以使用固定频率发送地图数据，但是效率低，可以将latch设置为true，并且发布方之发送一次数据，订阅者连接时，会发送给订阅者，但是只发送一次。</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \return 调用成功时，会返回一个发布对象</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">M</span>&gt;</span><br><span class="line"><span class="function">Publisher <span class="title">advertise</span><span class="params">(<span class="type">const</span> std::string&amp; topic, <span class="type">uint32_t</span> queue_size, <span class="type">bool</span> latch = <span class="literal">false</span>)</span></span></span><br><span class="line"><span class="function"></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-1-3-回旋函数"><a href="#3-1-3-回旋函数" class="headerlink" title="3.1.3 回旋函数"></a>3.1.3 回旋函数</h2><p>在ROS程序中，频繁的使用了 ros::spin() 和 ros::spinOnce() 两个回旋函数，可以用于处理回调函数。</p>
+<h5 id="1-spinOnce"><a href="#1-spinOnce" class="headerlink" title="1.spinOnce()"></a>1.spinOnce()</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * \brief 处理一轮回调</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 一般应用场景:</span></span><br><span class="line"><span class="comment"> *     在循环体内，处理所有可用的回调函数</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">ROSCPP_DECL <span class="type">void</span> <span class="title">spinOnce</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-spin"><a href="#2-spin" class="headerlink" title="2.spin()"></a>2.spin()</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * \brief 进入循环处理回调 </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">ROSCPP_DECL <span class="type">void</span> <span class="title">spin</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-二者比较"><a href="#3-二者比较" class="headerlink" title="3.二者比较"></a>3.二者比较</h5><p>**相同点:**二者都用于处理回调函数；</p>
+<p>**不同点:**ros::spin() 是进入了循环执行回调函数，而 ros::spinOnce() 只会执行一次回调函数(没有循环)，在 ros::spin() 后的语句不会执行到，而 ros::spinOnce() 后的语句可以执行。</p>
+<h2 id="3-1-4-时间"><a href="#3-1-4-时间" class="headerlink" title="3.1.4 时间"></a>3.1.4 时间</h2><p>ROS中时间相关的API是极其常用，比如:获取当前时刻、持续时间的设置、执行频率、休眠、定时器…都与时间相关。</p>
+<h3 id="1-时刻"><a href="#1-时刻" class="headerlink" title="1.时刻"></a>1.时刻</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">    需求: 演示时间相关操作(获取当时时刻 + 设置指定时刻)</span></span><br><span class="line"><span class="comment">    实现:</span></span><br><span class="line"><span class="comment">        1. 准备(头文件\初始化节点\Nh)</span></span><br><span class="line"><span class="comment">        2. 获取当前时刻</span></span><br><span class="line"><span class="comment">        3. 设置指定时刻</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> * argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;hello_time&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;<span class="comment">//必须创建句柄，否则时间没有初始化，导致后续API调用失败</span></span><br><span class="line">    <span class="comment">//获取当前时刻</span></span><br><span class="line">    ros::Time right_now = ros::Time::<span class="built_in">now</span>();<span class="comment">//将当前时刻封装成对象</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;当前时刻:%.2f&quot;</span>,right_now.<span class="built_in">toSec</span>());<span class="comment">//获取距离 1970年01月01日 00:00:00 的秒数</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;当前时刻:%d&quot;</span>,right_now.sec);<span class="comment">//获取距离 1970年01月01日 00:00:00 的秒数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置指定时刻</span></span><br><span class="line">    <span class="function">ros::Time <span class="title">someTime</span><span class="params">(<span class="number">100</span>,<span class="number">100000000</span>)</span></span>;<span class="comment">// 参数1:秒数  参数2:纳秒</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;时刻:%.2f&quot;</span>,someTime.<span class="built_in">toSec</span>()); <span class="comment">//100.10</span></span><br><span class="line">    <span class="function">ros::Time <span class="title">someTime2</span><span class="params">(<span class="number">100.3</span>)</span></span>;<span class="comment">//直接传入 double 类型的秒数</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;时刻:%.2f&quot;</span>,someTime<span class="number">2.</span><span class="built_in">toSec</span>()); <span class="comment">//100.30</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-持续时间"><a href="#2-持续时间" class="headerlink" title="2. 持续时间"></a>2. 持续时间</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//----------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//------------持续时间----------------</span></span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;------------------------------&quot;</span>);</span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;当前时刻:%.2f&quot;</span>,ros::Time::<span class="built_in">now</span>().<span class="built_in">toSec</span>());</span><br><span class="line"><span class="function">ros::Duration <span class="title">du</span><span class="params">(<span class="number">10</span>)</span></span>;<span class="comment">//持续10秒钟,参数是double类型的，以秒为单位</span></span><br><span class="line">du.<span class="built_in">sleep</span>();<span class="comment">//按照指定的持续时间休眠</span></span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;持续时间:%.2f&quot;</span>,du.<span class="built_in">toSec</span>());<span class="comment">//将持续时间换算成秒</span></span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;当前时刻:%.2f&quot;</span>,ros::Time::<span class="built_in">now</span>().<span class="built_in">toSec</span>());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="3-持续时间与时刻运算"><a href="#3-持续时间与时刻运算" class="headerlink" title="3.持续时间与时刻运算"></a>3.持续时间与时刻运算</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;------------------------------&quot;</span>);</span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;------------时间运算---------------&quot;</span>);</span><br><span class="line">ros::Time begin = ros::Time::<span class="built_in">now</span>();</span><br><span class="line"><span class="function">ros::Duration <span class="title">du1</span><span class="params">(<span class="number">5</span>)</span></span>;</span><br><span class="line">ros::Time stop = begin + du1;</span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;开始时刻:%.2f&quot;</span>, begin.<span class="built_in">toSec</span>());</span><br><span class="line"><span class="built_in">ROS_INFO</span>(<span class="string">&quot;结束时刻:%.2f&quot;</span>, stop.<span class="built_in">toSec</span>());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-设置运行频率"><a href="#4-设置运行频率" class="headerlink" title="4. 设置运行频率"></a>4. 设置运行频率</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ros::Rate <span class="title">rate</span><span class="params">(<span class="number">1</span>)</span></span>;<span class="comment">//指定频率</span></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;-----------code----------&quot;</span>);</span><br><span class="line">    rate.<span class="built_in">sleep</span>();<span class="comment">//休眠，休眠时间 = 1 / 频率。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-定时器"><a href="#5-定时器" class="headerlink" title="5. 定时器"></a>5. 定时器</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">ros::NodeHandle nh;<span class="comment">//必须创建句柄，否则时间没有初始化，导致后续API调用失败</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">// ROS 定时器</span></span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">* \brief 创建一个定时器，按照指定频率调用回调函数。</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* \param period 时间间隔</span></span><br><span class="line"><span class="comment">* \param callback 回调函数</span></span><br><span class="line"><span class="comment">* \param oneshot 如果设置为 true,只执行一次回调函数，设置为 false,就循环执行。</span></span><br><span class="line"><span class="comment">* \param autostart 如果为true，返回已经启动的定时器,设置为 false，需要手动启动。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"> <span class="comment">//Timer createTimer(Duration period, const TimerCallback&amp; callback, bool oneshot = false,</span></span><br><span class="line"> <span class="comment">//                bool autostart = true) const;</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">// ros::Timer timer = nh.createTimer(ros::Duration(0.5),doSomeThing);</span></span><br><span class="line"> ros::Timer timer = nh.<span class="built_in">createTimer</span>(ros::<span class="built_in">Duration</span>(<span class="number">0.5</span>),doSomeThing,<span class="literal">true</span>);<span class="comment">//只执行一次</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">// ros::Timer timer = nh.createTimer(ros::Duration(0.5),doSomeThing,false,false);//需要手动启动</span></span><br><span class="line"> <span class="comment">// timer.start();</span></span><br><span class="line"> ros::<span class="built_in">spin</span>(); <span class="comment">//必须 spin</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>定时器的回调函数</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">doSomeThing</span><span class="params">(<span class="type">const</span> ros::TimerEvent &amp;event)</span></span>&#123;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;-------------&quot;</span>);</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;event:%s&quot;</span>,std::<span class="built_in">to_string</span>(event.current_real.<span class="built_in">toSec</span>()).<span class="built_in">c_str</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-1-5-其他函数"><a href="#3-1-5-其他函数" class="headerlink" title="3.1.5 其他函数"></a>3.1.5 其他函数</h2><p>在发布实现时，一般会循环发布消息，循环的判断条件一般由节点状态来控制，C++中可以通过 ros::ok() 来判断节点状态是否正常，而 python 中则通过 rospy.is_shutdown() 来实现判断，导致节点退出的原因主要有如下几种:</p>
 <ul>
-<li>ROS Master (管理者)</li>
-<li>Talker (参数设置者)</li>
-<li>Listener (参数调用者)</li>
+<li>节点接收到了关闭信息，比如常用的 ctrl + c 快捷键就是关闭节点的信号；</li>
+<li>同名节点启动，导致现有节点退出；</li>
+<li>程序中的其他部分调用了节点关闭相关的API(C++中是ros::shutdown()，python中是rospy.signal_shutdown())</li>
 </ul>
-<p>ROS Master 作为一个公共容器保存参数，Talker 可以向容器中设置参数，Listener 可以获取参数。</p>
-<p><img src="http://www.autolabor.com.cn/book/ROSTutorials/assets/03ROS%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B603_%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg" alt="img"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/03/25/2-3-%20%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+<p>另外，日志相关的函数也是极其常用的，在ROS中日志被划分成如下级别:</p>
+<ul>
+<li><p>DEBUG(调试):只在调试时使用，此类消息不会输出到控制台；</p>
+</li>
+<li><p>INFO(信息):标准消息，一般用于说明系统内正在执行的操作；</p>
+</li>
+<li><p>WARN(警告):提醒一些异常情况，但程序仍然可以执行；</p>
+</li>
+<li><p>ERROR(错误):提示错误信息，此类错误会影响程序运行；</p>
+</li>
+<li><p>FATAL(严重错误):此类错误将阻止节点继续运行</p>
+</li>
+<li><h3 id="1-节点状态"><a href="#1-节点状态" class="headerlink" title="1. 节点状态"></a>1. 节点状态</h3></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/** \brief 检查节点是否已经退出</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  ros::shutdown() 被调用且执行完毕后，该函数将会返回 false</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * \return true 如果节点还健在, false 如果节点已经火化了。</span></span><br><span class="line"><span class="comment"> */</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (count &gt;= <span class="number">20</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ros::<span class="built_in">shutdown</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//---------------------</span></span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+
+<p>发布到20次就自动关闭节点</p>
+<hr>
+<h3 id="2-日志相关"><a href="#2-日志相关" class="headerlink" title="2.日志相关"></a>2.日志相关</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL, <span class="string">&quot;&quot;</span>);</span><br><span class="line">    ros::<span class="built_in">init</span> (argc,argv,<span class="string">&quot;hello_logs&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//日志输出</span></span><br><span class="line">    <span class="built_in">ROS_DEBUG</span>(<span class="string">&quot;hello,DEBUG&quot;</span>); <span class="comment">//不会输出</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;hello,INFO&quot;</span>); <span class="comment">//默认白色字体</span></span><br><span class="line">    <span class="built_in">ROS_WARN</span>(<span class="string">&quot;Hello,WARN&quot;</span>); <span class="comment">//默认黄色字体</span></span><br><span class="line">    <span class="built_in">ROS_ERROR</span>(<span class="string">&quot;hello,ERROR&quot;</span>);<span class="comment">//默认红色字体</span></span><br><span class="line">    <span class="built_in">ROS_FATAL</span>(<span class="string">&quot;hello,FATAL&quot;</span>);<span class="comment">//默认红色字体</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
 
@@ -724,7 +429,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/15/2025-3-15%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/4.2%20ROS%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86launch%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
@@ -742,7 +447,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/15/2025-3-15%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/" class="post-title-link" itemprop="url">2025.3.15组会汇报</a>
+          <a href="/2025/03/31/4.2%20ROS%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86launch%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">4.2 ROS节点运行管理launch文件</a>
         </h2>
 
         <div class="post-meta-container">
@@ -752,15 +457,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2025-03-15 11:14:53" itemprop="dateCreated datePublished" datetime="2025-03-15T11:14:53+08:00">2025-03-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-03-17 00:14:28" itemprop="dateModified" datetime="2025-03-17T00:14:28+08:00">2025-03-17</time>
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:47:47" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -768,7 +467,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BB%84%E4%BC%9A/" itemprop="url" rel="index"><span itemprop="name">组会</span></a>
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
         </span>
     </span>
 
@@ -782,19 +481,200 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="上周进展"><a href="#上周进展" class="headerlink" title="上周进展"></a>上周进展</h2><ul>
-<li><input disabled="" type="checkbox"> 完成<strong>PCL</strong>相关模块在C++上的实现</li>
-<li><input disabled="" type="checkbox"> 基于点云配准的流程报告</li>
+          <h1 id="4-2-ROS节点运行管理launch文件"><a href="#4-2-ROS节点运行管理launch文件" class="headerlink" title="4.2 ROS节点运行管理launch文件"></a>4.2 ROS节点运行管理launch文件</h1><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a><strong>概念</strong></h4><p>launch 文件是一个 XML 格式的文件，可以启动本地和远程的多个节点，还可以在参数服务器中设置参数。</p>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a><strong>作用</strong></h4><p>简化节点的配置与启动，提高ROS程序的启动效率。</p>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a><strong>使用</strong></h4><p>以 turtlesim 为例演示</p>
+<hr>
+<h4 id="1-新建launch文件"><a href="#1-新建launch文件" class="headerlink" title="1. 新建launch文件"></a>1. 新建launch文件</h4><p>创建一个<strong>launch01_basic</strong>功能包，依赖于roscpp rospy std_msgs tuttlesim</p>
+<p>在功能包下添加 launch目录, 目录下新建 start_turtle.launch 文件，编辑 launch 文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtlesim_node&quot;     name=&quot;myTurtle&quot; output=&quot;screen&quot; /&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtle_teleop_key&quot;  name=&quot;myTurtleContro&quot; output=&quot;screen&quot; /&gt;</span><br><span class="line">&lt;/launch&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-调用-launch-文件"><a href="#2-调用-launch-文件" class="headerlink" title="2.调用 launch 文件"></a>2.调用 launch 文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch launch01_basic start_turtle.launch </span><br></pre></td></tr></table></figure>
+
+<p>这样就可以直接启动乌龟控制节点</p>
+<hr>
+<h2 id="4-2-1-launch-文件标签之-launch"><a href="#4-2-1-launch-文件标签之-launch" class="headerlink" title="4.2.1 launch 文件标签之 launch"></a>4.2.1 launch 文件标签之 launch</h2><p><code>&lt;launch&gt;</code>标签是所有 launch 文件的根标签，充当其他标签的容器</p>
+<h4 id="1-属性"><a href="#1-属性" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p><code>deprecated = &quot;弃用声明&quot;</code></p>
+<p>告知用户当前 launch 文件已经弃用</p>
+</li>
 </ul>
-<h2 id="本周进展"><a href="#本周进展" class="headerlink" title="本周进展"></a>本周进展</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/03/15/2025-3-15%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch deprecated=&quot;次文件已经过时！&quot;&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtlesim_node&quot;     name=&quot;myTurtle&quot; output=&quot;screen&quot; /&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtle_teleop_key&quot;  name=&quot;myTurtleContro&quot; output=&quot;screen&quot; /&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>虽然能运行，但是会给出警告。</p>
+<h4 id="2-子级标签"><a href="#2-子级标签" class="headerlink" title="2.子级标签"></a>2.子级标签</h4><p>所有其它标签都是launch的子级</p>
+<hr>
+<h2 id="4-2-2-launch-文件标签之node"><a href="#4-2-2-launch-文件标签之node" class="headerlink" title="4.2.2 launch 文件标签之node"></a>4.2.2 launch 文件标签之node</h2><h4 id="1-属性-1"><a href="#1-属性-1" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>pkg&#x3D;”包名”</p>
+<p>节点所属的包</p>
+</li>
+<li><p>type&#x3D;”nodeType”</p>
+<p>节点类型(与之相同名称的可执行文件)</p>
+</li>
+<li><p>name&#x3D;”nodeName”</p>
+<p>节点名称(在 ROS 网络拓扑中节点的名称)</p>
+</li>
+<li><p>args&#x3D;”xxx xxx xxx” (可选)</p>
+<p>将参数传递给节点</p>
+</li>
+<li><p>machine&#x3D;”机器名”</p>
+<p>在指定机器上启动节点</p>
+</li>
+<li><p>respawn&#x3D;”true | false” (可选)</p>
+<p>如果节点退出，是否自动重启</p>
+</li>
+<li><p>respawn_delay&#x3D;” N” (可选)</p>
+<p>如果 respawn 为 true, 那么延迟 N 秒后启动节点</p>
+</li>
+<li><p>required&#x3D;”true | false” (可选)</p>
+<p>该节点是否必须，如果为 true,那么如果该节点退出，将杀死整个 roslaunch</p>
+</li>
+<li><p>ns&#x3D;”xxx” (可选)</p>
+<p>在指定命名空间 xxx 中启动节点</p>
+</li>
+<li><p>clear_params&#x3D;”true | false” (可选)</p>
+<p>在启动前，删除节点的私有空间的所有参数</p>
+</li>
+<li><p>output&#x3D;”log | screen” (可选)</p>
+<p>日志发送目标，可以设置为 log 日志文件，或 screen 屏幕,默认是 log</p>
+</li>
+</ul>
+<h4 id="2-子级标签-1"><a href="#2-子级标签-1" class="headerlink" title="2.子级标签"></a>2.子级标签</h4><ul>
+<li>env 环境变量设置</li>
+<li>remap 重映射节点名称</li>
+<li>rosparam 参数设置</li>
+<li>param 参数设置</li>
+</ul>
+<h2 id="4-2-3-launch-文件标签之include"><a href="#4-2-3-launch-文件标签之include" class="headerlink" title="4.2.3 launch 文件标签之include"></a>4.2.3 launch 文件标签之include</h2><p><code>include</code>标签用于将另一个 xml 格式的 launch 文件导入到当前文件</p>
+<h4 id="1-属性-2"><a href="#1-属性-2" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>file&#x3D;”<strong>$(find 包名)&#x2F;xxx&#x2F;xxx.launch</strong>“</p>
+<p>要包含的文件路径</p>
+</li>
+<li><p>ns&#x3D;”xxx” (可选)</p>
+<p>在指定命名空间导入文件</p>
+</li>
+</ul>
+<h4 id="2-子级标签-2"><a href="#2-子级标签-2" class="headerlink" title="2.子级标签"></a>2.子级标签</h4><ul>
+<li>env 环境变量设置</li>
+<li>arg 将参数传递给被包含的文件</li>
+</ul>
+<hr>
+<p>新建文件 <strong>start_turtle_use.launch</strong> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--需要复用 start_turtle.launch--&gt;</span><br><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;include file=&quot;$(find launch01_basic)/launch/start_turtle.launch&quot; /&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-2-4-launch文件标签之remap"><a href="#4-2-4-launch文件标签之remap" class="headerlink" title="4.2.4 launch文件标签之remap"></a>4.2.4 launch文件标签之remap</h2><h4 id="1-属性-3"><a href="#1-属性-3" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>from&#x3D;”xxx”</p>
+<p>原始话题名称</p>
+</li>
+<li><p>to&#x3D;”yyy”</p>
+<p>目标名称</p>
+</li>
+</ul>
+<h4 id="2-teleop-twist-keyboard安装使用"><a href="#2-teleop-twist-keyboard安装使用" class="headerlink" title="2.teleop_twist_keyboard安装使用"></a>2.teleop_twist_keyboard安装使用</h4><p><strong>安装：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-noetic-teleop-twist-keyboard</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roscore                                                  </span><br><span class="line">rosrun teleop_twist_keyboard teleop_twist_keyboard.py</span><br></pre></td></tr></table></figure>
+
+<p>按照例程的操作不用打开roscore，launch文件已经启动了。安装之后直接先运行launch文件，再执行第二步即可</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27%2015-54-49%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+<p>修改start_turtle_launch文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtlesim_node&quot; name=&quot;myTurtle&quot; output=&quot;screen&quot;&gt;</span><br><span class="line">        &lt;remap from=&quot;/turtle1/cmd_vel&quot; to=&quot;/cmd_vel&quot;/&gt;</span><br><span class="line">    &lt;/node&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtle_teleop_key&quot; name=&quot;myTurtleContro&quot; output=&quot;screen&quot;/&gt;</span><br><span class="line">&lt;/launch&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>再次启动launch文件即可显示</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-08-59 的屏幕截图.png)</p>
+<p>接下来，就可以操纵乌龟运动了！</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-08-59 的屏幕截图.png)</p>
+<p>看计算图比较清晰。</p>
+<hr>
+<h2 id="4-2-5-launch文件标签之param"><a href="#4-2-5-launch文件标签之param" class="headerlink" title="4.2.5 launch文件标签之param"></a>4.2.5 launch文件标签之param</h2><h4 id="1-属性-4"><a href="#1-属性-4" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>name&#x3D;”命名空间&#x2F;参数名”</p>
+<p>参数名称，可以包含命名空间</p>
+</li>
+<li><p>value&#x3D;”xxx” (可选)</p>
+<p>定义参数值，如果此处省略，必须指定外部文件作为参数源</p>
+</li>
+<li><p>type&#x3D;”str | int | double | bool | yaml” (可选)</p>
+<p>指定参数类型，如果未指定，roslaunch 会尝试确定参数类型，规则如下:</p>
+<ul>
+<li>如果包含 ‘.’ 的数字解析未浮点型，否则为整型</li>
+<li>“true” 和 “false” 是 bool 值(不区分大小写)</li>
+<li>其他是字符串</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>设置不同格式的参数</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--格式1：launch下，node外--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;param_A&quot;</span> <span class="attr">type</span>=<span class="string">&quot;int&quot;</span> <span class="attr">value</span>=<span class="string">&quot;100&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtle&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;/turtle1/cmd_vel&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/cmd_vel&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--格式2：launch下，node内--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;param_B&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3.14&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtleContro&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行，新打开一个终端查看参数列表<code>rosparam list</code></p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-08-59 的屏幕截图.png)</p>
+<p>可以正常获取值</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-29-41 的屏幕截图.png)</p>
+<h2 id="4-2-6-launch文件标签之rosparam"><a href="#4-2-6-launch文件标签之rosparam" class="headerlink" title="4.2.6 launch文件标签之rosparam"></a>4.2.6 launch文件标签之rosparam</h2><p><code>&lt;rosparam&gt;</code>标签可以从 YAML 文件导入参数，或将参数导出到 YAML 文件，也可以用来删除参数，<code>&lt;rosparam&gt;</code>标签在<code>&lt;node&gt;</code>标签中时被视为私有。</p>
+<h4 id="1-属性-5"><a href="#1-属性-5" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>command&#x3D;”load | dump | delete” (可选，默认 load)</p>
+<p>加载、导出或删除参数</p>
+</li>
+<li><p>file&#x3D;”$(find xxxxx)&#x2F;xxx&#x2F;yyy….”</p>
+<p>加载或导出到的 yaml 文件</p>
+</li>
+<li><p>param&#x3D;”参数名称”</p>
+</li>
+<li><p>ns&#x3D;”命名空间” (可选）</p>
+</li>
+</ul>
+<hr>
+<p>在<code>launch</code>文件目录下新建一个<code>params.yaml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">bg_R:</span> <span class="number">100</span></span><br><span class="line"><span class="attr">bg_G:</span> <span class="number">50</span></span><br><span class="line"><span class="attr">bg_B:</span> <span class="number">255</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--格式1：launch下，node外--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;param_A&quot;</span> <span class="attr">type</span>=<span class="string">&quot;int&quot;</span> <span class="attr">value</span>=<span class="string">&quot;100&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--rosparam 使用： 参数服务器--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--格式1：launch 下，node外--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> <span class="attr">file</span>=<span class="string">&quot;$(find launch01_basic)/launch/params.yaml&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtle&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;/turtle1/cmd_vel&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/cmd_vel&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--格式2：launch下，node内--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;param_B&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3.14&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--格式2：launch下，node内--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> <span class="attr">file</span>=<span class="string">&quot;$(find launch01_basic)/launch/params.yaml&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtleContro&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-55-34 的屏幕截图.png)</p>
+<p>同时还有导出、或者删除参数的指令，这里不再赘述。</p>
+<hr>
+<h2 id="4-2-7-launch文件标签之group"><a href="#4-2-7-launch文件标签之group" class="headerlink" title="4.2.7 launch文件标签之group"></a>4.2.7 launch文件标签之group</h2><p><code>&lt;group&gt;</code>标签可以对节点分组，具有 ns 属性，可以让节点归属某个命名空间</p>
+<h4 id="1-属性-6"><a href="#1-属性-6" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>ns&#x3D;”名称空间” (可选)</p>
+</li>
+<li><p>clear_params&#x3D;”true | false” (可选)</p>
+<p>启动前，是否删除组名称空间的所有参数(慎用….此功能危险)</p>
+</li>
+</ul>
+<hr>
+<p>可以通过group 同时启动两个乌龟GUI</p>
+<p>首先在<code>launch</code>文件下新建<code>turtles.launch</code>文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--启动两对乌龟GUI 与 键盘控制节点--&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">ns</span>=<span class="string">&quot;first&quot;</span>&gt;</span>      </span><br><span class="line">        <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtle&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtleContro&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span>  </span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">ns</span>=<span class="string">&quot;second&quot;</span>&gt;</span>      </span><br><span class="line">        <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtle&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtleContro&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行之后就可以显示两个乌龟GUI了</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 17-16-47 的屏幕截图.png)</p>
+<hr>
+<h2 id="4-2-8-launch-文件标签之arg"><a href="#4-2-8-launch-文件标签之arg" class="headerlink" title="4.2.8 launch 文件标签之arg"></a>4.2.8 launch 文件标签之arg</h2><p><code>&lt;arg&gt;</code>标签是用于动态传参，类似于函数的参数，可以增强launch文件的灵活性</p>
+<h4 id="1-属性-7"><a href="#1-属性-7" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>name&#x3D;”参数名称”</p>
+</li>
+<li><p>default&#x3D;”默认值” (可选)</p>
+</li>
+<li><p>value&#x3D;”数值” (可选)</p>
+<p>不可以与 default 并存</p>
+</li>
+<li><p>doc&#x3D;”描述”</p>
+<p>参数说明</p>
+</li>
+</ul>
+<hr>
+<p><code>launch</code>文件夹下新建文件<code>arg.launch</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 需求：演示 arg 的使用，需要设置多个参数，使用的是同一个值（小车长度） --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &lt;param name=&quot;A&quot; value=&quot;0.5&quot; /&gt;</span></span><br><span class="line"><span class="comment">    &lt;param name=&quot;B&quot; value=&quot;0.5&quot; /&gt;</span></span><br><span class="line"><span class="comment">    &lt;param name=&quot;C&quot; value=&quot;0.5&quot; /&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;car_length&quot;</span> <span class="attr">defalut</span>=<span class="string">&quot;0.55&quot;</span> /&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;A&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg car_length)&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;B&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg car_length)&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;C&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg car_length)&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>预先启动<code>roscore</code>,再执行 <code>roslaunch launch01_basic arg.launch</code> 输入<code>rosparam list</code>可以显示：</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 19-52-45 的屏幕截图.png)</p>
+<p>使用<code>roslaunch launch01_basic arg.launch car_length:=0.6</code>可以修改参数。</p>
+
       
     </div>
 
@@ -812,6 +692,872 @@
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/4.1%20ROS%E5%85%83%E5%8A%9F%E8%83%BD%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/31/4.1%20ROS%E5%85%83%E5%8A%9F%E8%83%BD%E5%8C%85/" class="post-title-link" itemprop="url">4.1 ROS元功能包</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:46:56" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="4-1-ROS元功能包"><a href="#4-1-ROS元功能包" class="headerlink" title="4.1 ROS元功能包"></a>4.1 ROS元功能包</h1><p> 逐一安装功能包的效率低下，在ROS中，提供了一种方式可以将不同的功能包打包成一个功能包，当安装某个功能模块时，直接调用打包后的功能包即可，该包又称之为<strong>元功能包(metapackage)</strong>。</p>
+<hr>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>MetaPackage是Linux的一个文件管理系统的概念。是ROS中的一个虚包，里面没有实质性的内容，但是它依赖了其他的软件包，通过这种方法可以把其他包组合起来，我们可以认为它是一本书的<strong>目录索引</strong>，告诉我们这个包集合中有哪些子包，并且该去哪里下载。</p>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>方便用户的安装，我们只需要这一个包就可以把其他相关的软件包组织到一起安装了。</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>**首先:**新建一个功能包plumbing_my 可以不用加依赖</p>
+<p><strong>然后:<strong>修改</strong>package.xml</strong> ,内容如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  <span class="tag">&lt;<span class="name">buildtool_depend</span>&gt;</span>catkin<span class="tag">&lt;/<span class="name">buildtool_depend</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">exec_depend</span>&gt;</span>plumbing_pub_sub<span class="tag">&lt;/<span class="name">exec_depend</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">exec_depend</span>&gt;</span>plumbing_server_client<span class="tag">&lt;/<span class="name">exec_depend</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">exec_depend</span>&gt;</span>plumbing_param_server<span class="tag">&lt;/<span class="name">exec_depend</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- The export tag contains other, unspecified, tags --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">export</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">metapackage</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">export</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">package</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>**最后:**修改 CMakeLists.txt,内容如下:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.0</span>.<span class="number">2</span>)</span><br><span class="line"><span class="keyword">project</span>(demo)</span><br><span class="line"><span class="keyword">find_package</span>(catkin REQUIRED)</span><br><span class="line">catkin_metapackage()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>只保留以上这些内容。</p>
+<p>如果出现报错，可以尝试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf build devel</span><br><span class="line">catkin_make_isolated</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/4.3%20ROS%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%E8%A6%86%E7%9B%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/31/4.3%20ROS%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%E8%A6%86%E7%9B%96/" class="post-title-link" itemprop="url">4.3 ROS工作空间覆盖</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:48:33" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="4-3-ROS工作空间覆盖"><a href="#4-3-ROS工作空间覆盖" class="headerlink" title="4.3 ROS工作空间覆盖"></a>4.3 ROS工作空间覆盖</h3><p>所谓工作空间覆盖，是指不同工作空间中，存在重名的功能包的情形。</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a><strong>实现</strong></h4><p>0.新建工作空间A与工作空间B，两个工作空间中都创建功能包: turtlesim。不记得怎么操作可以往前看笔记。</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 20-28-59 的屏幕截图.png)</p>
+<p>1.在 ~&#x2F;.bashrc 文件下<strong>追加</strong>当前工作空间的 bash 格式如下:</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 20-29-42 的屏幕截图.png)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /opt/ros/noetic/setup.bash</span><br><span class="line"><span class="built_in">source</span> /home/chenguoqing/demo00_ws/devel/setup.bash</span><br><span class="line"><span class="built_in">source</span> /home/chenguoqing/demo01_ws/devel/setup.bash</span><br></pre></td></tr></table></figure>
+
+<p>2.新开命令行:<code>source .bashrc</code>加载环境变量</p>
+<p>会自动补齐之前在bashrc下第二次输入的bash的cpp文件</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 20-52-31 的屏幕截图.png)</p>
+<p>3.查看ROS环境环境变量<code>echo $ROS_PACKAGE_PATH</code></p>
+<blockquote>
+<p>当在 .bashrc 文件中 source 多个工作空间后，可能出现的情况，在 ROS PACKAGE PATH  中只包含两个工作空间，可以删除自定义工作空间的 build 与 devel 目录，重新 catkin_make，然后重新载入 .bashrc  文件，问题解决。</p>
+</blockquote>
+<p>结果:自定义工作空间B:自定义空间A:系统内置空间</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 21-06-14 的屏幕截图.png)</p>
+<p>4.调用命令:<code>roscd turtlesim</code>会进入自定义工作空间B</p>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a><strong>原因</strong></h4><p>ROS 会解析 .bashrc 文件，并生成 ROS_PACKAGE_PATH ROS包路径，该变量中按照 .bashrc  中配置设置工作空间优先级，在设置时需要遵循一定的原则:ROS_PACKAGE_PATH 中的值，和 .bashrc  的配置顺序相反—&gt;后配置的优先级更高，如果更改自定义空间A与自定义空间B的source顺序，那么调用时，将进入工作空间A。</p>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a><strong>结论</strong></h4><p>功能包重名时，会按照 ROS_PACKAGE_PATH 查找，配置在前的会优先执行。</p>
+<h4 id="隐患"><a href="#隐患" class="headerlink" title="隐患"></a><strong>隐患</strong></h4><p>存在安全隐患，比如当前工作空间B优先级更高，意味着当程序调用 turtlesim 时，不会调用工作空间A也不会调用系统内置的  turtlesim，如果工作空间A在实现时有其他功能包依赖于自身的  turtlesim，而按照ROS工作空间覆盖的涉及原则，那么实际执行时将会调用工作空间B的turtlesim，从而导致执行异常，出现安全隐患。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/4.4%20ROS%E8%8A%82%E7%82%B9%E5%90%8D%E7%A7%B0%E9%87%8D%E5%90%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/31/4.4%20ROS%E8%8A%82%E7%82%B9%E5%90%8D%E7%A7%B0%E9%87%8D%E5%90%8D/" class="post-title-link" itemprop="url">4.4 ROS节点名称重名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:49:27" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="4-4-ROS节点名称重名"><a href="#4-4-ROS节点名称重名" class="headerlink" title="4.4 ROS节点名称重名"></a>4.4 ROS节点名称重名</h1><p>在ROS中给出的解决策略是使用<strong>命名空间</strong>或<strong>名称重映射</strong>。</p>
+<hr>
+<p>命名空间就是为名称添加前缀，名称重映射是为名称起别名。这两种策略都可以解决节点重名问题，两种策略的实现途径有多种:</p>
+<ul>
+<li>rosrun 命令</li>
+<li>launch 文件</li>
+<li>编码实现</li>
+</ul>
+<hr>
+<h2 id="4-4-1-rosrun设置命名空间与重映射"><a href="#4-4-1-rosrun设置命名空间与重映射" class="headerlink" title="4.4.1 rosrun设置命名空间与重映射"></a>4.4.1 rosrun设置命名空间与重映射</h2><p>如果不做操作，无法启动两个乌龟节点。</p>
+<hr>
+<h3 id="1-rosrun设置命名空间"><a href="#1-rosrun设置命名空间" class="headerlink" title="1. rosrun设置命名空间"></a>1. rosrun设置命名空间</h3><h4 id="1-1-设置命名空间演示"><a href="#1-1-设置命名空间演示" class="headerlink" title="1.1 设置命名空间演示"></a>1.1 设置命名空间演示</h4><p>语法: rosrun 包名 节点名 __ns:&#x3D;新名称</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtlesim turtlesim_node __ns:=/xxx</span><br><span class="line">rosrun turtlesim turtlesim_node __ns:=/yyy</span><br></pre></td></tr></table></figure>
+
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28</a> 15-58-42 的屏幕截图.png)</p>
+<h4 id="1-2-运行结果"><a href="#1-2-运行结果" class="headerlink" title="1.2 运行结果"></a>1.2 运行结果</h4><p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28</a> 15-59-47 的屏幕截图.png)</p>
+<hr>
+<h3 id="2-rosrun名称重映射"><a href="#2-rosrun名称重映射" class="headerlink" title="2. rosrun名称重映射"></a>2. rosrun名称重映射</h3><h4 id="2-1-起别名"><a href="#2-1-起别名" class="headerlink" title="2.1 起别名"></a>2.1 起别名</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtlesim turtlesim_node __name:=xiaowang</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtlesim turtlesim_node __name:=xiaoli</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-运行结果"><a href="#2-2-运行结果" class="headerlink" title="2.2 运行结果"></a>2.2 运行结果</h4><p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28</a> 16-06-36 的屏幕截图.png)</p>
+<hr>
+<h3 id="3-rosrun命名空间与名称重映射叠加"><a href="#3-rosrun命名空间与名称重映射叠加" class="headerlink" title="3.rosrun命名空间与名称重映射叠加"></a>3.rosrun命名空间与名称重映射叠加</h3><h4 id="3-1设置命名空间同时名称重映射"><a href="#3-1设置命名空间同时名称重映射" class="headerlink" title="3.1设置命名空间同时名称重映射"></a>3.1设置命名空间同时名称重映射</h4><p>语法: rosrun 包名 节点名 __ns:&#x3D;新名称 __name:&#x3D;新名称</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtlesim turtlesim_node __ns:=/xxx __name:=tn</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2运行结果"><a href="#3-2运行结果" class="headerlink" title="3.2运行结果"></a>3.2运行结果</h4><p><code>rosnode list</code>查看节点信息,显示结果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/xxx/tn</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-4-2-launch文件设置命名空间与重映射"><a href="#4-4-2-launch文件设置命名空间与重映射" class="headerlink" title="4.4.2 launch文件设置命名空间与重映射"></a>4.4.2 launch文件设置命名空间与重映射</h2><p>新建功能包 <code>rename_01</code> 以及相关依赖。新建<code>launch</code>文件夹，已经<code>start_turtle.launch</code> 文件，启动多个乌龟GUI节点。</p>
+<h3 id="1-launch-文件"><a href="#1-launch-文件" class="headerlink" title="1.launch 文件"></a>1.launch 文件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--启动多个乌龟GUI--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;t1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;t2&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;t1&quot;</span> <span class="attr">ns</span>=<span class="string">&quot;hello&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;t2&quot;</span> <span class="attr">ns</span>=<span class="string">&quot;haha&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果报错，执行前一节相同的操作，删除<code>build</code>和<code>devel</code>文件夹，重新<code>catkin_make</code>，即可解决。</p>
+<h3 id="2-运行"><a href="#2-运行" class="headerlink" title="2. 运行"></a>2. 运行</h3><p><code>rosnode list</code>查看节点信息,显示结果:</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28</a> 16-31-14 的屏幕截图.png)</p>
+<hr>
+<h2 id="4-4-3-编码设置命名空间和映射"><a href="#4-4-3-编码设置命名空间和映射" class="headerlink" title="4.4.3 编码设置命名空间和映射"></a>4.4.3 编码设置命名空间和映射</h2><p>如果自定义节点实现，那么可以更灵活的设置命名空间与重映射实现。</p>
+<hr>
+<h3 id="1-C-实现-重映射"><a href="#1-C-实现-重映射" class="headerlink" title="1.C++ 实现:重映射"></a>1.C++ 实现:重映射</h3><h4 id="1-1名称别名设置"><a href="#1-1名称别名设置" class="headerlink" title="1.1名称别名设置"></a>1.1名称别名设置</h4><p>核心代码:<code>ros::init(argc,argv,&quot;zhangsan&quot;,ros::init_options::AnonymousName);</code></p>
+<h4 id="1-2执行"><a href="#1-2执行" class="headerlink" title="1.2执行"></a>1.2执行</h4><p>会在名称后面添加时间戳。</p>
+<h3 id="2-C-实现-命名空间"><a href="#2-C-实现-命名空间" class="headerlink" title="2.C++ 实现:命名空间"></a>2.C++ 实现:命名空间</h3><h4 id="2-1命名空间设置"><a href="#2-1命名空间设置" class="headerlink" title="2.1命名空间设置"></a>2.1命名空间设置</h4><p>核心代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::map&lt;std::string, std::string&gt; map;</span><br><span class="line">map[&quot;__ns&quot;] = &quot;xxxx&quot;;</span><br><span class="line">ros::init(map,&quot;wangqiang&quot;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2执行"><a href="#2-2执行" class="headerlink" title="2.2执行"></a>2.2执行</h4><p>节点名称设置了命名空间。</p>
+<hr>
+<h3 id="3-Python-实现-重映射"><a href="#3-Python-实现-重映射" class="headerlink" title="3.Python 实现:重映射"></a>3.Python 实现:重映射</h3><h4 id="3-1名称别名设置"><a href="#3-1名称别名设置" class="headerlink" title="3.1名称别名设置"></a>3.1名称别名设置</h4><p>核心代码:<code>rospy.init_node(&quot;lisi&quot;,anonymous=True)</code></p>
+<h4 id="3-2执行"><a href="#3-2执行" class="headerlink" title="3.2执行"></a>3.2执行</h4><p>会在节点名称后缀时间戳。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/4.5%20ROS%E8%AF%9D%E9%A2%98%E5%90%8D%E7%A7%B0%E8%AE%BE%E7%BD%AE(1)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/31/4.5%20ROS%E8%AF%9D%E9%A2%98%E5%90%8D%E7%A7%B0%E8%AE%BE%E7%BD%AE(1)/" class="post-title-link" itemprop="url">4.5 ROS话题名称设置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:50:06" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="4-5-ROS话题名称设置"><a href="#4-5-ROS话题名称设置" class="headerlink" title="4.5 ROS话题名称设置"></a>4.5 ROS话题名称设置</h1><p>在ROS中节点名称可能出现重名的情况，同理话题名称也可能重名。</p>
+<blockquote>
+<p>在 ROS 中节点终端，不同的节点之间通信都依赖于话题，话题名称也可能出现重复的情况，这种情况下，系统虽然不会抛出异常，但是可能导致订阅的消息非预期的，从而导致节点运行异常。这种情况下需要将两个节点的话题名称由相同修改为不同。</p>
+<p>又或者，两个节点是可以通信的，两个节点之间使用了相同的消息类型，但是由于，话题名称不同，导致通信失败。这种情况下需要将两个节点的话题名称由不同修改为相同。</p>
+</blockquote>
+<p>在实际应用中，按照逻辑，有些时候可能需要将相同的话题名称设置为不同，也有可能将不同的话题名设置为相同。在ROS中给出的解决策略与节点名称重命类似，也是使用名称重映射或为名称添加前缀。根据前缀不同，有全局、相对、和私有三种类型之分。</p>
+<ul>
+<li>全局(参数名称直接参考ROS系统，与节点命名空间平级)</li>
+<li>相对(参数名称参考的是节点的命名空间，与节点名称平级)</li>
+<li>私有(参数名称参考节点名称，是节点名称的子级)</li>
+</ul>
+<hr>
+<p>名称重映射是为名称起别名，为名称添加前缀，该实现比节点重名更复杂些，不单是使用命名空间作为前缀、还可以使用节点名称最为前缀。两种策略的实现途径有多种:</p>
+<ul>
+<li>rosrun 命令</li>
+<li>launch 文件</li>
+<li>编码实现</li>
+</ul>
+<hr>
+<h2 id="4-5-1-rosrun设置话题重映射"><a href="#4-5-1-rosrun设置话题重映射" class="headerlink" title="4.5.1 rosrun设置话题重映射"></a>4.5.1 rosrun设置话题重映射</h2><p>rosrun名称重映射语法: <strong>rorun 包名 节点名 话题名:&#x3D;新话题名称</strong></p>
+<p>实现teleop_twist_keyboard与乌龟显示节点通信方案由两种：</p>
+<h3 id="1-方案1"><a href="#1-方案1" class="headerlink" title="1.方案1"></a>1.方案1</h3><p>将 teleop_twist_keyboard 节点的话题设置为<code>/turtle1/cmd_vel</code></p>
+<p>启动键盘控制节点:<code>rosrun teleop_twist_keyboard teleop_twist_keyboard.py /cmd_vel:=/turtle1/cmd_vel</code></p>
+<p>启动乌龟显示节点: <code>rosrun turtlesim turtlesim_node</code></p>
+<p>二者可以实现正常通信</p>
+<p>使用<code>rostopic list</code>可以查看话题改变</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28</a> 16-45-50 的屏幕截图.png)</p>
+<hr>
+<h3 id="2-方案2"><a href="#2-方案2" class="headerlink" title="2.方案2"></a>2.方案2</h3><p>将乌龟显示节点的话题设置为 <code>/cmd_vel</code></p>
+<p>启动键盘控制节点:<code>rosrun teleop_twist_keyboard teleop_twist_keyboard.py</code></p>
+<p>启动乌龟显示节点: <code>rosrun turtlesim turtlesim_node /turtle1/cmd_vel:=/cmd_vel</code></p>
+<p>二者可以实现正常通信</p>
+<h2 id="4-5-2-launch文件设置话题重映射"><a href="#4-5-2-launch文件设置话题重映射" class="headerlink" title="4.5.2 launch文件设置话题重映射"></a>4.5.2 launch文件设置话题重映射</h2><p>与之前类似，新建<code>rename02_topic</code> 功能包，新建launch文件夹以及<code>start.launch</code>文件</p>
+<hr>
+<h3 id="1-方案1-1"><a href="#1-方案1-1" class="headerlink" title="1.方案1"></a>1.方案1</h3><p>将 teleop_twist_keyboard 节点的话题设置为<code>/turtle1/cmd_vel</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--键盘控制乌龟运动--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--将 teleop_twist_keyboard 节点的话题设置为/turtle1/cmd_vel--&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;t1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;teleop_twist_keyboard&quot;</span> <span class="attr">type</span>=<span class="string">&quot;teleop_twist_keyboard.py&quot;</span> <span class="attr">name</span>=<span class="string">&quot;key&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;/cmd_vel&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/turtle1/cmd_vel&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-方案2-1"><a href="#2-方案2-1" class="headerlink" title="2.方案2"></a>2.方案2</h3><p>将乌龟显示节点的话题设置为 <code>/cmd_vel</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;t1&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;/turtle1/cmd_vel&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/cmd_vel&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;teleop_twist_keyboard&quot;</span> <span class="attr">type</span>=<span class="string">&quot;teleop_twist_keyboard.py&quot;</span> <span class="attr">name</span>=<span class="string">&quot;key&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-5-3-编码设置话题名称"><a href="#4-5-3-编码设置话题名称" class="headerlink" title="4.5.3 编码设置话题名称"></a>4.5.3 编码设置话题名称</h2><p>话题的名称与节点的命名空间、节点的名称是有一定关系的，话题名称大致可以分为三种类型:</p>
+<ul>
+<li>全局(话题参考ROS系统，与节点命名空间平级)</li>
+<li>相对(话题参考的是节点的命名空间，与节点名称平级)</li>
+<li>私有(话题参考节点名称，是节点名称的子级)</li>
+</ul>
+<p>结合编码演示具体关系。</p>
+<hr>
+<p> ![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28</a> 17-28-27 的屏幕截图.png)</p>
+<hr>
+<h3 id="1全局名称"><a href="#1全局名称" class="headerlink" title="1全局名称"></a>1全局名称</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ros::<span class="built_in">init</span> (argc,argv,<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//核心：设置不同类型的话题</span></span><br><span class="line">    <span class="comment">//1. 全局 --- 话题名称需要以 / 开头</span></span><br><span class="line">    ros::Publisher pub = nh.<span class="built_in">advertise</span>&lt;std_msgs::String&gt;(<span class="string">&quot;/chatter/money&quot;</span>,<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (ros::<span class="built_in">ok</span>())</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>**格式:**以<code>/</code>开头的名称，和节点名称无关</p>
+<p><strong>比如:</strong>&#x2F;xxx&#x2F;yyy&#x2F;zzz</p>
+<p><strong>示例1:</strong><code>ros::Publisher pub = nh.advertise&lt;std_msgs::String&gt;(&quot;/chatter&quot;,1000);</code></p>
+<p><strong>结果1:</strong><code>/chatter</code></p>
+<p><strong>示例2:</strong><code>ros::Publisher pub = nh.advertise&lt;std_msgs::String&gt;(&quot;/chatter/money&quot;,1000);</code></p>
+<p><strong>结果2:</strong><code>/chatter/money</code></p>
+<hr>
+<h3 id="2-相对名称"><a href="#2-相对名称" class="headerlink" title="2.相对名称"></a>2.相对名称</h3><p>**格式:**非<code>/</code>开头的名称,参考命名空间(与节点名称平级)来确定话题名称</p>
+<p><strong>示例1:</strong><code>ros::Publisher pub = nh.advertise&lt;std_msgs::String&gt;(&quot;chatter&quot;,1000);</code></p>
+<p><strong>结果1:</strong><code>xxx/chatter</code></p>
+<p><strong>示例2:</strong><code>ros::Publisher pub = nh.advertise&lt;std_msgs::String&gt;(&quot;chatter/money&quot;,1000);</code></p>
+<p><strong>结果2:</strong><code>xxx/chatter/money</code></p>
+<hr>
+<h3 id="3-私有名称"><a href="#3-私有名称" class="headerlink" title="3.私有名称"></a>3.私有名称</h3><p>**格式:**以<code>~</code>开头的名称</p>
+<p><strong>示例1:</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ros::NodeHandle <span class="title">nh</span><span class="params">(<span class="string">&quot;~&quot;</span>)</span></span>;</span><br><span class="line">ros::Publisher pub = nh.<span class="built_in">advertise</span>&lt;std_msgs::String&gt;(<span class="string">&quot;chatter&quot;</span>,<span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>结果1:</strong><code>/xxx/hello/chatter</code></p>
+<p><strong>示例2:</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ros::NodeHandle <span class="title">nh</span><span class="params">(<span class="string">&quot;~&quot;</span>)</span></span>;</span><br><span class="line">ros::Publisher pub = nh.<span class="built_in">advertise</span>&lt;std_msgs::String&gt;(<span class="string">&quot;chatter/money&quot;</span>,<span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>结果2:</strong><code>/xxx/hello/chatter/money</code></p>
+<p><em>PS:当使用</em><code>~</code><em>,而话题名称有时</em><code>/</code><em>开头时，那么话题名称是绝对的(全局)</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ros::<span class="built_in">init</span> (argc,argv,<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    <span class="comment">//ros::NodeHandle nh;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//核心：设置不同类型的话题</span></span><br><span class="line">    <span class="comment">//1. 全局 --- 话题名称需要以 / 开头</span></span><br><span class="line">    <span class="comment">//ros::Publisher pub = nh.advertise&lt;std_msgs::String&gt;(&quot;/chatter/money&quot;,1000);</span></span><br><span class="line">    <span class="comment">//ros::Publisher pub = nh.advertise&lt;std_msgs::String&gt;(&quot;/chatter&quot;,1000);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.相对 --- 非 / 开头的名称</span></span><br><span class="line">    <span class="comment">//ros::Publisher pub = nh.advertise&lt;std_msgs::String&gt;(&quot;chatter&quot;,1000);</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//3.私有 --- 需要创建NodeHandle</span></span><br><span class="line">    <span class="function">ros::NodeHandle <span class="title">nh</span><span class="params">(<span class="string">&quot;~&quot;</span>)</span></span>;</span><br><span class="line">    ros::Publisher pub = nh.<span class="built_in">advertise</span>&lt;std_msgs::String&gt;(<span class="string">&quot;/chatter&quot;</span>,<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (ros::<span class="built_in">ok</span>())</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>Python版本不再赘述</p>
+<h3 id="4-Python-实现"><a href="#4-Python-实现" class="headerlink" title="4.Python 实现"></a>4.Python 实现</h3><p>演示准备:</p>
+<p>1.初始化节点设置一个节点名称</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rospy.<span class="built_in">init_node</span>(<span class="string">&quot;hello&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2.设置不同类型的话题</p>
+<p>3.启动节点时，传递一个 __ns:&#x3D; xxx</p>
+<p>4.节点启动后，使用 rostopic 查看话题信息</p>
+<h4 id="4-1全局名称"><a href="#4-1全局名称" class="headerlink" title="4.1全局名称"></a>4.1全局名称</h4><p>**格式:**以<code>/</code>开头的名称，和节点名称无关</p>
+<p><strong>示例1:</strong><code>pub = rospy.Publisher(&quot;/chatter&quot;,String,queue_size=1000)</code></p>
+<p><strong>结果1:</strong><code>/chatter</code></p>
+<p><strong>示例2:</strong><code>pub = rospy.Publisher(&quot;/chatter/money&quot;,String,queue_size=1000)</code></p>
+<p><strong>结果2:</strong><code>/chatter/money</code></p>
+<h4 id="4-2相对名称"><a href="#4-2相对名称" class="headerlink" title="4.2相对名称"></a>4.2相对名称</h4><p>**格式:**非<code>/</code>开头的名称,参考命名空间(与节点名称平级)来确定话题名称</p>
+<p><strong>示例1:</strong><code>pub = rospy.Publisher(&quot;chatter&quot;,String,queue_size=1000)</code></p>
+<p><strong>结果1:</strong><code>xxx/chatter</code></p>
+<p><strong>示例2:</strong><code>pub = rospy.Publisher(&quot;chatter/money&quot;,String,queue_size=1000)</code></p>
+<p><strong>结果2:</strong><code>xxx/chatter/money</code></p>
+<h4 id="4-3私有名称"><a href="#4-3私有名称" class="headerlink" title="4.3私有名称"></a>4.3私有名称</h4><p>**格式:**以<code>~</code>开头的名称</p>
+<p><strong>示例1:</strong><code>pub = rospy.Publisher(&quot;~chatter&quot;,String,queue_size=1000)</code></p>
+<p><strong>结果1:</strong><code>/xxx/hello/chatter</code></p>
+<p><strong>示例2:</strong><code>pub = rospy.Publisher(&quot;~chatter/money&quot;,String,queue_size=1000)</code></p>
+<p><strong>结果2:</strong><code>/xxx/hello/chatter/money</code></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/4.6%20ROS%E5%8F%82%E6%95%B0%E5%90%8D%E7%A7%B0%E8%AE%BE%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/31/4.6%20ROS%E5%8F%82%E6%95%B0%E5%90%8D%E7%A7%B0%E8%AE%BE%E7%BD%AE/" class="post-title-link" itemprop="url">4.6 ROS参数名称设置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:50:41" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="4-6-ROS参数名称设置"><a href="#4-6-ROS参数名称设置" class="headerlink" title="4.6 ROS参数名称设置"></a>4.6 ROS参数名称设置</h1><p>在ROS中节点名称话题名称可能出现重名的情况，同理参数名称也可能重名。</p>
+<blockquote>
+<p>当参数名称重名时，那么就会产生覆盖，如何避免这种情况？</p>
+</blockquote>
+<p>关于参数重名的处理，没有重映射实现，为了尽量的避免参数重名，都是使用为参数名添加前缀的方式，实现类似于话题名称，有全局、相对、和私有三种类型之分。</p>
+<ul>
+<li>全局(参数名称直接参考ROS系统，与节点命名空间平级)</li>
+<li>相对(参数名称参考的是节点的命名空间，与节点名称平级)</li>
+<li>私有(参数名称参考节点名称，是节点名称的子级)</li>
+</ul>
+<hr>
+<p>设置参数的方式也有三种:</p>
+<ul>
+<li>rosrun 命令</li>
+<li>launch 文件</li>
+<li>编码实现</li>
+</ul>
+<hr>
+<h2 id="4-6-1-rosrun-设置参数"><a href="#4-6-1-rosrun-设置参数" class="headerlink" title="4.6.1 rosrun 设置参数"></a>4.6.1 rosrun 设置参数</h2><p>rosrun 在启动节点时，也可以设置参数:</p>
+<p><strong>语法:</strong> rosrun 包名 节点名称 _参数名:&#x3D;参数值</p>
+<h3 id="1-设置参数"><a href="#1-设置参数" class="headerlink" title="1.设置参数"></a>1.设置参数</h3><p>启动乌龟显示节点，并设置参数 A &#x3D; 100</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtlesim turtlesim_node _A:=100</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-运行"><a href="#2-运行" class="headerlink" title="2.运行"></a>2.运行</h3><p><code>rosparam list</code>查看节点信息,显示结果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/turtlesim/A</span><br><span class="line">/turtlesim/background_b</span><br><span class="line">/turtlesim/background_g</span><br><span class="line">/turtlesim/background_r</span><br></pre></td></tr></table></figure>
+
+<p>结果显示，参数A前缀节点名称，也就是说rosrun执行设置参数参数名使用的是私有模式</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28</a> 19-33-12 的屏幕截图.png)</p>
+<hr>
+<h2 id="4-6-2-launch-文件设置参数"><a href="#4-6-2-launch-文件设置参数" class="headerlink" title="4.6.2 launch 文件设置参数"></a>4.6.2 launch 文件设置参数</h2><p>通过 launch 文件设置参数的方式前面已经介绍过了，可以在 node 标签外，或 node 标签中通过 param 或 rosparam  来设置参数。在 node 标签外设置的参数是全局性质的，参考的是 &#x2F; ，在 node 标签中设置的参数是私有性质的，参考的是  &#x2F;命名空间&#x2F;节点名称。</p>
+<h3 id="1-设置参数-1"><a href="#1-设置参数-1" class="headerlink" title="1. 设置参数"></a>1. 设置参数</h3><p>与之前类似，新建功能包<code>rename_param</code>,再新建<code>launch</code>文件夹，新建<code>test_param.launch</code>文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--设置参数--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--格式1：全局--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;p1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;100&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;t1&quot;</span> <span class="attr">ns</span>=<span class="string">&quot;xxx&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 格式2：私有 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;p2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;100&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-运行-1"><a href="#2-运行-1" class="headerlink" title="2.运行"></a>2.运行</h3><p><code>rosparam list</code>查看节点信息,显示结果:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/p1</span><br><span class="line">/rosdistro</span><br><span class="line">/roslaunch/uris/host_chenguoqing_g3_3590__40777</span><br><span class="line">/rosversion</span><br><span class="line">/run_id</span><br><span class="line">/xxx/t1/background_b</span><br><span class="line">/xxx/t1/background_g</span><br><span class="line">/xxx/t1/background_r</span><br><span class="line">/xxx/t1/p2</span><br></pre></td></tr></table></figure>
+
+<p>与预期结果一致</p>
+<p>可以通过下类操作获取设置的参数值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosparam get /p1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosparam get /xxx/t1/p2</span><br></pre></td></tr></table></figure>
+
+
+
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-28</a> 19-46-28 的屏幕截图.png)</p>
+<hr>
+<h2 id="4-6-3-编码设置参数"><a href="#4-6-3-编码设置参数" class="headerlink" title="4.6.3 编码设置参数"></a>4.6.3 编码设置参数</h2><h3 id="1-C-实现"><a href="#1-C-实现" class="headerlink" title="1.C++实现"></a>1.C++实现</h3><p>在 C++ 中，可以使用 ros::param 或者 ros::NodeHandle 来设置参数。</p>
+<h4 id="1-1-ros-param-设置参数"><a href="#1-1-ros-param-设置参数" class="headerlink" title="1.1 ros::param 设置参数"></a>1.1 ros::param 设置参数</h4><p>设置参数调用API是ros::param::set，该函数中，参数1传入参数名称，参数2是传入参数值，参数1中参数名称设置时，如果以 &#x2F; 开头，那么就是全局参数，如果以 ~ 开头，那么就是私有参数，既不以 &#x2F; 也不以 ~ 开头，那么就是相对参数。代码示例:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span> <span class="params">(<span class="type">int</span> argc,<span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1.全局</span></span><br><span class="line">    ros::param::<span class="built_in">set</span>(<span class="string">&quot;/set_A&quot;</span>,<span class="number">100</span>); <span class="comment">//全局,和命名空间以及节点名称无关</span></span><br><span class="line">    <span class="comment">//2.相对</span></span><br><span class="line">    ros::param::<span class="built_in">set</span>(<span class="string">&quot;set_B&quot;</span>,<span class="number">100</span>); <span class="comment">//相对,参考命名空间</span></span><br><span class="line">    <span class="comment">//3.私有</span></span><br><span class="line">    ros::param::<span class="built_in">set</span>(<span class="string">&quot;~set_C&quot;</span>,<span class="number">100</span>); <span class="comment">//私有,参考命名空间与节点名称</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时，假设设置的 namespace 为 xxx，节点名称为 yyy，使用 rosparam list 查看:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/set_A</span><br><span class="line">/xxx/set_B</span><br><span class="line">/xxx/yyy/set_C</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="1-2-ros-NodeHandle设置参数"><a href="#1-2-ros-NodeHandle设置参数" class="headerlink" title="1.2 ros::NodeHandle设置参数"></a>1.2 ros::NodeHandle设置参数</h4><p>设置参数时，首先需要创建 NodeHandle 对象，然后调用该对象的 setParam  函数，该函数参数1为参数名，参数2为要设置的参数值，如果参数名以 &#x2F; 开头，那么就是全局参数，如果参数名不以 &#x2F;  开头，那么，该参数是相对参数还是私有参数与NodeHandle 对象有关，如果NodeHandle  对象创建时如果是调用的默认的无参构造，那么该参数是相对参数，如果NodeHandle 对象创建时是使用:</p>
+<p>ros::NodeHandle nh(“~”)，那么该参数就是私有参数。代码示例:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span> <span class="params">(<span class="type">int</span> argc,<span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//1.全局</span></span><br><span class="line">    ros::param::<span class="built_in">set</span>(<span class="string">&quot;/set_A&quot;</span>,<span class="number">100</span>); <span class="comment">//全局,和命名空间以及节点名称无关</span></span><br><span class="line">    <span class="comment">//2.相对</span></span><br><span class="line">    ros::param::<span class="built_in">set</span>(<span class="string">&quot;set_B&quot;</span>,<span class="number">100</span>); <span class="comment">//相对,参考命名空间</span></span><br><span class="line">    <span class="comment">//3.私有</span></span><br><span class="line">    ros::param::<span class="built_in">set</span>(<span class="string">&quot;~set_C&quot;</span>,<span class="number">100</span>); <span class="comment">//私有,参考命名空间与节点名称</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;----------------------------&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1.全局</span></span><br><span class="line">    nh.<span class="built_in">setParam</span>(<span class="string">&quot;/nh_A&quot;</span>,<span class="number">100</span>); <span class="comment">//全局,和命名空间以及节点名称无关</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.相对</span></span><br><span class="line">    nh.<span class="built_in">setParam</span>(<span class="string">&quot;nh_B&quot;</span>,<span class="number">100</span>); <span class="comment">//相对,参考命名空间</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//3.私有</span></span><br><span class="line">    <span class="function">ros::NodeHandle <span class="title">nh_private</span><span class="params">(<span class="string">&quot;~&quot;</span>)</span></span>;</span><br><span class="line">    nh_private.<span class="built_in">setParam</span>(<span class="string">&quot;nh_C&quot;</span>,<span class="number">100</span>);<span class="comment">//私有,参考命名空间与节点名称</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时，假设设置的 namespace 为 xxx，节点名称为 yyy，使用 rosparam list 查看:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/nh_A</span><br><span class="line">/xxx/nh_B</span><br><span class="line">/xxx/yyy/nh_C</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-python-实现"><a href="#2-python-实现" class="headerlink" title="2. python 实现"></a>2. python 实现</h3><p>python 中关于参数设置的语法实现比 C++ 简洁一些，调用的API时  rospy.set_param，该函数中，参数1传入参数名称，参数2是传入参数值，参数1中参数名称设置时，如果以 &#x2F;  开头，那么就是全局参数，如果以 ~ 开头，那么就是私有参数，既不以 &#x2F; 也不以 ~ 开头，那么就是相对参数。代码示例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rospy.set_param(<span class="string">&quot;/py_A&quot;</span>,<span class="number">100</span>)  <span class="comment">#全局,和命名空间以及节点名称无关</span></span><br><span class="line">rospy.set_param(<span class="string">&quot;py_B&quot;</span>,<span class="number">100</span>)  <span class="comment">#相对,参考命名空间</span></span><br><span class="line">rospy.set_param(<span class="string">&quot;~py_C&quot;</span>,<span class="number">100</span>)  <span class="comment">#私有,参考命名空间与节点名称</span></span><br></pre></td></tr></table></figure>
+
+<p>运行时，假设设置的 namespace 为 xxx，节点名称为 yyy，使用 rosparam list 查看:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/py_A</span><br><span class="line">/xxx/py_B</span><br><span class="line">/xxx/yyy/py_C</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/4.7%20ROS%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%80%9A%E4%BF%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/31/4.7%20ROS%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">4.7 ROS分布式通信</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:51:54" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="4-7-ROS-分布式通信"><a href="#4-7-ROS-分布式通信" class="headerlink" title="4.7 ROS 分布式通信"></a>4.7 ROS 分布式通信</h1><p>ROS是一个分布式计算环境。一个运行中的ROS系统可以包含分布在多台计算机上多个节点。根据系统的配置方式，任何节点可能随时需要与任何其他节点进行通信。</p>
+<p>因此，ROS对网络配置有某些要求：</p>
+<ul>
+<li>所有端口上的所有机器之间必须有完整的<strong>双向连接</strong>。</li>
+<li>每台计算机必须通过所有其他计算机都可以解析的名称来公告自己。</li>
+</ul>
+<hr>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a><strong>实现</strong></h4><h5 id="1-准备"><a href="#1-准备" class="headerlink" title="1.准备"></a>1.准备</h5><p>先要保证不同计算机处于同一网络中，最好分别设置固定IP，如果为虚拟机，需要将网络适配器改为桥接模式；</p>
+<h5 id="2-配置文件修改"><a href="#2-配置文件修改" class="headerlink" title="2.配置文件修改"></a>2.配置文件修改</h5><p>分别修改不同计算机的 &#x2F;etc&#x2F;hosts 文件，在该文件中加入对方的IP地址和计算机名:</p>
+<p>主机端:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">从机的IP    从机计算机名</span><br></pre></td></tr></table></figure>
+
+<p>从机端:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">主机的IP    主机计算机名</span><br></pre></td></tr></table></figure>
+
+<p>设置完毕，可以通过 ping 命令测试网络通信是否正常。</p>
+<blockquote>
+<p>IP地址查看名: ifconfig</p>
+<p>计算机名称查看: hostname</p>
+</blockquote>
+<h5 id="3-配置主机IP"><a href="#3-配置主机IP" class="headerlink" title="3.配置主机IP"></a>3.配置主机IP</h5><p>配置主机的 IP 地址</p>
+<p>~&#x2F;.bashrc 追加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export ROS_MASTER_URI=http://主机IP:11311</span><br><span class="line">export ROS_HOSTNAME=主机IP</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-配置从机IP"><a href="#4-配置从机IP" class="headerlink" title="4.配置从机IP"></a>4.配置从机IP</h5><p>配置从机的 IP 地址，从机可以有多台，每台都做如下设置:</p>
+<p>~&#x2F;.bashrc 追加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export ROS_MASTER_URI=http://主机IP:11311</span><br><span class="line">export ROS_HOSTNAME=从机IP</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a><strong>测试</strong></h4><p>1.主机启动 roscore(必须)</p>
+<p>2.主机启动订阅节点，从机启动发布节点，测试通信是否正常</p>
+<p>3.反向测试，主机启动发布节点，从机启动订阅节点，测试通信是否正常</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/5.2%20rosbag/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/31/5.2%20rosbag/" class="post-title-link" itemprop="url">5.2rosbag</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:53:09" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="5-2-rosbag"><a href="#5-2-rosbag" class="headerlink" title="5.2 rosbag"></a>5.2 rosbag</h1><p>在ROS中关于数据的留存以及读取实现，提供了专门的工具: <strong>rosbag</strong>。</p>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a><strong>概念</strong></h4><p>是用于录制和回放 ROS 主题的一个工具集。</p>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a><strong>作用</strong></h4><p>实现了数据的复用，方便调试、测试。</p>
+<h4 id="本质"><a href="#本质" class="headerlink" title="本质"></a><strong>本质</strong></h4><p>rosbag本质也是ros的节点，当录制时，rosbag是一个订阅节点，可以订阅话题消息并将订阅到的数据写入磁盘文件；当重放时，rosbag是一个发布节点，可以读取磁盘文件，发布文件中的话题消息。</p>
+<hr>
+<h2 id="5-2-1-rosbag-使用-命令行"><a href="#5-2-1-rosbag-使用-命令行" class="headerlink" title="5.2.1 rosbag 使用_命令行"></a>5.2.1 rosbag 使用_命令行</h2><p><strong>需求:</strong></p>
+<p>ROS 内置的乌龟案例并操作，操作过程中使用 rosbag 录制，录制结束后，实现重放</p>
+<p><strong>实现:</strong></p>
+<h3 id="1-准备"><a href="#1-准备" class="headerlink" title="1.准备"></a>1.准备</h3><p>创建目录保存录制的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /bags</span><br></pre></td></tr></table></figure>
+
+<p>然后给目录赋予适当的写权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> -R 777 /bags</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-开始录制"><a href="#2-开始录制" class="headerlink" title="2.开始录制"></a>2.开始录制</h3><p>可以尝试将文件保存到当前用户的主目录中，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosbag record -a -o ~/bags/hello.bag</span><br></pre></td></tr></table></figure>
+
+<p>出现下列信息，代表成功</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30</a> 16-15-26 的屏幕截图.png)</p>
+<h3 id="3-查看文件"><a href="#3-查看文件" class="headerlink" title="3.查看文件"></a>3.查看文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosbag info bags/hello_2025-03-30-16-12-08.bag </span><br></pre></td></tr></table></figure>
+
+<p>可以<code>tab</code>自动补齐。</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30</a> 16-17-50 的屏幕截图.png)</p>
+<h3 id="4-回放文件"><a href="#4-回放文件" class="headerlink" title="4.回放文件"></a>4.回放文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosbag play bags/hello_2025-03-30-16-12-08.bag </span><br></pre></td></tr></table></figure>
+
+<p>之前录制好的轨迹，可以在打开回放的时候，重启乌龟节点，来实现轨迹回放。</p>
+<hr>
+<h2 id="5-2-2-rosbag使用-编码"><a href="#5-2-2-rosbag使用-编码" class="headerlink" title="5.2.2 rosbag使用_编码"></a>5.2.2 rosbag使用_编码</h2><p>新建<code>rosbag_demo</code>功能包，添加依赖：<code>roscpp rospy std_msgs rosbag</code></p>
+<h3 id="1-写bag"><a href="#1-写bag" class="headerlink" title="1.写bag"></a>1.写bag</h3><p>新建可执行文件:<code>demo01_write_bag.cpp</code> </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;rosbag/bag.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">    需求:使用 rosbag 向磁盘文件写出数据(话题 + 消息)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    流程：</span></span><br><span class="line"><span class="comment">        1.导包</span></span><br><span class="line"><span class="comment">        2.初始化</span></span><br><span class="line"><span class="comment">        3.创建rosbag 对象</span></span><br><span class="line"><span class="comment">        4.打开文件流</span></span><br><span class="line"><span class="comment">        5.写数据</span></span><br><span class="line"><span class="comment">        6.关闭文件流</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[] )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//初始化</span></span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;bag_write&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line">    <span class="comment">//创建rosbag对象</span></span><br><span class="line">    rosbag::Bag bag;</span><br><span class="line">    <span class="comment">//打开工作流</span></span><br><span class="line">    bag.<span class="built_in">open</span>(<span class="string">&quot;hello.bag&quot;</span>, rosbag::BagMode::Write);</span><br><span class="line">    <span class="comment">//写数据</span></span><br><span class="line">    std_msgs::String msg;</span><br><span class="line">    msg.data = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">        参数1：话题</span></span><br><span class="line"><span class="comment">        参数2：时间戳</span></span><br><span class="line"><span class="comment">        参数3：消息</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    bag.<span class="built_in">write</span>(<span class="string">&quot;/chatter&quot;</span>,ros::Time::<span class="built_in">now</span>(),msg);</span><br><span class="line">    bag.<span class="built_in">write</span>(<span class="string">&quot;/chatter&quot;</span>,ros::Time::<span class="built_in">now</span>(),msg);</span><br><span class="line">    bag.<span class="built_in">write</span>(<span class="string">&quot;/chatter&quot;</span>,ros::Time::<span class="built_in">now</span>(),msg);</span><br><span class="line">    bag.<span class="built_in">write</span>(<span class="string">&quot;/chatter&quot;</span>,ros::Time::<span class="built_in">now</span>(),msg); </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//关闭文件流</span></span><br><span class="line">    bag.<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-读bag"><a href="#2-读bag" class="headerlink" title="2.读bag"></a>2.读bag</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*  </span></span><br><span class="line"><span class="comment">    读取 bag 文件：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;rosbag/bag.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;rosbag/view.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/Int32.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;bag_read&quot;</span>);</span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建 bag 对象</span></span><br><span class="line">    rosbag::Bag bag;</span><br><span class="line">    <span class="comment">//打开 bag 文件</span></span><br><span class="line">    bag.<span class="built_in">open</span>(<span class="string">&quot;hello.bag&quot;</span>,rosbag::BagMode::Read);</span><br><span class="line">    <span class="comment">//读数据</span></span><br><span class="line">    <span class="comment">// 取出话题、时间戳、消息内容</span></span><br><span class="line">    <span class="comment">// 可以先获取信息的集合，再迭代取出消息的字段</span></span><br><span class="line">    <span class="keyword">for</span> (rosbag::MessageInstance <span class="type">const</span> m : rosbag::<span class="built_in">View</span>(bag))</span><br><span class="line">    &#123;</span><br><span class="line">        std::string topic = m.<span class="built_in">getTopic</span>();</span><br><span class="line">        ros::Time time = m.<span class="built_in">getTime</span>();</span><br><span class="line">        std_msgs::String::ConstPtr p = m.<span class="built_in">instantiate</span>&lt;std_msgs::String&gt;();</span><br><span class="line">        <span class="keyword">if</span>(p != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            <span class="built_in">ROS_INFO</span>(<span class="string">&quot;读取的数据:%s&quot;</span>,p-&gt;data.<span class="built_in">c_str</span>());</span><br><span class="line">            <span class="built_in">ROS_INFO</span>(<span class="string">&quot;话题 %s&quot;</span>,topic.<span class="built_in">c_str</span>());</span><br><span class="line">            <span class="built_in">ROS_INFO</span>(<span class="string">&quot;时间戳 %.2f&quot;</span>,time.<span class="built_in">toSec</span>());</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//关闭文件流</span></span><br><span class="line">    bag.<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-30</a> 17-31-32 的屏幕截图.png)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
 
 </div>
   </main>

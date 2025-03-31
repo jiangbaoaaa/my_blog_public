@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="4.2 ROS节点运行管理launch文件概念launch 文件是一个 XML 格式的文件，可以启动本地和远程的多个节点，还可以在参数服务器中设置参数。 作用简化节点的配置与启动，提高ROS程序的启动效率。 使用以 turtlesim 为例演示  1. 新建launch文件创建一个launch01_basic功能包，依赖于roscpp rospy std_msgs tuttlesim 在功能包下添">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.2 ROS节点运行管理launch文件">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/03/31/4.2%20ROS%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86launch%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="4.2 ROS节点运行管理launch文件概念launch 文件是一个 XML 格式的文件，可以启动本地和远程的多个节点，还可以在参数服务器中设置参数。 作用简化节点的配置与启动，提高ROS程序的启动效率。 使用以 turtlesim 为例演示  1. 新建launch文件创建一个launch01_basic功能包，依赖于roscpp rospy std_msgs tuttlesim 在功能包下添">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27%2015-54-49%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2025-03-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-31T10:47:47.406Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27%2015-54-49%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/03/31/4.2%20ROS%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86launch%E6%96%87%E4%BB%B6/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/03/31/4.2%20ROS%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86launch%E6%96%87%E4%BB%B6/","path":"2025/03/31/4.2 ROS节点运行管理launch文件/","title":"4.2 ROS节点运行管理launch文件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>4.2 ROS节点运行管理launch文件 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-2-ROS%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86launch%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">4.2 ROS节点运行管理launch文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%96%B0%E5%BB%BAlaunch%E6%96%87%E4%BB%B6"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">1. 新建launch文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%B0%83%E7%94%A8-launch-%E6%96%87%E4%BB%B6"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">2.调用 launch 文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-1-launch-%E6%96%87%E4%BB%B6%E6%A0%87%E7%AD%BE%E4%B9%8B-launch"><span class="nav-number">1.1.</span> <span class="nav-text">4.2.1 launch 文件标签之 launch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B1%9E%E6%80%A7"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1.属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%AD%90%E7%BA%A7%E6%A0%87%E7%AD%BE"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">2.子级标签</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-2-launch-%E6%96%87%E4%BB%B6%E6%A0%87%E7%AD%BE%E4%B9%8Bnode"><span class="nav-number">1.2.</span> <span class="nav-text">4.2.2 launch 文件标签之node</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B1%9E%E6%80%A7-1"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">1.属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%AD%90%E7%BA%A7%E6%A0%87%E7%AD%BE-1"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">2.子级标签</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-3-launch-%E6%96%87%E4%BB%B6%E6%A0%87%E7%AD%BE%E4%B9%8Binclude"><span class="nav-number">1.3.</span> <span class="nav-text">4.2.3 launch 文件标签之include</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B1%9E%E6%80%A7-2"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">1.属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%AD%90%E7%BA%A7%E6%A0%87%E7%AD%BE-2"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">2.子级标签</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-4-launch%E6%96%87%E4%BB%B6%E6%A0%87%E7%AD%BE%E4%B9%8Bremap"><span class="nav-number">1.4.</span> <span class="nav-text">4.2.4 launch文件标签之remap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B1%9E%E6%80%A7-3"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">1.属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-teleop-twist-keyboard%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">2.teleop_twist_keyboard安装使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-5-launch%E6%96%87%E4%BB%B6%E6%A0%87%E7%AD%BE%E4%B9%8Bparam"><span class="nav-number">1.5.</span> <span class="nav-text">4.2.5 launch文件标签之param</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B1%9E%E6%80%A7-4"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">1.属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-6-launch%E6%96%87%E4%BB%B6%E6%A0%87%E7%AD%BE%E4%B9%8Brosparam"><span class="nav-number">1.6.</span> <span class="nav-text">4.2.6 launch文件标签之rosparam</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B1%9E%E6%80%A7-5"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">1.属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-7-launch%E6%96%87%E4%BB%B6%E6%A0%87%E7%AD%BE%E4%B9%8Bgroup"><span class="nav-number">1.7.</span> <span class="nav-text">4.2.7 launch文件标签之group</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B1%9E%E6%80%A7-6"><span class="nav-number">1.7.0.1.</span> <span class="nav-text">1.属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-8-launch-%E6%96%87%E4%BB%B6%E6%A0%87%E7%AD%BE%E4%B9%8Barg"><span class="nav-number">1.8.</span> <span class="nav-text">4.2.8 launch 文件标签之arg</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B1%9E%E6%80%A7-7"><span class="nav-number">1.8.0.1.</span> <span class="nav-text">1.属性</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/31/4.2%20ROS%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86launch%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="4.2 ROS节点运行管理launch文件 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          4.2 ROS节点运行管理launch文件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-31 00:00:00 / 修改时间：18:47:47" itemprop="dateCreated datePublished" datetime="2025-03-31T00:00:00+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="4-2-ROS节点运行管理launch文件"><a href="#4-2-ROS节点运行管理launch文件" class="headerlink" title="4.2 ROS节点运行管理launch文件"></a>4.2 ROS节点运行管理launch文件</h1><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a><strong>概念</strong></h4><p>launch 文件是一个 XML 格式的文件，可以启动本地和远程的多个节点，还可以在参数服务器中设置参数。</p>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a><strong>作用</strong></h4><p>简化节点的配置与启动，提高ROS程序的启动效率。</p>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a><strong>使用</strong></h4><p>以 turtlesim 为例演示</p>
+<hr>
+<h4 id="1-新建launch文件"><a href="#1-新建launch文件" class="headerlink" title="1. 新建launch文件"></a>1. 新建launch文件</h4><p>创建一个<strong>launch01_basic</strong>功能包，依赖于roscpp rospy std_msgs tuttlesim</p>
+<p>在功能包下添加 launch目录, 目录下新建 start_turtle.launch 文件，编辑 launch 文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtlesim_node&quot;     name=&quot;myTurtle&quot; output=&quot;screen&quot; /&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtle_teleop_key&quot;  name=&quot;myTurtleContro&quot; output=&quot;screen&quot; /&gt;</span><br><span class="line">&lt;/launch&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-调用-launch-文件"><a href="#2-调用-launch-文件" class="headerlink" title="2.调用 launch 文件"></a>2.调用 launch 文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch launch01_basic start_turtle.launch </span><br></pre></td></tr></table></figure>
+
+<p>这样就可以直接启动乌龟控制节点</p>
+<hr>
+<h2 id="4-2-1-launch-文件标签之-launch"><a href="#4-2-1-launch-文件标签之-launch" class="headerlink" title="4.2.1 launch 文件标签之 launch"></a>4.2.1 launch 文件标签之 launch</h2><p><code>&lt;launch&gt;</code>标签是所有 launch 文件的根标签，充当其他标签的容器</p>
+<h4 id="1-属性"><a href="#1-属性" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p><code>deprecated = &quot;弃用声明&quot;</code></p>
+<p>告知用户当前 launch 文件已经弃用</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch deprecated=&quot;次文件已经过时！&quot;&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtlesim_node&quot;     name=&quot;myTurtle&quot; output=&quot;screen&quot; /&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtle_teleop_key&quot;  name=&quot;myTurtleContro&quot; output=&quot;screen&quot; /&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>虽然能运行，但是会给出警告。</p>
+<h4 id="2-子级标签"><a href="#2-子级标签" class="headerlink" title="2.子级标签"></a>2.子级标签</h4><p>所有其它标签都是launch的子级</p>
+<hr>
+<h2 id="4-2-2-launch-文件标签之node"><a href="#4-2-2-launch-文件标签之node" class="headerlink" title="4.2.2 launch 文件标签之node"></a>4.2.2 launch 文件标签之node</h2><h4 id="1-属性-1"><a href="#1-属性-1" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>pkg&#x3D;”包名”</p>
+<p>节点所属的包</p>
+</li>
+<li><p>type&#x3D;”nodeType”</p>
+<p>节点类型(与之相同名称的可执行文件)</p>
+</li>
+<li><p>name&#x3D;”nodeName”</p>
+<p>节点名称(在 ROS 网络拓扑中节点的名称)</p>
+</li>
+<li><p>args&#x3D;”xxx xxx xxx” (可选)</p>
+<p>将参数传递给节点</p>
+</li>
+<li><p>machine&#x3D;”机器名”</p>
+<p>在指定机器上启动节点</p>
+</li>
+<li><p>respawn&#x3D;”true | false” (可选)</p>
+<p>如果节点退出，是否自动重启</p>
+</li>
+<li><p>respawn_delay&#x3D;” N” (可选)</p>
+<p>如果 respawn 为 true, 那么延迟 N 秒后启动节点</p>
+</li>
+<li><p>required&#x3D;”true | false” (可选)</p>
+<p>该节点是否必须，如果为 true,那么如果该节点退出，将杀死整个 roslaunch</p>
+</li>
+<li><p>ns&#x3D;”xxx” (可选)</p>
+<p>在指定命名空间 xxx 中启动节点</p>
+</li>
+<li><p>clear_params&#x3D;”true | false” (可选)</p>
+<p>在启动前，删除节点的私有空间的所有参数</p>
+</li>
+<li><p>output&#x3D;”log | screen” (可选)</p>
+<p>日志发送目标，可以设置为 log 日志文件，或 screen 屏幕,默认是 log</p>
+</li>
+</ul>
+<h4 id="2-子级标签-1"><a href="#2-子级标签-1" class="headerlink" title="2.子级标签"></a>2.子级标签</h4><ul>
+<li>env 环境变量设置</li>
+<li>remap 重映射节点名称</li>
+<li>rosparam 参数设置</li>
+<li>param 参数设置</li>
+</ul>
+<h2 id="4-2-3-launch-文件标签之include"><a href="#4-2-3-launch-文件标签之include" class="headerlink" title="4.2.3 launch 文件标签之include"></a>4.2.3 launch 文件标签之include</h2><p><code>include</code>标签用于将另一个 xml 格式的 launch 文件导入到当前文件</p>
+<h4 id="1-属性-2"><a href="#1-属性-2" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>file&#x3D;”<strong>$(find 包名)&#x2F;xxx&#x2F;xxx.launch</strong>“</p>
+<p>要包含的文件路径</p>
+</li>
+<li><p>ns&#x3D;”xxx” (可选)</p>
+<p>在指定命名空间导入文件</p>
+</li>
+</ul>
+<h4 id="2-子级标签-2"><a href="#2-子级标签-2" class="headerlink" title="2.子级标签"></a>2.子级标签</h4><ul>
+<li>env 环境变量设置</li>
+<li>arg 将参数传递给被包含的文件</li>
+</ul>
+<hr>
+<p>新建文件 <strong>start_turtle_use.launch</strong> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--需要复用 start_turtle.launch--&gt;</span><br><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;include file=&quot;$(find launch01_basic)/launch/start_turtle.launch&quot; /&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-2-4-launch文件标签之remap"><a href="#4-2-4-launch文件标签之remap" class="headerlink" title="4.2.4 launch文件标签之remap"></a>4.2.4 launch文件标签之remap</h2><h4 id="1-属性-3"><a href="#1-属性-3" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>from&#x3D;”xxx”</p>
+<p>原始话题名称</p>
+</li>
+<li><p>to&#x3D;”yyy”</p>
+<p>目标名称</p>
+</li>
+</ul>
+<h4 id="2-teleop-twist-keyboard安装使用"><a href="#2-teleop-twist-keyboard安装使用" class="headerlink" title="2.teleop_twist_keyboard安装使用"></a>2.teleop_twist_keyboard安装使用</h4><p><strong>安装：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-noetic-teleop-twist-keyboard</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roscore                                                  </span><br><span class="line">rosrun teleop_twist_keyboard teleop_twist_keyboard.py</span><br></pre></td></tr></table></figure>
+
+<p>按照例程的操作不用打开roscore，launch文件已经启动了。安装之后直接先运行launch文件，再执行第二步即可</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27%2015-54-49%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+<p>修改start_turtle_launch文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtlesim_node&quot; name=&quot;myTurtle&quot; output=&quot;screen&quot;&gt;</span><br><span class="line">        &lt;remap from=&quot;/turtle1/cmd_vel&quot; to=&quot;/cmd_vel&quot;/&gt;</span><br><span class="line">    &lt;/node&gt;</span><br><span class="line">    &lt;node pkg=&quot;turtlesim&quot; type=&quot;turtle_teleop_key&quot; name=&quot;myTurtleContro&quot; output=&quot;screen&quot;/&gt;</span><br><span class="line">&lt;/launch&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>再次启动launch文件即可显示</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-08-59 的屏幕截图.png)</p>
+<p>接下来，就可以操纵乌龟运动了！</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-08-59 的屏幕截图.png)</p>
+<p>看计算图比较清晰。</p>
+<hr>
+<h2 id="4-2-5-launch文件标签之param"><a href="#4-2-5-launch文件标签之param" class="headerlink" title="4.2.5 launch文件标签之param"></a>4.2.5 launch文件标签之param</h2><h4 id="1-属性-4"><a href="#1-属性-4" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>name&#x3D;”命名空间&#x2F;参数名”</p>
+<p>参数名称，可以包含命名空间</p>
+</li>
+<li><p>value&#x3D;”xxx” (可选)</p>
+<p>定义参数值，如果此处省略，必须指定外部文件作为参数源</p>
+</li>
+<li><p>type&#x3D;”str | int | double | bool | yaml” (可选)</p>
+<p>指定参数类型，如果未指定，roslaunch 会尝试确定参数类型，规则如下:</p>
+<ul>
+<li>如果包含 ‘.’ 的数字解析未浮点型，否则为整型</li>
+<li>“true” 和 “false” 是 bool 值(不区分大小写)</li>
+<li>其他是字符串</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>设置不同格式的参数</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--格式1：launch下，node外--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;param_A&quot;</span> <span class="attr">type</span>=<span class="string">&quot;int&quot;</span> <span class="attr">value</span>=<span class="string">&quot;100&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtle&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;/turtle1/cmd_vel&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/cmd_vel&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--格式2：launch下，node内--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;param_B&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3.14&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtleContro&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行，新打开一个终端查看参数列表<code>rosparam list</code></p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-08-59 的屏幕截图.png)</p>
+<p>可以正常获取值</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-29-41 的屏幕截图.png)</p>
+<h2 id="4-2-6-launch文件标签之rosparam"><a href="#4-2-6-launch文件标签之rosparam" class="headerlink" title="4.2.6 launch文件标签之rosparam"></a>4.2.6 launch文件标签之rosparam</h2><p><code>&lt;rosparam&gt;</code>标签可以从 YAML 文件导入参数，或将参数导出到 YAML 文件，也可以用来删除参数，<code>&lt;rosparam&gt;</code>标签在<code>&lt;node&gt;</code>标签中时被视为私有。</p>
+<h4 id="1-属性-5"><a href="#1-属性-5" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>command&#x3D;”load | dump | delete” (可选，默认 load)</p>
+<p>加载、导出或删除参数</p>
+</li>
+<li><p>file&#x3D;”$(find xxxxx)&#x2F;xxx&#x2F;yyy….”</p>
+<p>加载或导出到的 yaml 文件</p>
+</li>
+<li><p>param&#x3D;”参数名称”</p>
+</li>
+<li><p>ns&#x3D;”命名空间” (可选）</p>
+</li>
+</ul>
+<hr>
+<p>在<code>launch</code>文件目录下新建一个<code>params.yaml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">bg_R:</span> <span class="number">100</span></span><br><span class="line"><span class="attr">bg_G:</span> <span class="number">50</span></span><br><span class="line"><span class="attr">bg_B:</span> <span class="number">255</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--格式1：launch下，node外--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;param_A&quot;</span> <span class="attr">type</span>=<span class="string">&quot;int&quot;</span> <span class="attr">value</span>=<span class="string">&quot;100&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--rosparam 使用： 参数服务器--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--格式1：launch 下，node外--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> <span class="attr">file</span>=<span class="string">&quot;$(find launch01_basic)/launch/params.yaml&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtle&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;/turtle1/cmd_vel&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/cmd_vel&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--格式2：launch下，node内--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;param_B&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3.14&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--格式2：launch下，node内--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> <span class="attr">file</span>=<span class="string">&quot;$(find launch01_basic)/launch/params.yaml&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtleContro&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 16-55-34 的屏幕截图.png)</p>
+<p>同时还有导出、或者删除参数的指令，这里不再赘述。</p>
+<hr>
+<h2 id="4-2-7-launch文件标签之group"><a href="#4-2-7-launch文件标签之group" class="headerlink" title="4.2.7 launch文件标签之group"></a>4.2.7 launch文件标签之group</h2><p><code>&lt;group&gt;</code>标签可以对节点分组，具有 ns 属性，可以让节点归属某个命名空间</p>
+<h4 id="1-属性-6"><a href="#1-属性-6" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>ns&#x3D;”名称空间” (可选)</p>
+</li>
+<li><p>clear_params&#x3D;”true | false” (可选)</p>
+<p>启动前，是否删除组名称空间的所有参数(慎用….此功能危险)</p>
+</li>
+</ul>
+<hr>
+<p>可以通过group 同时启动两个乌龟GUI</p>
+<p>首先在<code>launch</code>文件下新建<code>turtles.launch</code>文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--启动两对乌龟GUI 与 键盘控制节点--&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">ns</span>=<span class="string">&quot;first&quot;</span>&gt;</span>      </span><br><span class="line">        <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtle&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtleContro&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span>  </span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">ns</span>=<span class="string">&quot;second&quot;</span>&gt;</span>      </span><br><span class="line">        <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtle&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;myTurtleContro&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行之后就可以显示两个乌龟GUI了</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 17-16-47 的屏幕截图.png)</p>
+<hr>
+<h2 id="4-2-8-launch-文件标签之arg"><a href="#4-2-8-launch-文件标签之arg" class="headerlink" title="4.2.8 launch 文件标签之arg"></a>4.2.8 launch 文件标签之arg</h2><p><code>&lt;arg&gt;</code>标签是用于动态传参，类似于函数的参数，可以增强launch文件的灵活性</p>
+<h4 id="1-属性-7"><a href="#1-属性-7" class="headerlink" title="1.属性"></a>1.属性</h4><ul>
+<li><p>name&#x3D;”参数名称”</p>
+</li>
+<li><p>default&#x3D;”默认值” (可选)</p>
+</li>
+<li><p>value&#x3D;”数值” (可选)</p>
+<p>不可以与 default 并存</p>
+</li>
+<li><p>doc&#x3D;”描述”</p>
+<p>参数说明</p>
+</li>
+</ul>
+<hr>
+<p><code>launch</code>文件夹下新建文件<code>arg.launch</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 需求：演示 arg 的使用，需要设置多个参数，使用的是同一个值（小车长度） --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &lt;param name=&quot;A&quot; value=&quot;0.5&quot; /&gt;</span></span><br><span class="line"><span class="comment">    &lt;param name=&quot;B&quot; value=&quot;0.5&quot; /&gt;</span></span><br><span class="line"><span class="comment">    &lt;param name=&quot;C&quot; value=&quot;0.5&quot; /&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;car_length&quot;</span> <span class="attr">defalut</span>=<span class="string">&quot;0.55&quot;</span> /&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;A&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg car_length)&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;B&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg car_length)&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;C&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(arg car_length)&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>预先启动<code>roscore</code>,再执行 <code>roslaunch launch01_basic arg.launch</code> 输入<code>rosparam list</code>可以显示：</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-27</a> 19-52-45 的屏幕截图.png)</p>
+<p>使用<code>roslaunch launch01_basic arg.launch car_length:=0.6</code>可以修改参数。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/03/31/4.1%20ROS%E5%85%83%E5%8A%9F%E8%83%BD%E5%8C%85/" rel="prev" title="4.1 ROS元功能包">
+                  <i class="fa fa-angle-left"></i> 4.1 ROS元功能包
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/03/31/3.1%20%E5%B8%B8%E7%94%A8API/" rel="next" title="3.1 常用API">
+                  3.1 常用API <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

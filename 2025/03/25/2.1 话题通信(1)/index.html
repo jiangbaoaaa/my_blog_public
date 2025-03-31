@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="2.1 话题通信话题通信话题通信是ROS中使用频率最高的一种通信模式，话题通信是基于发布订阅模式的，也即:一个节点发布消息，另一个节点订阅该消息。话题通信适用于不断更新的数据传输相关的应用场景。 2.1.1 理论模型角色  ROS Master (管理者——媒婆) Talker (发布者——相亲男) Listener (订阅者——相亲女)  ![](https:&#x2F;&#x2F;raw.githubuserco">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.1 话题通信">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/03/25/2.1%20%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1(1)/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="2.1 话题通信话题通信话题通信是ROS中使用频率最高的一种通信模式，话题通信是基于发布订阅模式的，也即:一个节点发布消息，另一个节点订阅该消息。话题通信适用于不断更新的数据传输相关的应用场景。 2.1.1 理论模型角色  ROS Master (管理者——媒婆) Talker (发布者——相亲男) Listener (订阅者——相亲女)  ![](https:&#x2F;&#x2F;raw.githubuserco">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/05vscode_%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF%E7%9A%84%E4%B8%AD%E9%97%B4%E6%96%87%E4%BB%B6(C++).PNG">
+<meta property="article:published_time" content="2025-03-25T12:28:54.000Z">
+<meta property="article:modified_time" content="2025-03-31T10:55:52.810Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/05vscode_%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF%E7%9A%84%E4%B8%AD%E9%97%B4%E6%96%87%E4%BB%B6(C++).PNG">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/03/25/2.1%20%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1(1)/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/03/25/2.1%20%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1(1)/","path":"2025/03/25/2.1 话题通信(1)/","title":"2.1 话题通信"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2.1 话题通信 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2-1-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1"><span class="nav-number">1.</span> <span class="nav-text">2.1 话题通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1"><span class="nav-number">1.1.</span> <span class="nav-text">话题通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-1-%E7%90%86%E8%AE%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">2.1.1 理论模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-2-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9CA%EF%BC%88C-%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">2.1.2 话题通信基本操作A（C++）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8F%91%E5%B8%83%E6%96%B9"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.发布方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AE%A2%E9%98%85%E6%96%B9"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.订阅方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.3.</span> <span class="nav-text">3 . 配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%89%A7%E8%A1%8C"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%AE%A1%E7%AE%97%E5%9B%BE%E6%98%BE%E7%A4%BA"><span class="nav-number">1.3.5.</span> <span class="nav-text">5. 计算图显示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-3-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9CB%EF%BC%88Python%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">2.1.3 话题通信基本操作B（Python）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8F%91%E5%B8%83%E6%96%B9-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.发布方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AE%A2%E9%98%85%E6%96%B9-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">2.订阅方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B7%BB%E5%8A%A0%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90"><span class="nav-number">1.4.3.</span> <span class="nav-text">3. 添加可执行权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AECMakeLists-txt"><span class="nav-number">1.4.4.</span> <span class="nav-text">4. 配置CMakeLists.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%89%A7%E8%A1%8C"><span class="nav-number">1.4.5.</span> <span class="nav-text">5. 执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E8%AE%A1%E7%AE%97%E5%9B%BE"><span class="nav-number">1.4.6.</span> <span class="nav-text">6.计算图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-4-%E8%A7%A3%E8%80%A6%E5%90%88"><span class="nav-number">1.5.</span> <span class="nav-text">2.1.4 解耦合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-5-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E8%87%AA%E5%AE%9A%E4%B9%89msg"><span class="nav-number">1.6.</span> <span class="nav-text">2.1.5 话题通信自定义msg</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%9A%E4%B9%89msg%E6%96%87%E4%BB%B6"><span class="nav-number">1.6.1.</span> <span class="nav-text">1.定义msg文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.6.2.</span> <span class="nav-text">2,编辑配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%BC%96%E8%AF%91"><span class="nav-number">1.6.3.</span> <span class="nav-text">3. 编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-6-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E8%87%AA%E5%AE%9A%E4%B9%89msg%E8%B0%83%E7%94%A8A-C"><span class="nav-number">1.7.</span> <span class="nav-text">2.1.6 话题通信自定义msg调用A(C++)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-vscode-%E9%85%8D%E7%BD%AE"><span class="nav-number">1.7.1.</span> <span class="nav-text">0. vscode 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8F%91%E5%B8%83%E6%96%B9-2"><span class="nav-number">1.7.2.</span> <span class="nav-text">1.发布方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AECMakeLists-txt%E6%96%87%E4%BB%B6"><span class="nav-number">1.7.3.</span> <span class="nav-text">2.配置CMakeLists.txt文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%89%A7%E8%A1%8C"><span class="nav-number">1.7.4.</span> <span class="nav-text">3.执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AE%A2%E9%98%85%E6%96%B9"><span class="nav-number">1.7.5.</span> <span class="nav-text">4.订阅方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%85%8D%E7%BD%AECMakeLists-txt%E6%96%87%E4%BB%B6"><span class="nav-number">1.7.6.</span> <span class="nav-text">5.配置CMakeLists.txt文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%89%A7%E8%A1%8C"><span class="nav-number">1.7.7.</span> <span class="nav-text">6.执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%AE%A1%E7%AE%97%E5%9B%BE%E6%98%BE%E7%A4%BA"><span class="nav-number">1.7.8.</span> <span class="nav-text">7.计算图显示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-7-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E8%87%AA%E5%AE%9A%E4%B9%89msg%E8%B0%83%E7%94%A8B-Python"><span class="nav-number">1.8.</span> <span class="nav-text">2.1.7 话题通信自定义msg调用B(Python)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-vscode%E9%85%8D%E7%BD%AE"><span class="nav-number">1.8.1.</span> <span class="nav-text">0.vscode配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8F%91%E5%B8%83%E6%96%B9-3"><span class="nav-number">1.8.2.</span> <span class="nav-text">1.发布方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.8.3.</span> <span class="nav-text">2.权限设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AECMakeLists-txt%E6%96%87%E4%BB%B6"><span class="nav-number">1.8.4.</span> <span class="nav-text">3.配置CMakeLists.txt文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%89%A7%E8%A1%8C-1"><span class="nav-number">1.8.5.</span> <span class="nav-text">4.执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%AE%A2%E9%98%85%E6%96%B9"><span class="nav-number">1.8.6.</span> <span class="nav-text">5. 订阅方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.8.7.</span> <span class="nav-text">6.权限设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E9%85%8D%E7%BD%AECMakeLists-txt%E6%96%87%E4%BB%B6"><span class="nav-number">1.8.8.</span> <span class="nav-text">7.配置CMakeLists.txt文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%89%A7%E8%A1%8C"><span class="nav-number">1.8.9.</span> <span class="nav-text">8.执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E8%AE%A1%E7%AE%97%E5%9B%BE%E6%98%BE%E7%A4%BA"><span class="nav-number">1.8.10.</span> <span class="nav-text">9.计算图显示</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/03/25/2.1%20%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1(1)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2.1 话题通信 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2.1 话题通信
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-03-25 20:28:54" itemprop="dateCreated datePublished" datetime="2025-03-25T20:28:54+08:00">2025-03-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-31 18:55:52" itemprop="dateModified" datetime="2025-03-31T18:55:52+08:00">2025-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="2-1-话题通信"><a href="#2-1-话题通信" class="headerlink" title="2.1 话题通信"></a>2.1 话题通信</h1><h2 id="话题通信"><a href="#话题通信" class="headerlink" title="话题通信"></a>话题通信</h2><p>话题通信是ROS中使用频率最高的一种通信模式，话题通信是基于<strong>发布订阅</strong>模式的，也即:一个节点发布消息，另一个节点订阅该消息。话题通信适用于不断更新的数据传输相关的应用场景。</p>
+<h2 id="2-1-1-理论模型"><a href="#2-1-1-理论模型" class="headerlink" title="2.1.1 理论模型"></a>2.1.1 理论模型</h2><p><strong>角色</strong></p>
+<ul>
+<li>ROS Master (管理者——媒婆)</li>
+<li>Talker (发布者——相亲男)</li>
+<li>Listener (订阅者——相亲女)</li>
+</ul>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 10-37-08 的屏幕截图.png)</p>
+<p><strong>流程</strong></p>
+<ul>
+<li>master 可以根据话题建立发布者和订阅者的连接。</li>
+<li>连接的建立一般都封装好，需要关注两方以及数据即可。</li>
+</ul>
+<p><strong>注意事项</strong>：</p>
+<blockquote>
+<p>注意1:上述实现流程中，前五步使用的 RPC协议，最后两步使用的是 TCP 协议</p>
+<p>注意2: Talker 与 Listener 的启动无先后顺序要求</p>
+<p>注意3: Talker 与 Listener 都可以有多个</p>
+<p>注意4: Talker 与 Listener 连接建立后，不再需要 ROS Master。也即，即便关闭ROS Master，Talker 与 Listern 照常通信。</p>
+</blockquote>
+<h2 id="2-1-2-话题通信基本操作A（C-）"><a href="#2-1-2-话题通信基本操作A（C-）" class="headerlink" title="2.1.2 话题通信基本操作A（C++）"></a>2.1.2 话题通信基本操作A（C++）</h2><p><strong>流程</strong></p>
+<ol>
+<li>编写发布方实现；</li>
+<li>编写订阅方实现；</li>
+<li>编辑配置文件；</li>
+<li>编译并执行。</li>
+</ol>
+<h3 id="1-发布方"><a href="#1-发布方" class="headerlink" title="1.发布方"></a>1.发布方</h3><p>与之前类似操作，新建一个demo03_ws，完成ROS功能包的创建，修改tasks.json文件以及修改 .vscode&#x2F;c_cpp_properties.json，设置 “cppStandard”: “c++17”。新建一个cpp文件，编写cpp文件。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    需求: 实现基本的话题通信，一方发布数据，一方接收数据，</span></span><br><span class="line"><span class="comment">         实现的关键点:</span></span><br><span class="line"><span class="comment">         1.发送方</span></span><br><span class="line"><span class="comment">         2.接收方</span></span><br><span class="line"><span class="comment">         3.数据(此处为普通文本)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">         PS: 二者需要设置相同的话题</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    消息发布方:</span></span><br><span class="line"><span class="comment">        循环发布信息:HelloWorld 后缀数字编号</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    实现流程:</span></span><br><span class="line"><span class="comment">        1.包含头文件 </span></span><br><span class="line"><span class="comment">        2.初始化 ROS 节点:命名(唯一)</span></span><br><span class="line"><span class="comment">        3.实例化 ROS 句柄</span></span><br><span class="line"><span class="comment">        4.实例化 发布者 对象</span></span><br><span class="line"><span class="comment">        5.组织被发布的数据，并编写逻辑发布数据</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">// 1.包含头文件 </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span> <span class="comment">//普通文本类型的消息</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>  *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="comment">//设置编码</span></span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.初始化 ROS 节点:命名(唯一)</span></span><br><span class="line">    <span class="comment">// 参数1和参数2 后期为节点传值会使用</span></span><br><span class="line">    <span class="comment">// 参数3 是节点名称，是一个标识符，需要保证运行后，在 ROS 网络拓扑中唯一</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;talker&quot;</span>);</span><br><span class="line">    <span class="comment">//3.实例化 ROS 句柄</span></span><br><span class="line">    ros::NodeHandle nh;<span class="comment">//该类封装了 ROS 中的一些常用功能</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//4.实例化 发布者 对象</span></span><br><span class="line">    <span class="comment">//泛型: 发布的消息类型</span></span><br><span class="line">    <span class="comment">//参数1: 要发布到的话题</span></span><br><span class="line">    <span class="comment">//参数2: 队列中最大保存的消息数，超出此阀值时，先进的先销毁(时间早的先销毁)</span></span><br><span class="line">    ros::Publisher pub = nh.<span class="built_in">advertise</span>&lt;std_msgs::String&gt;(<span class="string">&quot;chatter&quot;</span>,<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//5.组织被发布的数据，并编写逻辑发布数据</span></span><br><span class="line">    <span class="comment">//数据(动态组织)</span></span><br><span class="line">    std_msgs::String msg;</span><br><span class="line">    <span class="comment">// msg.data = &quot;你好啊！！！&quot;;</span></span><br><span class="line">    std::string msg_front = <span class="string">&quot;Hello 你好！&quot;</span>; <span class="comment">//消息前缀</span></span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>; <span class="comment">//消息计数器</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//逻辑(一秒10次)</span></span><br><span class="line">    <span class="function">ros::Rate <span class="title">r</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//节点不死</span></span><br><span class="line">    <span class="keyword">while</span> (ros::<span class="built_in">ok</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//使用 stringstream 拼接字符串与编号</span></span><br><span class="line">        std::stringstream ss;</span><br><span class="line">        ss &lt;&lt; msg_front &lt;&lt; count;</span><br><span class="line">        msg.data = ss.<span class="built_in">str</span>();</span><br><span class="line">        <span class="comment">//发布消息</span></span><br><span class="line">        pub.<span class="built_in">publish</span>(msg);</span><br><span class="line">        <span class="comment">//加入调试，打印发送的消息</span></span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;发送的消息:%s&quot;</span>,msg.data.<span class="built_in">c_str</span>());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//根据前面制定的发送贫频率自动休眠 休眠时间 = 1/频率；</span></span><br><span class="line">        r.<span class="built_in">sleep</span>();</span><br><span class="line">        count++;<span class="comment">//循环结束前，让 count 自增</span></span><br><span class="line">        <span class="comment">//暂无应用</span></span><br><span class="line">        ros::<span class="built_in">spinOnce</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>配置完成之后记得<code>source devel/setup.bash</code>设置一下环境变量</p>
+<p>之后<code>rosrun plumbing_pub_sub demo01_pub</code>,执行。即可得以下结果</p>
+<p>source devel&#x2F;setup.bash</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 15-02-34 的屏幕截图.png)</p>
+<h3 id="2-订阅方"><a href="#2-订阅方" class="headerlink" title="2.订阅方"></a>2.订阅方</h3><p>跟发布方一样的操作，修改一下cpp文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span>    </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span> <span class="comment">//普通文本类型的消息</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    实现流程:</span></span><br><span class="line"><span class="comment">        1.包含头文件 </span></span><br><span class="line"><span class="comment">        2.初始化 ROS 节点:命名(唯一)</span></span><br><span class="line"><span class="comment">        3.实例化 ROS 句柄</span></span><br><span class="line"><span class="comment">        4.实例化 订阅者 对象</span></span><br><span class="line"><span class="comment">        5.处理订阅的消息(回调函数)</span></span><br><span class="line"><span class="comment">        6.循环spin()函数</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">doMsg</span><span class="params">(<span class="type">const</span> std_msgs::String::ConstPtr&amp; msg_p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//通过msg获取并且操作订阅到的数据</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;翠花订阅的数据：%s&quot;</span>,msg_p-&gt;data.<span class="built_in">c_str</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="comment">//2.初始化 ROS 节点:命名(唯一)</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv,<span class="string">&quot;listener&quot;</span>);</span><br><span class="line">    <span class="comment">//3.创建节点句柄；</span></span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line">        <span class="comment">//4.创建订阅者对象；</span></span><br><span class="line">    ros::Subscriber sub = nh.<span class="built_in">subscribe</span>&lt;std_msgs::String&gt;(<span class="string">&quot;chatter&quot;</span>,<span class="number">10</span>,doMsg);</span><br><span class="line">        <span class="comment">//5.处理订阅的数据</span></span><br><span class="line">    <span class="comment">//6.循环spin()函数</span></span><br><span class="line">    ros::<span class="built_in">spin</span>();<span class="comment">//循环读取接收的数据，并调用回调函数处理</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3 . 配置文件"></a>3 . 配置文件</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(Hello_pub</span><br><span class="line">  src/Hello_pub.cpp</span><br><span class="line">)</span><br><span class="line"><span class="keyword">add_executable</span>(Hello_sub</span><br><span class="line">  src/Hello_sub.cpp</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(Hello_pub</span><br><span class="line">  <span class="variable">$&#123;catkin_LIBRARIES&#125;</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(Hello_sub</span><br><span class="line">  <span class="variable">$&#123;catkin_LIBRARIES&#125;</span></span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-执行"><a href="#4-执行" class="headerlink" title="4.执行"></a>4.执行</h3><p>执行与发布方一样的步骤，cmake文件编辑一下，同时启动发布节点和订阅节点，记得启动节点之前要<strong>编译</strong>，<strong>source</strong>一下。否则会报<code>Error: package &#39;rosrun&#39; not found</code>, </p>
+<p>会看到以下结果</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 15-38-30 的屏幕截图.png)</p>
+<h3 id="5-计算图显示"><a href="#5-计算图显示" class="headerlink" title="5. 计算图显示"></a>5. 计算图显示</h3><p>新建终端，保证流程在进行的情况下，输入：<code>rqt_graph</code></p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 15-54-37 的屏幕截图.png)</p>
+<p>非常直观形象。</p>
+<h2 id="2-1-3-话题通信基本操作B（Python）"><a href="#2-1-3-话题通信基本操作B（Python）" class="headerlink" title="2.1.3 话题通信基本操作B（Python）"></a>2.1.3 话题通信基本操作B（Python）</h2><h3 id="1-发布方-1"><a href="#1-发布方-1" class="headerlink" title="1.发布方"></a>1.发布方</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    需求: 实现基本的话题通信，一方发布数据，一方接收数据，</span></span><br><span class="line"><span class="string">         实现的关键点:</span></span><br><span class="line"><span class="string">         1.发送方</span></span><br><span class="line"><span class="string">         2.接收方</span></span><br><span class="line"><span class="string">         3.数据(此处为普通文本)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">         PS: 二者需要设置相同的话题</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    消息发布方:</span></span><br><span class="line"><span class="string">        循环发布信息:HelloWorld 后缀数字编号</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    实现流程:</span></span><br><span class="line"><span class="string">        1.导包 </span></span><br><span class="line"><span class="string">        2.初始化 ROS 节点:命名(唯一)</span></span><br><span class="line"><span class="string">        3.实例化 发布者 对象</span></span><br><span class="line"><span class="string">        4.组织被发布的数据，并编写逻辑发布数据</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment">#1.导包 </span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> std_msgs.msg <span class="keyword">import</span> String</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment">#2.初始化 ROS 节点:命名(唯一)</span></span><br><span class="line">    rospy.init_node(<span class="string">&quot;talker_p&quot;</span>)</span><br><span class="line">    <span class="comment">#3.实例化 发布者 对象</span></span><br><span class="line">    pub = rospy.Publisher(<span class="string">&quot;chatter&quot;</span>,String,queue_size=<span class="number">10</span>)</span><br><span class="line">    <span class="comment">#4.组织被发布的数据，并编写逻辑发布数据</span></span><br><span class="line">    msg = String()  <span class="comment">#创建 msg 对象</span></span><br><span class="line">    msg_front = <span class="string">&quot;hello 你好&quot;</span></span><br><span class="line">    count = <span class="number">0</span>  <span class="comment">#计数器 </span></span><br><span class="line">    <span class="comment"># 设置循环频率</span></span><br><span class="line">    rate = rospy.Rate(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> rospy.is_shutdown():</span><br><span class="line"></span><br><span class="line">        <span class="comment">#拼接字符串</span></span><br><span class="line">        msg.data = msg_front + <span class="built_in">str</span>(count)</span><br><span class="line"></span><br><span class="line">        pub.publish(msg)</span><br><span class="line">        rate.sleep()</span><br><span class="line">        rospy.loginfo(<span class="string">&quot;写出的数据:%s&quot;</span>,msg.data)</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-订阅方-1"><a href="#2-订阅方-1" class="headerlink" title="2.订阅方"></a>2.订阅方</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    需求: 实现基本的话题通信，一方发布数据，一方接收数据，</span></span><br><span class="line"><span class="string">         实现的关键点:</span></span><br><span class="line"><span class="string">         1.发送方</span></span><br><span class="line"><span class="string">         2.接收方</span></span><br><span class="line"><span class="string">         3.数据(此处为普通文本)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    消息订阅方:</span></span><br><span class="line"><span class="string">        订阅话题并打印接收到的消息</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    实现流程:</span></span><br><span class="line"><span class="string">        1.导包 </span></span><br><span class="line"><span class="string">        2.初始化 ROS 节点:命名(唯一)</span></span><br><span class="line"><span class="string">        3.实例化 订阅者 对象</span></span><br><span class="line"><span class="string">        4.处理订阅的消息(回调函数)</span></span><br><span class="line"><span class="string">        5.设置循环调用回调函数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment">#1.导包 </span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> std_msgs.msg <span class="keyword">import</span> String</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">doMsg</span>(<span class="params">msg</span>):</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;I heard:%s&quot;</span>,msg.data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment">#2.初始化 ROS 节点:命名(唯一)</span></span><br><span class="line">    rospy.init_node(<span class="string">&quot;listener_p&quot;</span>)</span><br><span class="line">    <span class="comment">#3.实例化 订阅者 对象</span></span><br><span class="line">    sub = rospy.Subscriber(<span class="string">&quot;chatter&quot;</span>,String,doMsg,queue_size=<span class="number">10</span>)</span><br><span class="line">    <span class="comment">#4.处理订阅的消息(回调函数)</span></span><br><span class="line">    <span class="comment">#5.设置循环调用回调函数</span></span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-添加可执行权限"><a href="#3-添加可执行权限" class="headerlink" title="3. 添加可执行权限"></a>3. 添加可执行权限</h3><p>终端下进入 scripts 执行:<code>chmod +x *.py</code></p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 16-25-13 的屏幕截图.png)</p>
+<h3 id="4-配置CMakeLists-txt"><a href="#4-配置CMakeLists-txt" class="headerlink" title="4. 配置CMakeLists.txt"></a>4. 配置CMakeLists.txt</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">catkin_install_python(PROGRAMS</span><br><span class="line">  scripts/demo01_pub_p.py</span><br><span class="line">  DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-执行"><a href="#5-执行" class="headerlink" title="5. 执行"></a>5. 执行</h3><p>1.启动 roscore;</p>
+<p>2.启动发布节点;</p>
+<p>3.启动订阅节点。</p>
+<p>结果如下</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 16-43-07 的屏幕截图.png)</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 16-43-34 的屏幕截图.png)</p>
+<h3 id="6-计算图"><a href="#6-计算图" class="headerlink" title="6.计算图"></a>6.计算图</h3><p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 16-44-42 的屏幕截图.png)</p>
+<h2 id="2-1-4-解耦合"><a href="#2-1-4-解耦合" class="headerlink" title="2.1.4 解耦合"></a>2.1.4 解耦合</h2><p>可以跨平台通讯，发布者使用C++，订阅方使用Python，只要话题一样，就能通讯。</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 17-04-47 的屏幕截图.png)</p>
+<p>并且可以通过计算图查看</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 17-05-17 的屏幕截图.png)</p>
+<h2 id="2-1-5-话题通信自定义msg"><a href="#2-1-5-话题通信自定义msg" class="headerlink" title="2.1.5 话题通信自定义msg"></a>2.1.5 话题通信自定义msg</h2><p><strong>流程:</strong></p>
+<ol>
+<li>按照固定格式创建 msg 文件</li>
+<li>编辑配置文件</li>
+<li>编译生成可以被 Python 或 C++ 调用的中间文件</li>
+</ol>
+<p>msgs只是简单的文本文件，每行具有字段类型和字段名称，可以使用的字段类型有：</p>
+<ul>
+<li>int8, int16, int32, int64 (或者无符号类型: uint*)</li>
+<li>float32, float64</li>
+<li>string</li>
+<li>time, duration</li>
+<li>other msg files</li>
+<li>variable-length array[] and fixed-length array[C]</li>
+</ul>
+<h3 id="1-定义msg文件"><a href="#1-定义msg文件" class="headerlink" title="1.定义msg文件"></a>1.定义msg文件</h3><p>功能包下新建 msg 目录，添加文件 Person.msg</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 17-14-57 的屏幕截图.png)</p>
+<p>添加文件内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string name</span><br><span class="line">uint16 age</span><br><span class="line">float64 height</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-编辑配置文件"><a href="#2-编辑配置文件" class="headerlink" title="2,编辑配置文件"></a>2,编辑配置文件</h3><p><strong>package.xml</strong>中添加编译依赖与执行依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build_depend</span>&gt;</span>message_generation<span class="tag">&lt;/<span class="name">build_depend</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">exec_depend</span>&gt;</span>message_runtime<span class="tag">&lt;/<span class="name">exec_depend</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 17-19-21 的屏幕截图.png)</p>
+<p><strong>CMakeLists.txt</strong>编辑 msg 相关配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">find_package(catkin REQUIRED COMPONENTS</span><br><span class="line">  roscpp</span><br><span class="line">  rospy</span><br><span class="line">  std_msgs</span><br><span class="line">  message_generation</span><br><span class="line">)</span><br><span class="line"># 需要加入 message_generation,必须有 std_msgs</span><br><span class="line"></span><br><span class="line">## 配置 msg 源文件</span><br><span class="line">add_message_files(</span><br><span class="line">  FILES</span><br><span class="line">  Person.msg</span><br><span class="line">)</span><br><span class="line"># 生成消息时依赖于 std_msgs</span><br><span class="line">generate_messages(</span><br><span class="line">  DEPENDENCIES</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line">#执行时依赖</span><br><span class="line">catkin_package(</span><br><span class="line">#  INCLUDE_DIRS include</span><br><span class="line">#  LIBRARIES demo02_talker_listener</span><br><span class="line">  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime</span><br><span class="line">#  DEPENDS system_lib</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-编译"><a href="#3-编译" class="headerlink" title="3. 编译"></a>3. 编译</h3><p>编译之后会在<strong>devel&#x2F;include&#x2F;</strong> 生成一个<strong>Person.h</strong> 头文件</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/05vscode_%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B6%88%E6%81%AF%E7%9A%84%E4%B8%AD%E9%97%B4%E6%96%87%E4%BB%B6(C++).PNG" alt="img"></p>
+<p>在<strong>devel&#x2F;lib&#x2F;python3&#x2F;msg&#x2F;</strong> 生成一个 <strong>_Person.py</strong>文件</p>
+<h2 id="2-1-6-话题通信自定义msg调用A-C"><a href="#2-1-6-话题通信自定义msg调用A-C" class="headerlink" title="2.1.6 话题通信自定义msg调用A(C++)"></a>2.1.6 话题通信自定义msg调用A(C++)</h2><h3 id="0-vscode-配置"><a href="#0-vscode-配置" class="headerlink" title="0. vscode 配置"></a>0. vscode 配置</h3><p>为了方便代码提示以及避免误抛异常，需要先配置 vscode，将前面生成的 head 文件路径配置进 c_cpp_properties.json 的 includepath属性:</p>
+<p>首先cd到Person.p文件下，复制路径</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 19-02-18 的屏幕截图.png)</p>
+<p>打开<code>c_cpp_properties.json </code>文件，添加路径，</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 19-03-09 的屏幕截图.png)</p>
+<h3 id="1-发布方-2"><a href="#1-发布方-2" class="headerlink" title="1.发布方"></a>1.发布方</h3><p>在src文件夹下创建文件<strong>demo03_pub_person.cpp</strong>,</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    需求: 循环发布人的信息</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;plumbing_pub_sub/Person.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1.初始化 ROS 节点</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;talker_person&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.创建 ROS 句柄</span></span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//3.创建发布者对象</span></span><br><span class="line">    ros::Publisher pub = nh.<span class="built_in">advertise</span>&lt;plumbing_pub_sub::Person&gt;(<span class="string">&quot;chatter_person&quot;</span>,<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//4.组织被发布的消息，编写发布逻辑并发布消息</span></span><br><span class="line">    plumbing_pub_sub::Person p;</span><br><span class="line">    p.name = <span class="string">&quot;chenyu&quot;</span>;</span><br><span class="line">    p.age = <span class="number">24</span>;</span><br><span class="line">    p.height = <span class="number">1.78</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">ros::Rate <span class="title">r</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="keyword">while</span> (ros::<span class="built_in">ok</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        pub.<span class="built_in">publish</span>(p);</span><br><span class="line">        p.age += <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;我叫:%s,今年%d岁,高%.2f米&quot;</span>, p.name.<span class="built_in">c_str</span>(), p.age, p.height);</span><br><span class="line"></span><br><span class="line">        r.<span class="built_in">sleep</span>();</span><br><span class="line">        ros::<span class="built_in">spinOnce</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-配置CMakeLists-txt文件"><a href="#2-配置CMakeLists-txt文件" class="headerlink" title="2.配置CMakeLists.txt文件"></a>2.配置CMakeLists.txt文件</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(demo03_pub_person src/demo03_pub_person.cpp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_dependencies</span>( demo03_pub_person <span class="variable">$&#123;PROJECT_NAME&#125;</span>_generate_messages_cpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(demo03_pub_person</span><br><span class="line">  <span class="variable">$&#123;catkin_LIBRARIES&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-执行"><a href="#3-执行" class="headerlink" title="3.执行"></a>3.执行</h3><p>1.启动roscore</p>
+<p>2.启动发布节点</p>
+<p>结果如下</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 19-29-45 的屏幕截图.png)</p>
+<p>注意在执行<code>rostopic echo chatter_person</code> 之前，要先<strong>cd demo03_ws&#x2F;</strong>,才不会报错。</p>
+<h3 id="4-订阅方"><a href="#4-订阅方" class="headerlink" title="4.订阅方"></a>4.订阅方</h3><p>在src文件夹下创建文件<strong>demo04_sub_person.cpp</strong>,</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    需求: 订阅人的信息</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;plumbing_pub_sub/Person.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">doPerson</span><span class="params">(<span class="type">const</span> plumbing_pub_sub::Person::ConstPtr&amp; person_p)</span></span>&#123;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;订阅的人信息:%s, %d, %.2f&quot;</span>, person_p-&gt;name.<span class="built_in">c_str</span>(), person_p-&gt;age, person_p-&gt;height);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL,<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1.初始化 ROS 节点</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;listener_person&quot;</span>);</span><br><span class="line">    <span class="comment">//2.创建 ROS 句柄</span></span><br><span class="line">    ros::NodeHandle nh;</span><br><span class="line">    <span class="comment">//3.创建订阅对象</span></span><br><span class="line">    ros::Subscriber sub = nh.<span class="built_in">subscribe</span>&lt;plumbing_pub_sub::Person&gt;(<span class="string">&quot;chatter_person&quot;</span>,<span class="number">10</span>,doPerson);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//4.回调函数中处理 person</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//5.ros::spin();</span></span><br><span class="line">    ros::<span class="built_in">spin</span>();    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-配置CMakeLists-txt文件"><a href="#5-配置CMakeLists-txt文件" class="headerlink" title="5.配置CMakeLists.txt文件"></a>5.配置CMakeLists.txt文件</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(demo04_sub_person src/demo04_sub_person.cpp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_dependencies</span>( demo04_sub_person <span class="variable">$&#123;PROJECT_NAME&#125;</span>_generate_messages_cpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(demo04_sub_person</span><br><span class="line">  <span class="variable">$&#123;catkin_LIBRARIES&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-执行"><a href="#6-执行" class="headerlink" title="6.执行"></a>6.执行</h3><p>与之前发布者类似</p>
+<p>结果如下</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 19-53-10 的屏幕截图.png)</p>
+<h3 id="7-计算图显示"><a href="#7-计算图显示" class="headerlink" title="7.计算图显示"></a>7.计算图显示</h3><p>结果如下</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 19-55-44 的屏幕截图.png)</p>
+<h2 id="2-1-7-话题通信自定义msg调用B-Python"><a href="#2-1-7-话题通信自定义msg调用B-Python" class="headerlink" title="2.1.7 话题通信自定义msg调用B(Python)"></a>2.1.7 话题通信自定义msg调用B(Python)</h2><p><strong>流程:</strong></p>
+<ol>
+<li>编写发布方实现；</li>
+<li>编写订阅方实现；</li>
+<li>为python文件添加可执行权限；</li>
+<li>编辑配置文件；</li>
+<li>编译并执行。</li>
+</ol>
+<h3 id="0-vscode配置"><a href="#0-vscode配置" class="headerlink" title="0.vscode配置"></a>0.vscode配置</h3><p>为了方便代码提示以及误抛异常，需要先配置 vscode，将前面生成的 python 文件路径配置进 settings.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;python.autoComplete.extraPaths&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;/opt/ros/noetic/lib/python3/dist-packages&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;/home/chenguoqing/demo03_ws/devel/lib/python3/dist-packages&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;python.analysis.extraPaths&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;/opt/ros/noetic/lib/python3/dist-packages&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-发布方-3"><a href="#1-发布方-3" class="headerlink" title="1.发布方"></a>1.发布方</h3><p>在scripts文件夹下创建文件<strong>demo03_pub_person_p.py</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    发布方:</span></span><br><span class="line"><span class="string">        循环发送消息</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> plumbing_pub_sub.msg <span class="keyword">import</span> Person</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment">#1.初始化 ROS 节点</span></span><br><span class="line">    rospy.init_node(<span class="string">&quot;talker_person_p&quot;</span>)</span><br><span class="line">    <span class="comment">#2.创建发布者对象</span></span><br><span class="line">    pub = rospy.Publisher(<span class="string">&quot;chatter_person&quot;</span>,Person,queue_size=<span class="number">10</span>)</span><br><span class="line">    <span class="comment">#3.组织消息</span></span><br><span class="line">    p = Person()</span><br><span class="line">    p.name = <span class="string">&quot;陈与&quot;</span></span><br><span class="line">    p.age = <span class="number">24</span></span><br><span class="line">    p.height = <span class="number">1.78</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#4.编写消息发布逻辑</span></span><br><span class="line">    rate = rospy.Rate(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> rospy.is_shutdown():</span><br><span class="line">        pub.publish(p)  <span class="comment">#发布消息</span></span><br><span class="line">        rospy.loginfo(<span class="string">&quot;姓名:%s, 年龄:%d, 身高:%.2f&quot;</span>,p.name, p.age, p.height)</span><br><span class="line">        rate.sleep()  <span class="comment">#休眠</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-权限设置"><a href="#2-权限设置" class="headerlink" title="2.权限设置"></a>2.权限设置</h3><p>终端下进入 scripts 执行:<code>chmod +x *.py</code></p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 20-12-47 的屏幕截图.png)</p>
+<h3 id="3-配置CMakeLists-txt文件"><a href="#3-配置CMakeLists-txt文件" class="headerlink" title="3.配置CMakeLists.txt文件"></a>3.配置CMakeLists.txt文件</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">catkin_install_python(PROGRAMS</span><br><span class="line">  scripts/demo03_pub_person_p.py</span><br><span class="line">  DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-执行-1"><a href="#4-执行-1" class="headerlink" title="4.执行"></a>4.执行</h3><p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 20-16-50 的屏幕截图.png)</p>
+<h3 id="5-订阅方"><a href="#5-订阅方" class="headerlink" title="5. 订阅方"></a>5. 订阅方</h3><p>在scripts文件夹下创建文件<strong>demo04_sub_person_p.py</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    订阅方:</span></span><br><span class="line"><span class="string">        订阅消息</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> plumbing_pub_sub.msg <span class="keyword">import</span> Person</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">doPerson</span>(<span class="params">p</span>):</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;接收到的人的信息:%s, %d, %.2f&quot;</span>,p.name, p.age, p.height)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment">#1.初始化节点</span></span><br><span class="line">    rospy.init_node(<span class="string">&quot;listener_person_p&quot;</span>)</span><br><span class="line">    <span class="comment">#2.创建订阅者对象</span></span><br><span class="line">    sub = rospy.Subscriber(<span class="string">&quot;chatter_person&quot;</span>,Person,doPerson,queue_size=<span class="number">10</span>)</span><br><span class="line">    rospy.spin() <span class="comment">#4.循环</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-权限设置"><a href="#6-权限设置" class="headerlink" title="6.权限设置"></a>6.权限设置</h3><p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 20-31-44 的屏幕截图.png)</p>
+<h3 id="7-配置CMakeLists-txt文件"><a href="#7-配置CMakeLists-txt文件" class="headerlink" title="7.配置CMakeLists.txt文件"></a>7.配置CMakeLists.txt文件</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">catkin_install_python(PROGRAMS</span><br><span class="line">  scripts/demo04_sub_person_p.py</span><br><span class="line">  DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-执行"><a href="#8-执行" class="headerlink" title="8.执行"></a>8.执行</h3><p>操作类似不再赘述</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 20-34-49 的屏幕截图.png)</p>
+<h3 id="9-计算图显示"><a href="#9-计算图显示" class="headerlink" title="9.计算图显示"></a>9.计算图显示</h3><p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-03-20</a> 20-35-37 的屏幕截图.png)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/03/25/2-%20ROS%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6/" rel="prev" title="2. ROS通信机制">
+                  <i class="fa fa-angle-left"></i> 2. ROS通信机制
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/03/31/5.1%20TF%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2/" rel="next" title="5.1 TF坐标变换">
+                  5.1 TF坐标变换 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
