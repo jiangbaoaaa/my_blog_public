@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="7.3 导航相关消息在导航功能包集中包含了诸多节点，毋庸置疑的，不同节点之间的通信使用到了消息中间件(数据载体)，在上一节的实现中，这些消息已经在rviz中做了可视化处理，比如:地图、雷达、摄像头、里程计、路径规划…的相关消息在rviz中提供了相关组件，本节主要介绍这些消息的具体格式。  7.3.1 地图地图相关的消息主要有两个: nav_msgs&#x2F;MapMetaData  地图元数据，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.3 导航相关消息">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/05/20/7.3%20%E5%AF%BC%E8%88%AA%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="7.3 导航相关消息在导航功能包集中包含了诸多节点，毋庸置疑的，不同节点之间的通信使用到了消息中间件(数据载体)，在上一节的实现中，这些消息已经在rviz中做了可视化处理，比如:地图、雷达、摄像头、里程计、路径规划…的相关消息在rviz中提供了相关组件，本节主要介绍这些消息的具体格式。  7.3.1 地图地图相关的消息主要有两个: nav_msgs&#x2F;MapMetaData  地图元数据，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-20T12:40:55.025Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/05/20/7.3%20%E5%AF%BC%E8%88%AA%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/05/20/7.3%20%E5%AF%BC%E8%88%AA%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF/","path":"2025/05/20/7.3 导航相关消息/","title":"7.3 导航相关消息"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>7.3 导航相关消息 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-3-%E5%AF%BC%E8%88%AA%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF"><span class="nav-number">1.</span> <span class="nav-text">7.3 导航相关消息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-1-%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.1.</span> <span class="nav-text">7.3.1 地图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-nav-msgs-MapMetaData"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.nav_msgs&#x2F;MapMetaData</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-nav-msgs-OccupamcyGrid"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.nav_msgs&#x2F;OccupamcyGrid</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-2-%E9%87%8C%E7%A8%8B%E8%AE%A1"><span class="nav-number">1.2.</span> <span class="nav-text">7.3.2 里程计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-3-%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="nav-number">1.3.</span> <span class="nav-text">7.3.3 坐标变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-4-%E5%AE%9A%E4%BD%8D"><span class="nav-number">1.4.</span> <span class="nav-text">7.3.4 定位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-5-%E7%9B%AE%E6%A0%87%E7%82%B9%E4%B8%8E%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92"><span class="nav-number">1.5.</span> <span class="nav-text">7.3.5 目标点与路径规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-6-%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE"><span class="nav-number">1.6.</span> <span class="nav-text">7.3.6 激光雷达</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-7-%E7%9B%B8%E6%9C%BA"><span class="nav-number">1.7.</span> <span class="nav-text">7.3.7 相机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-8-%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%83%8F%E8%BD%AC%E6%BF%80%E5%85%89%E6%95%B0%E6%8D%AE"><span class="nav-number">1.8.</span> <span class="nav-text">7.3.8 深度图像转激光数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-depthimage-to-laserscan%E7%AE%80%E4%BB%8B"><span class="nav-number">1.8.1.</span> <span class="nav-text">1.depthimage_to_laserscan简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E5%8E%9F%E7%90%86"><span class="nav-number">1.8.1.1.</span> <span class="nav-text">1.1 原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.8.1.2.</span> <span class="nav-text">1.2优缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%AE%89%E8%A3%85"><span class="nav-number">1.8.1.3.</span> <span class="nav-text">1.3 安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%8A%82%E7%82%B9%E8%AF%B4%E6%98%8E"><span class="nav-number">1.8.2.</span> <span class="nav-text">2.节点说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1%E8%AE%A2%E9%98%85%E7%9A%84Topic"><span class="nav-number">1.8.2.1.</span> <span class="nav-text">2.1订阅的Topic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2%E5%8F%91%E5%B8%83%E7%9A%84Topic"><span class="nav-number">1.8.2.2.</span> <span class="nav-text">2.2发布的Topic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3%E5%8F%82%E6%95%B0"><span class="nav-number">1.8.2.3.</span> <span class="nav-text">2.3参数</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/20/7.3%20%E5%AF%BC%E8%88%AA%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="7.3 导航相关消息 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          7.3 导航相关消息
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-05-20 00:00:00 / 修改时间：20:40:55" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="7-3-导航相关消息"><a href="#7-3-导航相关消息" class="headerlink" title="7.3 导航相关消息"></a>7.3 导航相关消息</h1><p>在导航功能包集中包含了诸多节点，毋庸置疑的，不同节点之间的通信使用到了消息中间件(数据载体)，在上一节的实现中，这些消息已经在rviz中做了可视化处理，比如:地图、雷达、摄像头、里程计、路径规划…的相关消息在rviz中提供了相关组件，本节主要介绍这些消息的具体格式。</p>
+<hr>
+<h2 id="7-3-1-地图"><a href="#7-3-1-地图" class="headerlink" title="7.3.1 地图"></a>7.3.1 地图</h2><p>地图相关的消息主要有两个:</p>
+<p>nav_msgs&#x2F;MapMetaData</p>
+<ul>
+<li>地图元数据，包括地图的宽度、高度、分辨率等。</li>
+</ul>
+<p>nav_msgs&#x2F;OccupancyGrid</p>
+<ul>
+<li>地图栅格数据，一般会在rviz中以图形化的方式显示。</li>
+</ul>
+<h3 id="1-nav-msgs-MapMetaData"><a href="#1-nav-msgs-MapMetaData" class="headerlink" title="1.nav_msgs&#x2F;MapMetaData"></a>1.nav_msgs&#x2F;MapMetaData</h3><p>调用<code>rosmsg info nav_msgs/MapMetaData</code>显示消息</p>
+<h3 id="2-nav-msgs-OccupamcyGrid"><a href="#2-nav-msgs-OccupamcyGrid" class="headerlink" title="2.nav_msgs&#x2F;OccupamcyGrid"></a>2.nav_msgs&#x2F;OccupamcyGrid</h3><p>调用 <code>rosmsg info nav_msgs/OccupancyGrid</code>显示消息</p>
+<hr>
+<h2 id="7-3-2-里程计"><a href="#7-3-2-里程计" class="headerlink" title="7.3.2 里程计"></a>7.3.2 里程计</h2><p>里程计相关消息是:nav_msgs&#x2F;Odometry，调用<code>rosmsg info nav_msgs/Odometry</code> </p>
+<h2 id="7-3-3-坐标变换"><a href="#7-3-3-坐标变换" class="headerlink" title="7.3.3 坐标变换"></a>7.3.3 坐标变换</h2><p>坐标变换相关消息是: tf&#x2F;tfMessage，调用<code>rosmsg info tf/tfMessage</code> 显示消息</p>
+<h2 id="7-3-4-定位"><a href="#7-3-4-定位" class="headerlink" title="7.3.4 定位"></a>7.3.4 定位</h2><p>定位相关消息是:geometry_msgs&#x2F;PoseArray，调用<code>rosmsg info geometry_msgs/PoseArray</code>显示消息</p>
+<h2 id="7-3-5-目标点与路径规划"><a href="#7-3-5-目标点与路径规划" class="headerlink" title="7.3.5 目标点与路径规划"></a>7.3.5 目标点与路径规划</h2><p>目标点相关消息是:move_base_msgs&#x2F;MoveBaseActionGoal，调用<code>rosmsg info move_base_msgs/MoveBaseActionGoal</code>显示消息</p>
+<hr>
+<p>路径规划相关消息是:nav_msgs&#x2F;Path，调用<code>rosmsg info nav_msgs/Path</code>显示消息</p>
+<h2 id="7-3-6-激光雷达"><a href="#7-3-6-激光雷达" class="headerlink" title="7.3.6 激光雷达"></a>7.3.6 激光雷达</h2><p>激光雷达相关消息是:sensor_msgs&#x2F;LaserScan，调用<code>rosmsg info sensor_msgs/LaserScan</code>显示消息</p>
+<h2 id="7-3-7-相机"><a href="#7-3-7-相机" class="headerlink" title="7.3.7 相机"></a>7.3.7 相机</h2><p>深度相机相关消息有:sensor_msgs&#x2F;Image、sensor_msgs&#x2F;CompressedImage、sensor_msgs&#x2F;PointCloud2</p>
+<p>sensor_msgs&#x2F;Image 对应的一般的图像数据，sensor_msgs&#x2F;CompressedImage 对应压缩后的图像数据，sensor_msgs&#x2F;PointCloud2 对应的是点云数据(带有深度信息的图像数据)。</p>
+<p>调用<code>rosmsg info sensor_msgs/Image</code>显示消息</p>
+<p>调用<code>rosmsg info sensor_msgs/CompressedImage</code>显示消息</p>
+<p>调用<code>rosmsg info sensor_msgs/PointCloud2</code>显示消息</p>
+<h2 id="7-3-8-深度图像转激光数据"><a href="#7-3-8-深度图像转激光数据" class="headerlink" title="7.3.8 深度图像转激光数据"></a>7.3.8 深度图像转激光数据</h2><p>本节介绍ROS中的一个功能包:depthimage_to_laserscan，顾名思义，该功能包可以将深度图像信息转换成激光雷达信息，应用场景如下:</p>
+<blockquote>
+<p>在诸多SLAM算法中，一般都需要订阅激光雷达数据用于构建地图，因为激光雷达可以感知周围环境的深度信息，而深度相机也具备感知深度信息的功能，且最初激光雷达价格比价比较昂贵，那么在传感器选型上可以选用深度相机代替激光雷达吗？</p>
+</blockquote>
+<p>答案是可以的，不过二者发布的消息类型是完全不同的，如果想要实现传感器的置换，那么就需要将深度相机发布的三维的图形信息转换成二维的激光雷达信息，这一功能就是通过depthimage_to_laserscan来实现的。</p>
+<h3 id="1-depthimage-to-laserscan简介"><a href="#1-depthimage-to-laserscan简介" class="headerlink" title="1.depthimage_to_laserscan简介"></a>1.depthimage_to_laserscan简介</h3><h4 id="1-1-原理"><a href="#1-1-原理" class="headerlink" title="1.1 原理"></a>1.1 原理</h4><p>depthimage_to_laserscan将实现深度图像与雷达数据转换的原理比较简单，雷达数据是二维的、平面的，深度图像是三维的，是若干二维(水平)数据的纵向叠加，如果将三维的数据转换成二维数据，只需要取深度图的某一层即可</p>
+<h4 id="1-2优缺点"><a href="#1-2优缺点" class="headerlink" title="1.2优缺点"></a>1.2优缺点</h4><p>**优点:**深度相机的成本一般低于激光雷达，可以降低硬件成本；</p>
+<p><strong>缺点:</strong> 深度相机较之于激光雷达无论是检测范围还是精度都有不小的差距，SLAM效果可能不如激光雷达理想。</p>
+<h4 id="1-3-安装"><a href="#1-3-安装" class="headerlink" title="1.3 安装"></a>1.3 安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-noetic-depthimage-to-laserscan</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-节点说明"><a href="#2-节点说明" class="headerlink" title="2.节点说明"></a>2.节点说明</h3><p>depthimage_to_laserscan 功能包的核心节点是:depthimage_to_laserscan ，为了方便调用，需要先了解该节点订阅的话题、发布的话题以及相关参数。</p>
+<h4 id="2-1订阅的Topic"><a href="#2-1订阅的Topic" class="headerlink" title="2.1订阅的Topic"></a>2.1订阅的Topic</h4><p>image(sensor_msgs&#x2F;Image)</p>
+<ul>
+<li>输入图像信息。</li>
+</ul>
+<p>camera_info(sensor_msgs&#x2F;CameraInfo)</p>
+<ul>
+<li>关联图像的相机信息。通常不需要重新映射，因为camera_info将从与image相同的命名空间中进行订阅。</li>
+</ul>
+<h4 id="2-2发布的Topic"><a href="#2-2发布的Topic" class="headerlink" title="2.2发布的Topic"></a>2.2发布的Topic</h4><p>scan(sensor_msgs&#x2F;LaserScan)</p>
+<ul>
+<li>发布转换成的激光雷达类型数据。</li>
+</ul>
+<h4 id="2-3参数"><a href="#2-3参数" class="headerlink" title="2.3参数"></a>2.3参数</h4><p>该节点参数较少，只有如下几个，一般需要设置的是: output_frame_id。</p>
+<p>~scan_height(int, default: 1 pixel)</p>
+<ul>
+<li>设置用于生成激光雷达信息的象素行数。</li>
+</ul>
+<p>~scan_time(double, default: 1&#x2F;30.0Hz (0.033s))</p>
+<ul>
+<li>两次扫描的时间间隔。</li>
+</ul>
+<p>~range_min(double, default: 0.45m)</p>
+<ul>
+<li>返回的最小范围。结合range_max使用，只会获取 range_min 与 range_max 之间的数据。</li>
+</ul>
+<p>~range_max(double, default: 10.0m)</p>
+<ul>
+<li>返回的最大范围。结合range_min使用，只会获取 range_min 与 range_max 之间的数据。</li>
+</ul>
+<p>~output_frame_id(str, default: camera_depth_frame)</p>
+<ul>
+<li>激光信息的ID</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/05/20/8.1%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/" rel="prev" title="8.1 机器人平台设计-控制系统">
+                  <i class="fa fa-angle-left"></i> 8.1 机器人平台设计-控制系统
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/05/20/7.2%20%E5%AF%BC%E8%88%AA%E5%AE%9E%E7%8E%B0/" rel="next" title="7.2 导航实现">
+                  7.2 导航实现 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

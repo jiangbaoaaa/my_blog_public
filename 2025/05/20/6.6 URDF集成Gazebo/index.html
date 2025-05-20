@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="6.6 URDF集成GazeboURDF 需要集成进 Rviz 或 Gazebo 才能显示可视化的机器人模型，前面已经介绍了URDF 与 Rviz 的集成，本节主要介绍:  URDF 与 Gazebo 的基本集成流程； 如果要在 Gazebo 中显示机器人模型，URDF 需要做的一些额外配置； 关于Gazebo仿真环境的搭建。   6.6.1 URDF与Gazebo基本集成流程URDF 与 Gaz">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.6 URDF继承Gazebo">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/05/20/6.6%20URDF%E9%9B%86%E6%88%90Gazebo/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="6.6 URDF集成GazeboURDF 需要集成进 Rviz 或 Gazebo 才能显示可视化的机器人模型，前面已经介绍了URDF 与 Rviz 的集成，本节主要介绍:  URDF 与 Gazebo 的基本集成流程； 如果要在 Gazebo 中显示机器人模型，URDF 需要做的一些额外配置； 关于Gazebo仿真环境的搭建。   6.6.1 URDF与Gazebo基本集成流程URDF 与 Gaz">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/12_gazebo%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/12_gazebo%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/12_gazebo%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83.png">
+<meta property="article:published_time" content="2025-05-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-20T12:38:51.269Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/12_gazebo%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/05/20/6.6%20URDF%E9%9B%86%E6%88%90Gazebo/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/05/20/6.6%20URDF%E9%9B%86%E6%88%90Gazebo/","path":"2025/05/20/6.6 URDF集成Gazebo/","title":"6.6 URDF继承Gazebo"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>6.6 URDF继承Gazebo | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#6-6-URDF%E9%9B%86%E6%88%90Gazebo"><span class="nav-number">1.</span> <span class="nav-text">6.6 URDF集成Gazebo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-1-URDF%E4%B8%8EGazebo%E5%9F%BA%E6%9C%AC%E9%9B%86%E6%88%90%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">6.6.1 URDF与Gazebo基本集成流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%B0%E5%BB%BA%E5%8A%9F%E8%83%BD%E5%8C%85"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.新建功能包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BC%96%E5%86%99URDF%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.编写URDF文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%90%AF%E5%8A%A8Gazebo%E5%B9%B6%E4%B8%94%E6%98%BE%E7%A4%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.3.</span> <span class="nav-text">3.启动Gazebo并且显示模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-2-URDF%E9%9B%86%E6%88%90Gazebo%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">6.6.2 URDF集成Gazebo相关设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-collision"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.collision</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-inerital"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.inerital</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%A2%9C%E8%89%B2%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.颜色设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-3-URDF%E9%9B%86%E6%88%90Gazebo%E5%AE%9E%E6%93%8D"><span class="nav-number">1.3.</span> <span class="nav-text">6.6.3 URDF集成Gazebo实操</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BC%96%E5%86%99xacro%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.编写xacro文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%A4%8D%E5%88%B6%E4%B9%8B%E5%89%8D%E7%BB%84%E5%BB%BA%E7%9A%84xacro%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.复制之前组建的xacro文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%9C%A8Gazebo%E4%B8%AD%E6%89%A7%E8%A1%8C"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.在Gazebo中执行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-4Gazebo-%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.4.</span> <span class="nav-text">6.6.4Gazebo 仿真环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B7%BB%E5%8A%A0%E5%86%85%E7%BD%AE%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.添加内置组件创建仿真环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%90%AF%E5%8A%A8Gazebo%E5%B9%B6%E6%B7%BB%E5%8A%A0%E7%BB%84%E4%BB%B6"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">1.启动Gazebo并添加组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BF%9D%E5%AD%98%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">2 保存仿真环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%90%AF%E5%8A%A8"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">3.启动</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83"><span class="nav-number">1.4.2.</span> <span class="nav-text">2.自定义仿真环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%90%AF%E5%8A%A8gazebo%E6%89%93%E5%BC%80%E6%9E%84%E5%BB%BA%E9%9D%A2%E6%9D%BF%EF%BC%8C%E7%BB%98%E5%88%B6%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">1.启动gazebo打开构建面板，绘制仿真环境</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8%E5%AE%98%E6%96%B9%E7%9A%84%E6%8F%92%E4%BB%B6"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.使用官方的插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E4%B8%8B%E8%BD%BD%E5%AE%98%E6%96%B9%E6%A8%A1%E5%9E%8B%E5%BA%93"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">3.1 下载官方模型库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E5%B0%86%E6%A8%A1%E5%9E%8B%E5%BA%93%E5%A4%8D%E5%88%B6%E8%BF%9B-gazebo"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">3.2 将模型库复制进 gazebo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E5%BA%94%E7%94%A8"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">3.3 应用</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/20/6.6%20URDF%E9%9B%86%E6%88%90Gazebo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="6.6 URDF继承Gazebo | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          6.6 URDF继承Gazebo
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-05-20 00:00:00 / 修改时间：20:38:51" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="6-6-URDF集成Gazebo"><a href="#6-6-URDF集成Gazebo" class="headerlink" title="6.6 URDF集成Gazebo"></a>6.6 URDF集成Gazebo</h1><p>URDF 需要集成进 Rviz 或 Gazebo 才能显示可视化的机器人模型，前面已经介绍了URDF 与 Rviz 的集成，本节主要介绍:</p>
+<ul>
+<li>URDF 与 Gazebo 的基本集成流程；</li>
+<li>如果要在 Gazebo 中显示机器人模型，URDF 需要做的一些额外配置；</li>
+<li>关于Gazebo仿真环境的搭建。</li>
+</ul>
+<hr>
+<h2 id="6-6-1-URDF与Gazebo基本集成流程"><a href="#6-6-1-URDF与Gazebo基本集成流程" class="headerlink" title="6.6.1 URDF与Gazebo基本集成流程"></a>6.6.1 URDF与Gazebo基本集成流程</h2><p>URDF 与 Gazebo 集成流程与 Rviz 实现类似，主要步骤如下:</p>
+<ol>
+<li>创建功能包，导入依赖项</li>
+<li>编写 URDF 或 Xacro 文件</li>
+<li>启动 Gazebo 并显示机器人模型</li>
+</ol>
+<hr>
+<h3 id="1-新建功能包"><a href="#1-新建功能包" class="headerlink" title="1.新建功能包"></a>1.新建功能包</h3><p>新建<code>urdf02_gazebo</code>功能包，添加依赖：urdf、xacro、gazebo_ros、gazebo_ros_control、gazebo_plugins</p>
+<h3 id="2-编写URDF文件"><a href="#2-编写URDF文件" class="headerlink" title="2.编写URDF文件"></a>2.编写URDF文件</h3><p>新建文件<code>demo01_helloworld.urdf</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">    创建一个机器人模型(盒状即可)，显示在 Gazebo 中 </span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">robot</span> <span class="attr">name</span>=<span class="string">&quot;mycar&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;base_link&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">box</span> <span class="attr">size</span>=<span class="string">&quot;0.5 0.2 0.1&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;0.0 0.0 0.0&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0.0 0.0 0.0&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;yellow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0.5 0.3 0.0 1&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 设置连杆碰撞属性 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">collision</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">box</span> <span class="attr">size</span>=<span class="string">&quot;0.5 0.2 0.1&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;0.0 0.0 0.0&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0.0 0.0 0.0&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">collision</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 连杆的惯性矩阵 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">inertial</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">mass</span> <span class="attr">value</span>=<span class="string">&quot;6&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">inertia</span> <span class="attr">ixx</span>=<span class="string">&quot;1&quot;</span> <span class="attr">ixy</span>=<span class="string">&quot;0&quot;</span> <span class="attr">ixz</span>=<span class="string">&quot;0&quot;</span> <span class="attr">iyy</span>=<span class="string">&quot;1&quot;</span> <span class="attr">iyz</span>=<span class="string">&quot;0&quot;</span> <span class="attr">izz</span>=<span class="string">&quot;1&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">inertial</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">gazebo</span> <span class="attr">reference</span>=<span class="string">&quot;base_link&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">material</span>&gt;</span>Gazebo/Black<span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">gazebo</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">robot</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>注意， 当 URDF 需要与 Gazebo 集成时，和 Rviz 有明显区别:</p>
+<p>1.必须使用 collision 标签，因为既然是仿真环境，那么必然涉及到碰撞检测，collision 提供碰撞检测的依据。</p>
+<p>2.必须使用 inertial 标签，此标签标注了当前机器人某个刚体部分的惯性矩阵，用于一些力学相关的仿真计算。</p>
+<p>3.颜色设置，也需要重新使用 gazebo 标签标注，因为之前的颜色设置为了方便调试包含透明度，仿真环境下没有此选项。</p>
+<h3 id="3-启动Gazebo并且显示模型"><a href="#3-启动Gazebo并且显示模型" class="headerlink" title="3.启动Gazebo并且显示模型"></a>3.启动Gazebo并且显示模型</h3><p>新建<code>launch</code>文件<code>demo01_helloworld.launch</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 将 Urdf 文件的内容加载到参数服务器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;robot_description&quot;</span> <span class="attr">textfile</span>=<span class="string">&quot;$(find urdf02_gazebo)/urdf/demo01_helloworld.urdf&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 启动 gazebo --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find gazebo_ros)/launch/empty_world.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 在 gazebo 中显示机器人模型 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;gazebo_ros&quot;</span> <span class="attr">type</span>=<span class="string">&quot;spawn_model&quot;</span> <span class="attr">name</span>=<span class="string">&quot;model&quot;</span> <span class="attr">args</span>=<span class="string">&quot;-urdf -model mycar -param robot_description&quot;</span>  /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>代码解释:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find gazebo_ros)/launch/empty_world.launch&quot;</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 启动 Gazebo 的仿真环境，当前环境为空环境 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;gazebo_ros&quot;</span> <span class="attr">type</span>=<span class="string">&quot;spawn_model&quot;</span> <span class="attr">name</span>=<span class="string">&quot;model&quot;</span> <span class="attr">args</span>=<span class="string">&quot;-urdf -model mycar -param robot_description&quot;</span>  /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">    在 Gazebo 中加载一个机器人模型，该功能由 gazebo_ros 下的 spawn_model 提供:</span></span><br><span class="line"><span class="comment">    -urdf 加载的是 urdf 文件</span></span><br><span class="line"><span class="comment">    -model mycar 模型名称是 mycar</span></span><br><span class="line"><span class="comment">    -param robot_description 从参数 robot_description 中载入模型</span></span><br><span class="line"><span class="comment">    -x 模型载入的 x 坐标</span></span><br><span class="line"><span class="comment">    -y 模型载入的 y 坐标</span></span><br><span class="line"><span class="comment">    -z 模型载入的 z 坐标</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-6-2-URDF集成Gazebo相关设置"><a href="#6-6-2-URDF集成Gazebo相关设置" class="headerlink" title="6.6.2 URDF集成Gazebo相关设置"></a>6.6.2 URDF集成Gazebo相关设置</h2><p>较之于 rviz，gazebo在集成 URDF 时，需要做些许修改，比如:必须添加 collision 碰撞属性相关参数、必须添加 inertial 惯性矩阵相关参数，另外，如果直接移植 Rviz 中机器人的颜色设置是没有显示的，颜色设置也必须做相应的变更</p>
+<h3 id="1-collision"><a href="#1-collision" class="headerlink" title="1.collision"></a>1.collision</h3><p>如果机器人link是标准的几何体形状，和link的 visual 属性设置一致即可。</p>
+<h3 id="2-inerital"><a href="#2-inerital" class="headerlink" title="2.inerital"></a>2.inerital</h3><p>惯性矩阵的设置需要结合link的质量与外形参数动态生成，标准的球体、圆柱与立方体的惯性矩阵公式如下(已经封装为 xacro 实现)</p>
+<p>球体惯性矩阵</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Macro for inertia matrix --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:macro</span> <span class="attr">name</span>=<span class="string">&quot;sphere_inertial_matrix&quot;</span> <span class="attr">params</span>=<span class="string">&quot;m r&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">inertial</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">mass</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;m&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">inertia</span> <span class="attr">ixx</span>=<span class="string">&quot;$&#123;2*m*r*r/5&#125;&quot;</span> <span class="attr">ixy</span>=<span class="string">&quot;0&quot;</span> <span class="attr">ixz</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">iyy</span>=<span class="string">&quot;$&#123;2*m*r*r/5&#125;&quot;</span> <span class="attr">iyz</span>=<span class="string">&quot;0&quot;</span> </span></span><br><span class="line"><span class="tag">                <span class="attr">izz</span>=<span class="string">&quot;$&#123;2*m*r*r/5&#125;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">inertial</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">xacro:macro</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>圆柱惯性矩阵</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xacro:macro</span> <span class="attr">name</span>=<span class="string">&quot;cylinder_inertial_matrix&quot;</span> <span class="attr">params</span>=<span class="string">&quot;m r h&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">inertial</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">mass</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;m&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">inertia</span> <span class="attr">ixx</span>=<span class="string">&quot;$&#123;m*(3*r*r+h*h)/12&#125;&quot;</span> <span class="attr">ixy</span> = <span class="string">&quot;0&quot;</span> <span class="attr">ixz</span> = <span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">iyy</span>=<span class="string">&quot;$&#123;m*(3*r*r+h*h)/12&#125;&quot;</span> <span class="attr">iyz</span> = <span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">izz</span>=<span class="string">&quot;$&#123;m*r*r/2&#125;&quot;</span> /&gt;</span> </span><br><span class="line">        <span class="tag">&lt;/<span class="name">inertial</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">xacro:macro</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>立方体惯性矩阵</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xacro:macro</span> <span class="attr">name</span>=<span class="string">&quot;Box_inertial_matrix&quot;</span> <span class="attr">params</span>=<span class="string">&quot;m l w h&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">inertial</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">mass</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;m&#125;&quot;</span> /&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">inertia</span> <span class="attr">ixx</span>=<span class="string">&quot;$&#123;m*(h*h + l*l)/12&#125;&quot;</span> <span class="attr">ixy</span> = <span class="string">&quot;0&quot;</span> <span class="attr">ixz</span> = <span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">iyy</span>=<span class="string">&quot;$&#123;m*(w*w + l*l)/12&#125;&quot;</span> <span class="attr">iyz</span>= <span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">izz</span>=<span class="string">&quot;$&#123;m*(w*w + h*h)/12&#125;&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">inertial</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">xacro:macro</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，原则上，除了 base_footprint 外，机器人的每个刚体部分都需要设置惯性矩阵，且惯性矩阵必须经计算得出，如果随意定义刚体部分的惯性矩阵，那么可能会导致机器人在 Gazebo 中出现抖动，移动等现象。</p>
+<h3 id="3-颜色设置"><a href="#3-颜色设置" class="headerlink" title="3.颜色设置"></a>3.颜色设置</h3><p>在 gazebo 中显示 link 的颜色，必须要使用指定的标签:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">gazebo</span> <span class="attr">reference</span>=<span class="string">&quot;link节点名称&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">material</span>&gt;</span>Gazebo/Blue<span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">gazebo</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>**PS：**material 标签中，设置的值区分大小写，颜色可以设置为 Red Blue Green Black …..</p>
+<hr>
+<h2 id="6-6-3-URDF集成Gazebo实操"><a href="#6-6-3-URDF集成Gazebo实操" class="headerlink" title="6.6.3 URDF集成Gazebo实操"></a>6.6.3 URDF集成Gazebo实操</h2><p><strong>需求描述:</strong></p>
+<p>将之前的机器人模型(xacro版)显示在 gazebo 中</p>
+<p><strong>实现流程:</strong></p>
+<ol>
+<li>需要编写封装惯性矩阵算法的 xacro 文件</li>
+<li>为机器人模型中的每一个 link 添加 collision 和 inertial 标签，并且重置颜色属性</li>
+<li>在 launch 文件中启动 gazebo 并添加机器人模型</li>
+</ol>
+<hr>
+<h3 id="1-编写xacro文件"><a href="#1-编写xacro文件" class="headerlink" title="1.编写xacro文件"></a>1.编写xacro文件</h3><p>新建<code>head.xacro</code>文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">robot</span> <span class="attr">name</span>=<span class="string">&quot;base&quot;</span> <span class="attr">xmlns:xacro</span>=<span class="string">&quot;http://wiki.ros.org/xacro&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Macro for inertia matrix --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:macro</span> <span class="attr">name</span>=<span class="string">&quot;sphere_inertial_matrix&quot;</span> <span class="attr">params</span>=<span class="string">&quot;m r&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">inertial</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">mass</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;m&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">inertia</span> <span class="attr">ixx</span>=<span class="string">&quot;$&#123;2*m*r*r/5&#125;&quot;</span> <span class="attr">ixy</span>=<span class="string">&quot;0&quot;</span> <span class="attr">ixz</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">iyy</span>=<span class="string">&quot;$&#123;2*m*r*r/5&#125;&quot;</span> <span class="attr">iyz</span>=<span class="string">&quot;0&quot;</span> </span></span><br><span class="line"><span class="tag">                <span class="attr">izz</span>=<span class="string">&quot;$&#123;2*m*r*r/5&#125;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">inertial</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">xacro:macro</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:macro</span> <span class="attr">name</span>=<span class="string">&quot;cylinder_inertial_matrix&quot;</span> <span class="attr">params</span>=<span class="string">&quot;m r h&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">inertial</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">mass</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;m&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">inertia</span> <span class="attr">ixx</span>=<span class="string">&quot;$&#123;m*(3*r*r+h*h)/12&#125;&quot;</span> <span class="attr">ixy</span> = <span class="string">&quot;0&quot;</span> <span class="attr">ixz</span> = <span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">iyy</span>=<span class="string">&quot;$&#123;m*(3*r*r+h*h)/12&#125;&quot;</span> <span class="attr">iyz</span> = <span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">izz</span>=<span class="string">&quot;$&#123;m*r*r/2&#125;&quot;</span> /&gt;</span> </span><br><span class="line">        <span class="tag">&lt;/<span class="name">inertial</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">xacro:macro</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:macro</span> <span class="attr">name</span>=<span class="string">&quot;Box_inertial_matrix&quot;</span> <span class="attr">params</span>=<span class="string">&quot;m l w h&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">inertial</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">mass</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;m&#125;&quot;</span> /&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">inertia</span> <span class="attr">ixx</span>=<span class="string">&quot;$&#123;m*(h*h + l*l)/12&#125;&quot;</span> <span class="attr">ixy</span> = <span class="string">&quot;0&quot;</span> <span class="attr">ixz</span> = <span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">iyy</span>=<span class="string">&quot;$&#123;m*(w*w + l*l)/12&#125;&quot;</span> <span class="attr">iyz</span>= <span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">izz</span>=<span class="string">&quot;$&#123;m*(w*w + h*h)/12&#125;&quot;</span> /&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">inertial</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">xacro:macro</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">robot</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-复制之前组建的xacro文件"><a href="#2-复制之前组建的xacro文件" class="headerlink" title="2.复制之前组建的xacro文件"></a>2.复制之前组建的<code>xacro</code>文件</h3><h3 id="3-在Gazebo中执行"><a href="#3-在Gazebo中执行" class="headerlink" title="3.在Gazebo中执行"></a>3.在Gazebo中执行</h3><p>修改复制的<code>car.xacro</code>文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">robot</span> <span class="attr">name</span>=<span class="string">&quot;my_car_camera&quot;</span> <span class="attr">xmlns:xacro</span>=<span class="string">&quot;http://wiki.ros.org/xacro&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 包含惯性矩阵文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:include</span> <span class="attr">filename</span>=<span class="string">&quot;head.xacro&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 包含组件的xacro文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:include</span> <span class="attr">filename</span>=<span class="string">&quot;demo05_car_base.urdf.xacro&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:include</span> <span class="attr">filename</span>=<span class="string">&quot;demo06_car_camera.urdf.xacro&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:include</span> <span class="attr">filename</span>=<span class="string">&quot;demo07_car_laser.urdf.xacro&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">robot</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>新建<code>demo02_car.launch</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 将 Urdf 文件的内容加载到参数服务器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;robot_description&quot;</span> <span class="attr">command</span>=<span class="string">&quot;$(find xacro)/xacro $(find urdf02_gazebo)/urdf/car.urdf.xacro&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 启动 gazebo --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find gazebo_ros)/launch/empty_world.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 在 gazebo 中显示机器人模型 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;gazebo_ros&quot;</span> <span class="attr">type</span>=<span class="string">&quot;spawn_model&quot;</span> <span class="attr">name</span>=<span class="string">&quot;model&quot;</span> <span class="attr">args</span>=<span class="string">&quot;-urdf -model mycar -param robot_description&quot;</span>  /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-6-4Gazebo-仿真环境搭建"><a href="#6-6-4Gazebo-仿真环境搭建" class="headerlink" title="6.6.4Gazebo 仿真环境搭建"></a>6.6.4Gazebo 仿真环境搭建</h2><p>到目前为止，我们已经可以将机器人模型显示在 Gazebo 之中了，但是当前默认情况下，在 Gazebo 中机器人模型是在 empty world 中，并没有类似于房间、家具、道路、树木… 之类的仿真物，如何在 Gazebo 中创建仿真环境呢？</p>
+<p>Gazebo 中创建仿真实现方式有两种:</p>
+<ul>
+<li>方式1: 直接添加内置组件创建仿真环境</li>
+<li>方式2: 手动绘制仿真环境(更为灵活)</li>
+</ul>
+<p>也还可以直接下载使用官方或第三方提高的仿真环境插件。</p>
+<hr>
+<h3 id="1-添加内置组件创建仿真环境"><a href="#1-添加内置组件创建仿真环境" class="headerlink" title="1.添加内置组件创建仿真环境"></a>1.添加内置组件创建仿真环境</h3><h4 id="1-启动Gazebo并添加组件"><a href="#1-启动Gazebo并添加组件" class="headerlink" title="1.启动Gazebo并添加组件"></a>1.启动Gazebo并添加组件</h4><p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/12_gazebo%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83.png"></p>
+<h4 id="2-保存仿真环境"><a href="#2-保存仿真环境" class="headerlink" title="2 保存仿真环境"></a>2 保存仿真环境</h4><p>添加完毕后，选择 file —&gt; Save World as 选择保存路径(功能包下: worlds 目录)，文件名自定义，后缀名设置为 .world</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/12_gazebo%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83.png"></p>
+<h4 id="3-启动"><a href="#3-启动" class="headerlink" title="3.启动"></a>3.启动</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 将 Urdf 文件的内容加载到参数服务器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;robot_description&quot;</span> <span class="attr">command</span>=<span class="string">&quot;$(find xacro)/xacro $(find demo02_urdf_gazebo)/urdf/xacro/my_base_camera_laser.urdf.xacro&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动 gazebo --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find gazebo_ros)/launch/empty_world.launch&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;world_name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(find demo02_urdf_gazebo)/worlds/hello.world&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 在 gazebo 中显示机器人模型 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;gazebo_ros&quot;</span> <span class="attr">type</span>=<span class="string">&quot;spawn_model&quot;</span> <span class="attr">name</span>=<span class="string">&quot;model&quot;</span> <span class="attr">args</span>=<span class="string">&quot;-urdf -model mycar -param robot_description&quot;</span>  /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-自定义仿真环境"><a href="#2-自定义仿真环境" class="headerlink" title="2.自定义仿真环境"></a>2.自定义仿真环境</h3><h4 id="1-启动gazebo打开构建面板，绘制仿真环境"><a href="#1-启动gazebo打开构建面板，绘制仿真环境" class="headerlink" title="1.启动gazebo打开构建面板，绘制仿真环境"></a>1.启动gazebo打开构建面板，绘制仿真环境</h4><p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/12_gazebo%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83.png" alt="img"></p>
+<p>然后可以保存绘制的环境</p>
+<hr>
+<h3 id="3-使用官方的插件"><a href="#3-使用官方的插件" class="headerlink" title="3.使用官方的插件"></a>3.使用官方的插件</h3><h4 id="3-1-下载官方模型库"><a href="#3-1-下载官方模型库" class="headerlink" title="3.1 下载官方模型库"></a>3.1 下载官方模型库</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/osrf/gazebo_models</span><br></pre></td></tr></table></figure>
+
+<p>之前是:<code>hg clone https://bitbucket.org/osrf/gazebo_models</code>但是已经不可用</p>
+<p>注意: 此过程可能比较耗时</p>
+<h4 id="3-2-将模型库复制进-gazebo"><a href="#3-2-将模型库复制进-gazebo" class="headerlink" title="3.2 将模型库复制进 gazebo"></a>3.2 将模型库复制进 gazebo</h4><p>将得到的gazebo_models文件夹内容复制到 &#x2F;usr&#x2F;share&#x2F;gazebo-*&#x2F;models</p>
+<h4 id="3-3-应用"><a href="#3-3-应用" class="headerlink" title="3.3 应用"></a>3.3 应用</h4><p>重启 Gazebo，选择左侧菜单栏的 insert 可以选择并插入相关道具了</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/05/20/6.7%20URDF%E3%80%81Gazebo%E4%B8%8ERviz%E7%BB%BC%E5%90%88%E5%BA%94%E7%94%A8/" rel="prev" title="6.7URDF、Gazebo与Rviz综合应用">
+                  <i class="fa fa-angle-left"></i> 6.7URDF、Gazebo与Rviz综合应用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/05/20/6.4%20URDF%E4%BC%98%E5%8C%96_xacro/" rel="next" title="6.4 URDF优化：xacro">
+                  6.4 URDF优化：xacro <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
