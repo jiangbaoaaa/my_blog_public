@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="9.4 路径规划编写launch文件新建move_base.launch 1234567891011&lt;launch&gt;    &lt;node pkg&#x3D;&quot;move_base&quot; type&#x3D;&quot;move_base&quot; respawn&#x3D;&quot;false&quot; name&#x3D;&quot;move_base&quot; output&#x3D;&quot;scre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="9.4路径规划">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/06/11/9.4%20%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="9.4 路径规划编写launch文件新建move_base.launch 1234567891011&lt;launch&gt;    &lt;node pkg&#x3D;&quot;move_base&quot; type&#x3D;&quot;move_base&quot; respawn&#x3D;&quot;false&quot; name&#x3D;&quot;move_base&quot; output&#x3D;&quot;scre">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/nav.launch.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2dpose.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/nav%E6%8A%A5%E9%94%99.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/rqt.png">
+<meta property="article:published_time" content="2025-06-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-11T06:51:03.496Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/nav.launch.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/06/11/9.4%20%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/06/11/9.4%20%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/","path":"2025/06/11/9.4 路径规划/","title":"9.4路径规划"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>9.4路径规划 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#9-4-%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92"><span class="nav-number">1.</span> <span class="nav-text">9.4 路径规划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99launch%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">编写launch文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="nav-number">1.2.</span> <span class="nav-text">执行测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-number">1.3.</span> <span class="nav-text">问题解决</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.4%20%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="9.4路径规划 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          9.4路径规划
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:51:03" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="9-4-路径规划"><a href="#9-4-路径规划" class="headerlink" title="9.4 路径规划"></a>9.4 路径规划</h1><h2 id="编写launch文件"><a href="#编写launch文件" class="headerlink" title="编写launch文件"></a>编写launch文件</h2><p>新建move_base.launch</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;move_base&quot;</span> <span class="attr">type</span>=<span class="string">&quot;move_base&quot;</span> <span class="attr">respawn</span>=<span class="string">&quot;false&quot;</span> <span class="attr">name</span>=<span class="string">&quot;move_base&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span> <span class="attr">clear_params</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/costmap_common_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> <span class="attr">ns</span>=<span class="string">&quot;global_costmap&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/costmap_common_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> <span class="attr">ns</span>=<span class="string">&quot;local_costmap&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/local_costmap_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/global_costmap_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/base_local_planner_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>新增4个配置文件：<br>新建param文件夹：</p>
+<ol>
+<li>costmap_common_params.yaml:</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#机器人几何参，如果机器人是圆形，设置 robot_radius,如果是其他形状设置 footprint</span></span><br><span class="line"><span class="comment">#robot_radius: 0.12 #圆形</span></span><br><span class="line"><span class="attr">footprint:</span> [[<span class="number">-0.35</span>, <span class="number">-0.35</span>], [<span class="number">-0.35</span>, <span class="number">0.35</span>], [<span class="number">0.35</span>, <span class="number">0.35</span>], [<span class="number">0.35</span>, <span class="number">-0.35</span>]] <span class="comment"># 表示小车底盘长宽均为0.7m</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attr">obstacle_range:</span> <span class="number">3.0</span> <span class="comment"># 用于障碍物探测，比如: 值为 3.0，意味着检测到距离小于 3 米的障碍物时，就会引入代价地图</span></span><br><span class="line"><span class="attr">raytrace_range:</span> <span class="number">3.5</span> <span class="comment"># 用于清除障碍物，比如：值为 3.5，意味着清除代价地图中 3.5 米以外的障碍物</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#膨胀半径，扩展在碰撞区域以外的代价区域，使得机器人规划路径避开障碍物</span></span><br><span class="line"><span class="attr">inflation_radius:</span> <span class="number">0.2</span></span><br><span class="line"><span class="comment">#代价比例系数，越大则代价值越小</span></span><br><span class="line"><span class="attr">cost_scaling_factor:</span> <span class="number">3.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#地图类型</span></span><br><span class="line"><span class="attr">map_type:</span> <span class="string">costmap</span></span><br><span class="line"><span class="comment">#导航包所需要的传感器</span></span><br><span class="line"><span class="attr">observation_sources:</span> <span class="string">scan</span></span><br><span class="line"><span class="comment">#对传感器的坐标系和数据进行配置。这个也会用于代价地图添加和清除障碍物。例如，你可以用激光雷达传感器用于在代价地图添加障碍物，再添加kinect用于导航和清除障碍物。</span></span><br><span class="line"><span class="attr">scan:</span> &#123;<span class="attr">sensor_frame:</span> <span class="string">laser</span>, <span class="attr">data_type:</span> <span class="string">LaserScan</span>, <span class="attr">topic:</span> <span class="string">scan</span>, <span class="attr">marking:</span> <span class="literal">true</span>, <span class="attr">clearing:</span> <span class="literal">true</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改了一下小车几何参数。</p>
+<ol start="2">
+<li>local_costmap_params.yaml</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">local_costmap:</span></span><br><span class="line">  <span class="attr">global_frame:</span> <span class="string">odom</span> <span class="comment">#里程计坐标系</span></span><br><span class="line">  <span class="attr">robot_base_frame:</span> <span class="string">base_link</span> <span class="comment">#机器人坐标系</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">update_frequency:</span> <span class="number">10.0</span> <span class="comment">#代价地图更新频率</span></span><br><span class="line">  <span class="attr">publish_frequency:</span> <span class="number">10.0</span> <span class="comment">#代价地图的发布频率</span></span><br><span class="line">  <span class="attr">transform_tolerance:</span> <span class="number">0.5</span> <span class="comment">#等待坐标变换发布信息的超时时间</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">static_map:</span> <span class="literal">false</span>  <span class="comment">#不需要静态地图，可以提升导航效果</span></span><br><span class="line">  <span class="attr">rolling_window:</span> <span class="literal">true</span> <span class="comment">#是否使用动态窗口，默认为false，在静态的全局地图中，地图不会变化</span></span><br><span class="line">  <span class="attr">width:</span> <span class="number">3</span> <span class="comment"># 局部地图宽度 单位是 m</span></span><br><span class="line">  <span class="attr">height:</span> <span class="number">3</span> <span class="comment"># 局部地图高度 单位是 m</span></span><br><span class="line">  <span class="attr">resolution:</span> <span class="number">0.05</span> <span class="comment"># 局部地图分辨率 单位是 m，一般与静态地图分辨率保持一致</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>global_costmap_params.yaml</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">global_costmap:</span></span><br><span class="line">  <span class="attr">global_frame:</span> <span class="string">map</span> <span class="comment">#地图坐标系</span></span><br><span class="line">  <span class="attr">robot_base_frame:</span> <span class="string">base_link</span> <span class="comment">#机器人坐标系</span></span><br><span class="line">  <span class="comment"># 以此实现坐标变换</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">update_frequency:</span> <span class="number">1.0</span> <span class="comment">#代价地图更新频率</span></span><br><span class="line">  <span class="attr">publish_frequency:</span> <span class="number">1.0</span> <span class="comment">#代价地图的发布频率</span></span><br><span class="line">  <span class="attr">transform_tolerance:</span> <span class="number">0.5</span> <span class="comment">#等待坐标变换发布信息的超时时间</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">static_map:</span> <span class="literal">true</span> <span class="comment"># 是否使用一个地图或者地图服务器来初始化全局代价地图，如果不使用静态地图，这个参数为false.</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>base_local_planner_params.yaml</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">TrajectoryPlannerROS:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Robot Configuration Parameters</span></span><br><span class="line">  <span class="attr">max_vel_x:</span> <span class="number">0.2</span> <span class="comment"># X 方向最大速度</span></span><br><span class="line">  <span class="attr">min_vel_x:</span> <span class="number">0.1</span> <span class="comment"># X 方向最小速速</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">max_vel_theta:</span>  <span class="number">1.0</span> <span class="comment"># </span></span><br><span class="line">  <span class="attr">min_vel_theta:</span> <span class="number">-1.0</span></span><br><span class="line">  <span class="attr">min_in_place_vel_theta:</span> <span class="number">1.0</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">acc_lim_x:</span> <span class="number">1.0</span> <span class="comment"># X 加速限制</span></span><br><span class="line">  <span class="attr">acc_lim_y:</span> <span class="number">0.0</span> <span class="comment"># Y 加速限制</span></span><br><span class="line">  <span class="attr">acc_lim_theta:</span> <span class="number">0.6</span> <span class="comment"># 角速度加速限制</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Goal Tolerance Parameters，目标公差</span></span><br><span class="line">  <span class="attr">xy_goal_tolerance:</span> <span class="number">0.10</span></span><br><span class="line">  <span class="attr">yaw_goal_tolerance:</span> <span class="number">0.05</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Differential-drive robot configuration</span></span><br><span class="line"><span class="comment"># 是否是全向移动机器人</span></span><br><span class="line">  <span class="attr">holonomic_robot:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Forward Simulation Parameters，前进模拟参数</span></span><br><span class="line">  <span class="attr">sim_time:</span> <span class="number">0.8</span></span><br><span class="line">  <span class="attr">vx_samples:</span> <span class="number">18</span></span><br><span class="line">  <span class="attr">vtheta_samples:</span> <span class="number">20</span></span><br><span class="line">  <span class="attr">sim_granularity:</span> <span class="number">0.05</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>新建nav.launch文件</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 设置地图的配置文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;map&quot;</span> <span class="attr">default</span>=<span class="string">&quot;nav.yaml&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 运行地图服务器，并且加载设置的地图--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">name</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">type</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">args</span>=<span class="string">&quot;$(find nav)/map/$(arg map)&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动AMCL节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/amcl.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 运行move_base节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/move_base.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="执行测试"><a href="#执行测试" class="headerlink" title="执行测试"></a>执行测试</h2><ol>
+<li><p>执行相关launch文件，启动机器人并加载机器人模型：roslaunch mycar_start start.launch；</p>
+</li>
+<li><p>启动导航相关的 launch 文件：roslaunch nav nav.launch；</p>
+</li>
+<li><p>添加Rviz组件实现导航（参考仿真实现）。</p>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/nav.launch.png"></p>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>配置成功之后,使用2D Pose Estinament</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2dpose.png"></p>
+<p>测试导航效果,发现小车没有移动,并且终端报错:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/nav%E6%8A%A5%E9%94%99.png"></p>
+<p>问题是在amcl.launch文件中transform_tolerance 设置的太小了,可以修改大一点,同样可以在rqt中动态修改参数:</p>
+<p>终端输入rqt,找到plugins中的dynamic reconfigure</p>
+<p>可以动态修改参数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/rqt.png"></p>
+<p>这样的话小车就能正常移动了.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/06/11/9.5%20%E5%AF%BC%E8%88%AA%E4%B8%8Eslam%E8%87%AA%E4%B8%BB%E5%BB%BA%E5%9B%BE/" rel="prev" title="9.6 导航与slam自主建图">
+                  <i class="fa fa-angle-left"></i> 9.6 导航与slam自主建图
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/06/11/9.2%20%E5%BB%BA%E5%9B%BE%E5%8F%8A%E5%85%B6%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/" rel="next" title="9.2 建图及其相关操作">
+                  9.2 建图及其相关操作 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

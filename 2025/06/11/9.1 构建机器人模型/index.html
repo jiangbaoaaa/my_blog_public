@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="9.1 构建机器人模型分析scout_ros功能包构成1234567891011121314151617181920212223242526272829303132333435├── launch│   ├── display_scout_mini.launch│   ├── display_scout_v2.launch│   ├── gazebo.launch│   ├── scout_min">
+<meta property="og:type" content="article">
+<meta property="og:title" content="9.1构造机器人模型">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/06/11/9.1%20%E6%9E%84%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="9.1 构建机器人模型分析scout_ros功能包构成1234567891011121314151617181920212223242526272829303132333435├── launch│   ├── display_scout_mini.launch│   ├── display_scout_v2.launch│   ├── gazebo.launch│   ├── scout_min">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E5%A2%9E%E5%8A%A0%E9%9B%B7%E8%BE%BE.png">
+<meta property="article:published_time" content="2025-06-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-11T06:49:54.221Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E5%A2%9E%E5%8A%A0%E9%9B%B7%E8%BE%BE.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/06/11/9.1%20%E6%9E%84%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A8%A1%E5%9E%8B/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/06/11/9.1%20%E6%9E%84%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A8%A1%E5%9E%8B/","path":"2025/06/11/9.1 构建机器人模型/","title":"9.1构造机器人模型"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>9.1构造机器人模型 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#9-1-%E6%9E%84%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">9.1 构建机器人模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90scout-ros%E5%8A%9F%E8%83%BD%E5%8C%85%E6%9E%84%E6%88%90"><span class="nav-number">1.1.</span> <span class="nav-text">分析scout_ros功能包构成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E5%A4%B4%E9%83%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 文件头部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Xacro%E5%8F%82%E6%95%B0%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. Xacro参数定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%83%AF%E6%80%A7%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.3.</span> <span class="nav-text">7. 惯性参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E5%9B%BA%E5%AE%9A%E5%85%B3%E8%8A%82%EF%BC%88%E8%BF%9E%E6%8E%A5%E6%83%AF%E6%80%A7%E9%93%BE%E6%8E%A5%EF%BC%89"><span class="nav-number">1.1.4.</span> <span class="nav-text">8. 固定关节（连接惯性链接）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E5%AE%9A%E4%B9%89%E8%BD%AE%E5%AD%90"><span class="nav-number">1.1.5.</span> <span class="nav-text">9. 定义轮子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E5%AE%9A%E4%B9%89%E5%AE%89%E8%A3%85%E7%BB%84%E4%BB%B6"><span class="nav-number">1.1.6.</span> <span class="nav-text">10. 定义安装组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E5%BC%95%E5%85%A5%E9%A2%9D%E5%A4%96%E7%9A%84URDF%E6%A8%A1%E5%9D%97"><span class="nav-number">1.1.7.</span> <span class="nav-text">11. 引入额外的URDF模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-Gazebo%E4%BB%BF%E7%9C%9F%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.8.</span> <span class="nav-text">12. Gazebo仿真定义</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.1%20%E6%9E%84%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="9.1构造机器人模型 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          9.1构造机器人模型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:49:54" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="9-1-构建机器人模型"><a href="#9-1-构建机器人模型" class="headerlink" title="9.1 构建机器人模型"></a>9.1 构建机器人模型</h1><h2 id="分析scout-ros功能包构成"><a href="#分析scout-ros功能包构成" class="headerlink" title="分析scout_ros功能包构成"></a>分析scout_ros功能包构成</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">├── launch</span><br><span class="line">│   ├── display_scout_mini.launch</span><br><span class="line">│   ├── display_scout_v2.launch</span><br><span class="line">│   ├── gazebo.launch</span><br><span class="line">│   ├── scout_mini_stock.launch</span><br><span class="line">│   └── scout_v2_stock.launch</span><br><span class="line">├── meshes</span><br><span class="line">│   ├── 1_Link.STL</span><br><span class="line">│   ├── 2_Link.STL</span><br><span class="line">│   ├── 3_Link.STL</span><br><span class="line">│   ├── 4_Link.STL</span><br><span class="line">│   ├── base_link.dae</span><br><span class="line">│   ├── scout_mini_base_link.dae</span><br><span class="line">│   ├── scout_mini_base_link.STL</span><br><span class="line">│   ├── wheel.dae</span><br><span class="line">│   ├── wheel_type1.dae</span><br><span class="line">│   └── wheel_type2.dae</span><br><span class="line">├── package.xml</span><br><span class="line">├── rviz</span><br><span class="line">│   ├── model_display.rviz</span><br><span class="line">│   ├── navigation.rviz</span><br><span class="line">│   └── scout_mini_model_display.rviz</span><br><span class="line">└── urdf</span><br><span class="line">    ├── empty.urdf</span><br><span class="line">    ├── scout_mini.gazebo</span><br><span class="line">    ├── scout_mini_laser.urdf.xacro</span><br><span class="line">    ├── scout_mini.urdf.xacro</span><br><span class="line">    ├── scout_mini_wheel.gazebo</span><br><span class="line">    ├── scout_mini_wheel.xacro</span><br><span class="line">    ├── scout_v2.gazebo</span><br><span class="line">    ├── scout_v2.xacro</span><br><span class="line">    ├── scout_wheel.gazebo</span><br><span class="line">    ├── scout_wheel_type1.xacro</span><br><span class="line">    └── scout_wheel_type2.xacro</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，主要需要使用的是laucn文件夹，其中display_scout_mini.launch用于启动带有机器人模型的rviz.如果需要增加传感器之类的模型，那么就需要在urdf文件中新建xacro文件。例如，我新建了一个名为scout_mini_laser.urdf.xacro文件。用于增加雷达组件。</p>
+<p>在增加雷达传感器之前，可以先看一下scout底盘的urdf文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">robot</span> <span class="attr">name</span>=<span class="string">&quot;mycar&quot;</span> <span class="attr">xmlns:xacro</span>=<span class="string">&quot;http://wiki.ros.org/xacro&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.01&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.15&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.03&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wheel_vertical_offset + base_z_size / 2 + support_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;support_length / 2 + laser_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;support&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;support_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;support_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;yellow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0.8 0.5 0.0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;support2base&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;base_link&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_support_x&#125; $&#123;joint_support_y&#125; $&#123;joint_support_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;laser&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;laser_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;laser_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;black&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0 0 0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;laser2support&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;laser&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_laser_x&#125; $&#123;joint_laser_y&#125; $&#123;joint_laser_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">robot</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>从中可以分析一下：</p>
+<hr>
+<h3 id="1-文件头部"><a href="#1-文件头部" class="headerlink" title="1. 文件头部"></a>1. 文件头部</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;robot name=&quot;scout_mini&quot; xmlns:xacro=&quot;http://ros.org/wiki/xacro&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这是一个XML声明，表示文件使用的是XML格式。</li>
+<li><code>&lt;robot name=&quot;scout_mini&quot;&gt;</code> 定义了机器人模型的名称为 <code>scout_mini</code>。</li>
+<li><code>xmlns:xacro=&quot;http://ros.org/wiki/xacro&quot;</code> 引入了Xacro命名空间，<code>xacro</code> 是一种XML宏语言，可以用来简化URDF文件的编写。</li>
+</ul>
+<h3 id="2-Xacro参数定义"><a href="#2-Xacro参数定义" class="headerlink" title="2. Xacro参数定义"></a>2. Xacro参数定义</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;xacro:arg name=&quot;robot_namespace&quot; default=&quot;/&quot; /&gt;</span><br><span class="line">&lt;xacro:arg name=&quot;urdf_extras&quot; default=&quot;empty.urdf&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><pre><code>&lt;xacro:arg&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">  定义了两个参数：</span><br><span class="line"></span><br><span class="line">  - `robot_namespace`，默认值是 `/`，表示机器人命名空间。</span><br><span class="line">  - `urdf_extras`，默认值是 `empty.urdf`，表示额外的URDF文件，可以通过此参数引入其他URDF模块。</span><br><span class="line"></span><br><span class="line">### 3. 引入其他Xacro文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini_wheel.xacro&quot; /&gt;
+</code></pre>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 通过 `&lt;xacro:include&gt;` 引入外部的Xacro文件。此处是将 `scout_mini_wheel.xacro` 文件包含进来，通常这是一个包含轮子模型的文件。</span><br><span class="line"></span><br><span class="line">### 4. 变量定义</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>xml&lt;xacro:property name&#x3D;”M_PI” value&#x3D;”3.14159”&#x2F;&gt;<br>&lt;xacro:property name&#x3D;”base_x_size” value&#x3D;”0.6200000” &#x2F;&gt;<br>&lt;xacro:property name&#x3D;”base_y_size” value&#x3D;”0.585000” &#x2F;&gt;<br>&lt;xacro:property name&#x3D;”base_z_size” value&#x3D;”0.235000” &#x2F;&gt;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 通过</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>  <a href="xacro:property">xacro:property</a><br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">  定义了多个常量或变量，用于后续的计算和引用。</span><br><span class="line"></span><br><span class="line">  - `M_PI` 定义了圆周率的值。</span><br><span class="line">  - `base_x_size`, `base_y_size`, `base_z_size` 分别定义了机器人底座的长度、宽度和高度。</span><br><span class="line"></span><br><span class="line">### 5. 机器人几何尺寸与轮子参数</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>xml&lt;xacro:property name&#x3D;”wheelbase” value&#x3D;”0.463951”&#x2F;&gt;<br>&lt;xacro:property name&#x3D;”track” value&#x3D;”0.416503”&#x2F;&gt;<br>&lt;xacro:property name&#x3D;”wheel_vertical_offset” value&#x3D;”-0.100998” &#x2F;&gt;</p>
+<p>&lt;xacro:property name&#x3D;”wheel_length” value&#x3D;”0.8e-01” &#x2F;&gt;<br>&lt;xacro:property name&#x3D;”wheel_radius” value&#x3D;”1.600e-01” &#x2F;&gt;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `wheelbase`：前后轮之间的距离。</span><br><span class="line">- `track`：左右轮之间的距离。</span><br><span class="line">- `wheel_vertical_offset`：轮子的垂直偏移。</span><br><span class="line">- `wheel_length`：轮子的长度。</span><br><span class="line">- `wheel_radius`：轮子的半径。</span><br><span class="line"></span><br><span class="line">### 6. 定义基本连接和物理属性</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>xml<link name="base_link"><br>    <visual><br>        <origin xyz="0 0 0" rpy="1.5707 0 -1.5707" /><br>        <geometry><br>            <mesh filename="package://scout_description/meshes/scout_mini_base_link.dae" /><br>        </geometry><br>    </visual><br>    <collision><br>        <origin xyz="0 0 0" rpy="1.5707 0 -1.5707" /><br>        <geometry><br>            <mesh filename="package://scout_description/meshes/scout_mini_base_link.dae" /><br>        </geometry><br>    </collision></p>
+</link>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- ```</span><br><span class="line">  &lt;link name=&quot;base_link&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+   
+
+<p>  定义了机器人底座（</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">base_link</span><br></pre></td></tr></table></figure>
+
+<p>  ）的连接。包含两部分：</p>
+<ul>
+<li><code>visual</code>：可视化模型，使用 <code>.dae</code> 格式的网格文件表示。</li>
+<li><code>collision</code>：碰撞模型，通常是一个简化的形状，用于物理仿真。</li>
+</ul>
+<h3 id="7-惯性参数"><a href="#7-惯性参数" class="headerlink" title="7. 惯性参数"></a>7. 惯性参数</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;link name=&quot;inertial_link&quot;&gt;</span><br><span class="line">    &lt;inertial&gt;</span><br><span class="line">        &lt;mass value=&quot;60&quot; /&gt;</span><br><span class="line">        &lt;origin xyz=&quot;0.0 0.0 0.0&quot; /&gt;</span><br><span class="line">        &lt;inertia ixx=&quot;2.288641&quot; ixy=&quot;0&quot; ixz=&quot;0&quot; iyy=&quot;5.103976&quot; iyz=&quot;0&quot; izz=&quot;3.431465&quot; /&gt;</span><br><span class="line">    &lt;/inertial&gt;</span><br><span class="line">&lt;/link&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>定义了机器人惯性信息（质量和惯性矩阵）。<ul>
+<li><code>mass</code>：质量（60单位）。</li>
+<li><code>inertia</code>：惯性矩阵的各个分量（<code>ixx</code>, <code>iyy</code>, <code>izz</code>等）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-固定关节（连接惯性链接）"><a href="#8-固定关节（连接惯性链接）" class="headerlink" title="8. 固定关节（连接惯性链接）"></a>8. 固定关节（连接惯性链接）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;joint name=&quot;inertial_joint&quot; type=&quot;fixed&quot;&gt;</span><br><span class="line">    &lt;origin xyz=&quot;0 0 0&quot; rpy=&quot;0 0 0&quot; /&gt;</span><br><span class="line">    &lt;parent link=&quot;base_link&quot; /&gt;</span><br><span class="line">    &lt;child link=&quot;inertial_link&quot; /&gt;</span><br><span class="line">&lt;/joint&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>定义了一个固定的关节（<code>fixed</code> 类型），将 <code>base_link</code> 和 <code>inertial_link</code> 连接起来，表明机器人底座和惯性组件是固定的。</li>
+</ul>
+<h3 id="9-定义轮子"><a href="#9-定义轮子" class="headerlink" title="9. 定义轮子"></a>9. 定义轮子</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;xacro:scout_mini_wheel wheel_prefix=&quot;front_right&quot;&gt;</span><br><span class="line">    &lt;origin xyz=&quot;$&#123;wheelbase/2&#125; $&#123;-track/2&#125; $&#123;wheel_vertical_offset&#125;&quot; rpy=&quot;1.57 0 0&quot; /&gt;</span><br><span class="line">&lt;/xacro:scout_mini_wheel&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;xacro:scout_mini_wheel&gt;</span><br></pre></td></tr></table></figure>
+
+<p>宏来创建四个轮子（前右、前左、后左、后右）。</p>
+<ul>
+<li>通过 <code>origin</code> 定义了每个轮子的位置（相对于机器人底座的位置），并且设置了轮子的方向（使用 <code>rpy</code>）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-定义安装组件"><a href="#10-定义安装组件" class="headerlink" title="10. 定义安装组件"></a>10. 定义安装组件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;link name=&quot;front_mount&quot; /&gt;</span><br><span class="line">&lt;joint name=&quot;front_mount_joint&quot; type=&quot;fixed&quot;&gt;</span><br><span class="line">    &lt;origin xyz=&quot;0.175 0 0.068999&quot; rpy=&quot;0 0 0&quot; /&gt;</span><br><span class="line">    &lt;parent link=&quot;base_link&quot; /&gt;</span><br><span class="line">    &lt;child link=&quot;front_mount&quot; /&gt;</span><br><span class="line">&lt;/joint&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>定义了机器人前方的一个安装组件，类似地，后方的组件也有类似的定义。它们通过固定关节与机器人底座连接。</li>
+</ul>
+<h3 id="11-引入额外的URDF模块"><a href="#11-引入额外的URDF模块" class="headerlink" title="11. 引入额外的URDF模块"></a>11. 引入额外的URDF模块</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;xacro:include filename=&quot;$(arg urdf_extras)&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根据参数 <code>urdf_extras</code> 引入额外的URDF文件。</li>
+</ul>
+<h3 id="12-Gazebo仿真定义"><a href="#12-Gazebo仿真定义" class="headerlink" title="12. Gazebo仿真定义"></a>12. Gazebo仿真定义</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini.gazebo&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>引入与Gazebo仿真相关的文件，通常是为了在Gazebo中进行物理仿真。</li>
+</ul>
+<p>所以说，想要增加一个雷达也很简单。</p>
+<p>新建scout_mini_laser.urdf.xacro文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">robot</span> <span class="attr">name</span>=<span class="string">&quot;mycar&quot;</span> <span class="attr">xmlns:xacro</span>=<span class="string">&quot;http://wiki.ros.org/xacro&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.01&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.15&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.03&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wheel_vertical_offset + base_z_size / 2 + support_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;support_length / 2 + laser_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;support&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;support_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;support_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;yellow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0.8 0.5 0.0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;support2base&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;base_link&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_support_x&#125; $&#123;joint_support_y&#125; $&#123;joint_support_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;laser&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;laser_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;laser_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;black&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0 0 0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;laser2support&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;laser&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_laser_x&#125; $&#123;joint_laser_y&#125; $&#123;joint_laser_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">robot</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这是赵虚左的文件，没有太多修改，主要改动是：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wheel_vertical_offset + base_z_size / 2 + support_length / 2&#125;&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>由于没有设计base_footprint 所以scout_mini底盘设了一个wheel_vertical_offset，弥补地面相对底盘的高度差，所以在写支柱对于底盘的高度差的时候，不仅要加上底盘的高度，还要加上这个补偿。</p>
+<p>至此写完了雷达的xacro文件。</p>
+<p>再修改一下 scout_mini_laser.urdf.xacro，找到最后面，增加一个：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Additional definitions --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:include</span> <span class="attr">filename</span>=<span class="string">&quot;$(arg urdf_extras)&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:include</span> <span class="attr">filename</span>=<span class="string">&quot;scout_mini_laser.urdf.xacro&quot;</span> /&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>大功告成。</p>
+<p>在终端运行一下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch scout_description display_scout_mini.launch</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E5%A2%9E%E5%8A%A0%E9%9B%B7%E8%BE%BE.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/06/11/9.3acml%E5%AE%9A%E4%BD%8D/" rel="prev" title="9.3 amcl定位">
+                  <i class="fa fa-angle-left"></i> 9.3 amcl定位
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/06/11/8.3%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90/" rel="next" title="8.3 传感器集成">
+                  8.3 传感器集成 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

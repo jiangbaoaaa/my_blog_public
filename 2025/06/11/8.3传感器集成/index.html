@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="8.3传感器集成整体配置 底盘：松灵scout mini(非omni)  工控机：Nuvo-7200VTC  激光雷达：镭神C16-151B  存在问题：  机器人启动时，需要逐一启动底盘控制、相机与激光雷达，操作冗余；  如果只是简单的启动这些节点，那么在 rviz 中显示时，会发现出现了TF转换异常，比如参考坐标系设置为odom时，雷达信息显示失败。     本节主要目的是将底盘、雷达相关节点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8.3 传感器集成">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/06/11/8.3%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="8.3传感器集成整体配置 底盘：松灵scout mini(非omni)  工控机：Nuvo-7200VTC  激光雷达：镭神C16-151B  存在问题：  机器人启动时，需要逐一启动底盘控制、相机与激光雷达，操作冗余；  如果只是简单的启动这些节点，那么在 rviz 中显示时，会发现出现了TF转换异常，比如参考坐标系设置为odom时，雷达信息显示失败。     本节主要目的是将底盘、雷达相关节点">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E9%9B%86%E6%88%90%E7%BB%84%E5%BB%BA.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/rviz%E8%A7%86%E5%9B%BE.png">
+<meta property="article:published_time" content="2025-06-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-11T06:49:12.568Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E9%9B%86%E6%88%90%E7%BB%84%E5%BB%BA.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/06/11/8.3%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/06/11/8.3%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90/","path":"2025/06/11/8.3传感器集成/","title":"8.3 传感器集成"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>8.3 传感器集成 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#8-3%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">8.3传感器集成</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">整体配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E6%BA%90%E7%A0%81"><span class="nav-number">1.1.1.</span> <span class="nav-text">合并源码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#launch%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">launch文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">坐标变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E6%98%BE%E7%A4%BA"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">结果显示</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/8.3%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="8.3 传感器集成 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          8.3 传感器集成
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:49:12" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">松灵机器人</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="8-3传感器集成"><a href="#8-3传感器集成" class="headerlink" title="8.3传感器集成"></a>8.3传感器集成</h1><h2 id="整体配置"><a href="#整体配置" class="headerlink" title="整体配置"></a>整体配置</h2><ol>
+<li><p>底盘：松灵scout mini(非omni)</p>
+</li>
+<li><p>工控机：Nuvo-7200VTC</p>
+</li>
+<li><p>激光雷达：镭神C16-151B</p>
+<hr>
+<p>存在问题：</p>
+<ol>
+<li><p>机器人启动时，需要逐一启动底盘控制、相机与激光雷达，操作冗余；</p>
+</li>
+<li><p>如果只是简单的启动这些节点，那么在 rviz 中显示时，会发现出现了TF转换异常，比如参考坐标系设置为odom时，雷达信息显示失败。</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>本节主要目的是将底盘、雷达相关节点启动，并且通过坐标变换实现机器人底盘与里程计、雷达的关联。</p>
+<h3 id="合并源码"><a href="#合并源码" class="headerlink" title="合并源码"></a>合并源码</h3><p>先把之前下好的底盘以及雷达的功能包放在同一个工作空间下，方便管理</p>
+<h4 id="launch文件"><a href="#launch文件" class="headerlink" title="launch文件"></a>launch文件</h4><p>新建功能包mycar_start：</p>
+<p><code>catkin_create_pkg mycar_start lslidar_msgs pointcloud_to_laserscan roscpp rospy scout_base scout_bringup scout_msgs std_msgs</code></p>
+<p>除了基本的<code>roscpp rospy std_msgs</code>，其余的均为需要启动的launch文件中的功能包名称</p>
+<p>功能包下创建launch文件夹，launch文件夹中新建launch文件，start_mycar.launch</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 机器人启动文件：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find lslidar_driver)/launch/start.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find pointcloud_to_laserscan)/launch/pointcloud_scan.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_bringup)/launch/scout_robot_base.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_bringup)/launch/scout_teleop_keyboard.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="坐标变换"><a href="#坐标变换" class="headerlink" title="坐标变换"></a>坐标变换</h4><p>如果启动时加载了机器人模型，且模型中设置的坐标系名称与机器人实体中设置的坐标系一致，那么可以不再添加坐标变换，因为机器人模型可以发布坐标变换信息，如果没有启动机器人模型，就需要自定义坐标变换实现了，继续新建launch文件，start_tf.launch</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 机器人启动文件：</span></span><br><span class="line"><span class="comment">        当不包含机器人模型时，需要发布坐标变换</span></span><br><span class="line"><span class="comment"> --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find mycar_start)/launch/start_mycar.launch&quot;</span> /&gt;</span>    </span><br><span class="line">    <span class="comment">&lt;!-- &lt;node name=&quot;camera2basefootprint&quot; pkg=&quot;tf2_ros&quot; type=&quot;static_transform_publisher&quot; args=&quot;0.08 0 0.1 0 0 0 /base_footprint /camera_link&quot;/&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">name</span>=<span class="string">&quot;rplidar2basefootprint&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;tf2_ros&quot;</span> <span class="attr">type</span>=<span class="string">&quot;static_transform_publisher&quot;</span> <span class="attr">args</span>=<span class="string">&quot;0 0 0.1 0 0 0 /base_link /laser&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>由于没有相机，所以没有添加相机的坐标变换。后续可以增加。</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p><strong>首先必须测试can通信！！！</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br></pre></td></tr></table></figure>
+
+<p>如果显示busy那就重新插拔一下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch mycar_start start_tf.launch </span><br></pre></td></tr></table></figure>
+
+<p>记得调节小车速度。</p>
+<p>打开rviz</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rviz</span><br></pre></td></tr></table></figure>
+
+<h4 id="结果显示"><a href="#结果显示" class="headerlink" title="结果显示"></a>结果显示</h4><p>在rviz中添加tf、pointcloud2插件，并通过键盘控制机器人运动，查看rviz中的显示结果:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E9%9B%86%E6%88%90%E7%BB%84%E5%BB%BA.png"></p>
+<p>可以看到小车雷达可以随着小车的移动来扫描</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/rviz%E8%A7%86%E5%9B%BE.png"></p>
+<p>至此，小车的集成大致完成。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/06/11/9.1%20%E6%9E%84%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A8%A1%E5%9E%8B/" rel="prev" title="9.1构造机器人模型">
+                  <i class="fa fa-angle-left"></i> 9.1构造机器人模型
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
