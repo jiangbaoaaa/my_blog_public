@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="2025.04.01 组会——前五章总结一、通信机制话题通信：话题通信是ROS中使用频率最高的一种通信模式，话题通信是基于发布订阅模式的，也即:一个节点发布消息，另一个节点订阅该消息。话题通信适用于不断更新的数据传输相关的应用场景。 1. 通信流程流程  编写发布方实现； 编写订阅方实现； 编辑配置文件； 编译并执行。  可以解耦和，即在不同平台通讯，只要话题一致，即可通讯。 2.话题通信自定义m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS前五章总结">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/05/11/2025.04.01%20%E7%BB%84%E4%BC%9A%E2%80%94%E2%80%94%E5%89%8D%E4%BA%94%E7%AB%A0%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="2025.04.01 组会——前五章总结一、通信机制话题通信：话题通信是ROS中使用频率最高的一种通信模式，话题通信是基于发布订阅模式的，也即:一个节点发布消息，另一个节点订阅该消息。话题通信适用于不断更新的数据传输相关的应用场景。 1. 通信流程流程  编写发布方实现； 编写订阅方实现； 编辑配置文件； 编译并执行。  可以解耦和，即在不同平台通讯，只要话题一致，即可通讯。 2.话题通信自定义m">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F.jpg">
+<meta property="og:image" content="http://www.autolabor.com.cn/book/ROSTutorials/assets/TF%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2.gif">
+<meta property="article:published_time" content="2025-05-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-11T07:18:31.770Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F.jpg">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/05/11/2025.04.01%20%E7%BB%84%E4%BC%9A%E2%80%94%E2%80%94%E5%89%8D%E4%BA%94%E7%AB%A0%E6%80%BB%E7%BB%93/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/05/11/2025.04.01%20%E7%BB%84%E4%BC%9A%E2%80%94%E2%80%94%E5%89%8D%E4%BA%94%E7%AB%A0%E6%80%BB%E7%BB%93/","path":"2025/05/11/2025.04.01 组会——前五章总结/","title":"ROS前五章总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ROS前五章总结 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2025-04-01-%E7%BB%84%E4%BC%9A%E2%80%94%E2%80%94%E5%89%8D%E4%BA%94%E7%AB%A0%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">2025.04.01 组会——前五章总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text">一、通信机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">话题通信：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">1. 通信流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E8%87%AA%E5%AE%9A%E4%B9%89msg"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">2.话题通信自定义msg</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E8%87%AA%E5%AE%9A%E4%B9%89msg%E8%B0%83%E7%94%A8"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">3.话题通信自定义msg调用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1"><span class="nav-number">1.1.2.</span> <span class="nav-text">服务通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B-1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">1.通信流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1%E8%87%AA%E5%AE%9A%E4%B9%89srv"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">2.服务通信自定义srv</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1%E8%87%AA%E5%AE%9A%E4%B9%89srv%E8%B0%83%E7%94%A8"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">3.服务通信自定义srv调用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.1.3.</span> <span class="nav-text">参数服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B-2"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">1.通信流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8F%82%E6%95%B0%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">2.参数操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6%E8%BF%9B%E9%98%B6"><span class="nav-number">1.2.</span> <span class="nav-text">二、通信机制进阶</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81ROS%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">三、ROS运行管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E5%8A%9F%E8%83%BD%E5%8C%85"><span class="nav-number">1.3.1.</span> <span class="nav-text">元功能包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#launch%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86ROS%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C"><span class="nav-number">1.3.2.</span> <span class="nav-text">launch文件管理ROS节点运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%E8%A6%86%E7%9B%96"><span class="nav-number">1.3.3.</span> <span class="nav-text">工作空间覆盖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8D%E7%A7%B0%E9%87%8D%E5%90%8D"><span class="nav-number">1.3.4.</span> <span class="nav-text">名称重名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%8A%82%E7%82%B9%E5%90%8D%E7%A7%B0%E9%87%8D%E5%90%8D"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">1.节点名称重名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%AF%9D%E9%A2%98%E5%90%8D%E7%A7%B0%E9%87%8D%E5%90%8D"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">2.话题名称重名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%8F%82%E6%95%B0%E5%90%8D%E7%A7%B0%E9%87%8D%E5%90%8D"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">3.参数名称重名</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROS%E5%88%86%E5%B8%83%E5%BC%8F%E9%80%9A%E4%BF%A1"><span class="nav-number">1.3.5.</span> <span class="nav-text">ROS分布式通信</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81ROS%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6"><span class="nav-number">1.4.</span> <span class="nav-text">四、ROS常用组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="nav-number">1.4.1.</span> <span class="nav-text">TF坐标变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%9D%99%E6%80%81%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">1.静态坐标变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8A%A8%E6%80%81%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">2.动态坐标变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%A4%9A%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">3.多坐标变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%AE%9E%E7%8E%B0%E4%B9%8C%E9%BE%9F%E8%B7%9F%E9%9A%8F%E5%AE%9E%E6%93%8D"><span class="nav-number">1.4.1.4.</span> <span class="nav-text">4. 实现乌龟跟随实操</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rosbag"><span class="nav-number">1.4.2.</span> <span class="nav-text">rosbag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rqt%E5%B7%A5%E5%85%B7%E7%AE%B1"><span class="nav-number">1.4.3.</span> <span class="nav-text">rqt工具箱</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Do not Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/11/2025.04.01%20%E7%BB%84%E4%BC%9A%E2%80%94%E2%80%94%E5%89%8D%E4%BA%94%E7%AB%A0%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ROS前五章总结 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS前五章总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-05-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-05-11T00:00:00+08:00">2025-05-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-11 15:18:31" itemprop="dateModified" datetime="2025-06-11T15:18:31+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/" itemprop="url" rel="index"><span itemprop="name">组会汇报</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="2025-04-01-组会——前五章总结"><a href="#2025-04-01-组会——前五章总结" class="headerlink" title="2025.04.01 组会——前五章总结"></a>2025.04.01 组会——前五章总结</h1><h2 id="一、通信机制"><a href="#一、通信机制" class="headerlink" title="一、通信机制"></a>一、通信机制</h2><h3 id="话题通信："><a href="#话题通信：" class="headerlink" title="话题通信："></a>话题通信：</h3><p>话题通信是ROS中使用频率最高的一种通信模式，话题通信是基于<strong>发布订阅</strong>模式的，也即:一个节点发布消息，另一个节点订阅该消息。话题通信适用于不断更新的数据传输相关的应用场景。</p>
+<h4 id="1-通信流程"><a href="#1-通信流程" class="headerlink" title="1. 通信流程"></a>1. 通信流程</h4><p><strong>流程</strong></p>
+<ol>
+<li>编写发布方实现；</li>
+<li>编写订阅方实现；</li>
+<li>编辑配置文件；</li>
+<li>编译并执行。</li>
+</ol>
+<p>可以解耦和，即在不同平台通讯，只要话题一致，即可通讯。</p>
+<h4 id="2-话题通信自定义msg"><a href="#2-话题通信自定义msg" class="headerlink" title="2.话题通信自定义msg"></a>2.话题通信自定义msg</h4><p><strong>流程:</strong></p>
+<ol>
+<li>按照固定格式创建 msg 文件</li>
+<li>编辑配置文件</li>
+<li>编译生成可以被 Python 或 C++ 调用的中间文件</li>
+</ol>
+<p><strong>类似于在ROS中新建了一个类，可以简化节点的数据交换</strong></p>
+<h4 id="3-话题通信自定义msg调用"><a href="#3-话题通信自定义msg调用" class="headerlink" title="3.话题通信自定义msg调用"></a>3.话题通信自定义msg调用</h4><hr>
+<h3 id="服务通信"><a href="#服务通信" class="headerlink" title="服务通信"></a>服务通信</h3><p>服务通信也是ROS中一种极其常用的通信模式，服务通信是基于请求响应模式的，是一种应答机制。也即: 一个节点A向另一个节点B发送请求，B接收处理请求并产生响应结果返回给A。</p>
+<h4 id="1-通信流程-1"><a href="#1-通信流程-1" class="headerlink" title="1.通信流程"></a>1.通信流程</h4><p><strong>流程</strong></p>
+<ol>
+<li>Server注册</li>
+<li>Client注册</li>
+<li>ROS Master实现信息匹配</li>
+<li>Client发送请求</li>
+<li>Server发送响应</li>
+</ol>
+<hr>
+<h4 id="2-服务通信自定义srv"><a href="#2-服务通信自定义srv" class="headerlink" title="2.服务通信自定义srv"></a>2.服务通信自定义srv</h4><p>与msg文件一致，srv文件也需要自定义。与msg文件实现流程类似。</p>
+<ol>
+<li>按照固定格式创建srv文件</li>
+<li>编辑配置文件</li>
+<li>编译生成中间文件</li>
+</ol>
+<h4 id="3-服务通信自定义srv调用"><a href="#3-服务通信自定义srv调用" class="headerlink" title="3.服务通信自定义srv调用"></a>3.服务通信自定义srv调用</h4><p><strong>流程</strong>：</p>
+<ol>
+<li>编写服务端实现；</li>
+<li>编写客户端实现；</li>
+<li>编辑配置文件；</li>
+<li>编译并执行。</li>
+</ol>
+<hr>
+<h3 id="参数服务器"><a href="#参数服务器" class="headerlink" title="参数服务器"></a>参数服务器</h3><p>参数服务器在ROS中主要用于实现不同节点之间的<strong>数据共享</strong>。参数服务器相当于是独立于所有节点的一个<strong>公共容器</strong>，可以将数据<strong>存储</strong>在该容器中，被不同的节点调用，当然不同的节点也可以往其中存储数据。</p>
+<h4 id="1-通信流程-2"><a href="#1-通信流程-2" class="headerlink" title="1.通信流程"></a>1.通信流程</h4><p><strong>流程：</strong></p>
+<ol>
+<li>Talker设置参数</li>
+<li>Listener参数获取</li>
+<li>ROS Master 向Listener发送参数值</li>
+</ol>
+<h4 id="2-参数操作"><a href="#2-参数操作" class="headerlink" title="2.参数操作"></a>2.参数操作</h4><p>增删改查</p>
+<hr>
+<h2 id="二、通信机制进阶"><a href="#二、通信机制进阶" class="headerlink" title="二、通信机制进阶"></a>二、通信机制进阶</h2><p>详细介绍各种常用的API</p>
+<p>如初始化、回旋函数（用于处理回调函数）、时间、、、、、、</p>
+<hr>
+<h2 id="三、ROS运行管理"><a href="#三、ROS运行管理" class="headerlink" title="三、ROS运行管理"></a>三、ROS运行管理</h2><h3 id="元功能包"><a href="#元功能包" class="headerlink" title="元功能包"></a>元功能包</h3><p>在ROS中，提供了一种方式可以将不同的功能包打包成一个功能包，当安装某个功能模块时，直接调用打包后的功能包即可，该包又称之为<strong>元功能包(metapackage)</strong>。</p>
+<h3 id="launch文件管理ROS节点运行"><a href="#launch文件管理ROS节点运行" class="headerlink" title="launch文件管理ROS节点运行"></a>launch文件管理ROS节点运行</h3><p>launch 文件是一个 XML 格式的文件，可以启动本地和远程的多个节点，还可以在参数服务器中设置参数。</p>
+<p><strong>流程：</strong></p>
+<ol>
+<li>新建launch文件</li>
+<li>调用launch文件</li>
+</ol>
+<hr>
+<p>launch文件中有很多实用的文件标签</p>
+<p>例如launch文件中的remap，可以不直接修改节点代码的情况下，修改节点话题名称。</p>
+<p>arg可以实现动态传参，增强launch文件的灵活性。</p>
+<hr>
+<h3 id="工作空间覆盖"><a href="#工作空间覆盖" class="headerlink" title="工作空间覆盖"></a>工作空间覆盖</h3><p>当不同工作空间中存在重名的功能包的情况时，就会出现工作空间覆盖。</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F.jpg"></p>
+<p>系统会默认在配置的环境中查找最先配置的功能包。</p>
+<hr>
+<h3 id="名称重名"><a href="#名称重名" class="headerlink" title="名称重名"></a>名称重名</h3><h4 id="1-节点名称重名"><a href="#1-节点名称重名" class="headerlink" title="1.节点名称重名"></a>1.节点名称重名</h4><p><strong>策略：</strong></p>
+<ol>
+<li>命名空间（添加前缀）</li>
+<li>名称重映射（起别名）</li>
+</ol>
+<p><strong>途径：</strong></p>
+<ol>
+<li>rosrun命令行</li>
+<li>launch文件</li>
+<li>编码实现</li>
+</ol>
+<hr>
+<h4 id="2-话题名称重名"><a href="#2-话题名称重名" class="headerlink" title="2.话题名称重名"></a>2.话题名称重名</h4><p>与节点名称重名解决策略类似，但是根据前缀不同，可以分为三种</p>
+<ul>
+<li>全局(参数名称直接参考ROS系统，与节点命名空间平级)</li>
+<li>相对(参数名称参考的是节点的命名空间，与节点名称平级)</li>
+<li>私有(参数名称参考节点名称，是节点名称的子级)</li>
+</ul>
+<hr>
+<h4 id="3-参数名称重名"><a href="#3-参数名称重名" class="headerlink" title="3.参数名称重名"></a>3.参数名称重名</h4><p>关于参数重名的处理，没有重映射实现，为了尽量的避免参数重名，都是使用<strong>为参数名添加前缀</strong>的方式，实现类似于话题名称，有全局、相对、和私有三种类型之分。</p>
+<ul>
+<li>全局(参数名称直接参考ROS系统，与节点命名空间平级)</li>
+<li>相对(参数名称参考的是节点的命名空间，与节点名称平级)</li>
+<li>私有(参数名称参考节点名称，是节点名称的子级)</li>
+</ul>
+<p>同样有三种实现方式</p>
+<hr>
+<h3 id="ROS分布式通信"><a href="#ROS分布式通信" class="headerlink" title="ROS分布式通信"></a>ROS分布式通信</h3><p>ROS是一个分布式计算环境。一个运行中的ROS系统可以包含分布在多台计算机上多个节点。根据系统的配置方式，任何节点可能随时需要与任何其他节点进行通信。暂时用不到。</p>
+<hr>
+<h2 id="四、ROS常用组件"><a href="#四、ROS常用组件" class="headerlink" title="四、ROS常用组件"></a>四、ROS常用组件</h2><h3 id="TF坐标变换"><a href="#TF坐标变换" class="headerlink" title="TF坐标变换"></a>TF坐标变换</h3><p><strong>TF</strong>（Transform）是一个用于描述不同坐标系之间关系的框架，能够在机器人系统中管理和计算坐标系的变换。通过TF，可以动态地获取不同坐标系之间的变换信息。TF的核心概念是将不同坐标系（比如机器人底盘坐标系、传感器坐标系等）之间的空间关系表示出来，以便在机器人各个模块间进行精确的数据传递和转换。</p>
+<h4 id="1-静态坐标变换"><a href="#1-静态坐标变换" class="headerlink" title="1.静态坐标变换"></a>1.静态坐标变换</h4><p><strong>实现分析</strong></p>
+<ol>
+<li>坐标系相对关系，可以通过发布方发布</li>
+<li>订阅方订阅到发布的坐标系相对关系，再传入坐标点信息，可以实现坐标的变换，得到坐标点相对于世界坐标系的坐标。</li>
+</ol>
+<p><strong>实现流程</strong></p>
+<ol>
+<li>编写发布方实现，发布两个坐标系的相对关系</li>
+<li>编写订阅方实现，订阅坐标信息，生成一个相对于子集坐标系的坐标点数据，转换成父级坐标系中的坐标点</li>
+</ol>
+<hr>
+<h4 id="2-动态坐标变换"><a href="#2-动态坐标变换" class="headerlink" title="2.动态坐标变换"></a>2.动态坐标变换</h4><p>动态坐标变换，是指两个坐标系之间的相对位置是变化的。</p>
+<p><strong>实现分析：</strong></p>
+<ol>
+<li>乌龟本身不但可以看成坐标系，还可以看成世界坐标系的一个坐标点</li>
+<li>订阅乌龟位姿，可以获取乌龟相对世界坐标系的xyz坐标、偏移量、线速度、角速度</li>
+<li><strong>将位姿信息转换成坐标系相对信息并且发布</strong></li>
+</ol>
+<p><strong>实现流程：</strong></p>
+<ol>
+<li>发布方实现，获取位姿信息，转换成坐标系相对关系，创建订阅对象，使用回调函数处理订阅的数据，使用TF发布数据</li>
+<li>订阅方实现，创建TF订阅节点，生成一个相对于子集坐标系的坐标点，利用上一节静态的实现，可以转换为相对于父级坐标系的坐标。</li>
+</ol>
+<hr>
+<h4 id="3-多坐标变换"><a href="#3-多坐标变换" class="headerlink" title="3.多坐标变换"></a>3.多坐标变换</h4><p>已知两个子集坐标系相对于父级坐标系的相对位置关系，可以求得其中一个子集坐标系中的点在另一个子集坐标系中的坐标。</p>
+<p><strong>实现分析：</strong></p>
+<ol>
+<li>首先，需要发布son1&#x2F;son2相当于world的坐标信息</li>
+<li>然后，订阅坐标发布信息，获取订阅的信息，实现两坐标系之间的转换</li>
+<li>最后，实现坐标点的转换</li>
+</ol>
+<p><strong>实现流程：</strong></p>
+<ol>
+<li>发布方使用静态坐标发布节点，发布两个静态子级坐标系相对于父级坐标系的相对关系（使用launch文件快速发布）</li>
+<li>订阅方实现，创建一个TF订阅对象，解析son1相对于son2的相对关系，发布son1中的某个点，计算son1中的点在son2中的坐标。</li>
+</ol>
+<hr>
+<h4 id="4-实现乌龟跟随实操"><a href="#4-实现乌龟跟随实操" class="headerlink" title="4. 实现乌龟跟随实操"></a>4. 实现乌龟跟随实操</h4><p><img src="http://www.autolabor.com.cn/book/ROSTutorials/assets/TF%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2.gif" alt="img"></p>
+<p><strong>实现分析：</strong></p>
+<p>两个乌龟都要发布相对于世界坐标系的坐标信息，订阅到该信息转换成A相对于B的信息，最后生成速度信息，控制B运动。</p>
+<ol>
+<li>启动乌龟显示节点</li>
+<li>生成两只乌龟（之前服务通信时候的示例）</li>
+<li>编写发布方，实现两个乌龟节点位姿信息的订阅，再转换成坐标信息，需要启动两次节点，可以使用传参的形式。相当于启动两次动态坐标变换节点。</li>
+<li>编写订阅方，实现订阅两只乌龟的TF广播信息，找到最近的信息，获取A相对于B的坐标信息，根据坐标信息生成速度信息，再发布速度信息。</li>
+<li>运行，使用launch文件启动多个需要运行的节点。</li>
+</ol>
+<h3 id="rosbag"><a href="#rosbag" class="headerlink" title="rosbag"></a>rosbag</h3><p>提供数据的留存和读取。rosbag本质也是ros的节点，当录制时，rosbag是一个订阅节点，可以订阅话题消息并将订阅到的数据写入磁盘文件；当重放时，rosbag是一个发布节点，可以读取磁盘文件，发布文件中的话题消息。</p>
+<hr>
+<h3 id="rqt工具箱"><a href="#rqt工具箱" class="headerlink" title="rqt工具箱"></a>rqt工具箱</h3><p>可视化工具，可以将之前的工作进行可视化操作。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/05/20/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAScout-mini%E4%BD%BF%E7%94%A8Ros%E4%BE%8B%E7%A8%8B/" rel="next" title="松灵机器人Scout-mini使用Ros例程">
+                  松灵机器人Scout-mini使用Ros例程 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
