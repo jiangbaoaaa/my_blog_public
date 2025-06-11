@@ -166,151 +166,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/20/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAScout-mini%E4%BD%BF%E7%94%A8Ros%E4%BE%8B%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/05/20/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAScout-mini%E4%BD%BF%E7%94%A8Ros%E4%BE%8B%E7%A8%8B/" class="post-title-link" itemprop="url">松灵机器人Scout-mini使用Ros例程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2025-05-20 00:00:00 / 修改时间：20:44:00" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">松灵机器人</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="松灵机器人Scout-mini使用Ros例程"><a href="#松灵机器人Scout-mini使用Ros例程" class="headerlink" title="松灵机器人Scout-mini使用Ros例程"></a>松灵机器人Scout-mini使用Ros例程</h1><p>工控机配置：</p>
-<p>Ubuntu :18.04</p>
-<p>Ros:Melodic</p>
-<h2 id="硬件连接"><a href="#硬件连接" class="headerlink" title="硬件连接"></a>硬件连接</h2><p>小车上弄好了，把usb插头插上就能用了</p>
-<p>附上官方使用文档</p>
-<p>参考这个链接：</p>
-<p><a target="_blank" rel="noopener" href="https://new.agilex.ai/raw/upload/20230718/SCOUT%20MINI%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C20230718_74957.pdf">https://new.agilex.ai/raw/upload/20230718/SCOUT%20MINI%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C20230718_74957.pdf</a></p>
-<p>把小车电源打开，使用gs_usb kernel模块，系统开机运行过一次即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> modprobe gs_usb</span><br></pre></td></tr></table></figure>
-
-<p>然后，我们使用命令使能can_to_sub，并设置通信的波特率为500K。每次重新将CAN_TO_USB连接到电脑端口都需要运行一次下面的命令，如果显示Connection time out就插拔一下USB。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装依赖包</span></span><br><span class="line"><span class="built_in">sudo</span> apt install can-utils</span><br><span class="line"><span class="comment"># 连接</span></span><br><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br></pre></td></tr></table></figure>
-
-<p>之后，查看一下can总线是否连接到电脑。如下图可见，我的电脑成功识别到了一个 叫can0的设备。如果上一步出错，也可以运行这个指令看看是否连接成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br></pre></td></tr></table></figure>
-
-<p>![2025-05-20 18-19-43 的屏幕截图](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-19-43 的屏幕截图.png)</p>
-<p>接着可以监听来自scout mini的数据</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 监听scout mini的运动数据</span></span><br><span class="line">candump can0</span><br></pre></td></tr></table></figure>
-
-<p>这一步输入后，命令行将持续输出一堆<strong>字符串</strong>，我们可以通过遥控器控制小车底盘的运动，这样传回的数据将会相应的变化。我们把<strong>拨杆SWB掰到中间位置(他有三个位置)，就可以控制scout_mini的运动了。SWB默认位置，我们可以通过Ros程序控制底盘运动</strong>；SWB中间位置，可以通过遥控器控制底盘运动；SWB第三个位置，两种控制模式都失效。具体的在刚才那个手册里面有详细介绍。所以现在应该把拨片放在最上面。</p>
-<h2 id="ROS功能包下载"><a href="#ROS功能包下载" class="headerlink" title="ROS功能包下载"></a>ROS功能包下载</h2><p>首先，需要安装一些依赖，需要根据自己的Ros版本更改对应的命令，我的为<strong>melodic</strong>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需要根据自己的ros版本更改</span></span><br><span class="line"><span class="built_in">sudo</span> apt install ros-melodic-controller-manager</span><br><span class="line"><span class="built_in">sudo</span> apt install ros-melodic-joint-state-publisher-gui </span><br><span class="line"><span class="built_in">sudo</span> apt install -y libasio-dev</span><br></pre></td></tr></table></figure>
-
-<p>然后，将代码包下载到创建的工作空间下的src目录，我这里放到了自行创建的功能包scout_ws下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p scout_ws/src</span><br><span class="line"><span class="built_in">cd</span> scout_ws/</span><br><span class="line">catkin_make</span><br></pre></td></tr></table></figure>
-
-<p>这是ROS基础知识,不再赘述。</p>
-<p>Ros功能包这里，我们只需下载两个功能包，其一为必须的 <strong>ugv_sdk</strong> ，其二为 scout_ros 。第二个功能包需要根据自己的小车型号而定。（官网文档默认下载scout_ros）。</p>
-<p>官方链接在这：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/agilexrobotics">https://github.com/agilexrobotics</a></p>
-<p>可以自己寻找。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载代码</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/src/</span><br><span class="line"><span class="comment"># 这个都一样，底盘驱动的sdk</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/agilexrobotics/ugv_sdk.git  --recursive</span><br><span class="line"><span class="comment"># 下载自己需要的功能包（去github上面找）</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/agilexrobotics/scout_ros.git</span><br></pre></td></tr></table></figure>
-
-<p>编译一下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/scout_ws/</span><br><span class="line">catkin_make</span><br><span class="line"><span class="built_in">source</span> devel/setup.bash</span><br></pre></td></tr></table></figure>
-
-<h2 id="键盘控制"><a href="#键盘控制" class="headerlink" title="键盘控制"></a>键盘控制</h2><p>这里简记一下使用官方提供的Ros例程，既使用键盘控制scout_mini运动的过程。我们<strong>要使用电脑控制scout_mini底盘的运动，需要将遥控器上的SWB切换为默认位置</strong>。<strong>当出现紧急情况，将SWB切换到其他位置，可以实现控制小车急停的效果</strong>。SWB默认位置，我们可以通过Ros程序控制底盘运动；SWB中间位置，可以通过遥控器控制底盘运动；SWB第三个位置，两种控制模式都失效。</p>
-<p>需要下载 teleop_twist_keyboard 功能包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-melodic-teleop-twist-keyboard</span><br></pre></td></tr></table></figure>
-
-<p>连接电脑USB，开启scout_mini电源：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1）连接设备</span></span><br><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br><span class="line"><span class="comment"># 2）测试：接收数据</span></span><br><span class="line">candump can0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3）运行小车底盘的ros节点 base</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/    <span class="comment"># 这里得是自己的工作空间目录</span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch scout_bringup scout_robot_base.launch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4）运行键盘控制节点 Launch ROS nodes</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/    <span class="comment"># 这里得是自己的工作空间目录</span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch scout_bringup scout_teleop_keyboard.launch</span><br></pre></td></tr></table></figure>
-
-<p>在此之前，先熟悉一下键盘控制节点：</p>
-<p>![](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-35-11 的屏幕截图.png)</p>
-<ul>
-<li><p>ｉ／，：控制小车直行 or 后退</p>
-</li>
-<li><p>ｋ：停止运动（使用ctrl + z，效果相同）</p>
-</li>
-<li><p>ｊ／ｌ：控制小车逆时针 or 顺时针旋转</p>
-</li>
-<li><p>ｕ／ｏ：控制小车左转 or 右转</p>
-</li>
-<li><p>m／. ：控制小车左后 or 右后倒车</p>
-</li>
-<li><p>q &#x2F; z :控制小车增加&#x2F;减少速度的10%</p>
-</li>
-<li><p>w&#x2F;x:增加&#x2F;减少线速度的10%</p>
-</li>
-<li><p>e&#x2F;c: 增加&#x2F;减少角速度的10%</p>
-</li>
-</ul>
-<p>![](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-38-41 的屏幕截图.png)</p>
-<p>所以应该事先减速，要不然这个车快的起飞。</p>
-<p>之后，就可以直接把鼠标放在键盘上操纵小车了，如果失控，记得及时使用<strong>遥控器将SWB拨至最小面</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/20/8.1%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -339,9 +194,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-05-20 00:00:00 / 修改时间：20:41:26" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
+      <time title="创建时间：2025-05-20 00:00:00" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-11 10:57:26" itemprop="dateModified" datetime="2025-06-11T10:57:26+08:00">2025-06-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -498,6 +359,151 @@
 <p>以后再登陆树莓派就无需录入密码了。</p>
 <p>以后登陆只需要输入：</p>
 <p><code>ssh &#39;robot@192.168.3.127&#39;</code>即可登陆</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/20/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAScout-mini%E4%BD%BF%E7%94%A8Ros%E4%BE%8B%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/20/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAScout-mini%E4%BD%BF%E7%94%A8Ros%E4%BE%8B%E7%A8%8B/" class="post-title-link" itemprop="url">松灵机器人Scout-mini使用Ros例程</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-05-20 00:00:00 / 修改时间：20:44:00" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">松灵机器人</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="松灵机器人Scout-mini使用Ros例程"><a href="#松灵机器人Scout-mini使用Ros例程" class="headerlink" title="松灵机器人Scout-mini使用Ros例程"></a>松灵机器人Scout-mini使用Ros例程</h1><p>工控机配置：</p>
+<p>Ubuntu :18.04</p>
+<p>Ros:Melodic</p>
+<h2 id="硬件连接"><a href="#硬件连接" class="headerlink" title="硬件连接"></a>硬件连接</h2><p>小车上弄好了，把usb插头插上就能用了</p>
+<p>附上官方使用文档</p>
+<p>参考这个链接：</p>
+<p><a target="_blank" rel="noopener" href="https://new.agilex.ai/raw/upload/20230718/SCOUT%20MINI%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C20230718_74957.pdf">https://new.agilex.ai/raw/upload/20230718/SCOUT%20MINI%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C20230718_74957.pdf</a></p>
+<p>把小车电源打开，使用gs_usb kernel模块，系统开机运行过一次即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> modprobe gs_usb</span><br></pre></td></tr></table></figure>
+
+<p>然后，我们使用命令使能can_to_sub，并设置通信的波特率为500K。每次重新将CAN_TO_USB连接到电脑端口都需要运行一次下面的命令，如果显示Connection time out就插拔一下USB。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装依赖包</span></span><br><span class="line"><span class="built_in">sudo</span> apt install can-utils</span><br><span class="line"><span class="comment"># 连接</span></span><br><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br></pre></td></tr></table></figure>
+
+<p>之后，查看一下can总线是否连接到电脑。如下图可见，我的电脑成功识别到了一个 叫can0的设备。如果上一步出错，也可以运行这个指令看看是否连接成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br></pre></td></tr></table></figure>
+
+<p>![2025-05-20 18-19-43 的屏幕截图](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-19-43 的屏幕截图.png)</p>
+<p>接着可以监听来自scout mini的数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 监听scout mini的运动数据</span></span><br><span class="line">candump can0</span><br></pre></td></tr></table></figure>
+
+<p>这一步输入后，命令行将持续输出一堆<strong>字符串</strong>，我们可以通过遥控器控制小车底盘的运动，这样传回的数据将会相应的变化。我们把<strong>拨杆SWB掰到中间位置(他有三个位置)，就可以控制scout_mini的运动了。SWB默认位置，我们可以通过Ros程序控制底盘运动</strong>；SWB中间位置，可以通过遥控器控制底盘运动；SWB第三个位置，两种控制模式都失效。具体的在刚才那个手册里面有详细介绍。所以现在应该把拨片放在最上面。</p>
+<h2 id="ROS功能包下载"><a href="#ROS功能包下载" class="headerlink" title="ROS功能包下载"></a>ROS功能包下载</h2><p>首先，需要安装一些依赖，需要根据自己的Ros版本更改对应的命令，我的为<strong>melodic</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需要根据自己的ros版本更改</span></span><br><span class="line"><span class="built_in">sudo</span> apt install ros-melodic-controller-manager</span><br><span class="line"><span class="built_in">sudo</span> apt install ros-melodic-joint-state-publisher-gui </span><br><span class="line"><span class="built_in">sudo</span> apt install -y libasio-dev</span><br></pre></td></tr></table></figure>
+
+<p>然后，将代码包下载到创建的工作空间下的src目录，我这里放到了自行创建的功能包scout_ws下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p scout_ws/src</span><br><span class="line"><span class="built_in">cd</span> scout_ws/</span><br><span class="line">catkin_make</span><br></pre></td></tr></table></figure>
+
+<p>这是ROS基础知识,不再赘述。</p>
+<p>Ros功能包这里，我们只需下载两个功能包，其一为必须的 <strong>ugv_sdk</strong> ，其二为 scout_ros 。第二个功能包需要根据自己的小车型号而定。（官网文档默认下载scout_ros）。</p>
+<p>官方链接在这：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/agilexrobotics">https://github.com/agilexrobotics</a></p>
+<p>可以自己寻找。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载代码</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/src/</span><br><span class="line"><span class="comment"># 这个都一样，底盘驱动的sdk</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/agilexrobotics/ugv_sdk.git  --recursive</span><br><span class="line"><span class="comment"># 下载自己需要的功能包（去github上面找）</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/agilexrobotics/scout_ros.git</span><br></pre></td></tr></table></figure>
+
+<p>编译一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/scout_ws/</span><br><span class="line">catkin_make</span><br><span class="line"><span class="built_in">source</span> devel/setup.bash</span><br></pre></td></tr></table></figure>
+
+<h2 id="键盘控制"><a href="#键盘控制" class="headerlink" title="键盘控制"></a>键盘控制</h2><p>这里简记一下使用官方提供的Ros例程，既使用键盘控制scout_mini运动的过程。我们<strong>要使用电脑控制scout_mini底盘的运动，需要将遥控器上的SWB切换为默认位置</strong>。<strong>当出现紧急情况，将SWB切换到其他位置，可以实现控制小车急停的效果</strong>。SWB默认位置，我们可以通过Ros程序控制底盘运动；SWB中间位置，可以通过遥控器控制底盘运动；SWB第三个位置，两种控制模式都失效。</p>
+<p>需要下载 teleop_twist_keyboard 功能包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-melodic-teleop-twist-keyboard</span><br></pre></td></tr></table></figure>
+
+<p>连接电脑USB，开启scout_mini电源：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1）连接设备</span></span><br><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br><span class="line"><span class="comment"># 2）测试：接收数据</span></span><br><span class="line">candump can0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3）运行小车底盘的ros节点 base</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/    <span class="comment"># 这里得是自己的工作空间目录</span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch scout_bringup scout_robot_base.launch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4）运行键盘控制节点 Launch ROS nodes</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/    <span class="comment"># 这里得是自己的工作空间目录</span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch scout_bringup scout_teleop_keyboard.launch</span><br></pre></td></tr></table></figure>
+
+<p>在此之前，先熟悉一下键盘控制节点：</p>
+<p>![](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-35-11 的屏幕截图.png)</p>
+<ul>
+<li><p>ｉ／，：控制小车直行 or 后退</p>
+</li>
+<li><p>ｋ：停止运动（使用ctrl + z，效果相同）</p>
+</li>
+<li><p>ｊ／ｌ：控制小车逆时针 or 顺时针旋转</p>
+</li>
+<li><p>ｕ／ｏ：控制小车左转 or 右转</p>
+</li>
+<li><p>m／. ：控制小车左后 or 右后倒车</p>
+</li>
+<li><p>q &#x2F; z :控制小车增加&#x2F;减少速度的10%</p>
+</li>
+<li><p>w&#x2F;x:增加&#x2F;减少线速度的10%</p>
+</li>
+<li><p>e&#x2F;c: 增加&#x2F;减少角速度的10%</p>
+</li>
+</ul>
+<p>![](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-38-41 的屏幕截图.png)</p>
+<p>所以应该事先减速，要不然这个车快的起飞。</p>
+<p>之后，就可以直接把鼠标放在键盘上操纵小车了，如果失控，记得及时使用<strong>遥控器将SWB拨至最小面</strong>。</p>
 
       
     </div>
