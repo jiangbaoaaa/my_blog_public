@@ -122,7 +122,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,6 +166,466 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/23/nav%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/23/nav%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98/" class="post-title-link" itemprop="url">nav参数调优</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-06-23 00:00:00 / 修改时间：15:23:43" itemprop="dateCreated datePublished" datetime="2025-06-23T00:00:00+08:00">2025-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="nav参数调优"><a href="#nav参数调优" class="headerlink" title="nav参数调优"></a>nav参数调优</h1><h2 id="速度和加速度"><a href="#速度和加速度" class="headerlink" title="速度和加速度"></a>速度和加速度</h2><p>在ROS导航堆栈中，本地路径规划器（local planner）接收里程计消息（Odom）,并且输出控制机器人运动的速度命令（cmd_vel)</p>
+<h2 id="Global-planner-全局路径规划器"><a href="#Global-planner-全局路径规划器" class="headerlink" title="Global_planner(全局路径规划器)"></a>Global_planner(全局路径规划器)</h2><p>在navigation stack 中使用move_base节点，需要：</p>
+<ul>
+<li>global_planner</li>
+<li>local_planner</li>
+</ul>
+<p>共有三个global_planner</p>
+<ul>
+<li>carrot_planner</li>
+<li>navfn</li>
+<li>global_planner</li>
+</ul>
+<hr>
+<ol>
+<li>carrot_planner</li>
+</ol>
+<p>这是最简单的一个，检查给定目标是否是障碍物，如果是，会通过沿着机器人和目标点之间的向量移动，选择接近原始目标的替代目标。它的目标是不断更新目标点并控制机器人朝着该点前进。在机器人到达当前目标点后，新的目标点会被设置，直到机器人到达最终目标。</p>
+<ol start="2">
+<li>navfn和global_planner</li>
+</ol>
+<p>navfn的核心思想是通过A算法进行路径搜索，并使用Dijkstra*算法的思想来计算每个栅格的代价。具体来说：</p>
+<ol>
+<li><p>栅格地图：navfn依赖于一个2D栅格地图，在该地图中，障碍物被标记为不可通过的区域。</p>
+</li>
+<li><p>代价计算：每个栅格都有一个代价值，navfn通过对整个地图的每个栅格进行代价计算，找到从起始点到目标点的最短路径。</p>
+</li>
+<li><p>. A*算法：它基于A算法来找到最佳路径。A算法综合考虑了路径的代价和启发式的距离，从而确保找到最优的路径。</p>
+</li>
+<li><p>路径输出：通过计算，navfn为机器人生成一条完整的全局路径，供机器人执行后续的局部路径规划和运动控制。</p>
+</li>
+</ol>
+<p>navfn使用Dijkstra算法在起点和终点之间找到成本最低的全局路径。Global_planner作为navfn更灵活的替代构建，具有更多选项：</p>
+<ul>
+<li>支持A*</li>
+<li>切换二次近似</li>
+<li>切换网格路线</li>
+</ul>
+<p>打开rqt</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun rqt-reconfigure rqt_reconfigure</span><br></pre></td></tr></table></figure>
+
+<p>allow unknown(true), </p>
+<p>use dijkstra(true), </p>
+<p>use quadratic(true),</p>
+<p>use grid path(false), </p>
+<p>old navfn behavior(false) to their default values. </p>
+<p>Setting visualize potential(false) to true </p>
+<p>​			navfn cost values are set to<br><strong>cost &#x3D; COST NEUTRAL + COST FACTOR * costmap cost value.</strong></p>
+<p><strong>将cost factor 设置太低或者太高会降低路径的质量，对于lethal cost 将其设置为较低的值可能会导致无法生成任何路径！</strong> 当cost_factor &#x3D; 0.55,neutral_cost &#x3D; 66,lethal_cost &#x3D; 253,全局路径规划非常那个可取。</p>
+<h2 id="LocalPlanner-局部路径规划器"><a href="#LocalPlanner-局部路径规划器" class="headerlink" title="LocalPlanner(局部路径规划器)"></a>LocalPlanner(局部路径规划器)</h2><p>局部路径规划器包括：</p>
+<ul>
+<li>dwa _local _planner</li>
+<li>eband_local_planner</li>
+<li>teb_loacl_planner</li>
+</ul>
+<p>通常首选<strong>dwa</strong></p>
+<p>Dynamic Window Approach (DWA) （动态窗口逼近）算法，roswiki提供了一个摘要：</p>
+<ol>
+<li>在机器人的控制空间中离散采样</li>
+<li>对于每个采样速度，从机器人的当前状态执行正向模拟，预测如果在一段时间内该采样速度会发生什么</li>
+<li>使用包含以下特征的指标评估前向模拟产生的每个轨迹：靠近障碍物、接近目标、接近全局路径、速度、与障碍物碰撞的轨迹。</li>
+<li>选择得分最高的轨迹，并且将相关的速度发送到底座。</li>
+<li>重复</li>
+</ol>
+<hr>
+<ul>
+<li>DWA 评估机器人根据不同速度和角速度产生的多个轨迹，并为每个轨迹分配一个评分。</li>
+<li>评分标准通常包括以下几个方面：<ul>
+<li><strong>速度评分</strong>：希望机器人保持较高的速度，但在接近障碍物时要降低速度。</li>
+<li><strong>障碍物评分</strong>：避免与障碍物碰撞，选择离障碍物较远的轨迹。</li>
+<li><strong>轨迹平滑性评分</strong>：选择平滑的轨迹，以避免急转弯和过大的运动变化。</li>
+</ul>
+</li>
+<li>通过这些评分，DWA 算法选择最优的轨迹作为控制指令。</li>
+</ul>
+<h3 id="正向模拟"><a href="#正向模拟" class="headerlink" title="正向模拟"></a>正向模拟</h3><p>这是dwa算法的第二步，local planner在机器人的控制空间中获取速度样本，检查并且消除不良速度，每个速度都要经过模拟，有参数<strong>sim_time</strong>控制。sim_time值越大，计算负载越重。当sim_time时间变长，local_planner生成路径的时间也会变长。</p>
+<p>最好将sim_time的参数范围设置在2-4之间。</p>
+<p>除此之外，还有其他参数值得注意：</p>
+<p><strong>Velocity samples:</strong></p>
+<p>vx sample 和vy sample 控制在 x 轴和 y 轴方向上，分别采样多少个线速度样本。vth sample控制旋转速度，表示采样多少个旋转速度样本。</p>
+<p>通常设置将vx sample 设置比 vth sample更大。这里笔者设置 vx_sample &#x3D; 20, vth_sample &#x3D; 40</p>
+<p><strong>Simulation granularity:</strong></p>
+<p>模拟粒度是指在机器人路径规划过程中，轨迹上各个点之间的步长（或间距）。它决定了在轨迹上检查点的频率。</p>
+<ul>
+<li>低值的模拟粒度意味着检查的点更频繁，可以更加精准地检测轨迹与障碍物的交点，但是会消耗更多资源。</li>
+<li>高值的模拟粒度表示步长较长，检查的点较少，计算负担轻，路径的精度可能会低，撞到障碍物的可能会更大。</li>
+</ul>
+<p>默认值为0.025对于中小型机器人来说足够。</p>
+<h3 id="Trajactory-Scoring"><a href="#Trajactory-Scoring" class="headerlink" title="Trajactory Scoring"></a>Trajactory Scoring</h3><p>DWA Local Planner 通过最大化目标函数来获得最佳速度，从而帮助机器人进行路径规划。</p>
+<p>使用一个目标函数来评估不同速度对的效果，目标是最小化函数的值。主要有三个主要部分：</p>
+<ul>
+<li>progress to goal（朝目标前进的进度）</li>
+<li>clearance from obstacles（与障碍物的间隙）</li>
+<li>forward velocity（前进速度)</li>
+</ul>
+<p>目标函数的成本：<strong>cost</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cost = path distance bias * (距离(m) 到路径的端点)</span><br><span class="line">      + goal distance bias * (距离(m) 到局部目标的端点)</span><br><span class="line">      + occdist scale * (沿轨迹的最大障碍物代价 (0-254))</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>path distance bias：路径距离偏差，这个参数控制了局部规划器应该多大程度上保持在全局路径附近。较高的值会使得局部规划器更倾向于选择接近全局路径的轨迹。</p>
+</li>
+<li><p>goal distance bias：目标距离偏差，控制了机器人在追求局部目标时的路径选择。较高的值表示机器人更重视接近局部目标，而不太依赖于全局路径，允许其走出全局路径去到达目标。</p>
+</li>
+<li><p>occdist scale：障碍物距离偏差，控制了机器人避障的倾向。较高的值会导致机器人更加避开障碍物，但如果设置过高，可能会导致机器人犹豫不决，甚至停在原地。</p>
+</li>
+</ol>
+<hr>
+<p>path distance bias：这个参数的高低决定了局部规划器在跟随全局路径时的依赖程度。较大的值会让机器人更倾向于保持在全局路径上。</p>
+<p>goal distance bias：控制机器人在局部路径规划时，是否更倾向于向局部目标前进。增大此参数值，机器人会更自由地绕开全局路径，直接追求局部目标。</p>
+<p>occdist scale：决定机器人避障的严格程度。如果这个值太高，机器人可能会过度避开障碍物，导致其路径规划不果断，甚至停滞不前。</p>
+<p><strong>path distance bias &#x3D; 32.0</strong><br><strong>goal distance bias &#x3D; 20.0</strong><br><strong>occdist scale &#x3D; 0.02</strong></p>
+<h3 id="其他参数设计"><a href="#其他参数设计" class="headerlink" title="其他参数设计"></a>其他参数设计</h3><p>Goal distance tolerance（目标距离容差）:</p>
+<ol>
+<li>yaw goal tolerance (double, default: 0.05)</li>
+</ol>
+<p>描述：该参数定义了在机器人达到目标时，控制器在 偏航角（yaw）（即机器人绕垂直轴的旋转）上的容差。单位是 弧度。<br>作用：当机器人接近目标时，如果它的偏航角误差小于该值（0.05弧度），则认为机器人已经到达目标。<br>默认值：0.05弧度，相当于约 2.87度，允许一定的旋转误差。</p>
+<ol start="2">
+<li>xy goal tolerance (double, default: 0.10)</li>
+</ol>
+<p>描述：该参数定义了机器人在 x 和 y 坐标（平面内的距离）上的目标容差，单位是 米。<br>作用：当机器人接近目标时，如果它与目标的距离小于该值（0.10米），则认为机器人已经到达目标。<br>默认值：0.10米，即允许机器人与目标位置有最多10厘米的偏差。</p>
+<ol start="3">
+<li>latch xy goal tolerance (bool, default: false)</li>
+</ol>
+<p>描述：该参数决定了是否启用 目标容差锁定。如果启用，当机器人到达目标的 xy 位置（即目标的平面坐标）时，机器人将停下来，开始原地旋转，而不再进一步移动，即使它在旋转过程中离目标位置稍微偏离。<br>作用：启用此选项可以使机器人在到达目标位置后原地旋转，而不再根据路径调整自己的位置。<br>默认值：false，表示默认不启用该行为。</p>
+<hr>
+<p>Oscillation Reset(摆动重置)</p>
+<p>机器人可能会由于局部规划器生成两台&#x3D;条相反的路径在目标之间来回摆动，为了防止摆动无限进行，ROS提供恢复机制来帮助机器人重新规划路径。</p>
+<ol start="4">
+<li><p>oscillation reset dist (double, default: 0.05)</p>
+<ul>
+<li>描述：该参数定义了在机器人的路径震荡（oscillation）发生时，机器人需要行进的最小距离（单位：米），以便触发 摆动重置标志（oscillation flags）。即机器人必须走多远才能重置它的摆动状态。</li>
+<li>作用：如果机器人由于路径震荡而来回摆动，并且没有走出震荡区域，那么该参数控制了机器人在遇到震荡时需要移动多远，才会清除摆动标志并尝试新的行为来恢复正常行进。<br>默认值：0.05米，表示机器人必须移动至少 5厘米，才能重新启动其路径规划和恢复机制。</li>
+</ul>
+<hr>
+</li>
+</ol>
+<h2 id="Costmap-Parameters"><a href="#Costmap-Parameters" class="headerlink" title="Costmap Parameters"></a>Costmap Parameters</h2><p>   代价地图参数调整对于local_planner的成功至关重要。</p>
+<p>   costmap被分为三个主要层次：</p>
+<ul>
+<li>static map layer(静态地图层)：</li>
+</ul>
+<p>   代表静态的slam地图，是一个预先构建的地图，是之前使用gmapping构建的地图。</p>
+<ul>
+<li>obstacle map layer(障碍地图层)：</li>
+</ul>
+<p>   表示机器人检测到的障碍物，包括2D障碍物（环境中的物体：墙壁）、3D障碍物是使用传感器检测的。通常表示为<strong>体素层</strong>。</p>
+<ul>
+<li>inflation layer（膨胀层）</li>
+</ul>
+<p>   在此层中，障碍物会被 膨胀，也就是将障碍物周围的区域扩展，以确保机器人不仅避免碰到障碍物本身，还能避免距离障碍物过近的区域。这有助于通过计算每个 2D 成本地图单元格 的“成本”，来确保机器人避开障碍物。膨胀区域考虑到机器人的尺寸和所需的障碍物间隙。</p>
+<hr>
+<p>   <strong>全局代价地图和局部代价地图：</strong></p>
+<ul>
+<li>全局成本地图（Global Costmap）：</li>
+</ul>
+<p>   该成本地图表示整个环境，并且是基于 提供给导航栈的<strong>静态地图</strong> 生成的。它通过膨胀静态地图上的障碍物来生成，并在较大范围内表示机器人导航的环境（通常用于全局规划）。</p>
+<ul>
+<li>局部成本地图（Local Costmap）：</li>
+</ul>
+<p>   该成本地图是基于机器人 实时传感器数据（如激光扫描仪、摄像头或深度传感器）动态生成的。它表示机器人周围的环境，并会持续更新。局部成本地图被本地规划器（如 DWA）用于避开障碍物并实时安全地导航。</p>
+<p>   有很多重要的参数需要设置：</p>
+<h3 id="footprint"><a href="#footprint" class="headerlink" title="footprint"></a>footprint</h3><p>   这是机器人移动底座的轮廓，我们希望占地面积略大于机器人的真实轮廓。</p>
+<h3 id="inflation"><a href="#inflation" class="headerlink" title="inflation"></a>inflation</h3><p>   膨胀层由不同单元格组成，每个单元有三个状态：</p>
+<ul>
+<li>占用（Occupied）：该单元格被障碍物占据。</li>
+<li>无障碍（Free）：该单元格没有障碍物。</li>
+<li>未知（Unknown）：机器人无法确定该单元格的状态。</li>
+</ul>
+<p>   <img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E7%A2%B0%E6%92%9E%E7%AE%97%E6%B3%95.jpg" alt="img"></p>
+<p>上图中，横轴是距离机器人中心的距离，纵轴是代价地图中栅格的灰度值。</p>
+<p>致命障碍:栅格值为254，此时障碍物与机器人中心重叠，必然发生碰撞；<br>内切障碍:栅格值为253，此时障碍物处于机器人的内切圆内，必然发生碰撞；<br>外切障碍:栅格值为[128,252]，此时障碍物处于其机器人的外切圆内，处于碰撞临界，不一定发生碰撞；<br>非自由空间:栅格值为(0,127]，此时机器人处于障碍物附近，属于危险警戒区，进入此区域，将来可能会发生碰撞；<br>自由区域:栅格值为0，此处机器人可以自由通过；<br>未知区域:栅格值为255，还没探明是否有障碍物。</p>
+<ul>
+<li>膨胀半径（Inflation Radius）：控制 零成本点（即距离障碍物最远的地方）到障碍物的距离。简单来说，膨胀半径决定了障碍物的影响范围，膨胀区域越大，障碍物周围的影响区间也就越大。</li>
+<li>成本缩放因子（Cost Scaling Factor）：决定了衰减曲线的斜率。成本缩放因子与单元格的成本成反比，也就是说，当成本缩放因子增加时，衰减曲线会变得更陡峭。这会导致障碍物周围的区域成本值迅速增大，从而让机器人更倾向于避开这些区域。</li>
+</ul>
+<p>可以选择<strong>更小的成本缩放因子</strong>，从而更适合机器人避开障碍物。</p>
+<h3 id="costmap-resolution"><a href="#costmap-resolution" class="headerlink" title="costmap resolution"></a>costmap resolution</h3><p>成本地图分辨率是指每个单元格的大小，即地图每个格子表示实际的物理空间大小</p>
+<p>分辨率设置得不同，会影响计算负载和路径规划效果。较低的分辨率意味着每个单元格覆盖更大的区域，计算量较小，但可能导致精度下降。</p>
+<ul>
+<li>局部成本地图：较低的分辨率可能导致障碍物在狭窄通道中重叠，使得机器人无法规划路径。</li>
+<li>全局成本地图：分辨率设置为与提供给导航栈的地图一致即可，通常不需要特别高的分辨率。</li>
+<li>激光雷达分辨率：如果激光雷达的分辨率较低，可能会导致地图中出现未知的小点，影响地图的准确性，因此可以根据实际计算能力调整分辨率。</li>
+</ul>
+<h3 id="obstacle-layer-and-voxel-layer"><a href="#obstacle-layer-and-voxel-layer" class="headerlink" title="obstacle layer and voxel layer"></a>obstacle layer and voxel layer</h3><ul>
+<li>障碍层（Obstacle Layer） 和 体素层（Voxel Layer） 都是用于标记成本地图中的障碍物。这两个层可以统称为 “障碍层”。</li>
+<li>障碍层：主要在 二维空间 中追踪障碍物，即它跟踪地图上的障碍物位置。</li>
+<li>体素层：则是在 三维空间 中追踪障碍物，即它不仅考虑障碍物的平面位置，还会考虑障碍物的高度信息</li>
+</ul>
+<hr>
+<p>obstacle layer的参数设置</p>
+<ol>
+<li>max obstacle height（最大障碍物高度）<br>  含义：这是可以插入到成本地图中的障碍物的最大高度，单位是米。<br>用途：如果障碍物的高度超过这个值，它将不会被添加到成本地图中。通常应该将这个值设置得略高于机器人的高度。对于 体素层，这基本上是 体素网格（Voxel Grid） 的高度。</li>
+<li>obstacle range（障碍物范围）<br>  含义：这是从机器人起始位置到障碍物的最大距离，单位是米。<br>用途：只有在距离机器人一定范围内的障碍物才会被插入到成本地图中。这个值也可以根据传感器进行调整，即不同的传感器可以设置不同的障碍物范围。</li>
+<li>raytrace range（射线追踪范围）<br>  含义：这是射线追踪用于从地图上使用传感器数据检测障碍物的最大距离，单位是米。<br>用途：射线追踪方法通过发射虚拟射线扫描周围环境，查找可能的障碍物。与 障碍物范围 不同，这个参数仅对 体素层（Voxel Layer） 有效。该值同样可以根据传感器的不同进行调整。</li>
+<li>origin z（地图的 z 坐标原点）<br>  含义：这是成本地图在 Z轴 上的原点位置，单位是米。<br>用途：它确定了地图在垂直方向上的起始位置，用于处理体素地图中的障碍物和空白区域。</li>
+<li>z resolution（Z轴分辨率）<br>  含义：这是地图在 Z轴 上每个单元格的分辨率，单位是米&#x2F;单元格。<br>用途：它决定了垂直方向上每个体素的高度，较小的值可以提供更高的垂直精度，适合处理复杂的三维障碍物。</li>
+<li>z voxels（Z轴体素数）<br>  含义：这是每个垂直列中体素的数量，决定了体素网格的高度。体素网格的高度是 z resolution 乘以 z voxels。<br>用途：这个值决定了垂直方向上的体素数，即地图在Z轴上的分层结构。越多的体素意味着可以更精确地表示障碍物的垂直结构。</li>
+<li>unknown threshold（未知阈值）<br>  含义：在每个垂直列中，允许的最大 未知 单元格数量，被认为该列是“已知”的。<br>用途：如果在垂直列中有超过一定数量的 未知单元格（unknown cells），则该列会被认为是“已知”的。这可以用于控制哪些区域应该被认为是障碍物或空白区域。</li>
+<li>mark threshold（标记阈值）<br>  含义：每个垂直列中允许的最大 标记单元格（marked cells） 数量，被认为该列是“空闲”的。<br>用途：如果在垂直列中有超过一定数量的 标记单元格（标记为“空闲”区域），则该列会被认为是“空闲”的。这用于区分已经被标记为障碍物和被认为是空白区域的部分。</li>
+</ol>
+<hr>
+<h2 id="AMCL"><a href="#AMCL" class="headerlink" title="AMCL"></a>AMCL</h2><p>AMCL（Adaptive Monte Carlo Localization）是ROS（Robot Operating System）中用于实现机器人定位的一个重要模块。它基于 蒙特卡洛定位（Monte Carlo Localization, MCL） 算法，使用粒子滤波（Particle Filter）技术来估计机器人在已知地图中的位置和姿态。</p>
+<p>MCL算法通过 粒子滤波 来估计机器人在已知地图中的位置。它依赖于两种模型来估计机器人的位置：运动模型和测量模型。</p>
+<ol>
+<li>运动模型（Motion Model）：</li>
+</ol>
+<p>运动模型用于描述机器人如何根据**里程计数据（Odometry）**来预测自己的运动。通过里程计，机器人可以估算自己的位移和旋转，运动模型根据这些估算来更新机器人的位置和姿态。<br>该模型描述了在没有外部传感器输入的情况下，机器人根据其运动的先验信息如何变化。</p>
+<ol start="2">
+<li>测量模型（Measurement Model）：</li>
+</ol>
+<p>测量模型则描述了如何利用传感器（例如<strong>激光雷达（Laser Scan）</strong>）来估算机器人周围环境的状态，并与地图数据进行比较，进而帮助定位。通过传感器测得的距离信息，测量模型可以计算出不同位置的观测值，从而更新机器人位置的估计。</p>
+<hr>
+<p>从而可以分析三个问题：</p>
+<h3 id="header-in-LaserScan-messages"><a href="#header-in-LaserScan-messages" class="headerlink" title="header in LaserScan messages"></a>header in LaserScan messages</h3><p>在sensor_msgs&#x2F;LaserScan话题中发布：</p>
+<ol>
+<li>angle_min (float32)<br> 含义：扫描的起始角度，单位为弧度（rad）。<br> 影响：这是激光扫描器开始扫描的角度。如果这个参数设置不正确，扫描范围的起始点会偏离实际的扫描范围，从而导致激光扫描的误差，进而影响定位结果。</li>
+<li>angle_max (float32)<br> 含义：扫描的结束角度，单位为弧度（rad）。<br> 影响：这是激光扫描器停止扫描的角度。如果该参数设置不准确，扫描的结束位置会错误，导致扫描的有效范围与实际的扫描范围不一致，这会影响到机器人定位时对环境的理解，可能导致错误的障碍物位置估计。</li>
+<li>angle_increment (float32)<br> 含义：每个扫描之间的角度增量，单位为弧度（rad）。<br> 影响：该参数决定了激光扫描器每次测量之间的角度间隔。如果设置不正确，激光扫描的精度会受到影响，可能导致激光点的分布不均匀，进而影响定位和地图构建的精度。</li>
+<li>time_increment (float32)<br> 含义：测量之间的时间间隔，单位为秒。如果激光扫描器在移动时，该参数用于插值计算3D点的位置。<br> 影响：当激光扫描器运动时，time_increment 用于推算每个激光测量之间的时间差异。如果该参数设置不准确，可能导致定位过程中对激光点的时间顺序理解出现偏差，影响到位置的估算与更新，尤其是在动态环境中，可能导致位置偏差。</li>
+<li>scan_time (float32)<br> 含义：每次扫描的时间间隔，单位为秒。<br> 影响：这是每次激光扫描完成所需的时间。如果这个参数设置不正确，可能会导致扫描更新的时效性出现问题，进而影响到机器人在定位时对周围环境的实时理解。如果扫描时间太长，AMCL可能无法及时更新位置，导致延迟；如果时间设置得过短，可能导致数据采集不完整，降低定位精度。</li>
+<li>range_min (float32)<br> 含义：激光扫描器测量的最小距离，单位为米（m）。<br> 影响：激光扫描器的最小测量距离。如果该参数设置不准确，可能导致激光扫描器无法正确识别靠近的物体或障碍物，从而影响障碍物检测和定位。尤其在距离较近时，机器人可能会错误地认为没有障碍物，影响路径规划与定位。</li>
+<li>range_max (float32)<br> 含义：激光扫描器测量的最大距离，单位为米（m）。<br> 影响：激光扫描器的最大测量距离。如果这个参数设置不正确，可能导致机器人无法感知到远处的障碍物，从而影响机器人在大范围环境中的定位与路径规划。设置不正确的最大范围会导致环境感知不完整，影响机器人的定位精度。</li>
+</ol>
+<hr>
+<h3 id="测量和运动模型的参数"><a href="#测量和运动模型的参数" class="headerlink" title="测量和运动模型的参数"></a>测量和运动模型的参数</h3><p>这里列出了一些在amcl包里面的参数</p>
+<p>对于雷达扫描模型，默认参数是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;laser_z_hit&quot;: 0.5,</span><br><span class="line">&quot;laser_sigma_hit&quot;: 0.2,</span><br><span class="line">&quot;laser_z_rand&quot; :0.5,</span><br><span class="line">&quot;laser_likelihood_max_dist&quot;: 2.0</span><br></pre></td></tr></table></figure>
+
+<p>为了提高机器人的定位性，我们增加了laser.z.hit和laser.sigma.hit 来获得更高的测量噪声。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;laser_z_hit&quot;</span>: 0.9,</span><br><span class="line"><span class="string">&quot;laser_sigma_hit&quot;</span>: 0.1,</span><br><span class="line"><span class="string">&quot;laser_z_rand&quot;</span> :0.5,</span><br><span class="line"><span class="string">&quot;laser_likelihood_max_dist&quot;</span>: 4.0</span><br></pre></td></tr></table></figure>
+
+<p>下面是结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250616101019092.png" alt="image-20250616101019092"></p>
+<hr>
+<p>对于里程计模型，默认参数是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;kld_err&quot;</span>: 0.01,</span><br><span class="line"><span class="string">&quot;kld_z&quot;</span>: 0.99,</span><br><span class="line"><span class="string">&quot;odom_alpha1&quot;</span>: 0.005,</span><br><span class="line"><span class="string">&quot;odom_alpha2&quot;</span>: 0.005,</span><br><span class="line"><span class="string">&quot;odom_alpha3&quot;</span>: 0.005,</span><br><span class="line"><span class="string">&quot;odom_alpha4&quot;</span>: 0.005</span><br></pre></td></tr></table></figure>
+
+<p>当里程计的噪声较小时，颗粒会更加集中（准确），否则，颗粒会更加分散。</p>
+<hr>
+<h3 id="雷达的坐标变换"><a href="#雷达的坐标变换" class="headerlink" title="雷达的坐标变换"></a>雷达的坐标变换</h3><p>在 ROS 系统中，如果激光扫描仪与机器人底盘之间的坐标变换（tf transform）不正确，可能导致激光数据的偏移和定位异常。通常，这些变换通过 URDF 和 SRDF 文件来处理，但如果使用 rosbag 文件进行数据回放时，你可能需要手动发布这些变换，确保激光扫描仪的位置信息正确地与机器人底盘的坐标系对接。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/23/%E5%9F%BA%E4%BA%8Egmapping+move_base%E7%9A%84%E5%BB%BA%E5%9B%BE%E5%8F%8A%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/23/%E5%9F%BA%E4%BA%8Egmapping+move_base%E7%9A%84%E5%BB%BA%E5%9B%BE%E5%8F%8A%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">基于gmapping+move_base的建图及路径规划算法总结</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-06-23 00:00:00 / 修改时间：15:24:35" itemprop="dateCreated datePublished" datetime="2025-06-23T00:00:00+08:00">2025-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="基于gmapping-move-base的建图及路径规划算法总结"><a href="#基于gmapping-move-base的建图及路径规划算法总结" class="headerlink" title="基于gmapping+move_base的建图及路径规划算法总结"></a>基于gmapping+move_base的建图及路径规划算法总结</h1><h2 id="硬件说明"><a href="#硬件说明" class="headerlink" title="硬件说明"></a>硬件说明</h2><ol>
+<li><p>底盘</p>
+<p>型号：scout_mini（普通版本）</p>
+</li>
+</ol>
+<ul>
+<li><p>github仓库：<a target="_blank" rel="noopener" href="https://github.com/agilexrobotics/scout_ros">https://github.com/agilexrobotics/scout_ros</a></p>
+<p>可以参考官网给出的教程进行操作，基本没有其他问题。</p>
+<p>值得关注的是此软件包的结构：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/scout_ros%E7%BB%93%E6%9E%84.png" alt="image-20250623101812677"></p>
+</li>
+</ul>
+<p>可以看到，scout_ros软件包下面共有4个文件夹：</p>
+<ul>
+<li>scout_base:围绕 ugv_sdk 的 ROS 包装器，用于监视和控制 scout 机器人</li>
+<li>scout_bringup:启动 ROS 节点的启动和配置文件</li>
+<li>scout_description:基于移动底盘的 URDF 模型</li>
+<li>scout_msgs:与 scout 相关的消息定义</li>
+</ul>
+<hr>
+<h3 id="scout-bringup"><a href="#scout-bringup" class="headerlink" title="scout_bringup"></a>scout_bringup</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/scout_bringup.img" alt="image-20250623102443063"></p>
+<p>这个文件夹主要关注launch文件，由于购买的底盘是scout_mini，选择使用scout_mini_robot_base.launch ,miniomni是麦克纳姆轮版本。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scout_mini_robot_base.launch </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;port_name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;can0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;simulated_robot&quot;</span> <span class="attr">value</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;model_xacro&quot;</span> <span class="attr">default</span>=<span class="string">&quot;$(find scout_description)/urdf/scout_v2.xacro&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;odom_topic_name&quot;</span> <span class="attr">default</span>=<span class="string">&quot;odom&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;is_scout_mini&quot;</span> <span class="attr">default</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;pub_tf&quot;</span> <span class="attr">default</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_base)/launch/scout_base.launch&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;port_name&quot;</span> <span class="attr">default</span>=<span class="string">&quot;$(arg port_name)&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;simulated_robot&quot;</span> <span class="attr">default</span>=<span class="string">&quot;$(arg simulated_robot)&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;odom_topic_name&quot;</span> <span class="attr">default</span>=<span class="string">&quot;$(arg odom_topic_name)&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;is_scout_mini&quot;</span> <span class="attr">default</span>=<span class="string">&quot;$(arg is_scout_mini)&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;pub_tf&quot;</span> <span class="attr">default</span>=<span class="string">&quot;$(arg pub_tf)&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--include file=&quot;$(find scout_description)/launch/description.launch&quot;&gt;</span></span><br><span class="line"><span class="comment">        &lt;arg name=&quot;model_xacro&quot; default=&quot;$(arg model_xacro)&quot; /&gt;</span></span><br><span class="line"><span class="comment">    &lt;/include--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>port_name：指定用于与机器人通信的端口，默认值&#x3D;“can 0”</li>
+<li>simulated_robot：表示是否使用模拟启动，默认值&#x3D;“false”</li>
+<li>model_xacro：指定用于发布 tf 帧的目标“.xacro”文件，默认值&#x3D;scout_v2.xacro</li>
+<li>odom_topic_name：设置计算出的里程计发布到的主题的名称，默认值&#x3D;“odom”</li>
+<li>is_scout_mini：适用于 scout_mini 类型的底盘，默认值&#x3D;“ture”</li>
+<li>pub_tf：是否发布tf坐标变换，默认值是”false”</li>
+</ul>
+<hr>
+<p>对于scout_mini的测试，按照官网的指令操作即可。model_xacro可以在 <code>scout_description/urdf/</code>找到，并且做相应的更改。</p>
+<p>打开终端：运行如下指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jiangbao@jiangbao:~/demo_ws$ source ./devel/setup.bash</span><br><span class="line">jiangbao@jiangbao:~/demo_ws$ roslaunch scout_description display_scout_mini.launch </span><br></pre></td></tr></table></figure>
+
+<p>即可打开urdf模型：</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/scout_mini%E6%A8%A1%E5%9E%8B.img" alt="image-20250623104034852" style="zoom:50%;" />
+
+<p>如果需要根据需求，对模型进行修改，可以参考<strong>9.1构建机器人的模型</strong></p>
+<hr>
+<ol start="2">
+<li>雷达</li>
+</ol>
+<p>型号：镭神智能C16-151B-22070017</p>
+<p>可以找客服要一下软件驱动包。按照提示安装即可。下好驱动之后，可以参考文档<strong>8.2 机器人平台设计-传感器-雷达</strong>进行操作。</p>
+<p>至此，硬件配置结束。</p>
+<h2 id="传感器集成"><a href="#传感器集成" class="headerlink" title="传感器集成"></a>传感器集成</h2><p>在配置好雷达以及小车底盘之后能，为了方便同时启动多个节点，可以写一个功能包，并且通过坐标变换来实现机器人底盘与里程计、雷达相互关联。参考文件<strong>8.3传感器集成</strong></p>
+<p>值得注意的是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;include file=&quot;$(find scout_bringup)/launch/scout_teleop_keyboard.launch&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果在机器人启动文件中包含了这个文件，后面使用导航时，就会无法用路径规划算法控制小车底盘移动，所以可以选择在需要使用的时候，自己单独开启小车底盘控制节点。</p>
+<h2 id="构建机器人模型"><a href="#构建机器人模型" class="headerlink" title="构建机器人模型"></a>构建机器人模型</h2><p>如果对于怎么添加传感器模型不熟悉，可以参考赵虚左老师的文档：</p>
+<p><a target="_blank" rel="noopener" href="http://www.autolabor.com.cn/book/ROSTutorials/di-9-zhang-ji-qi-ren-dao-822a28-shi-4f5329/92-dao-hang-shi-xian/931-dao-hang-shi-xian-01-zhun-bei-gong-zuo.html">http://www.autolabor.com.cn/book/ROSTutorials/di-9-zhang-ji-qi-ren-dao-822a28-shi-4f5329/92-dao-hang-shi-xian/931-dao-hang-shi-xian-01-zhun-bei-gong-zuo.html</a></p>
+<p>里面很详细介绍怎么去新建一个传感器模型，记得修改相关参数。</p>
+<h2 id="建图及相关操作"><a href="#建图及相关操作" class="headerlink" title="建图及相关操作"></a>建图及相关操作</h2><p>这一节主要使用gmapping 建图，并且使用map_server及map_save来实现地图的保存与读取</p>
+<p>按照<strong>9.2建图及其相关操作</strong>，应该问题不大。</p>
+<h2 id="AMCL定位"><a href="#AMCL定位" class="headerlink" title="AMCL定位"></a>AMCL定位</h2><p>AMCL可以实现机器人在栅格地图自身的定位，具体实现参考文档 <strong>9.3amcl定位</strong></p>
+<h2 id="路径规划"><a href="#路径规划" class="headerlink" title="路径规划"></a>路径规划</h2><p>路径规划主要采用move_base的插件来实现：<br>全局使用该插件自带的，应该是A*,这个目前还没有研究，后续会跟上。局部路径规划使用的是基础的：TrajectoryPlanner,可以修改相关参数，或者是使用其他的路径规划算法。具体相关操作以及路径规划相关参数的修改可以参考文档 **9.4路径规划 **以及文档 <strong>nav参数调优</strong>。这一部分属于是直接照搬，后续如果要深入学习，会作进一步说明。</p>
+<h2 id="导航与slam自主建图"><a href="#导航与slam自主建图" class="headerlink" title="导航与slam自主建图"></a>导航与slam自主建图</h2><p>这一部分不用多说，就是单纯把前两布建图以及路径规划结合在一起，参考文档9.5导航与slam自主建图。</p>
+<hr>
+<p>至此，整个slam与路径规划项目大致结束，虽然使用算法简单，但是对整个系统的理解及后续算法的精进有很大帮助。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.1%20%E6%9E%84%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -194,9 +654,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:49:54" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-23 15:20:48" itemprop="dateModified" datetime="2025-06-23T15:20:48+08:00">2025-06-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -221,93 +687,11 @@
           <h1 id="9-1-构建机器人模型"><a href="#9-1-构建机器人模型" class="headerlink" title="9.1 构建机器人模型"></a>9.1 构建机器人模型</h1><h2 id="分析scout-ros功能包构成"><a href="#分析scout-ros功能包构成" class="headerlink" title="分析scout_ros功能包构成"></a>分析scout_ros功能包构成</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">├── launch</span><br><span class="line">│   ├── display_scout_mini.launch</span><br><span class="line">│   ├── display_scout_v2.launch</span><br><span class="line">│   ├── gazebo.launch</span><br><span class="line">│   ├── scout_mini_stock.launch</span><br><span class="line">│   └── scout_v2_stock.launch</span><br><span class="line">├── meshes</span><br><span class="line">│   ├── 1_Link.STL</span><br><span class="line">│   ├── 2_Link.STL</span><br><span class="line">│   ├── 3_Link.STL</span><br><span class="line">│   ├── 4_Link.STL</span><br><span class="line">│   ├── base_link.dae</span><br><span class="line">│   ├── scout_mini_base_link.dae</span><br><span class="line">│   ├── scout_mini_base_link.STL</span><br><span class="line">│   ├── wheel.dae</span><br><span class="line">│   ├── wheel_type1.dae</span><br><span class="line">│   └── wheel_type2.dae</span><br><span class="line">├── package.xml</span><br><span class="line">├── rviz</span><br><span class="line">│   ├── model_display.rviz</span><br><span class="line">│   ├── navigation.rviz</span><br><span class="line">│   └── scout_mini_model_display.rviz</span><br><span class="line">└── urdf</span><br><span class="line">    ├── empty.urdf</span><br><span class="line">    ├── scout_mini.gazebo</span><br><span class="line">    ├── scout_mini_laser.urdf.xacro</span><br><span class="line">    ├── scout_mini.urdf.xacro</span><br><span class="line">    ├── scout_mini_wheel.gazebo</span><br><span class="line">    ├── scout_mini_wheel.xacro</span><br><span class="line">    ├── scout_v2.gazebo</span><br><span class="line">    ├── scout_v2.xacro</span><br><span class="line">    ├── scout_wheel.gazebo</span><br><span class="line">    ├── scout_wheel_type1.xacro</span><br><span class="line">    └── scout_wheel_type2.xacro</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>可以看到，主要需要使用的是laucn文件夹，其中display_scout_mini.launch用于启动带有机器人模型的rviz.如果需要增加传感器之类的模型，那么就需要在urdf文件中新建xacro文件。例如，我新建了一个名为scout_mini_laser.urdf.xacro文件。用于增加雷达组件。</p>
-<p>在增加雷达传感器之前，可以先看一下scout底盘的urdf文件</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">robot</span> <span class="attr">name</span>=<span class="string">&quot;mycar&quot;</span> <span class="attr">xmlns:xacro</span>=<span class="string">&quot;http://wiki.ros.org/xacro&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.01&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.15&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.03&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wheel_vertical_offset + base_z_size / 2 + support_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;support_length / 2 + laser_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;support&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;support_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;support_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;yellow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0.8 0.5 0.0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;support2base&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;base_link&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_support_x&#125; $&#123;joint_support_y&#125; $&#123;joint_support_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;laser&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;laser_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;laser_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;black&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0 0 0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;laser2support&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;laser&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_laser_x&#125; $&#123;joint_laser_y&#125; $&#123;joint_laser_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">robot</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>从中可以分析一下：</p>
-<hr>
-<h3 id="1-文件头部"><a href="#1-文件头部" class="headerlink" title="1. 文件头部"></a>1. 文件头部</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;robot name=&quot;scout_mini&quot; xmlns:xacro=&quot;http://ros.org/wiki/xacro&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>这是一个XML声明，表示文件使用的是XML格式。</li>
-<li><code>&lt;robot name=&quot;scout_mini&quot;&gt;</code> 定义了机器人模型的名称为 <code>scout_mini</code>。</li>
-<li><code>xmlns:xacro=&quot;http://ros.org/wiki/xacro&quot;</code> 引入了Xacro命名空间，<code>xacro</code> 是一种XML宏语言，可以用来简化URDF文件的编写。</li>
-</ul>
-<h3 id="2-Xacro参数定义"><a href="#2-Xacro参数定义" class="headerlink" title="2. Xacro参数定义"></a>2. Xacro参数定义</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;xacro:arg name=&quot;robot_namespace&quot; default=&quot;/&quot; /&gt;</span><br><span class="line">&lt;xacro:arg name=&quot;urdf_extras&quot; default=&quot;empty.urdf&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><pre><code>&lt;xacro:arg&gt;
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">  定义了两个参数：</span><br><span class="line"></span><br><span class="line">  - `robot_namespace`，默认值是 `/`，表示机器人命名空间。</span><br><span class="line">  - `urdf_extras`，默认值是 `empty.urdf`，表示额外的URDF文件，可以通过此参数引入其他URDF模块。</span><br><span class="line"></span><br><span class="line">### 3. 引入其他Xacro文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini_wheel.xacro&quot; /&gt;
-</code></pre>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 通过 `&lt;xacro:include&gt;` 引入外部的Xacro文件。此处是将 `scout_mini_wheel.xacro` 文件包含进来，通常这是一个包含轮子模型的文件。</span><br><span class="line"></span><br><span class="line">### 4. 变量定义</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>xml&lt;xacro:property name&#x3D;”M_PI” value&#x3D;”3.14159”&#x2F;&gt;<br>&lt;xacro:property name&#x3D;”base_x_size” value&#x3D;”0.6200000” &#x2F;&gt;<br>&lt;xacro:property name&#x3D;”base_y_size” value&#x3D;”0.585000” &#x2F;&gt;<br>&lt;xacro:property name&#x3D;”base_z_size” value&#x3D;”0.235000” &#x2F;&gt;</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 通过</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>  <a href="xacro:property">xacro:property</a><br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">  定义了多个常量或变量，用于后续的计算和引用。</span><br><span class="line"></span><br><span class="line">  - `M_PI` 定义了圆周率的值。</span><br><span class="line">  - `base_x_size`, `base_y_size`, `base_z_size` 分别定义了机器人底座的长度、宽度和高度。</span><br><span class="line"></span><br><span class="line">### 5. 机器人几何尺寸与轮子参数</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>xml&lt;xacro:property name&#x3D;”wheelbase” value&#x3D;”0.463951”&#x2F;&gt;<br>&lt;xacro:property name&#x3D;”track” value&#x3D;”0.416503”&#x2F;&gt;<br>&lt;xacro:property name&#x3D;”wheel_vertical_offset” value&#x3D;”-0.100998” &#x2F;&gt;</p>
-<p>&lt;xacro:property name&#x3D;”wheel_length” value&#x3D;”0.8e-01” &#x2F;&gt;<br>&lt;xacro:property name&#x3D;”wheel_radius” value&#x3D;”1.600e-01” &#x2F;&gt;</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `wheelbase`：前后轮之间的距离。</span><br><span class="line">- `track`：左右轮之间的距离。</span><br><span class="line">- `wheel_vertical_offset`：轮子的垂直偏移。</span><br><span class="line">- `wheel_length`：轮子的长度。</span><br><span class="line">- `wheel_radius`：轮子的半径。</span><br><span class="line"></span><br><span class="line">### 6. 定义基本连接和物理属性</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>xml<link name="base_link"><br>    <visual><br>        <origin xyz="0 0 0" rpy="1.5707 0 -1.5707" /><br>        <geometry><br>            <mesh filename="package://scout_description/meshes/scout_mini_base_link.dae" /><br>        </geometry><br>    </visual><br>    <collision><br>        <origin xyz="0 0 0" rpy="1.5707 0 -1.5707" /><br>        <geometry><br>            <mesh filename="package://scout_description/meshes/scout_mini_base_link.dae" /><br>        </geometry><br>    </collision></p>
-</link>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- ```</span><br><span class="line">  &lt;link name=&quot;base_link&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-   
-
-<p>  定义了机器人底座（</p>
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">base_link</span><br></pre></td></tr></table></figure>
-
-<p>  ）的连接。包含两部分：</p>
-<ul>
-<li><code>visual</code>：可视化模型，使用 <code>.dae</code> 格式的网格文件表示。</li>
-<li><code>collision</code>：碰撞模型，通常是一个简化的形状，用于物理仿真。</li>
-</ul>
-<h3 id="7-惯性参数"><a href="#7-惯性参数" class="headerlink" title="7. 惯性参数"></a>7. 惯性参数</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;link name=&quot;inertial_link&quot;&gt;</span><br><span class="line">    &lt;inertial&gt;</span><br><span class="line">        &lt;mass value=&quot;60&quot; /&gt;</span><br><span class="line">        &lt;origin xyz=&quot;0.0 0.0 0.0&quot; /&gt;</span><br><span class="line">        &lt;inertia ixx=&quot;2.288641&quot; ixy=&quot;0&quot; ixz=&quot;0&quot; iyy=&quot;5.103976&quot; iyz=&quot;0&quot; izz=&quot;3.431465&quot; /&gt;</span><br><span class="line">    &lt;/inertial&gt;</span><br><span class="line">&lt;/link&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>定义了机器人惯性信息（质量和惯性矩阵）。<ul>
-<li><code>mass</code>：质量（60单位）。</li>
-<li><code>inertia</code>：惯性矩阵的各个分量（<code>ixx</code>, <code>iyy</code>, <code>izz</code>等）。</li>
-</ul>
-</li>
-</ul>
-<h3 id="8-固定关节（连接惯性链接）"><a href="#8-固定关节（连接惯性链接）" class="headerlink" title="8. 固定关节（连接惯性链接）"></a>8. 固定关节（连接惯性链接）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;joint name=&quot;inertial_joint&quot; type=&quot;fixed&quot;&gt;</span><br><span class="line">    &lt;origin xyz=&quot;0 0 0&quot; rpy=&quot;0 0 0&quot; /&gt;</span><br><span class="line">    &lt;parent link=&quot;base_link&quot; /&gt;</span><br><span class="line">    &lt;child link=&quot;inertial_link&quot; /&gt;</span><br><span class="line">&lt;/joint&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>定义了一个固定的关节（<code>fixed</code> 类型），将 <code>base_link</code> 和 <code>inertial_link</code> 连接起来，表明机器人底座和惯性组件是固定的。</li>
-</ul>
-<h3 id="9-定义轮子"><a href="#9-定义轮子" class="headerlink" title="9. 定义轮子"></a>9. 定义轮子</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;xacro:scout_mini_wheel wheel_prefix=&quot;front_right&quot;&gt;</span><br><span class="line">    &lt;origin xyz=&quot;$&#123;wheelbase/2&#125; $&#123;-track/2&#125; $&#123;wheel_vertical_offset&#125;&quot; rpy=&quot;1.57 0 0&quot; /&gt;</span><br><span class="line">&lt;/xacro:scout_mini_wheel&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;xacro:scout_mini_wheel&gt;</span><br></pre></td></tr></table></figure>
-
-<p>宏来创建四个轮子（前右、前左、后左、后右）。</p>
-<ul>
-<li>通过 <code>origin</code> 定义了每个轮子的位置（相对于机器人底座的位置），并且设置了轮子的方向（使用 <code>rpy</code>）。</li>
-</ul>
-</li>
-</ul>
-<h3 id="10-定义安装组件"><a href="#10-定义安装组件" class="headerlink" title="10. 定义安装组件"></a>10. 定义安装组件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;link name=&quot;front_mount&quot; /&gt;</span><br><span class="line">&lt;joint name=&quot;front_mount_joint&quot; type=&quot;fixed&quot;&gt;</span><br><span class="line">    &lt;origin xyz=&quot;0.175 0 0.068999&quot; rpy=&quot;0 0 0&quot; /&gt;</span><br><span class="line">    &lt;parent link=&quot;base_link&quot; /&gt;</span><br><span class="line">    &lt;child link=&quot;front_mount&quot; /&gt;</span><br><span class="line">&lt;/joint&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>定义了机器人前方的一个安装组件，类似地，后方的组件也有类似的定义。它们通过固定关节与机器人底座连接。</li>
-</ul>
-<h3 id="11-引入额外的URDF模块"><a href="#11-引入额外的URDF模块" class="headerlink" title="11. 引入额外的URDF模块"></a>11. 引入额外的URDF模块</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;xacro:include filename=&quot;$(arg urdf_extras)&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>根据参数 <code>urdf_extras</code> 引入额外的URDF文件。</li>
-</ul>
-<h3 id="12-Gazebo仿真定义"><a href="#12-Gazebo仿真定义" class="headerlink" title="12. Gazebo仿真定义"></a>12. Gazebo仿真定义</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini.gazebo&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>引入与Gazebo仿真相关的文件，通常是为了在Gazebo中进行物理仿真。</li>
-</ul>
 <p>所以说，想要增加一个雷达也很简单。</p>
 <p>新建scout_mini_laser.urdf.xacro文件</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">robot</span> <span class="attr">name</span>=<span class="string">&quot;mycar&quot;</span> <span class="attr">xmlns:xacro</span>=<span class="string">&quot;http://wiki.ros.org/xacro&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.01&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.15&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.03&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wheel_vertical_offset + base_z_size / 2 + support_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;support_length / 2 + laser_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;support&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;support_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;support_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;yellow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0.8 0.5 0.0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;support2base&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;base_link&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_support_x&#125; $&#123;joint_support_y&#125; $&#123;joint_support_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;laser&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;laser_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;laser_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;black&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0 0 0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;laser2support&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;laser&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_laser_x&#125; $&#123;joint_laser_y&#125; $&#123;joint_laser_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">robot</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>这是赵虚左的文件，没有太多修改，主要改动是：</p>
+<p>这是赵虚左老师的文件，没有太多修改，主要改动是：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wheel_vertical_offset + base_z_size / 2 + support_length / 2&#125;&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>由于没有设计base_footprint 所以scout_mini底盘设了一个wheel_vertical_offset，弥补地面相对底盘的高度差，所以在写支柱对于底盘的高度差的时候，不仅要加上底盘的高度，还要加上这个补偿。</p>
@@ -622,9 +1006,15 @@ xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini_wh
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:50:21" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-23 15:17:18" itemprop="dateModified" datetime="2025-06-23T15:17:18+08:00">2025-06-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -676,7 +1066,6 @@ xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini_wh
 <li><p>在rviz中添加地图显示组件，通过机器人运动，同时可以在rviz中显示gmapping发布的栅格地图数据。下一步将地图单独保存。</p>
 </li>
 </ol>
-<p><img src="/./../../Pictures/%E5%BB%BA%E5%9B%BE.png"></p>
 <h2 id="地图服务"><a href="#地图服务" class="headerlink" title="地图服务"></a>地图服务</h2><p>通过mao_server实现地图保存与读取</p>
 <h3 id="保存launch文件"><a href="#保存launch文件" class="headerlink" title="保存launch文件"></a>保存launch文件</h3><p>首先在自定义的导航功能包下新建 map 目录，用于保存生成的地图数据。地图保存的语法比较简单，在nav&#x2F;launch中编写一个launch文件map_save.launch，内容如下:</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;filename&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(find nav)/map/nav&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">name</span>=<span class="string">&quot;map_save&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">type</span>=<span class="string">&quot;map_saver&quot;</span> <span class="attr">args</span>=<span class="string">&quot;-f $(arg filename)&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -688,12 +1077,10 @@ xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini_wh
 <p>然后，通过键盘控制机器人运动并绘图；</p>
 <p>最后，通过上述地图保存方式保存地图。</p>
 <p>结果：在指定路径下会生成两个文件，xxx.pgm 与 xxx.yaml</p>
-<p><img src="/./../../Pictures/%E7%94%9F%E6%88%90%E5%9C%B0%E5%9B%BE.png"></p>
 <h3 id="地图读取"><a href="#地图读取" class="headerlink" title="地图读取"></a>地图读取</h3><p>通过 map_server 的 map_server 节点可以读取栅格地图数据，编写 launch 文件map_server.launch如下:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;!-- 设置地图的配置文件 --&gt;</span><br><span class="line">    &lt;arg name=<span class="string">&quot;map&quot;</span> default=<span class="string">&quot;nav.yaml&quot;</span> /&gt;</span><br><span class="line">    &lt;!-- 运行地图服务器，并且加载设置的地图--&gt;</span><br><span class="line">    &lt;node name=<span class="string">&quot;map_server&quot;</span> pkg=<span class="string">&quot;map_server&quot;</span> <span class="built_in">type</span>=<span class="string">&quot;map_server&quot;</span> args=<span class="string">&quot;<span class="subst">$(find nav)</span>/map/<span class="subst">$(arg map)</span>&quot;</span>/&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
 
 <p>其中参数是地图描述文件的资源路径，执行该launch文件，该节点会发布话题:map(nav_msgs&#x2F;OccupancyGrid)，最后，在 rviz 中使用 map 组件可以显示栅格地图。</p>
-<p><img src="/./../../Pictures/%E6%9F%A5%E7%9C%8B%E5%9C%B0%E5%9B%BE.png"></p>
 
       
     </div>
@@ -738,7 +1125,7 @@ xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini_wh
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/9.5%20%E5%AF%BC%E8%88%AA%E4%B8%8Eslam%E8%87%AA%E4%B8%BB%E5%BB%BA%E5%9B%BE/" class="post-title-link" itemprop="url">9.6 导航与slam自主建图</a>
+          <a href="/2025/06/11/9.5%20%E5%AF%BC%E8%88%AA%E4%B8%8Eslam%E8%87%AA%E4%B8%BB%E5%BB%BA%E5%9B%BE/" class="post-title-link" itemprop="url">9.5 导航与slam自主建图</a>
         </h2>
 
         <div class="post-meta-container">
@@ -748,9 +1135,15 @@ xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini_wh
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:51:31" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-23 15:24:45" itemprop="dateModified" datetime="2025-06-23T15:24:45+08:00">2025-06-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1108,370 +1501,6 @@ xml&lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_mini_wh
 <p> 如果电脑没能成功连接激光雷达，运行roslaunch lslidar_driver start.launch时，终端有黄色的”time out”提示。打开rviz之后，我们需要简单设置一下。需要在rviz中，添加PointCloud2组件，并选择话题&#x2F;point_cloud_raw。同时，点击上方的Fixed Frame处的map，直接输入laser并回车。此时就可以在rviz中看见激光雷达的点云数据了。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-06-11_17-26-21.png"></p>
 <p>s</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/20/8.1%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/05/20/8.1%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">8.1 机器人平台设计-控制系统</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-05-20 00:00:00" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-06-11 10:57:26" itemprop="dateModified" datetime="2025-06-11T10:57:26+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="8-1-机器人平台设计-控制系统"><a href="#8-1-机器人平台设计-控制系统" class="headerlink" title="8.1 机器人平台设计-控制系统"></a>8.1 机器人平台设计-控制系统</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">mindmap</span><br><span class="line">  root</span><br><span class="line">    机器人系统</span><br><span class="line">      传感系统</span><br><span class="line">        视觉传感器</span><br><span class="line">        距离传感器</span><br><span class="line">        触觉传感器</span><br><span class="line">        温度传感器</span><br><span class="line">        惯性传感器</span><br><span class="line">      控制系统</span><br><span class="line">        CPU</span><br><span class="line">        控制算法</span><br><span class="line">        操作系统</span><br><span class="line">      驱动系统</span><br><span class="line">        电动机</span><br><span class="line">        电源管理</span><br><span class="line">      执行机构</span><br><span class="line">        轮子</span><br><span class="line">        机械臂</span><br><span class="line">        抓取器</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="工控机简介"><a href="#工控机简介" class="headerlink" title="工控机简介"></a>工控机简介</h2><p>本次机器人小车使用的是<strong>nuvo-7100VTC</strong>工控机作为控制系统，下面做一个简单介绍。</p>
-<p>可以类比为一个小型电脑主机，作为后面控制机器人底盘运动的主机。</p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/image-%E8%A7%84%E6%A0%BC1.png" alt="image-20250416202441725"></p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/image-%E8%A7%84%E6%A0%BC2.png" alt="image-20250416202514369"></p>
-<p>把工控机装上电源之后可以在上面安装ros ,此台工控机的ubuntu版本是<strong>18.04</strong> 、ROS版本是<strong>melodic</strong></p>
-<hr>
-<h2 id="分布式框架"><a href="#分布式框架" class="headerlink" title="分布式框架"></a>分布式框架</h2><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>先连接上一个网络，再为工控机分配一个静态IP</p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/wifi%E8%AE%BE%E7%BD%AE3.png"></p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/wifi%E8%AE%BE%E7%BD%AE4.png"></p>
-<p>这样在两台计算机中配置好相同的IP,就可以配置分布式框架了</p>
-<hr>
-<p>首先找到两台计算机的IP地址以及计算机名称</p>
-<p>通过指令：</p>
-<blockquote>
-<p>IP地址查看名: ifconfig</p>
-<p>计算机名称查看: hostname</p>
-</blockquote>
-<p>获得我的两台计算机的分别为</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>IP</th>
-<th>计算机名</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>主机</td>
-<td>192.168.3.127</td>
-<td>robot-Nuvo-7100VTC-Series</td>
-</tr>
-<tr>
-<td>从机（自己的电脑）</td>
-<td>192.168.3.35</td>
-<td>chenguoqing-G3-3590</td>
-</tr>
-</tbody></table>
-<p>这样准备工作完成</p>
-<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><h4 id="修改计算机的-etc-hosts-文件"><a href="#修改计算机的-etc-hosts-文件" class="headerlink" title="修改计算机的&#x2F;etc&#x2F;hosts 文件"></a>修改计算机的&#x2F;etc&#x2F;hosts 文件</h4><p><strong>从机</strong>：</p>
-<p>输入：<code>sudo gedit /etc/hosts</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1       localhost</span><br><span class="line">127.0.1.1       robot-Nuvo-7100VTC-Series</span><br><span class="line">192.168.3.127   robot-Nuvo-7100VTC-Series</span><br><span class="line">192.168.3.25    chenguoqing-G3-3590</span><br></pre></td></tr></table></figure>
-
-<p><strong>主机</strong></p>
-<p>类似修改，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1       localhost</span><br><span class="line">127.0.1.1       chenguoqing-G3-3590</span><br><span class="line">192.168.3.127   robot-Nuvo-7100VTC-Series</span><br><span class="line">192.168.3.25    chenguoqing-G3-3590</span><br></pre></td></tr></table></figure>
-
-<h4 id="配置IP地址"><a href="#配置IP地址" class="headerlink" title="配置IP地址"></a>配置IP地址</h4><p><strong>从机</strong></p>
-<p>输入：<code>gedit .bashrc</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export ROS_MASTER_URI=http://192.168.3.127:11311  # 指向机器1的ROS Master</span><br><span class="line">export ROS_HOSTNAME=192.168.3.35</span><br><span class="line">export ROS_IP=192.168.3.35</span><br></pre></td></tr></table></figure>
-
-<p><strong>主机</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export ROS_MASTER_URI=http://192.168.3.127:11311  # 指向机器1的ROS Master</span><br><span class="line">export ROS_HOSTNAME=192.168.3.127</span><br><span class="line">export ROS_IP=192.168.3.35</span><br></pre></td></tr></table></figure>
-
-
-
-<p>至于为什么要添加ROS_IP呢？</p>
-<p>是有可能会出现主机能够发布消息但是却不能接收消息的情况，所以加上一行这个就可以让主机找到从机IP！</p>
-<hr>
-<p>测试之前记得输入<code>source ~/.bashrc</code></p>
-<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>1.主机启动 roscore(必须)</p>
-<p>2.主机启动订阅节点，从机启动发布节点，测试通信是否正常</p>
-<p>3.反向测试，主机启动发布节点，从机启动订阅节点，测试通信是否正常</p>
-<p>不要在从机启动roscore，否则系统会警告，这样的话会默认把Master的IP地址修改为从机的IP地址。</p>
-<h3 id="取消多机通讯"><a href="#取消多机通讯" class="headerlink" title="取消多机通讯"></a>取消多机通讯</h3><p>注释之前在hosts文件以及bashrc文件中添加的内容即可！</p>
-<hr>
-<h3 id="ssh使用"><a href="#ssh使用" class="headerlink" title="ssh使用"></a>ssh使用</h3><p><strong>简介</strong></p>
-<p>SSH（Secure Shell）是一种用于计算机网络中进行安全通信的协议，它主要用于远程登录和远程执行命令。通过SSH，用户可以安全地连接到远程计算机（如服务器），执行命令和管理系统，而不必担心数据被窃听或篡改。</p>
-<p><strong>实现</strong></p>
-<p>自己的个人pc属于客户端，工控机属于服务端，整个实现具体流程是:</p>
-<ol>
-<li>分别安装SSH客户端与服务端</li>
-<li>服务端启动SSH服务</li>
-<li>客户端远程登陆服务端</li>
-<li>实现数据传输</li>
-</ol>
-<hr>
-<h4 id="安装SSH客户端以及服务端"><a href="#安装SSH客户端以及服务端" class="headerlink" title="安装SSH客户端以及服务端"></a>安装SSH客户端以及服务端</h4><p>需要在自己的PC下载客户端</p>
-<p><code>  sudo apt-get install openssh-client</code></p>
-<p>在工控机下载服务端</p>
-<p><code>sudo apt-get install openssh-server</code></p>
-<h4 id="服务端启动SSH服务"><a href="#服务端启动SSH服务" class="headerlink" title="服务端启动SSH服务"></a>服务端启动SSH服务</h4><p>在工控机启动服务</p>
-<p><code>sudo /etc/init.d/ssh start</code></p>
-<p>查看服务启动是否正常</p>
-<p><code> sudo systemctl status ssh</code></p>
-<p>可以查看日志等信息</p>
-<p>可以将ssh服务设置成开机自启动</p>
-<p><code>sudo systemctl enable ssh</code></p>
-<h4 id="客户端登陆服务器"><a href="#客户端登陆服务器" class="headerlink" title="客户端登陆服务器"></a>客户端登陆服务器</h4><p>登陆服务器命令</p>
-<p><code>ssh 账号@ip地址</code></p>
-<p>账号就是在工控机终端打开的时候出现在@前面的名字</p>
-<p>这个是</p>
-<p><code>ssh robot@192.168.3.127</code></p>
-<p>可以根据提示，输入登录密码（登陆工控机的密码）</p>
-<p>如果出现 access denyed</p>
-<p>说明出现问题，可能是密码输入错误、用户名写错了、或者是config文件配置出错。</p>
-<p>如果是第三种，需要使用命令</p>
-<p><code>gedit  /etc/ssh/sshd_config</code></p>
-<p>在工控机中打开这个配置文件，进行修改。</p>
-<p>如果退出登陆，可以调用exit命令:</p>
-<p><code>exit</code></p>
-<h4 id="实现数据传输"><a href="#实现数据传输" class="headerlink" title="实现数据传输"></a>实现数据传输</h4><p>上传文件:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp 本地文件路径 账号@ip:工控机路径</span><br></pre></td></tr></table></figure>
-
-<p>上传文件夹:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r 本地文件夹路径 账号@ip:工控机路径路径</span><br></pre></td></tr></table></figure>
-
-<p>下载文件:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp 账号@ip:工控机路径 本地文件夹路径</span><br></pre></td></tr></table></figure>
-
-<p>下载文件夹:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r 账号@ip:工控机路径 本地文件夹路径</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用优化"><a href="#使用优化" class="headerlink" title="使用优化"></a>使用优化</h4><p>可以借助密钥简化登陆过程。</p>
-<p>实现思想是:生成一对公钥私钥，私钥存储在本地，公钥上传至服务器，每次登陆时，本地直接上传私钥到服务器，服务器有匹配的公钥就认为是合法用户，直接创建SSH连接即可。具体实现步骤只有两步:</p>
-<ol>
-<li>本地生成密钥对</li>
-<li>将公钥上传至工控机</li>
-</ol>
-<h5 id="1-生成密钥对"><a href="#1-生成密钥对" class="headerlink" title="1.生成密钥对"></a>1.生成密钥对</h5><p>本地客户端生成公私钥：（一路回车默认即可）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
-
-<p>上面这个命令会在用户目录.ssh文件夹下创建公私钥:</p>
-<ol>
-<li>id_rsa （私钥）</li>
-<li>id_rsa.pub (公钥)</li>
-</ol>
-<h5 id="2-将公钥上"><a href="#2-将公钥上" class="headerlink" title="2.将公钥上"></a>2.将公钥上</h5><p>上传</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub 账号@ip</span><br></pre></td></tr></table></figure>
-
-<p>上面这条命令是写到服务器上的ssh目录下，该目录下有文件authorized_keys保存了公钥内容。</p>
-<p>以后再登陆树莓派就无需录入密码了。</p>
-<p>以后登陆只需要输入：</p>
-<p><code>ssh &#39;robot@192.168.3.127&#39;</code>即可登陆</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/20/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAScout-mini%E4%BD%BF%E7%94%A8Ros%E4%BE%8B%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/05/20/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAScout-mini%E4%BD%BF%E7%94%A8Ros%E4%BE%8B%E7%A8%8B/" class="post-title-link" itemprop="url">松灵机器人Scout-mini使用Ros例程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2025-05-20 00:00:00 / 修改时间：20:44:00" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">松灵机器人</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="松灵机器人Scout-mini使用Ros例程"><a href="#松灵机器人Scout-mini使用Ros例程" class="headerlink" title="松灵机器人Scout-mini使用Ros例程"></a>松灵机器人Scout-mini使用Ros例程</h1><p>工控机配置：</p>
-<p>Ubuntu :18.04</p>
-<p>Ros:Melodic</p>
-<h2 id="硬件连接"><a href="#硬件连接" class="headerlink" title="硬件连接"></a>硬件连接</h2><p>小车上弄好了，把usb插头插上就能用了</p>
-<p>附上官方使用文档</p>
-<p>参考这个链接：</p>
-<p><a target="_blank" rel="noopener" href="https://new.agilex.ai/raw/upload/20230718/SCOUT%20MINI%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C20230718_74957.pdf">https://new.agilex.ai/raw/upload/20230718/SCOUT%20MINI%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C20230718_74957.pdf</a></p>
-<p>把小车电源打开，使用gs_usb kernel模块，系统开机运行过一次即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> modprobe gs_usb</span><br></pre></td></tr></table></figure>
-
-<p>然后，我们使用命令使能can_to_sub，并设置通信的波特率为500K。每次重新将CAN_TO_USB连接到电脑端口都需要运行一次下面的命令，如果显示Connection time out就插拔一下USB。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装依赖包</span></span><br><span class="line"><span class="built_in">sudo</span> apt install can-utils</span><br><span class="line"><span class="comment"># 连接</span></span><br><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br></pre></td></tr></table></figure>
-
-<p>之后，查看一下can总线是否连接到电脑。如下图可见，我的电脑成功识别到了一个 叫can0的设备。如果上一步出错，也可以运行这个指令看看是否连接成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br></pre></td></tr></table></figure>
-
-<p>![2025-05-20 18-19-43 的屏幕截图](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-19-43 的屏幕截图.png)</p>
-<p>接着可以监听来自scout mini的数据</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 监听scout mini的运动数据</span></span><br><span class="line">candump can0</span><br></pre></td></tr></table></figure>
-
-<p>这一步输入后，命令行将持续输出一堆<strong>字符串</strong>，我们可以通过遥控器控制小车底盘的运动，这样传回的数据将会相应的变化。我们把<strong>拨杆SWB掰到中间位置(他有三个位置)，就可以控制scout_mini的运动了。SWB默认位置，我们可以通过Ros程序控制底盘运动</strong>；SWB中间位置，可以通过遥控器控制底盘运动；SWB第三个位置，两种控制模式都失效。具体的在刚才那个手册里面有详细介绍。所以现在应该把拨片放在最上面。</p>
-<h2 id="ROS功能包下载"><a href="#ROS功能包下载" class="headerlink" title="ROS功能包下载"></a>ROS功能包下载</h2><p>首先，需要安装一些依赖，需要根据自己的Ros版本更改对应的命令，我的为<strong>melodic</strong>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需要根据自己的ros版本更改</span></span><br><span class="line"><span class="built_in">sudo</span> apt install ros-melodic-controller-manager</span><br><span class="line"><span class="built_in">sudo</span> apt install ros-melodic-joint-state-publisher-gui </span><br><span class="line"><span class="built_in">sudo</span> apt install -y libasio-dev</span><br></pre></td></tr></table></figure>
-
-<p>然后，将代码包下载到创建的工作空间下的src目录，我这里放到了自行创建的功能包scout_ws下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p scout_ws/src</span><br><span class="line"><span class="built_in">cd</span> scout_ws/</span><br><span class="line">catkin_make</span><br></pre></td></tr></table></figure>
-
-<p>这是ROS基础知识,不再赘述。</p>
-<p>Ros功能包这里，我们只需下载两个功能包，其一为必须的 <strong>ugv_sdk</strong> ，其二为 scout_ros 。第二个功能包需要根据自己的小车型号而定。（官网文档默认下载scout_ros）。</p>
-<p>官方链接在这：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/agilexrobotics">https://github.com/agilexrobotics</a></p>
-<p>可以自己寻找。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载代码</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/src/</span><br><span class="line"><span class="comment"># 这个都一样，底盘驱动的sdk</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/agilexrobotics/ugv_sdk.git  --recursive</span><br><span class="line"><span class="comment"># 下载自己需要的功能包（去github上面找）</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/agilexrobotics/scout_ros.git</span><br></pre></td></tr></table></figure>
-
-<p>编译一下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/scout_ws/</span><br><span class="line">catkin_make</span><br><span class="line"><span class="built_in">source</span> devel/setup.bash</span><br></pre></td></tr></table></figure>
-
-<h2 id="键盘控制"><a href="#键盘控制" class="headerlink" title="键盘控制"></a>键盘控制</h2><p>这里简记一下使用官方提供的Ros例程，既使用键盘控制scout_mini运动的过程。我们<strong>要使用电脑控制scout_mini底盘的运动，需要将遥控器上的SWB切换为默认位置</strong>。<strong>当出现紧急情况，将SWB切换到其他位置，可以实现控制小车急停的效果</strong>。SWB默认位置，我们可以通过Ros程序控制底盘运动；SWB中间位置，可以通过遥控器控制底盘运动；SWB第三个位置，两种控制模式都失效。</p>
-<p>需要下载 teleop_twist_keyboard 功能包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-melodic-teleop-twist-keyboard</span><br></pre></td></tr></table></figure>
-
-<p>连接电脑USB，开启scout_mini电源：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1）连接设备</span></span><br><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br><span class="line"><span class="comment"># 2）测试：接收数据</span></span><br><span class="line">candump can0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3）运行小车底盘的ros节点 base</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/    <span class="comment"># 这里得是自己的工作空间目录</span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch scout_bringup scout_robot_base.launch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4）运行键盘控制节点 Launch ROS nodes</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/    <span class="comment"># 这里得是自己的工作空间目录</span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch scout_bringup scout_teleop_keyboard.launch</span><br></pre></td></tr></table></figure>
-
-<p>在此之前，先熟悉一下键盘控制节点：</p>
-<p>![](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-35-11 的屏幕截图.png)</p>
-<ul>
-<li><p>ｉ／，：控制小车直行 or 后退</p>
-</li>
-<li><p>ｋ：停止运动（使用ctrl + z，效果相同）</p>
-</li>
-<li><p>ｊ／ｌ：控制小车逆时针 or 顺时针旋转</p>
-</li>
-<li><p>ｕ／ｏ：控制小车左转 or 右转</p>
-</li>
-<li><p>m／. ：控制小车左后 or 右后倒车</p>
-</li>
-<li><p>q &#x2F; z :控制小车增加&#x2F;减少速度的10%</p>
-</li>
-<li><p>w&#x2F;x:增加&#x2F;减少线速度的10%</p>
-</li>
-<li><p>e&#x2F;c: 增加&#x2F;减少角速度的10%</p>
-</li>
-</ul>
-<p>![](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-38-41 的屏幕截图.png)</p>
-<p>所以应该事先减速，要不然这个车快的起飞。</p>
-<p>之后，就可以直接把鼠标放在键盘上操纵小车了，如果失控，记得及时使用<strong>遥控器将SWB拨至最小面</strong>。</p>
 
       
     </div>

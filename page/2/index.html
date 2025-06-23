@@ -122,7 +122,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -157,6 +157,370 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/20/8.1%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/20/8.1%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">8.1 机器人平台设计-控制系统</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-05-20 00:00:00" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-11 10:57:26" itemprop="dateModified" datetime="2025-06-11T10:57:26+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="8-1-机器人平台设计-控制系统"><a href="#8-1-机器人平台设计-控制系统" class="headerlink" title="8.1 机器人平台设计-控制系统"></a>8.1 机器人平台设计-控制系统</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">mindmap</span><br><span class="line">  root</span><br><span class="line">    机器人系统</span><br><span class="line">      传感系统</span><br><span class="line">        视觉传感器</span><br><span class="line">        距离传感器</span><br><span class="line">        触觉传感器</span><br><span class="line">        温度传感器</span><br><span class="line">        惯性传感器</span><br><span class="line">      控制系统</span><br><span class="line">        CPU</span><br><span class="line">        控制算法</span><br><span class="line">        操作系统</span><br><span class="line">      驱动系统</span><br><span class="line">        电动机</span><br><span class="line">        电源管理</span><br><span class="line">      执行机构</span><br><span class="line">        轮子</span><br><span class="line">        机械臂</span><br><span class="line">        抓取器</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="工控机简介"><a href="#工控机简介" class="headerlink" title="工控机简介"></a>工控机简介</h2><p>本次机器人小车使用的是<strong>nuvo-7100VTC</strong>工控机作为控制系统，下面做一个简单介绍。</p>
+<p>可以类比为一个小型电脑主机，作为后面控制机器人底盘运动的主机。</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/image-%E8%A7%84%E6%A0%BC1.png" alt="image-20250416202441725"></p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/image-%E8%A7%84%E6%A0%BC2.png" alt="image-20250416202514369"></p>
+<p>把工控机装上电源之后可以在上面安装ros ,此台工控机的ubuntu版本是<strong>18.04</strong> 、ROS版本是<strong>melodic</strong></p>
+<hr>
+<h2 id="分布式框架"><a href="#分布式框架" class="headerlink" title="分布式框架"></a>分布式框架</h2><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>先连接上一个网络，再为工控机分配一个静态IP</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/wifi%E8%AE%BE%E7%BD%AE3.png"></p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/wifi%E8%AE%BE%E7%BD%AE4.png"></p>
+<p>这样在两台计算机中配置好相同的IP,就可以配置分布式框架了</p>
+<hr>
+<p>首先找到两台计算机的IP地址以及计算机名称</p>
+<p>通过指令：</p>
+<blockquote>
+<p>IP地址查看名: ifconfig</p>
+<p>计算机名称查看: hostname</p>
+</blockquote>
+<p>获得我的两台计算机的分别为</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>IP</th>
+<th>计算机名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主机</td>
+<td>192.168.3.127</td>
+<td>robot-Nuvo-7100VTC-Series</td>
+</tr>
+<tr>
+<td>从机（自己的电脑）</td>
+<td>192.168.3.35</td>
+<td>chenguoqing-G3-3590</td>
+</tr>
+</tbody></table>
+<p>这样准备工作完成</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><h4 id="修改计算机的-etc-hosts-文件"><a href="#修改计算机的-etc-hosts-文件" class="headerlink" title="修改计算机的&#x2F;etc&#x2F;hosts 文件"></a>修改计算机的&#x2F;etc&#x2F;hosts 文件</h4><p><strong>从机</strong>：</p>
+<p>输入：<code>sudo gedit /etc/hosts</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1       localhost</span><br><span class="line">127.0.1.1       robot-Nuvo-7100VTC-Series</span><br><span class="line">192.168.3.127   robot-Nuvo-7100VTC-Series</span><br><span class="line">192.168.3.25    chenguoqing-G3-3590</span><br></pre></td></tr></table></figure>
+
+<p><strong>主机</strong></p>
+<p>类似修改，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1       localhost</span><br><span class="line">127.0.1.1       chenguoqing-G3-3590</span><br><span class="line">192.168.3.127   robot-Nuvo-7100VTC-Series</span><br><span class="line">192.168.3.25    chenguoqing-G3-3590</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置IP地址"><a href="#配置IP地址" class="headerlink" title="配置IP地址"></a>配置IP地址</h4><p><strong>从机</strong></p>
+<p>输入：<code>gedit .bashrc</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export ROS_MASTER_URI=http://192.168.3.127:11311  # 指向机器1的ROS Master</span><br><span class="line">export ROS_HOSTNAME=192.168.3.35</span><br><span class="line">export ROS_IP=192.168.3.35</span><br></pre></td></tr></table></figure>
+
+<p><strong>主机</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export ROS_MASTER_URI=http://192.168.3.127:11311  # 指向机器1的ROS Master</span><br><span class="line">export ROS_HOSTNAME=192.168.3.127</span><br><span class="line">export ROS_IP=192.168.3.35</span><br></pre></td></tr></table></figure>
+
+
+
+<p>至于为什么要添加ROS_IP呢？</p>
+<p>是有可能会出现主机能够发布消息但是却不能接收消息的情况，所以加上一行这个就可以让主机找到从机IP！</p>
+<hr>
+<p>测试之前记得输入<code>source ~/.bashrc</code></p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>1.主机启动 roscore(必须)</p>
+<p>2.主机启动订阅节点，从机启动发布节点，测试通信是否正常</p>
+<p>3.反向测试，主机启动发布节点，从机启动订阅节点，测试通信是否正常</p>
+<p>不要在从机启动roscore，否则系统会警告，这样的话会默认把Master的IP地址修改为从机的IP地址。</p>
+<h3 id="取消多机通讯"><a href="#取消多机通讯" class="headerlink" title="取消多机通讯"></a>取消多机通讯</h3><p>注释之前在hosts文件以及bashrc文件中添加的内容即可！</p>
+<hr>
+<h3 id="ssh使用"><a href="#ssh使用" class="headerlink" title="ssh使用"></a>ssh使用</h3><p><strong>简介</strong></p>
+<p>SSH（Secure Shell）是一种用于计算机网络中进行安全通信的协议，它主要用于远程登录和远程执行命令。通过SSH，用户可以安全地连接到远程计算机（如服务器），执行命令和管理系统，而不必担心数据被窃听或篡改。</p>
+<p><strong>实现</strong></p>
+<p>自己的个人pc属于客户端，工控机属于服务端，整个实现具体流程是:</p>
+<ol>
+<li>分别安装SSH客户端与服务端</li>
+<li>服务端启动SSH服务</li>
+<li>客户端远程登陆服务端</li>
+<li>实现数据传输</li>
+</ol>
+<hr>
+<h4 id="安装SSH客户端以及服务端"><a href="#安装SSH客户端以及服务端" class="headerlink" title="安装SSH客户端以及服务端"></a>安装SSH客户端以及服务端</h4><p>需要在自己的PC下载客户端</p>
+<p><code>  sudo apt-get install openssh-client</code></p>
+<p>在工控机下载服务端</p>
+<p><code>sudo apt-get install openssh-server</code></p>
+<h4 id="服务端启动SSH服务"><a href="#服务端启动SSH服务" class="headerlink" title="服务端启动SSH服务"></a>服务端启动SSH服务</h4><p>在工控机启动服务</p>
+<p><code>sudo /etc/init.d/ssh start</code></p>
+<p>查看服务启动是否正常</p>
+<p><code> sudo systemctl status ssh</code></p>
+<p>可以查看日志等信息</p>
+<p>可以将ssh服务设置成开机自启动</p>
+<p><code>sudo systemctl enable ssh</code></p>
+<h4 id="客户端登陆服务器"><a href="#客户端登陆服务器" class="headerlink" title="客户端登陆服务器"></a>客户端登陆服务器</h4><p>登陆服务器命令</p>
+<p><code>ssh 账号@ip地址</code></p>
+<p>账号就是在工控机终端打开的时候出现在@前面的名字</p>
+<p>这个是</p>
+<p><code>ssh robot@192.168.3.127</code></p>
+<p>可以根据提示，输入登录密码（登陆工控机的密码）</p>
+<p>如果出现 access denyed</p>
+<p>说明出现问题，可能是密码输入错误、用户名写错了、或者是config文件配置出错。</p>
+<p>如果是第三种，需要使用命令</p>
+<p><code>gedit  /etc/ssh/sshd_config</code></p>
+<p>在工控机中打开这个配置文件，进行修改。</p>
+<p>如果退出登陆，可以调用exit命令:</p>
+<p><code>exit</code></p>
+<h4 id="实现数据传输"><a href="#实现数据传输" class="headerlink" title="实现数据传输"></a>实现数据传输</h4><p>上传文件:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp 本地文件路径 账号@ip:工控机路径</span><br></pre></td></tr></table></figure>
+
+<p>上传文件夹:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r 本地文件夹路径 账号@ip:工控机路径路径</span><br></pre></td></tr></table></figure>
+
+<p>下载文件:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp 账号@ip:工控机路径 本地文件夹路径</span><br></pre></td></tr></table></figure>
+
+<p>下载文件夹:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r 账号@ip:工控机路径 本地文件夹路径</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用优化"><a href="#使用优化" class="headerlink" title="使用优化"></a>使用优化</h4><p>可以借助密钥简化登陆过程。</p>
+<p>实现思想是:生成一对公钥私钥，私钥存储在本地，公钥上传至服务器，每次登陆时，本地直接上传私钥到服务器，服务器有匹配的公钥就认为是合法用户，直接创建SSH连接即可。具体实现步骤只有两步:</p>
+<ol>
+<li>本地生成密钥对</li>
+<li>将公钥上传至工控机</li>
+</ol>
+<h5 id="1-生成密钥对"><a href="#1-生成密钥对" class="headerlink" title="1.生成密钥对"></a>1.生成密钥对</h5><p>本地客户端生成公私钥：（一路回车默认即可）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
+
+<p>上面这个命令会在用户目录.ssh文件夹下创建公私钥:</p>
+<ol>
+<li>id_rsa （私钥）</li>
+<li>id_rsa.pub (公钥)</li>
+</ol>
+<h5 id="2-将公钥上"><a href="#2-将公钥上" class="headerlink" title="2.将公钥上"></a>2.将公钥上</h5><p>上传</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub 账号@ip</span><br></pre></td></tr></table></figure>
+
+<p>上面这条命令是写到服务器上的ssh目录下，该目录下有文件authorized_keys保存了公钥内容。</p>
+<p>以后再登陆树莓派就无需录入密码了。</p>
+<p>以后登陆只需要输入：</p>
+<p><code>ssh &#39;robot@192.168.3.127&#39;</code>即可登陆</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/05/20/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAScout-mini%E4%BD%BF%E7%94%A8Ros%E4%BE%8B%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/20/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAScout-mini%E4%BD%BF%E7%94%A8Ros%E4%BE%8B%E7%A8%8B/" class="post-title-link" itemprop="url">松灵机器人Scout-mini使用Ros例程</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-05-20 00:00:00 / 修改时间：20:44:00" itemprop="dateCreated datePublished" datetime="2025-05-20T00:00:00+08:00">2025-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">松灵机器人</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="松灵机器人Scout-mini使用Ros例程"><a href="#松灵机器人Scout-mini使用Ros例程" class="headerlink" title="松灵机器人Scout-mini使用Ros例程"></a>松灵机器人Scout-mini使用Ros例程</h1><p>工控机配置：</p>
+<p>Ubuntu :18.04</p>
+<p>Ros:Melodic</p>
+<h2 id="硬件连接"><a href="#硬件连接" class="headerlink" title="硬件连接"></a>硬件连接</h2><p>小车上弄好了，把usb插头插上就能用了</p>
+<p>附上官方使用文档</p>
+<p>参考这个链接：</p>
+<p><a target="_blank" rel="noopener" href="https://new.agilex.ai/raw/upload/20230718/SCOUT%20MINI%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C20230718_74957.pdf">https://new.agilex.ai/raw/upload/20230718/SCOUT%20MINI%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C20230718_74957.pdf</a></p>
+<p>把小车电源打开，使用gs_usb kernel模块，系统开机运行过一次即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> modprobe gs_usb</span><br></pre></td></tr></table></figure>
+
+<p>然后，我们使用命令使能can_to_sub，并设置通信的波特率为500K。每次重新将CAN_TO_USB连接到电脑端口都需要运行一次下面的命令，如果显示Connection time out就插拔一下USB。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装依赖包</span></span><br><span class="line"><span class="built_in">sudo</span> apt install can-utils</span><br><span class="line"><span class="comment"># 连接</span></span><br><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br></pre></td></tr></table></figure>
+
+<p>之后，查看一下can总线是否连接到电脑。如下图可见，我的电脑成功识别到了一个 叫can0的设备。如果上一步出错，也可以运行这个指令看看是否连接成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br></pre></td></tr></table></figure>
+
+<p>![2025-05-20 18-19-43 的屏幕截图](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-19-43 的屏幕截图.png)</p>
+<p>接着可以监听来自scout mini的数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 监听scout mini的运动数据</span></span><br><span class="line">candump can0</span><br></pre></td></tr></table></figure>
+
+<p>这一步输入后，命令行将持续输出一堆<strong>字符串</strong>，我们可以通过遥控器控制小车底盘的运动，这样传回的数据将会相应的变化。我们把<strong>拨杆SWB掰到中间位置(他有三个位置)，就可以控制scout_mini的运动了。SWB默认位置，我们可以通过Ros程序控制底盘运动</strong>；SWB中间位置，可以通过遥控器控制底盘运动；SWB第三个位置，两种控制模式都失效。具体的在刚才那个手册里面有详细介绍。所以现在应该把拨片放在最上面。</p>
+<h2 id="ROS功能包下载"><a href="#ROS功能包下载" class="headerlink" title="ROS功能包下载"></a>ROS功能包下载</h2><p>首先，需要安装一些依赖，需要根据自己的Ros版本更改对应的命令，我的为<strong>melodic</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需要根据自己的ros版本更改</span></span><br><span class="line"><span class="built_in">sudo</span> apt install ros-melodic-controller-manager</span><br><span class="line"><span class="built_in">sudo</span> apt install ros-melodic-joint-state-publisher-gui </span><br><span class="line"><span class="built_in">sudo</span> apt install -y libasio-dev</span><br></pre></td></tr></table></figure>
+
+<p>然后，将代码包下载到创建的工作空间下的src目录，我这里放到了自行创建的功能包scout_ws下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p scout_ws/src</span><br><span class="line"><span class="built_in">cd</span> scout_ws/</span><br><span class="line">catkin_make</span><br></pre></td></tr></table></figure>
+
+<p>这是ROS基础知识,不再赘述。</p>
+<p>Ros功能包这里，我们只需下载两个功能包，其一为必须的 <strong>ugv_sdk</strong> ，其二为 scout_ros 。第二个功能包需要根据自己的小车型号而定。（官网文档默认下载scout_ros）。</p>
+<p>官方链接在这：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/agilexrobotics">https://github.com/agilexrobotics</a></p>
+<p>可以自己寻找。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载代码</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/src/</span><br><span class="line"><span class="comment"># 这个都一样，底盘驱动的sdk</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/agilexrobotics/ugv_sdk.git  --recursive</span><br><span class="line"><span class="comment"># 下载自己需要的功能包（去github上面找）</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/agilexrobotics/scout_ros.git</span><br></pre></td></tr></table></figure>
+
+<p>编译一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/scout_ws/</span><br><span class="line">catkin_make</span><br><span class="line"><span class="built_in">source</span> devel/setup.bash</span><br></pre></td></tr></table></figure>
+
+<h2 id="键盘控制"><a href="#键盘控制" class="headerlink" title="键盘控制"></a>键盘控制</h2><p>这里简记一下使用官方提供的Ros例程，既使用键盘控制scout_mini运动的过程。我们<strong>要使用电脑控制scout_mini底盘的运动，需要将遥控器上的SWB切换为默认位置</strong>。<strong>当出现紧急情况，将SWB切换到其他位置，可以实现控制小车急停的效果</strong>。SWB默认位置，我们可以通过Ros程序控制底盘运动；SWB中间位置，可以通过遥控器控制底盘运动；SWB第三个位置，两种控制模式都失效。</p>
+<p>需要下载 teleop_twist_keyboard 功能包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-melodic-teleop-twist-keyboard</span><br></pre></td></tr></table></figure>
+
+<p>连接电脑USB，开启scout_mini电源：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1）连接设备</span></span><br><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br><span class="line"><span class="comment"># 2）测试：接收数据</span></span><br><span class="line">candump can0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3）运行小车底盘的ros节点 base</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/    <span class="comment"># 这里得是自己的工作空间目录</span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch scout_bringup scout_robot_base.launch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4）运行键盘控制节点 Launch ROS nodes</span></span><br><span class="line"><span class="built_in">cd</span> scout_ws/    <span class="comment"># 这里得是自己的工作空间目录</span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch scout_bringup scout_teleop_keyboard.launch</span><br></pre></td></tr></table></figure>
+
+<p>在此之前，先熟悉一下键盘控制节点：</p>
+<p>![](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-35-11 的屏幕截图.png)</p>
+<ul>
+<li><p>ｉ／，：控制小车直行 or 后退</p>
+</li>
+<li><p>ｋ：停止运动（使用ctrl + z，效果相同）</p>
+</li>
+<li><p>ｊ／ｌ：控制小车逆时针 or 顺时针旋转</p>
+</li>
+<li><p>ｕ／ｏ：控制小车左转 or 右转</p>
+</li>
+<li><p>m／. ：控制小车左后 or 右后倒车</p>
+</li>
+<li><p>q &#x2F; z :控制小车增加&#x2F;减少速度的10%</p>
+</li>
+<li><p>w&#x2F;x:增加&#x2F;减少线速度的10%</p>
+</li>
+<li><p>e&#x2F;c: 增加&#x2F;减少角速度的10%</p>
+</li>
+</ul>
+<p>![](&#x2F;home&#x2F;jiangbao&#x2F;图片&#x2F;2025-05-20 18-38-41 的屏幕截图.png)</p>
+<p>所以应该事先减速，要不然这个车快的起飞。</p>
+<p>之后，就可以直接把鼠标放在键盘上操纵小车了，如果失控，记得及时使用<strong>遥控器将SWB拨至最小面</strong>。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
