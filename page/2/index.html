@@ -122,13 +122,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -157,6 +157,555 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.2%20%E5%BB%BA%E5%9B%BE%E5%8F%8A%E5%85%B6%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/11/9.2%20%E5%BB%BA%E5%9B%BE%E5%8F%8A%E5%85%B6%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">9.2 建图及其相关操作</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-23 15:17:18" itemprop="dateModified" datetime="2025-06-23T15:17:18+08:00">2025-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="9-2-建图及其相关操作"><a href="#9-2-建图及其相关操作" class="headerlink" title="9.2 建图及其相关操作"></a>9.2 建图及其相关操作</h1><h2 id="编写gmapping节点相关launch文件"><a href="#编写gmapping节点相关launch文件" class="headerlink" title="编写gmapping节点相关launch文件"></a>编写gmapping节点相关launch文件</h2><p>在上一节创建的导航功能包中新建 launch 目录，并新建launch文件（文件名自定义，比如： gmapping.launch），</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E6%96%B0%E5%BB%BAlaunch%E6%96%87%E4%BB%B6.png"></p>
+<p>代码示例如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;gmapping&quot;</span> <span class="attr">type</span>=<span class="string">&quot;slam_gmapping&quot;</span> <span class="attr">name</span>=<span class="string">&quot;slam_gmapping&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;scan&quot;</span> <span class="attr">to</span>=<span class="string">&quot;scan&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;base_frame&quot;</span> <span class="attr">value</span>=<span class="string">&quot;base_link&quot;</span>/&gt;</span><span class="comment">&lt;!--底盘坐标系--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_frame&quot;</span> <span class="attr">value</span>=<span class="string">&quot;odom&quot;</span>/&gt;</span> <span class="comment">&lt;!--里程计坐标系--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;map_update_interval&quot;</span> <span class="attr">value</span>=<span class="string">&quot;5.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;maxUrange&quot;</span> <span class="attr">value</span>=<span class="string">&quot;16.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;sigma&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;kernelSize&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lstep&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;astep&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;iterations&quot;</span> <span class="attr">value</span>=<span class="string">&quot;5&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lsigma&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.075&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;ogain&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lskip&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;srr&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;srt&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;str&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;stt&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;linearUpdate&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;angularUpdate&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;temporalUpdate&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;resampleThreshold&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;particles&quot;</span> <span class="attr">value</span>=<span class="string">&quot;30&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;xmin&quot;</span> <span class="attr">value</span>=<span class="string">&quot;-50.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;ymin&quot;</span> <span class="attr">value</span>=<span class="string">&quot;-50.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;xmax&quot;</span> <span class="attr">value</span>=<span class="string">&quot;50.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;ymax&quot;</span> <span class="attr">value</span>=<span class="string">&quot;50.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;delta&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;llsamplerange&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.01&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;llsamplestep&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.01&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lasamplerange&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.005&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lasamplestep&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.005&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>关键代码解释：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;scan&quot;</span> <span class="attr">to</span>=<span class="string">&quot;scan&quot;</span>/&gt;</span><span class="comment">&lt;!-- 雷达话题 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;base_frame&quot;</span> <span class="attr">value</span>=<span class="string">&quot;base_footprint&quot;</span>/&gt;</span><span class="comment">&lt;!--底盘坐标系--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_frame&quot;</span> <span class="attr">value</span>=<span class="string">&quot;odom&quot;</span>/&gt;</span> <span class="comment">&lt;!--里程计坐标系--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里修改了底盘坐标系</p>
+<p>修改start_mycar.launch文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 机器人启动文件：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find lslidar_driver)/launch/start.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find pointcloud_to_laserscan)/launch/pointcloud_scan.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_bringup)/launch/scout_robot_base.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_bringup)/launch/scout_teleop_keyboard.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_description)/launch/display_scout_mini.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h2><ol>
+<li>启动机器人，并且加载机器人模型</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000  <span class="comment">#can通信</span></span><br><span class="line">roslaunch mycar_start start_mycar.launch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>启动地图绘制launch文件：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch nav gmapping.launch</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>可以在键盘上控制，同时也可以使用遥控器，两者的使用在前面松灵机器人教学上都有写。</p>
+</li>
+<li><p>在rviz中添加地图显示组件，通过机器人运动，同时可以在rviz中显示gmapping发布的栅格地图数据。下一步将地图单独保存。</p>
+</li>
+</ol>
+<h2 id="地图服务"><a href="#地图服务" class="headerlink" title="地图服务"></a>地图服务</h2><p>通过mao_server实现地图保存与读取</p>
+<h3 id="保存launch文件"><a href="#保存launch文件" class="headerlink" title="保存launch文件"></a>保存launch文件</h3><p>首先在自定义的导航功能包下新建 map 目录，用于保存生成的地图数据。地图保存的语法比较简单，在nav&#x2F;launch中编写一个launch文件map_save.launch，内容如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;filename&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(find nav)/map/nav&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">name</span>=<span class="string">&quot;map_save&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">type</span>=<span class="string">&quot;map_saver&quot;</span> <span class="attr">args</span>=<span class="string">&quot;-f $(arg filename)&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中通过 filename 指定了地图的保存路径以及保存的文件名称。</p>
+<p>SLAM建图完毕后，执行该launch文件即可。</p>
+<p><strong>测试:</strong></p>
+<p>首先，参考上一节，依次启动仿真环境，键盘控制节点与SLAM节点；</p>
+<p>然后，通过键盘控制机器人运动并绘图；</p>
+<p>最后，通过上述地图保存方式保存地图。</p>
+<p>结果：在指定路径下会生成两个文件，xxx.pgm 与 xxx.yaml</p>
+<h3 id="地图读取"><a href="#地图读取" class="headerlink" title="地图读取"></a>地图读取</h3><p>通过 map_server 的 map_server 节点可以读取栅格地图数据，编写 launch 文件map_server.launch如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;!-- 设置地图的配置文件 --&gt;</span><br><span class="line">    &lt;arg name=<span class="string">&quot;map&quot;</span> default=<span class="string">&quot;nav.yaml&quot;</span> /&gt;</span><br><span class="line">    &lt;!-- 运行地图服务器，并且加载设置的地图--&gt;</span><br><span class="line">    &lt;node name=<span class="string">&quot;map_server&quot;</span> pkg=<span class="string">&quot;map_server&quot;</span> <span class="built_in">type</span>=<span class="string">&quot;map_server&quot;</span> args=<span class="string">&quot;<span class="subst">$(find nav)</span>/map/<span class="subst">$(arg map)</span>&quot;</span>/&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>其中参数是地图描述文件的资源路径，执行该launch文件，该节点会发布话题:map(nav_msgs&#x2F;OccupancyGrid)，最后，在 rviz 中使用 map 组件可以显示栅格地图。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.5%20%E5%AF%BC%E8%88%AA%E4%B8%8Eslam%E8%87%AA%E4%B8%BB%E5%BB%BA%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/11/9.5%20%E5%AF%BC%E8%88%AA%E4%B8%8Eslam%E8%87%AA%E4%B8%BB%E5%BB%BA%E5%9B%BE/" class="post-title-link" itemprop="url">9.5 导航与slam自主建图</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-23 15:24:45" itemprop="dateModified" datetime="2025-06-23T15:24:45+08:00">2025-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="9-5-导航与slam自主建图"><a href="#9-5-导航与slam自主建图" class="headerlink" title="9.5 导航与slam自主建图"></a>9.5 导航与slam自主建图</h1><h2 id="编写launch文件"><a href="#编写launch文件" class="headerlink" title="编写launch文件"></a>编写launch文件</h2><p>当前launch文件（名称自定义，比如：auto_slam.launch）实现，无需调用map_server的相关节点，只需要启动SLAM节点与move_base节点，示例内容如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动SLAM节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/gmapping.launch&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 运行move_base节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/move_base.launch&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><ol>
+<li><p>执行相关launch文件，启动机器人并加载机器人模型：roslaunch mycar_start start.launch；</p>
+</li>
+<li><p>然后执行当前launch文件：roslaunch nav auto_slam.launch；</p>
+</li>
+<li><p>在rviz中通过2D Nav Goal设置目标点，机器人开始自主移动并建图了；</p>
+</li>
+<li><p>最后可以使用 map_server 保存地图。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/VNC%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/11/VNC%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">VNC远程桌面使用方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:48:13" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="VNC远程桌面使用方法"><a href="#VNC远程桌面使用方法" class="headerlink" title="VNC远程桌面使用方法"></a>VNC远程桌面使用方法</h1><p>把需要被显示的桌面称为移动端，显示移动端桌面并进行远程控制操作的称为遥控端</p>
+<h2 id="遥控端准备"><a href="#遥控端准备" class="headerlink" title="遥控端准备"></a>遥控端准备</h2><p>直接下载VNC Viewer，网址为：<a target="_blank" rel="noopener" href="https://www.realvnc.com/en/connect/download/viewer/">https://www.realvnc.com/en/connect/download/viewer/</a></p>
+<p>根据系统的不同选择不同版本，由于博主遥控端为Ubuntu，因此选择<strong>Linux-DEB X64</strong></p>
+<p>安装好之后，可以在终端：</p>
+<p><code>vncviewer</code></p>
+<p>可以打开软件，可能需要注册一下</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/bcec45e62dece585db2af5d88839a5a1.png" alt="img"></p>
+<p>这样遥控端就准备好了</p>
+<h2 id="移动端准备"><a href="#移动端准备" class="headerlink" title="移动端准备"></a>移动端准备</h2><p>博主移动端也为Ubuntu系统。安装<strong>x11vnc</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="keyword">get</span> install x11vnc</span><br></pre></td></tr></table></figure>
+
+<p>可以把x11vncserver收藏起来</p>
+<p>打开后，首先出现的界面用来设置端口号，默认5900：</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/a0047f0b499be328f012d01cd41bdd2f.png" alt="img"></p>
+<p>单击OK以后，稍等1、2秒，会弹出来第二个界面，用来设置通信密码，注意上面<strong>Accept Connections</strong>需要勾选：</p>
+<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/fc37a682a46f368b1d725308a55548ae.png" alt="img"></p>
+<p>密码随便设点简单的比如1、2之类的就行，方便。最后单击OK。</p>
+<h3 id="两端连接"><a href="#两端连接" class="headerlink" title="两端连接"></a>两端连接</h3><p>首先找到自己的移动端的IP</p>
+<p>命令行输入：</p>
+<p><code>ifconfig</code></p>
+<p>查看IP,这台工控机的IP是：192.168.3.127</p>
+<p>在遥控端输入：<code>192.168.3.127:5900</code></p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18</a> 20-24-21 的屏幕截图.png)</p>
+<p>输入密码即可实现远程桌面</p>
+<p>怎么关闭</p>
+<p>可以直接在远程桌面关闭</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18</a> 20-27-49 的屏幕截图.png)</p>
+<p>左上角有一个小x号，这样就关闭了</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.3acml%E5%AE%9A%E4%BD%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/11/9.3acml%E5%AE%9A%E4%BD%8D/" class="post-title-link" itemprop="url">9.3 amcl定位</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:50:40" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="acml定位"><a href="#acml定位" class="headerlink" title="acml定位"></a>acml定位</h1><h2 id="编写amcl节点相关launch文件"><a href="#编写amcl节点相关launch文件" class="headerlink" title="编写amcl节点相关launch文件"></a>编写amcl节点相关launch文件</h2><p>在nav下新建amcl.launch文件、</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;amcl&quot;</span> <span class="attr">type</span>=<span class="string">&quot;amcl&quot;</span> <span class="attr">name</span>=<span class="string">&quot;amcl&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Publish scans from best pose at a max of 10 Hz --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_model_type&quot;</span> <span class="attr">value</span>=<span class="string">&quot;diff&quot;</span>/&gt;</span><span class="comment">&lt;!-- 里程计模式为差分 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha5&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;transform_tolerance&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;gui_publish_rate&quot;</span> <span class="attr">value</span>=<span class="string">&quot;10.0&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_max_beams&quot;</span> <span class="attr">value</span>=<span class="string">&quot;30&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;min_particles&quot;</span> <span class="attr">value</span>=<span class="string">&quot;500&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;max_particles&quot;</span> <span class="attr">value</span>=<span class="string">&quot;5000&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;kld_err&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;kld_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.99&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- translation std dev, m --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha3&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.8&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha4&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_z_hit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_z_short&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_z_max&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_z_rand&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_sigma_hit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_lambda_short&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_lambda_short&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_model_type&quot;</span> <span class="attr">value</span>=<span class="string">&quot;likelihood_field&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &lt;param name=&quot;laser_model_type&quot; value=&quot;beam&quot;/&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_likelihood_max_dist&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2.0&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;update_min_d&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;update_min_a&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_frame_id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;odom&quot;</span>/&gt;</span><span class="comment">&lt;!-- 里程计坐标系 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;base_frame_id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;base_link&quot;</span>/&gt;</span><span class="comment">&lt;!-- 添加机器人基坐标系 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;global_frame_id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;map&quot;</span>/&gt;</span><span class="comment">&lt;!-- 添加地图坐标系 --&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="编写测试launch文件"><a href="#编写测试launch文件" class="headerlink" title="编写测试launch文件"></a>编写测试launch文件</h2><p>amcl节点是不可以单独运行的，运行 amcl 节点之前，需要先加载全局地图，然后启动 rviz 显示定位结果，上述节点可以集成进launch文件，新建test_amcl.launch ,内容示例如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 设置地图的配置文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;map&quot;</span> <span class="attr">default</span>=<span class="string">&quot;nav.yaml&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 运行地图服务器，并且加载设置的地图--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">name</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">type</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">args</span>=<span class="string">&quot;$(find nav)/map/$(arg map)&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动AMCL节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/amcl.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当然，launch文件中地图服务节点和amcl节点中的包名、文件名需要根据自己的设置修改。</p>
+<h2 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h2><ol>
+<li><p>建立can通信：sudo ip link set can0 up type can bitrate 500000</p>
+</li>
+<li><p>执行相关launch文件，启动机器人并加载机器人模型：roslaunch mycar_start start.launch；</p>
+</li>
+<li><p>启动上一步中集成地图服务、amcl 的 launch 文件：roslaunch nav test_amcl.launch；</p>
+</li>
+<li><p>启动rviz并添加RobotModel、Map组件，分别显示机器人模型与地图，添加 posearray 插件，设置topic为particlecloud来显示 amcl 预估的当前机器人的位姿，箭头越是密集，说明当前机器人处于此位置的概率越高；</p>
+</li>
+<li><p>通过键盘控制机器人运动，会发现 posearray 也随之而改变。运行结果与仿真环境下类似。</p>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E5%AE%9A%E4%BD%8D%2Cpng"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/8.2%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E4%BC%A0%E6%84%9F%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/11/8.2%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E4%BC%A0%E6%84%9F%E5%99%A8/" class="post-title-link" itemprop="url">8.2 机器人平台设计</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-19 10:07:28" itemprop="dateModified" datetime="2025-06-19T10:07:28+08:00">2025-06-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">松灵机器人</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="8-2-机器人平台设计-传感器-雷达"><a href="#8-2-机器人平台设计-传感器-雷达" class="headerlink" title="8.2 机器人平台设计-传感器-雷达"></a>8.2 机器人平台设计-传感器-雷达</h1><h2 id="相关参数及连接"><a href="#相关参数及连接" class="headerlink" title="相关参数及连接"></a>相关参数及连接</h2><p>激光雷达(LiDAR)，英文全称为:Light Detection And Ranging，即<strong>光探测与测量</strong>。</p>
+<p>实验室雷达参数：</p>
+<p>名称：镭神智能——c16十六线三维激光雷达</p>
+<p>性能参数：</p>
+<p><img src="https://i-blog.csdnimg.cn/blog_migrate/bd030c149afa5ae4e4951ec3c139490d.png" alt="img"></p>
+<p>连接激光雷达</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E9%9B%B7%E8%BE%BE%E6%8E%A5%E7%BA%BF.png" alt="Ubuntu18.04鲁班猫ROS-melodic适配镭神智能C16多线激光雷达_镭神c16-CSDN博客"></p>
+<p>刚开始可能显示错误，没事，先设置一下网络。</p>
+<p>打开ubuntu网络设置，点击这个有线已连接。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C.png"></p>
+<p>点击小齿轮，设置有线连接的静态IP地址和掩码如下(IPv4)。需要选择”Manual - 手动”，同时设置”Address 192.168.1.102”，设置“Netmask 255.255.255.0”，其他的内容无需设置(网上相关教程还设置了其他内容，但是实际上没必要)。只需设置这个IPv4就可以了，其他内容不用管，官方手册上面的也不用管。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE.png"></p>
+<p> 之后，我们可以使用ifconfig查询连接的设备。运行ifconfig命令需要安装一个功能包，按照他的提醒信息进行安装即可。如下图所示，他会显示很多的设备，其中有一个设备的inet和netmask后面的数值正好是前面我们设置的192.168.1.102和255.255.255.0。每个人电脑上面的网口名称都不一样，下图中我的名称即为enp3s0，后面将会用的这个名称。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/ifconfig.png"></p>
+<p>我的名称是<strong>enp3s0</strong></p>
+<p>镭神C16激光雷达默认的ip地址为 192.168.1.200，我们使用 ping ip可以查看电脑与其是否成功连接。我们前面设置的192.168.1.102是电脑的静态IP，激光雷达他将会数据发送至192.168.1.102这个目标IP地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 192.168.1.200</span><br></pre></td></tr></table></figure>
+
+<p>如果连接成功的话会有显示</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-06-11_17-22-17.png"></p>
+<p>然后，我们可以进一步测试，看看我们的电脑是否能够正确收到雷达发送的数据。也就是从雷达IP 192.168.1.200发送到目标IP 192.168.1.102。如下图显示就说明连接成功啦。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sudo tcpdump -n -i [name]</span></span><br><span class="line"><span class="comment"># 我的设备名为 enp3s0</span></span><br><span class="line"><span class="built_in">sudo</span> tcpdump -n -i enp3s0</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-06-11_17-24-02.png"></p>
+<h2 id="ROS-Rviz测试"><a href="#ROS-Rviz测试" class="headerlink" title="ROS&amp;Rviz测试"></a>ROS&amp;Rviz测试</h2><p> 如果上面的两个测试都通过了，那就可以下载功能包进行一个简单的测试。创建新的工作空间，并将TB客服提供的功能包lslidar_ros和pointcloud_to_laserscan拷贝进src目录。当然也可以直接拷贝到现成的工作空间下的src目录。功能包下载：</p>
+<p><a href="https://link.zhihu.com/?target=https://wws.lanzouy.com/irayJ095dcpa">https://link.zhihu.com/?target=https%3A//wws.lanzouy.com/irayJ095dcpa</a></p>
+<p>编译过程中很可能会因为缺少相关的依赖而报错。主要会遇到两种报错，分别需要安装下面的两个功能包。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pcap.h  报错</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get install libpcap-dev</span><br><span class="line"><span class="comment"># tf2_sensor_msgs 报错</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get install ros-noetic-tf2-sensor-msgs</span><br><span class="line"><span class="comment">#根据自己ros版本来更改</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>之后，便可以运行对应的launch文件，获取点云数据，并将其显示到RVIZ中。顺便提一句，如果roscore启动失败，检查是不是忘了把之前分布式通信的文件修改下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd 到工作空间</span></span><br><span class="line"><span class="built_in">cd</span> ~/lslidar_ws</span><br><span class="line"></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch lslidar_driver start.launch</span><br><span class="line"></span><br><span class="line"><span class="comment">#新建一个终端窗口</span></span><br><span class="line"><span class="built_in">cd</span> ~/lslidar_ws</span><br><span class="line"><span class="comment">#   </span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch pointcloud_to_laserscan pointcloud_scan.launch</span><br><span class="line"></span><br><span class="line"><span class="comment">#新建一个终端窗口</span></span><br><span class="line">rviz</span><br><span class="line"></span><br><span class="line"><span class="comment">#  可视化点云数据</span></span><br><span class="line">rviz</span><br></pre></td></tr></table></figure>
+
+<p> 如果电脑没能成功连接激光雷达，运行roslaunch lslidar_driver start.launch时，终端有黄色的”time out”提示。打开rviz之后，我们需要简单设置一下。需要在rviz中，添加PointCloud2组件，并选择话题&#x2F;point_cloud_raw。同时，点击上方的Fixed Frame处的map，直接输入laser并回车。此时就可以在rviz中看见激光雷达的点云数据了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-06-11_17-26-21.png"></p>
+<p>s</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 

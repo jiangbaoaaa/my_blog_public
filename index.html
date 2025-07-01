@@ -122,13 +122,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -157,6 +157,819 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/CMake%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/01/CMake%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">CMake安装与使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-07-01 00:00:00 / 修改时间：11:25:56" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="CMake安装与使用"><a href="#CMake安装与使用" class="headerlink" title="CMake安装与使用"></a>CMake安装与使用</h1><p>CMake 是个一个开源的跨平台自动化建构系统，用来管理软件建置的程序，并不依赖于某特定编译器，并可支持多层目录、多个应用程序与多个函数库。</p>
+<p>CMake 通过使用简单的配置文件 CMakeLists.txt，自动生成不同平台的构建文件（如 Makefile、Ninja 构建文件、Visual Studio 工程文件等），简化了项目的编译和构建过程。</p>
+<p>CMake 本身不是构建工具，而是生成构建系统的工具，它生成的构建系统可以使用不同的编译器和工具链。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Cmake.svg" alt="img"></p>
+<ul>
+<li>CMakeLists.txt 文件： CMake 的配置文件，用于定义项目的构建规则、依赖关系、编译选项等。每个 CMake 项目通常包含一个或多个 CMakeLists.txt 文件。</li>
+<li>构建目录： 为了保持源代码的整洁，CMake 鼓励使用独立的构建目录（Out-of-source 构建）。这样，构建生成的文件与源代码分开存放。</li>
+</ul>
+<hr>
+<p><strong>基本流程</strong></p>
+<ol>
+<li>编写 CMakeLists.txt 文件： 定义项目的构建规则和依赖关系。</li>
+<li>生成构建文件： 使用 CMake 生成适合当前平台的构建系统文件（例如 Makefile、Visual Studio 工程文件）。</li>
+<li>执行构建： 使用生成的构建系统文件（如 make、ninja、msbuild）来编译项目。</li>
+</ol>
+<h2 id="安装cmake"><a href="#安装cmake" class="headerlink" title="安装cmake"></a>安装cmake</h2><p>Linux:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update  <span class="comment">#更新APT列表</span></span><br><span class="line"><span class="built_in">sudo</span> apt install cmake  <span class="comment">#下载</span></span><br><span class="line">cmake --version  <span class="comment">#查看版本</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你通过APT或Snap安装CMake，一般不需要额外的配置。安装完成后，CMake应该能够正常工作并且系统会自动将它添加到环境变量中。不过，如果你是通过源代码编译安装CMake，可能需要一些额外的配置来确保它在系统中正确工作。这里直接使用APT安装，不需要配置环境。</p>
+<hr>
+<h2 id="CMake基础"><a href="#CMake基础" class="headerlink" title="CMake基础"></a>CMake基础</h2><h3 id="CMakeLists-txt-文件"><a href="#CMakeLists-txt-文件" class="headerlink" title="CMakeLists.txt 文件"></a>CMakeLists.txt 文件</h3><p>这个文件是CMake的配置文件，用于定义项目的构建规则、依赖关系、编译选项等。</p>
+<p>每个项目都需要一个或者多个CMakeLists.txt文件</p>
+<h4 id="文件结构及基本语法"><a href="#文件结构及基本语法" class="headerlink" title="文件结构及基本语法"></a>文件结构及基本语法</h4><p><strong>常见指令</strong></p>
+<ol>
+<li>指定CMake的最低版本要求</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION &lt;version&gt;)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>定义项目的名称和使用的编程语言</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">project</span>(MyProject CXX)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>指定要生成的可执行文件和其源文件</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(&lt;<span class="keyword">target</span>&gt; &lt;source_files&gt;...)</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(scout_base_node src/scout_base_node.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>其作用是告诉CMake生成一个名为<strong>scout_base_node</strong>的可执行文件，这个文件是由src&#x2F;scout_base_node.cpp这个源文件编译而来的。</p>
+<ol start="4">
+<li>创建一个库（静态库或者动态库）及其元文件</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(&lt;<span class="keyword">target</span>&gt; &lt;source_files&gt;...)</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(scout_messenger STATIC src/scout_messenger.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>这个就是用于生成一个库文件为：scout_messenger，构建完成之后，CMake会生成一个名为 libscout_messenger.a 的静态库文件（在Linux系统中）</p>
+<p>STATIC：这个关键字表示你要生成的是一个静态库。静态库是一个包含已编译代码的文件，在链接时会将整个库的内容直接复制到最终的可执行文件或其他库中。与动态库（shared 或 dll）不同，静态库在运行时不需要依赖库文件。</p>
+<p>src&#x2F;scout_messenger.cpp：这是生成静态库所需的源文件。在这个例子中，scout_messenger.cpp 这个源文件会被编译并打包成 scout_messenger 静态库。</p>
+<ol start="5">
+<li>链接目标文件与其他库</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(&lt;<span class="keyword">target</span>&gt; &lt;libraries&gt;...)</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(scout_messenger <span class="variable">$&#123;catkin_LIBRARIES&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在 CMake 中用来将 scout_messenger 目标与 ROS 所需的库（即 catkin_LIBRARIES）进行链接的命令。通过它，scout_messenger 可以访问这些 ROS 库中的功能，确保程序能够正常运行在 ROS 环境下。</p>
+<ol start="6">
+<li>添加头文件搜索路径</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_directories</span>(&lt;dirs&gt;...)</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_directories</span>(</span><br><span class="line">    <span class="keyword">include</span></span><br><span class="line">    <span class="variable">$&#123;catkin_INCLUDE_DIRS&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>include：这是一个相对路径，指向当前项目的 include 文件夹，通常用来存放项目的头文件。通过将 include 添加到 include_directories 中，编译器会在编译过程中查找该目录中的头文件。</p>
+</li>
+<li><p>${catkin_INCLUDE_DIRS}：这是一个 CMake 变量，通常是在使用 ROS 构建系统时定义的。catkin_INCLUDE_DIRS 包含了与 ROS 环境相关的所有头文件路径。这个变量会自动由 catkin 设置，包含了 ROS 包和依赖项的头文件路径。例如，如果你的项目依赖于 roscpp 或其他 ROS 包，catkin_INCLUDE_DIRS 就会包含这些包的头文件路径。</p>
+</li>
+</ul>
+<ol start="7">
+<li>设置变量的值</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(&lt;variable&gt; &lt;value&gt;...)</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>设置目标属性</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_include_directories</span>(<span class="keyword">TARGET</span> target_name</span><br><span class="line">                          [BEFORE | AFTER]</span><br><span class="line">                          [SYSTEM] [PUBLIC | PRIVATE | INTERFACE]</span><br><span class="line">                          [items1...])</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_include_directories</span>(MyExecutable PRIVATE <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>)</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>安装规则</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">install</span>(TARGETS target1 [target2 ...]</span><br><span class="line">        [RUNTIME DESTINATION dir]</span><br><span class="line">        [LIBRARY DESTINATION dir]</span><br><span class="line">        [ARCHIVE DESTINATION dir]</span><br><span class="line">        [INCLUDES DESTINATION [dir ...]]</span><br><span class="line">        [PRIVATE_HEADER DESTINATION dir]</span><br><span class="line">        [PUBLIC_HEADER DESTINATION dir])</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">install</span>(TARGETS scout_messenger scout_base_node</span><br><span class="line">  RUNTIME DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;</span></span><br><span class="line">  LIBRARY DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_LIB_DESTINATION&#125;</span></span><br><span class="line">  ARCHIVE DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_LIB_DESTINATION&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这些 install 命令的作用是将构建后的文件（如可执行文件、库文件、头文件、launch 文件等）安装到适当的目录中，以便能够在安装后正确运行和使用。</p>
+<ol start="10">
+<li>条件语句</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(expression)</span><br><span class="line">  <span class="comment"># Commands</span></span><br><span class="line"><span class="keyword">elseif</span>(expression)</span><br><span class="line">  <span class="comment"># Commands</span></span><br><span class="line"><span class="keyword">else</span>()</span><br><span class="line">  <span class="comment"># Commands</span></span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(CMAKE_BUILD_TYPE <span class="keyword">STREQUAL</span> <span class="string">&quot;Debug&quot;</span>)</span><br><span class="line">  <span class="keyword">message</span>(<span class="string">&quot;Debug build&quot;</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li>自定义命令（add_custom_command 命令）</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_custom_command</span>(</span><br><span class="line">   <span class="keyword">TARGET</span> <span class="keyword">target</span></span><br><span class="line">   PRE_BUILD | PRE_LINK | POST_BUILD</span><br><span class="line">   <span class="keyword">COMMAND</span> command1 [ARGS] [WORKING_DIRECTORY dir]</span><br><span class="line">   [<span class="keyword">COMMAND</span> command2 [ARGS]]</span><br><span class="line">   [DEPENDS [depend1 [depend2 ...]]]</span><br><span class="line">   [COMMENT comment]</span><br><span class="line">   [VERBATIM]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_custom_command</span>(</span><br><span class="line">   <span class="keyword">TARGET</span> MyExecutable POST_BUILD</span><br><span class="line">   <span class="keyword">COMMAND</span> <span class="variable">$&#123;CMAKE_COMMAND&#125;</span> -E echo <span class="string">&quot;Build completed.&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的作用是，在构建 MyExecutable 完成后，执行一个自定义的命令，打印出 “Build completed.” 到控制台。</p>
+<hr>
+<h3 id="变量和缓存"><a href="#变量和缓存" class="headerlink" title="变量和缓存"></a>变量和缓存</h3><p>CMake 使用变量来存储和传递信息，这些变量可以在 CMakeLists.txt 文件中定义和使用。</p>
+<p>变量可以分为普通变量和缓存变量。</p>
+<h4 id="变量定义和缓存"><a href="#变量定义和缓存" class="headerlink" title="变量定义和缓存"></a>变量定义和缓存</h4><p><strong>定义变量</strong></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(MY_VAR <span class="string">&quot;Hello World&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用变量</strong></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;Variable MY_VAR is $&#123;MY_VAR&#125;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行 CMake 配置或生成过程时，CMake 会输出：</p>
+<p>– Variable MY_VAR is Hello World</p>
+<h4 id="缓存变量"><a href="#缓存变量" class="headerlink" title="缓存变量"></a>缓存变量</h4><p>缓存变量存储在 CMake 的缓存文件中，用户可以在 CMake 配置时修改这些值。缓存变量通常用于用户输入的设置，例如编译选项和路径。</p>
+<p><strong>定义缓存变量：</strong></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(MY_CACHE_VAR <span class="string">&quot;DefaultValue&quot;</span> CACHE <span class="keyword">STRING</span> <span class="string">&quot;A cache variable&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用缓存变量：</strong></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;Cache variable MY_CACHE_VAR is $&#123;MY_CACHE_VAR&#125;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="查找库和包"><a href="#查找库和包" class="headerlink" title="查找库和包"></a>查找库和包</h3><p>CMake 可以通过 find_package() 指令自动检测和配置外部库和包。</p>
+<p>常用于查找系统安装的库或第三方库。</p>
+<h4 id="find-package-指令"><a href="#find-package-指令" class="headerlink" title="find_package()指令"></a>find_package()指令</h4><p>基本用法：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(Boost REQUIRED)</span><br></pre></td></tr></table></figure>
+
+<p>指定版本：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(Boost <span class="number">1.70</span> REQUIRED)</span><br></pre></td></tr></table></figure>
+
+<p>查找库并指定路径：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(OpenCV REQUIRED PATHS /path/to/opencv)</span><br></pre></td></tr></table></figure>
+
+<p>使用查找到的库：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(MyExecutable Boost::Boost)</span><br></pre></td></tr></table></figure>
+
+<p>设置包含目录和链接目录：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;Boost_INCLUDE_DIRS&#125;</span>)</span><br><span class="line"><span class="keyword">link_directories</span>(<span class="variable">$&#123;Boost_LIBRARY_DIRS&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>实例</strong>：</p>
+<p>假设想在项目上使用Boost库，CMakeLists.txt文件应该如下:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"><span class="keyword">project</span>(MyProject CXX)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找 Boost 库</span></span><br><span class="line"><span class="keyword">find_package</span>(Boost REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加源文件</span></span><br><span class="line"><span class="keyword">add_executable</span>(MyExecutable main.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接 Boost 库</span></span><br><span class="line"><span class="keyword">target_link_libraries</span>(MyExecutable Boost::Boost)</span><br></pre></td></tr></table></figure>
+
+<h2 id="CMake-构建流程"><a href="#CMake-构建流程" class="headerlink" title="CMake 构建流程"></a>CMake 构建流程</h2><p>主要分为以下几步：</p>
+<ol>
+<li>创建构建目录：保持源代码目录整洁。</li>
+<li>使用 CMake 生成构建文件：配置项目并生成适合平台的构建文件。</li>
+<li>编译和构建：使用生成的构建文件执行编译和构建。</li>
+<li>清理构建文件：删除中间文件和目标文件。</li>
+<li>重新配置和构建：处理项目设置的更改。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/cmake-simple-flowchart.png" alt="img"></p>
+<h3 id="创建构建目录"><a href="#创建构建目录" class="headerlink" title="创建构建目录"></a>创建构建目录</h3><p>CMakes使用”Out-of-source” 构建方式，即将构建文件放在源代码目录之外的独立目录中。</p>
+<p>这样可以保持源代码目录的整洁，并方便管理不同的构建配置。</p>
+<h4 id="创建构建目录："><a href="#创建构建目录：" class="headerlink" title="创建构建目录："></a>创建构建目录：</h4><p>在项目的根目录下，创建一个新的构建目录。例如，可以创建一个名为 <strong>build</strong> 的目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> build</span><br></pre></td></tr></table></figure>
+
+<h4 id="进入构建目录："><a href="#进入构建目录：" class="headerlink" title="进入构建目录："></a>进入构建目录：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> build</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用CMake-生成构建文件"><a href="#使用CMake-生成构建文件" class="headerlink" title="使用CMake 生成构建文件"></a>使用CMake 生成构建文件</h3><p>在构建目录中运行 CMake，以生成适合当前平台的构建系统文件（例如 Makefile、Ninja 构建文件、Visual Studio 工程文件等）。</p>
+<h4 id="运行-CMake-配置："><a href="#运行-CMake-配置：" class="headerlink" title="运行 CMake 配置："></a>运行 CMake 配置：</h4><p>在构建目录中运行 CMake 命令，指定源代码目录。源代码目录是包含 CMakeLists.txt 文件的目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake ..</span><br></pre></td></tr></table></figure>
+
+<p>如果需要指定生成器（如 Ninja、Visual Studio），可以使用 -G 选项。例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake -G <span class="string">&quot;Ninja&quot;</span> ..</span><br></pre></td></tr></table></figure>
+
+<p>如果需要指定构建类型（如 Debug 或 Release），可以使用 -DCMAKE_BUILD_TYPE 选项。例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake -DCMAKE_BUILD_TYPE=Release ..</span><br></pre></td></tr></table></figure>
+
+<h4 id="检查配置结果："><a href="#检查配置结果：" class="headerlink" title="检查配置结果："></a>检查配置结果：</h4><p>CMake 会输出配置过程中的详细信息，包括找到的库、定义的选项等，如果没有错误，构建系统文件将被生成到构建目录中。</p>
+<h3 id="编译和构建"><a href="#编译和构建" class="headerlink" title="编译和构建"></a>编译和构建</h3><p>使用生成的构建文件进行编译和构建。</p>
+<p>不同的构建系统使用不同的命令。</p>
+<h4 id="使用Makefile"><a href="#使用Makefile" class="headerlink" title="使用Makefile"></a>使用Makefile</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nake</span><br></pre></td></tr></table></figure>
+
+<p>如果要构建特定目标，指定目标名，如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make MyExecutable</span><br></pre></td></tr></table></figure>
+
+<h3 id="清理构建文件"><a href="#清理构建文件" class="headerlink" title="清理构建文件"></a>清理构建文件</h3><p>构建过程中生成的中间文件和目标文件可以通过清理操作删除。</p>
+<h4 id="使用Makefile-1"><a href="#使用Makefile-1" class="headerlink" title="使用Makefile:"></a>使用Makefile:</h4><p>运行 make clean 命令（如果定义了清理规则）来删除生成的文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make clean</span><br></pre></td></tr></table></figure>
+
+<h3 id="重新配置和构建"><a href="#重新配置和构建" class="headerlink" title="重新配置和构建"></a>重新配置和构建</h3><p>如果修改了 CMakeLists.txt 文件或项目设置，可能需要重新配置和构建项目。</p>
+<h4 id="重新运行CMake配置："><a href="#重新运行CMake配置：" class="headerlink" title="重新运行CMake配置："></a>重新运行CMake配置：</h4><p>在构建目录中重新运行 CMake 配置命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake ..</span><br></pre></td></tr></table></figure>
+
+<h4 id="重新编译："><a href="#重新编译：" class="headerlink" title="重新编译："></a>重新编译：</h4><p>使用构建命令重新编译项目。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="构建实例"><a href="#构建实例" class="headerlink" title="构建实例"></a>构建实例</h2><p>构建步骤如下：</p>
+<ol>
+<li>创建CMakeLists.txt文件：定义项目、目标和依赖</li>
+<li>创建构建目录：保持源代码整洁</li>
+<li>配置项目：使用CMake生成构建文件</li>
+<li>编译项目：使用构建系统文件编译项目</li>
+<li>运行可执行文件：执行生成的程序</li>
+<li>清理构建文件：删除中间文件和目标文件</li>
+</ol>
+<p>假设我们有一个简单的 C++ 项目，包含一个主程序文件和一个库文件，我们将使用 CMake 构建这个项目。</p>
+<p>参考网址：<a target="_blank" rel="noopener" href="https://www.runoob.com/cmake/cmake-build-demo.html">https://www.runoob.com/cmake/cmake-build-demo.html</a></p>
+<hr>
+<h2 id="CMake-高级特性"><a href="#CMake-高级特性" class="headerlink" title="CMake 高级特性"></a>CMake 高级特性</h2><p>CMake 高级特性允许我们更灵活地管理和配置 CMake 项目，以适应复杂的构建需求和环境。</p>
+<ol>
+<li>自定义CMake模块和脚本：创建自定义模块和脚本以简化构建过程</li>
+<li>构建配置和目标：使用多配置生成器和定义多个构建目标</li>
+<li>高级查找和配置：灵活地查找和配置构建选项</li>
+<li>生成自定义构建步骤：添加自定义命令和目标以执行额外的构建操作</li>
+<li>跨平台和交叉编译：支持不同平台的构建和交叉编译</li>
+<li>目标属性和配置：设置和修改目标的属性，满足特定需求</li>
+</ol>
+<hr>
+<h3 id="自定义CMake模块和脚本"><a href="#自定义CMake模块和脚本" class="headerlink" title="自定义CMake模块和脚本"></a>自定义CMake模块和脚本</h3><h4 id="自定义CMake模块"><a href="#自定义CMake模块" class="headerlink" title="自定义CMake模块"></a>自定义CMake模块</h4><p>CMake 允许你创建和使用自定义模块，以简化常见的构建任务。</p>
+<p>自定义模块通常包含自定义的 CMake 脚本和函数。</p>
+<h5 id="创建自定义模块："><a href="#创建自定义模块：" class="headerlink" title="创建自定义模块："></a>创建自定义模块：</h5><ul>
+<li><p>在项目目录下创建一个cmake&#x2F; 目录，用于存放自定义cmake模块</p>
+</li>
+<li><p>在cmake&#x2F; 目录下创建一个MyModule.cmake文件</p>
+</li>
+<li><p>在CMakeLists.txt文件中包含自定义模块：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">list</span>(APPEND CMAKE_MODULE_PATH <span class="string">&quot;$&#123;CMAKE_SOURCE_DIR&#125;/cmake&quot;</span>)</span><br><span class="line"><span class="keyword">include</span>(MyModule)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>list(APPEND CMAKE_MODULE_PATH …) 用于扩展 CMake 的模块搜索路径。</p>
+</li>
+<li><p>include(MyModule) 用于加载并执行指定的 CMake 模块文件。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h5><p>MyModule.cmake 文件：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>(my_custom_function)</span><br><span class="line">  <span class="keyword">message</span>(STATUS <span class="string">&quot;This is a custom function!&quot;</span>)</span><br><span class="line"><span class="keyword">endfunction</span>()</span><br></pre></td></tr></table></figure>
+
+<p>function(my_custom_function)：定义了一个名为 my_custom_function 的自定义函数。函数名 my_custom_function 可以用来在其他地方调用该函数。</p>
+<p>message(STATUS “This is a custom function!”)：这是一个 CMake 内置命令，用于输出消息。STATUS 是消息类型，表示这条消息是状态信息，通常会在编译时显示出来。 “This is a custom function!” 是你要输出的消息内容。</p>
+<p>endfunction()：结束自定义函数的定义，标志着函数体的结束。</p>
+<p>所以，这段代码的作用是定义了一个名为 my_custom_function 的函数，在该函数被调用时，它会输出消息 This is a custom function!。</p>
+<p>在CMakeLists.txt中调用自定义函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">my_custom_function()</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用自定义CMake脚本"><a href="#使用自定义CMake脚本" class="headerlink" title="使用自定义CMake脚本"></a>使用自定义CMake脚本</h4><p>自定义 CMake 脚本允许你执行自定义配置操作，灵活处理复杂的构建要求。</p>
+<h5 id="创建自定义脚本："><a href="#创建自定义脚本：" class="headerlink" title="创建自定义脚本："></a>创建自定义脚本：</h5><ul>
+<li>在项目中创建一个脚本文件（例如 config.cmake）。</li>
+<li>在脚本中编写 CMake 指令。</li>
+</ul>
+<h5 id="在-CMakeLists-txt-文件中调用脚本："><a href="#在-CMakeLists-txt-文件中调用脚本：" class="headerlink" title="在 CMakeLists.txt 文件中调用脚本："></a>在 CMakeLists.txt 文件中调用脚本：</h5><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(<span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/config.cmake)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="构建配置和目标"><a href="#构建配置和目标" class="headerlink" title="构建配置和目标"></a>构建配置和目标</h4><h5 id="多配置生成器"><a href="#多配置生成器" class="headerlink" title="多配置生成器"></a>多配置生成器</h5><p>CMake 支持多种构建配置（如 Debug、Release）。</p>
+<p>多配置生成器允许你在同一构建目录中同时生成不同配置的构建。</p>
+<p><strong>指定配置类型</strong></p>
+<p>在 CMakeLists.txt 中设置默认配置：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_BUILD_TYPE <span class="string">&quot;Release&quot;</span> CACHE <span class="keyword">STRING</span> <span class="string">&quot;Build type&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>使用 Visual Studio：</p>
+<p>在 Visual Studio 中选择构建配置（Debug 或 Release）。</p>
+<h5 id="构建目标"><a href="#构建目标" class="headerlink" title="构建目标"></a>构建目标</h5><p>可以定义多个构建目标，每个目标可以有不同的构建设置和选项。</p>
+<p>添加多个目标：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(MyExecutable1 src/main1.cpp)</span><br><span class="line"><span class="keyword">add_executable</span>(MyExecutable2 src/main2.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>设置目标属性：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set_target_properties</span>(MyExecutable1 PROPERTIES COMPILE_DEFINITIONS <span class="string">&quot;DEBUG&quot;</span>)</span><br><span class="line"><span class="keyword">set_target_properties</span>(MyExecutable2 PROPERTIES COMPILE_DEFINITIONS <span class="string">&quot;RELEASE&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="高级查找和配置"><a href="#高级查找和配置" class="headerlink" title="高级查找和配置"></a>高级查找和配置</h4><h5 id="查找包的高级用法"><a href="#查找包的高级用法" class="headerlink" title="查找包的高级用法"></a>查找包的高级用法</h5><p>find_package() 指令可以用于查找和配置复杂的第三方库和包。</p>
+<p>查找包的高级选项：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(Boost REQUIRED COMPONENTS filesystem system)</span><br></pre></td></tr></table></figure>
+
+<p>设置查找路径：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(BOOST_ROOT <span class="string">&quot;/path/to/boost&quot;</span>)</span><br><span class="line"><span class="keyword">find_package</span>(Boost REQUIRED)</span><br></pre></td></tr></table></figure>
+
+<h5 id="配置文件和构建选项"><a href="#配置文件和构建选项" class="headerlink" title="配置文件和构建选项"></a>配置文件和构建选项</h5><p>你可以通过 CMake 配置文件来控制构建选项和配置。</p>
+<p>配置选项：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">configure_file</span>(config.h.in config.h)</span><br></pre></td></tr></table></figure>
+
+<p>配置文件 (config.h.in)：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> VERSION <span class="string">&quot;@PROJECT_VERSION@&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>在源文件中包含配置文件：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;config.h&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<p>后面还有一些高级配置，暂时用不到，先不管。</p>
+<p>参考<a target="_blank" rel="noopener" href="https://www.runoob.com/cmake/cmake-exercises.html">https://www.runoob.com/cmake/cmake-exercises.html</a></p>
+<hr>
+<h2 id="CMake-实战练习"><a href="#CMake-实战练习" class="headerlink" title="CMake 实战练习"></a>CMake 实战练习</h2><p>参考：<a target="_blank" rel="noopener" href="https://www.runoob.com/cmake/cmake-exercises.html">https://www.runoob.com/cmake/cmake-exercises.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/inter%20Realsense%20D435%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/01/inter%20Realsense%20D435%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">inter Realsense D435使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-07-01 00:00:00 / 修改时间：11:26:40" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="inter-Realsense-D435使用"><a href="#inter-Realsense-D435使用" class="headerlink" title="inter Realsense D435使用"></a>inter Realsense D435使用</h1><h2 id="安装ros软件包"><a href="#安装ros软件包" class="headerlink" title="安装ros软件包"></a>安装ros软件包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-<span class="variable">$ROS_DISTRO</span>-realsense2-camera</span><br></pre></td></tr></table></figure>
+
+<p>终端运行如下指令,替换成自己的ros版本。</p>
+<h2 id="启动相机节点"><a href="#启动相机节点" class="headerlink" title="启动相机节点"></a>启动相机节点</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch</span><br></pre></td></tr></table></figure>
+
+<p>可以选择将其他流分辨率和帧速率作为参数提供给<strong>rs_camera.launch</strong>文件</p>
+<p>使用 <code>rostopic list</code>查看已经发布的话题。使用 <code>rostopic info /话题名称</code>查看话题信息</p>
+<h2 id="点云数据"><a href="#点云数据" class="headerlink" title="点云数据"></a>点云数据</h2><p>可以使用pointcloud 选项启动camera ，使得发布点云实例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch filters:=pointcloud</span><br></pre></td></tr></table></figure>
+
+<p>之后可以打开rviz查看点云信息。</p>
+<h2 id="对齐深度坐标系"><a href="#对齐深度坐标系" class="headerlink" title="对齐深度坐标系"></a>对齐深度坐标系</h2><p>以下示例说明了如何启动 Camera 节点并将其将对齐的深度流发布到其他可用流，例如颜色或红外流。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用Dynamic-Reconfigure-Params-设置摄像头参数"><a href="#使用Dynamic-Reconfigure-Params-设置摄像头参数" class="headerlink" title="使用Dynamic Reconfigure Params 设置摄像头参数"></a>使用Dynamic Reconfigure Params 设置摄像头参数</h2><p>使用rqt来更改相机控制值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun rqt_reconfigure rqt_reconfigure</span><br></pre></td></tr></table></figure>
+
+<h2 id="ros-obiect-analytics"><a href="#ros-obiect-analytics" class="headerlink" title="ros_obiect_analytics"></a>ros_obiect_analytics</h2><p>用于实时对象检测、定位和跟踪的 ROS 包装器,已经停止维护了。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros_object_analytics">https://github.com/intel/ros_object_analytics</a></p>
+<h2 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy?tab=readme-ov-file">https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy?tab=readme-ov-file</a></li>
+<li><a target="_blank" rel="noopener" href="https://dev.intelrealsense.com/docs/docs-get-started">https://dev.intelrealsense.com/docs/docs-get-started</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/%E5%9C%A8ROS%E4%B8%AD%E7%BB%93%E5%90%88opencv%E5%A4%84%E7%90%86%E6%9D%A5%E8%87%AA%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BARealsense%20D435%E7%9A%84%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/01/%E5%9C%A8ROS%E4%B8%AD%E7%BB%93%E5%90%88opencv%E5%A4%84%E7%90%86%E6%9D%A5%E8%87%AA%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BARealsense%20D435%E7%9A%84%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">在ROS中结合opencv处理来自深度相机Realsense D435的图像数据</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-07-01 00:00:00 / 修改时间：13:53:56" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="在ROS中结合opencv处理来自深度相机Realsense-D435的图像数据"><a href="#在ROS中结合opencv处理来自深度相机Realsense-D435的图像数据" class="headerlink" title="在ROS中结合opencv处理来自深度相机Realsense D435的图像数据"></a>在ROS中结合opencv处理来自深度相机Realsense D435的图像数据</h1><h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><ul>
+<li>相机：realsense d435(具体配置参考文档<strong>inter Realsense D435使用</strong>)</li>
+<li>软件：opencv</li>
+</ul>
+<h2 id="安装opencv"><a href="#安装opencv" class="headerlink" title="安装opencv"></a>安装opencv</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install ros-noetic-desktop-full</span><br><span class="line"><span class="built_in">sudo</span> apt install libopencv-dev <span class="comment">#安装opencv（可能本身就安装好了）</span></span><br></pre></td></tr></table></figure>
+
+<p>如果之前看过D435使用的文档，就不需要安装Realsense驱动了。这里不再追述。</p>
+<h2 id="启动Realsense驱动程序"><a href="#启动Realsense驱动程序" class="headerlink" title="启动Realsense驱动程序"></a>启动Realsense驱动程序</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch</span><br></pre></td></tr></table></figure>
+
+<p><strong>检查：</strong></p>
+<p>使用 <code>rostopic list</code> 查看发布的话题，应该可以看到：<strong>&#x2F;camera&#x2F;color&#x2F;image_raw</strong> 和 <strong>&#x2F;camera&#x2F;depth&#x2F;image_rect_raw</strong> 这两个话题，分别包含 RGB 图像和深度图像数据。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/realsense%E7%BB%93%E5%90%88opencv%E5%AE%9E%E4%BE%8B.png" alt="image-20250624164903403"></p>
+<h2 id="在ROS中使用Opencv处理Realsense数据测试"><a href="#在ROS中使用Opencv处理Realsense数据测试" class="headerlink" title="在ROS中使用Opencv处理Realsense数据测试"></a>在ROS中使用Opencv处理Realsense数据测试</h2><p>如果想要在ROS中使用Opencv来处理图像数据，需要创建一个ROS节点，订阅Realsense发布的图像话题，（刚才已经在list中查看了），然后使用opencv进行处理，可以使用RoS中的<strong>cv_bridge</strong>包来将ROS中的消息转换为Opencv格式的图像数据，并且调用Opencv库进行各种图像处理，或者将Opencv处理过后的数据转换成ROS图像，通过话题发布，实现各个节点之间的图像传输。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/cv_bridge%E5%8A%9F%E8%83%BD%E5%8C%85%E7%9A%84%E4%BD%9C%E7%94%A8.png" alt="在这里插入图片描述"></p>
+<h3 id="安装-cv-bridge包"><a href="#安装-cv-bridge包" class="headerlink" title="安装 cv_bridge包"></a>安装 <strong>cv_bridge</strong>包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-noetic-cv-bridge</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建一个ros节点来处理图像数据"><a href="#创建一个ros节点来处理图像数据" class="headerlink" title="创建一个ros节点来处理图像数据"></a>创建一个ros节点来处理图像数据</h3><ul>
+<li>创建ROS功能包</li>
+</ul>
+<p>例如我新建了一个 <strong>fire_reco_ws</strong> 工作空间，作为后面这个项目的工作空间。按照惯例，先 <code>Control + Shift + B</code>添加 <code>tasks.json</code>文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="comment">// 有关 tasks.json 格式的文档，请参见</span></span><br><span class="line">    <span class="comment">// https://go.microsoft.com/fwlink/?LinkId=733558</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tasks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;label&quot;</span><span class="punctuation">:</span> <span class="string">&quot;catkin_make:debug&quot;</span><span class="punctuation">,</span> <span class="comment">//代表提示的描述性信息</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;shell&quot;</span><span class="punctuation">,</span>  <span class="comment">//可以选择shell或者process,如果是shell代码是在shell里面运行一个命令，如果是process代表作为一个进程来运行</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;catkin_make&quot;</span><span class="punctuation">,</span><span class="comment">//这个是我们需要运行的命令</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="comment">//如果需要在命令后面加一些后缀，可以写在这里，比如-DCATKIN_WHITELIST_PACKAGES=“pac1;pac2”</span></span><br><span class="line">            <span class="attr">&quot;group&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;kind&quot;</span><span class="punctuation">:</span><span class="string">&quot;build&quot;</span><span class="punctuation">,</span><span class="attr">&quot;isDefault&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;presentation&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;reveal&quot;</span><span class="punctuation">:</span> <span class="string">&quot;always&quot;</span><span class="comment">//可选always或者silence，代表是否输出信息</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;problemMatcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$msCompile&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>cd到src目录，右键，新建一个软件包，我命名为：<strong>test01</strong>,添加依赖：std_msgs roscpp rospy sensor_msgs cv_bridge</p>
+<p>或者直接在终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/fire_reco_ws/src</span><br><span class="line">catkin_create_pkg opencv_realsense std_msgs rospy sensor_msgs cv_bridge roscpp</span><br><span class="line"><span class="built_in">cd</span> opencv_realsense</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建一个<strong>scripts</strong>文件夹并且写一个简单的python脚本来订阅Realsense图像话题并且使用Opencv进行处理：</li>
+</ul>
+<p>在 scripts 目录下创建 realsense_opencv_test.py 文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">data</span>):</span><br><span class="line">    bridge = CvBridge()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 将 ROS 图像消息转换为 OpenCV 格式</span></span><br><span class="line">        cv_image = bridge.imgmsg_to_cv2(data, desired_encoding=<span class="string">&quot;bgr8&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 在这里可以处理图像</span></span><br><span class="line">        <span class="comment"># 例如：显示图像</span></span><br><span class="line">        cv2.imshow(<span class="string">&quot;RealSense Image&quot;</span>, cv_image)</span><br><span class="line">        cv2.waitKey(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        rospy.logerr(<span class="string">&quot;Failed to convert image: %s&quot;</span>, <span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    rospy.init_node(<span class="string">&#x27;realsense_opencv_node&#x27;</span>, anonymous=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 订阅 RealSense 相机的 RGB 图像话题</span></span><br><span class="line">    rospy.Subscriber(<span class="string">&quot;/camera/color/image_raw&quot;</span>, Image, callback)</span><br><span class="line"></span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这个脚本将订阅的Realsense的RGB图像话题（&#x2F;camera&#x2F;color&#x2F;image_raw）,然后使用Opencv显示图像。</p>
+<h3 id="给脚本可执行权限："><a href="#给脚本可执行权限：" class="headerlink" title="给脚本可执行权限："></a>给脚本可执行权限：</h3><p>先cd到scripts文件夹，在终端输入ll，可以发现该文件没有可执行权限，不是绿色。再在终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x realsense_opencv_test.py <span class="comment">#一般会自动补齐，否则是出现了问题。</span></span><br></pre></td></tr></table></figure>
+
+<p>再输入ll,发现文件变绿了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E6%B7%BB%E5%8A%A0%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90.png" alt="image-20250624171915491"></p>
+<h3 id="编辑CMake-List"><a href="#编辑CMake-List" class="headerlink" title="编辑CMake_List"></a>编辑CMake_List</h3><p>打开test01下面的CMake_List。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E7%BC%96%E8%BE%91cmake_list.png" alt="image-20250624172110850"></p>
+<p>修改此处：</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250624172231086.png" alt="image-20250624172231086" style="zoom: 67%;" />
+
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">catkin_install_python(PROGRAMS scripts/自定义文件名.py</span><br><span class="line">  DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译ROS包"><a href="#编译ROS包" class="headerlink" title="编译ROS包"></a>编译ROS包</h3><p>可以直接快捷键：<code>control + B + shift</code></p>
+<p>也可以在终端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/fire_reco_ws/</span><br><span class="line">catkin_make</span><br><span class="line"><span class="built_in">source</span> devel/setup.bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行ROS节点"><a href="#运行ROS节点" class="headerlink" title="运行ROS节点"></a>运行ROS节点</h3><p>确保已经运行了Realsense驱动程序：<code>roslaunch realsense2_camera rs_camera.launch</code> ,然后在另外一个终端运行节点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun opencv_realsense realsense_opencv.py</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250624173321705.png" alt="image-20250624173321705"></p>
+<p>此时，可以看到来自Realsense D435 的数据，并且可以使用Opencv来处理数据。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250624173350863.png" alt="image-20250624173350863"></p>
+<p>至此，已经可以灵活地在ROS中处理来自Realsense相机的图像和深度数据，结合Opencv进行更多的图像处理。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/%E4%BD%BF%E7%94%A8HSV%E5%81%9A%E7%AE%80%E5%8D%95%E7%9A%84%E7%81%AB%E6%BA%90%E8%AF%86%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/01/%E4%BD%BF%E7%94%A8HSV%E5%81%9A%E7%AE%80%E5%8D%95%E7%9A%84%E7%81%AB%E6%BA%90%E8%AF%86%E5%88%AB/" class="post-title-link" itemprop="url">使用HSV做简单的火源识别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-07-01 00:00:00 / 修改时间：13:52:50" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="使用HSV做简单的火源识别"><a href="#使用HSV做简单的火源识别" class="headerlink" title="使用HSV做简单的火源识别"></a>使用HSV做简单的火源识别</h1><h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><p>HSV火焰识别原理主要是基于HSV色彩模型来识别火焰颜色，图像中的颜色通常是以RGB（红绿蓝）格式存储的，然而在火焰识别中，RGB空间的颜色处理并不总是理想的。转换到HSV空间后，可以更容易地处理色调（H）、饱和度（S）和亮度（V）三个分量。火焰的颜色通常集中在高亮度和饱和度区域，因此HSV模型的V（亮度）和S（饱和度）分量对于识别火焰非常重要。</p>
+<ul>
+<li>火焰的色调（H）在HSV空间中一般处于某个特定的范围。例如，火焰的色调通常位于红色（约0°），黄色（约60°），橙色（约30°）等范围。</li>
+<li>火焰的亮度（V）通常较高，意味着它具有较高的光强。</li>
+<li>火焰的饱和度（S）也较高，因此识别时会过滤掉低饱和度的区域。</li>
+</ul>
+<p>通过这些阈值可以有效从图像中提取火焰区域。</p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><ul>
+<li>固件：Realsense D435深度相机</li>
+<li>软件：OpenCV ROS包</li>
+<li>语言：Python</li>
+</ul>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FireDetector</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.bridge = CvBridge()</span><br><span class="line">        <span class="comment"># 动态HSV阈值（初始值）</span></span><br><span class="line">        <span class="variable language_">self</span>.lower_fire = np.array([<span class="number">0</span>, <span class="number">150</span>, <span class="number">100</span>])  </span><br><span class="line">        <span class="variable language_">self</span>.upper_fire = np.array([<span class="number">30</span>, <span class="number">255</span>, <span class="number">255</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 运动检测相关</span></span><br><span class="line">        <span class="variable language_">self</span>.prev_gray = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.fgbg = cv2.createBackgroundSubtractorMOG2(history=<span class="number">500</span>, varThreshold=<span class="number">16</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 订阅图像</span></span><br><span class="line">        <span class="variable language_">self</span>.image_sub = rospy.Subscriber(<span class="string">&quot;/camera/color/image_raw&quot;</span>, </span><br><span class="line">                                        Image, <span class="variable language_">self</span>.image_callback)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">dynamic_threshold</span>(<span class="params">self, hsv_img</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;动态调整饱和度阈值&quot;&quot;&quot;</span></span><br><span class="line">        avg_sat = np.mean(hsv_img[:,:,<span class="number">1</span>])</span><br><span class="line">        <span class="variable language_">self</span>.lower_fire[<span class="number">1</span>] = <span class="built_in">max</span>(<span class="number">100</span>, <span class="built_in">int</span>(avg_sat * <span class="number">0.65</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">motion_analysis</span>(<span class="params">self, frame</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;运动特征分析&quot;&quot;&quot;</span></span><br><span class="line">        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</span><br><span class="line">        fgmask = <span class="variable language_">self</span>.fgbg.apply(gray)</span><br><span class="line">        <span class="keyword">return</span> cv2.medianBlur(fgmask, <span class="number">5</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">image_callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cv_image = <span class="variable language_">self</span>.bridge.imgmsg_to_cv2(msg, <span class="string">&quot;bgr8&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 预处理</span></span><br><span class="line">            blurred = cv2.GaussianBlur(cv_image, (<span class="number">7</span>,<span class="number">7</span>), <span class="number">0</span>)</span><br><span class="line">            hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 动态阈值调整</span></span><br><span class="line">            <span class="variable language_">self</span>.dynamic_threshold(hsv)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 颜色检测</span></span><br><span class="line">            color_mask = cv2.inRange(hsv, <span class="variable language_">self</span>.lower_fire, <span class="variable language_">self</span>.upper_fire)</span><br><span class="line">            color_mask = cv2.morphologyEx(color_mask, cv2.MORPH_CLOSE, </span><br><span class="line">                                        np.ones((<span class="number">7</span>,<span class="number">7</span>), np.uint8))</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 运动检测</span></span><br><span class="line">            motion_mask = <span class="variable language_">self</span>.motion_analysis(cv_image)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 多特征融合</span></span><br><span class="line">            combined_mask = cv2.bitwise_and(color_mask, motion_mask)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 精确轮廓检测</span></span><br><span class="line">            contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL,</span><br><span class="line">                                         cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> cnt <span class="keyword">in</span> contours:</span><br><span class="line">                area = cv2.contourArea(cnt)</span><br><span class="line">                <span class="keyword">if</span> area &gt; <span class="number">800</span>:  <span class="comment"># 增大面积阈值减少误检</span></span><br><span class="line">                    x,y,w,h = cv2.boundingRect(cnt)</span><br><span class="line">                    aspect_ratio = <span class="built_in">float</span>(w)/h</span><br><span class="line">                    <span class="keyword">if</span> <span class="number">0.5</span> &lt; aspect_ratio &lt; <span class="number">2.0</span>:  <span class="comment"># 火焰通常不是极端长条形</span></span><br><span class="line">                        cv2.rectangle(cv_image, (x,y), (x+w,y+h), (<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line">                        cv2.putText(cv_image, <span class="string">f&#x27;Fire <span class="subst">&#123;area:<span class="number">.0</span>f&#125;</span>&#x27;</span>, (x,y-<span class="number">10</span>),</span><br><span class="line">                                   cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.7</span>, (<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 显示调试视图</span></span><br><span class="line">            debug_view = np.hstack([</span><br><span class="line">                cv_image,</span><br><span class="line">                cv2.cvtColor(combined_mask, cv2.COLOR_GRAY2BGR)</span><br><span class="line">            ])</span><br><span class="line">            cv2.imshow(<span class="string">&quot;Fire Detection&quot;</span>, debug_view)</span><br><span class="line">            cv2.waitKey(<span class="number">1</span>)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            rospy.logerr(<span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    rospy.init_node(<span class="string">&#x27;fire_detector&#x27;</span>)</span><br><span class="line">    detector = FireDetector()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>首先使用当前图像的平均饱和度，动态调整火焰检测的饱和度阈值，可以适应不同光照条件下的火焰检测。之后将图像转换为灰度图，应用背景减除来检测运动区域（火焰）。最后通过中值滤波减少噪声。</li>
+<li>对输入图像进行高斯模糊，然后转换成HSV颜色空间，根据平均饱和度调整颜色阈值。通过背景消除检测图像中运动区域，再利用多特征融合，确保仅检测到火焰区域，最后在图像上标注出火焰区域的矩形框。并且显示处理前后的结果帮助调试。</li>
+<li>初始化ROS节点，创建FireDetector对象，开始火焰检测，使用回调函数，保持节点活跃。</li>
+</ol>
+<hr>
+<p>整个代码框架较为清晰，可以修改参数达到最终效果。</p>
+<h2 id="CMakeLists-txt"><a href="#CMakeLists-txt" class="headerlink" title="CMakeLists.txt"></a>CMakeLists.txt</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(catkin REQUIRED COMPONENTS</span><br><span class="line">  cv_bridge</span><br><span class="line">  image_transport</span><br><span class="line">  roscpp</span><br><span class="line">  rospy</span><br><span class="line">  sensor_msgs</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line">catkin_install_python(PROGRAMS</span><br><span class="line">  scripts/fire_detector.py</span><br><span class="line">  DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;</span></span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>也可以新建一个launch文件直接运行相机节点还有这个脚本。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_detector.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_detector&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- 可添加RealSense相机启动配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find realsense2_camera)/launch/rs_camera.launch&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;enable_color&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>看看效果：<br><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E7%81%AB%E7%84%B0%E8%AF%86%E5%88%AB%2Cpng" alt="image-20250630203948668">这个只是简单测试，还不够稳定，后续可以对算法进行改进。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/%E7%BB%93%E5%90%88ROS%E5%92%8COpenCV%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Do not Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/01/%E7%BB%93%E5%90%88ROS%E5%92%8COpenCV%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/" class="post-title-link" itemprop="url">结合ROS和OpenCV实现人脸识别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-07-01 00:00:00 / 修改时间：13:52:02" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="结合ROS和OpenCV实现人脸识别"><a href="#结合ROS和OpenCV实现人脸识别" class="headerlink" title="结合ROS和OpenCV实现人脸识别"></a>结合ROS和OpenCV实现人脸识别</h1><h2 id="源码实现：face-detector-py"><a href="#源码实现：face-detector-py" class="headerlink" title="源码实现：face_detector.py"></a>源码实现：face_detector.py</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image, RegionOfInterest</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge, CvBridgeError</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">faceDetector</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        rospy.on_shutdown(<span class="variable language_">self</span>.cleanup);</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建cv_bridge</span></span><br><span class="line">        <span class="variable language_">self</span>.bridge = CvBridge()</span><br><span class="line">        <span class="variable language_">self</span>.image_pub = rospy.Publisher(<span class="string">&quot;cv_bridge_image&quot;</span>, Image, queue_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取haar特征的级联表的XML文件，文件路径在launch文件中传入</span></span><br><span class="line">        cascade_1 = rospy.get_param(<span class="string">&quot;~cascade_1&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">        cascade_2 = rospy.get_param(<span class="string">&quot;~cascade_2&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 使用级联表初始化haar特征检测器</span></span><br><span class="line">        <span class="variable language_">self</span>.cascade_1 = cv2.CascadeClassifier(cascade_1)</span><br><span class="line">        <span class="variable language_">self</span>.cascade_2 = cv2.CascadeClassifier(cascade_2)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置级联表的参数，优化人脸识别，可以在launch文件中重新配置</span></span><br><span class="line">        <span class="variable language_">self</span>.haar_scaleFactor  = rospy.get_param(<span class="string">&quot;~haar_scaleFactor&quot;</span>, <span class="number">1.2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.haar_minNeighbors = rospy.get_param(<span class="string">&quot;~haar_minNeighbors&quot;</span>, <span class="number">2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.haar_minSize      = rospy.get_param(<span class="string">&quot;~haar_minSize&quot;</span>, <span class="number">40</span>)</span><br><span class="line">        <span class="variable language_">self</span>.haar_maxSize      = rospy.get_param(<span class="string">&quot;~haar_maxSize&quot;</span>, <span class="number">60</span>)</span><br><span class="line">        <span class="variable language_">self</span>.color = (<span class="number">50</span>, <span class="number">255</span>, <span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 初始化订阅rgb格式图像数据的订阅者，此处图像topic的话题名可以在launch文件中重映射</span></span><br><span class="line">        <span class="variable language_">self</span>.image_sub = rospy.Subscriber(<span class="string">&quot;input_rgb_image&quot;</span>, Image, <span class="variable language_">self</span>.image_callback, queue_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">image_callback</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="comment"># 使用cv_bridge将ROS的图像数据转换成OpenCV的图像格式</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cv_image = <span class="variable language_">self</span>.bridge.imgmsg_to_cv2(data, <span class="string">&quot;bgr8&quot;</span>)     </span><br><span class="line">            frame = np.array(cv_image, dtype=np.uint8)</span><br><span class="line">        <span class="keyword">except</span> CvBridgeError, e:</span><br><span class="line">            <span class="built_in">print</span> e</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建灰度图像</span></span><br><span class="line">        grey_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建平衡直方图，减少光线影响</span></span><br><span class="line">        grey_image = cv2.equalizeHist(grey_image)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 尝试检测人脸</span></span><br><span class="line">        faces_result = <span class="variable language_">self</span>.detect_face(grey_image)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 在opencv的窗口中框出所有人脸区域</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(faces_result)&gt;<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> face <span class="keyword">in</span> faces_result: </span><br><span class="line">                x, y, w, h = face</span><br><span class="line">                cv2.rectangle(cv_image, (x, y), (x+w, y+h), <span class="variable language_">self</span>.color, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 将识别后的图像转换成ROS消息并发布</span></span><br><span class="line">        <span class="variable language_">self</span>.image_pub.publish(<span class="variable language_">self</span>.bridge.cv2_to_imgmsg(cv_image, <span class="string">&quot;bgr8&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">detect_face</span>(<span class="params">self, input_image</span>):</span><br><span class="line">        <span class="comment"># 首先匹配正面人脸的模型</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.cascade_1:</span><br><span class="line">            faces = <span class="variable language_">self</span>.cascade_1.detectMultiScale(input_image, </span><br><span class="line">                    <span class="variable language_">self</span>.haar_scaleFactor, </span><br><span class="line">                    <span class="variable language_">self</span>.haar_minNeighbors, </span><br><span class="line">                    cv2.CASCADE_SCALE_IMAGE, </span><br><span class="line">                    (<span class="variable language_">self</span>.haar_minSize, <span class="variable language_">self</span>.haar_maxSize))</span><br><span class="line">                                         </span><br><span class="line">        <span class="comment"># 如果正面人脸匹配失败，那么就尝试匹配侧面人脸的模型</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(faces) == <span class="number">0</span> <span class="keyword">and</span> <span class="variable language_">self</span>.cascade_2:</span><br><span class="line">            faces = <span class="variable language_">self</span>.cascade_2.detectMultiScale(input_image, </span><br><span class="line">                    <span class="variable language_">self</span>.haar_scaleFactor, </span><br><span class="line">                    <span class="variable language_">self</span>.haar_minNeighbors, </span><br><span class="line">                    cv2.CASCADE_SCALE_IMAGE, </span><br><span class="line">                    (<span class="variable language_">self</span>.haar_minSize, <span class="variable language_">self</span>.haar_maxSize))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> faces</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cleanup</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;Shutting down vision node.&quot;</span></span><br><span class="line">        cv2.destroyAllWindows()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 初始化ros节点</span></span><br><span class="line">        rospy.init_node(<span class="string">&quot;face_detector&quot;</span>)</span><br><span class="line">        faceDetector()</span><br><span class="line">        rospy.loginfo(<span class="string">&quot;Face detector is started..&quot;</span>)</span><br><span class="line">        rospy.loginfo(<span class="string">&quot;Please subscribe the ROS image.&quot;</span>)</span><br><span class="line">        rospy.spin()</span><br><span class="line">    <span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;Shutting down face detector node.&quot;</span></span><br><span class="line">        cv2.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化部分"><a href="#初始化部分" class="headerlink" title="初始化部分"></a>初始化部分</h3><p>完成ROS节点、图像、识别参数的设置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">    rospy.on_shutdown(<span class="variable language_">self</span>.cleanup);</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建cv_bridge</span></span><br><span class="line">    <span class="variable language_">self</span>.bridge = CvBridge()</span><br><span class="line">    <span class="variable language_">self</span>.image_pub = rospy.Publisher(<span class="string">&quot;cv_bridge_image&quot;</span>, Image, queue_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取haar特征的级联表的XML文件，文件路径在launch文件中传入</span></span><br><span class="line">    cascade_1 = rospy.get_param(<span class="string">&quot;~cascade_1&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">    cascade_2 = rospy.get_param(<span class="string">&quot;~cascade_2&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用级联表初始化haar特征检测器</span></span><br><span class="line">    <span class="variable language_">self</span>.cascade_1 = cv2.CascadeClassifier(cascade_1)</span><br><span class="line">    <span class="variable language_">self</span>.cascade_2 = cv2.CascadeClassifier(cascade_2)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设置级联表的参数，优化人脸识别，可以在launch文件中重新配置</span></span><br><span class="line">    <span class="variable language_">self</span>.haar_scaleFactor  = rospy.get_param(<span class="string">&quot;~haar_scaleFactor&quot;</span>, <span class="number">1.2</span>)</span><br><span class="line">    <span class="variable language_">self</span>.haar_minNeighbors = rospy.get_param(<span class="string">&quot;~haar_minNeighbors&quot;</span>, <span class="number">2</span>)</span><br><span class="line">    <span class="variable language_">self</span>.haar_minSize      = rospy.get_param(<span class="string">&quot;~haar_minSize&quot;</span>, <span class="number">40</span>)</span><br><span class="line">    <span class="variable language_">self</span>.haar_maxSize      = rospy.get_param(<span class="string">&quot;~haar_maxSize&quot;</span>, <span class="number">60</span>)</span><br><span class="line">    <span class="variable language_">self</span>.color = (<span class="number">50</span>, <span class="number">255</span>, <span class="number">50</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 初始化订阅rgb格式图像数据的订阅者，此处图像topic的话题名可以在launch文件中重映射</span></span><br><span class="line">    <span class="variable language_">self</span>.image_sub = rospy.Subscriber(<span class="string">&quot;input_rgb_image&quot;</span>, Image, <span class="variable language_">self</span>.image_callback, queue_size=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="ROS图像回调函数"><a href="#ROS图像回调函数" class="headerlink" title="ROS图像回调函数"></a>ROS图像回调函数</h3><p>例程节点收到摄像头发布的RGB图像数据之后进入回调函数，将图像转成OpenCV的数据格式，然后预处理之后开始调用人脸识别的功能函数，最后发布识别结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">image_callback</span>(<span class="params">self, data</span>):</span><br><span class="line">    <span class="comment"># 使用cv_bridge将ROS的图像数据转换成OpenCV的图像格式</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        cv_image = <span class="variable language_">self</span>.bridge.imgmsg_to_cv2(data, <span class="string">&quot;bgr8&quot;</span>)     </span><br><span class="line">        frame = np.array(cv_image, dtype=np.uint8)</span><br><span class="line">    <span class="keyword">except</span> CvBridgeError, e:</span><br><span class="line">        <span class="built_in">print</span> e</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建灰度图像</span></span><br><span class="line">    grey_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建平衡直方图，减少光线影响</span></span><br><span class="line">    grey_image = cv2.equalizeHist(grey_image)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 尝试检测人脸</span></span><br><span class="line">    faces_result = <span class="variable language_">self</span>.detect_face(grey_image)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 在opencv的窗口中框出所有人脸区域</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(faces_result)&gt;<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">for</span> face <span class="keyword">in</span> faces_result: </span><br><span class="line">            x, y, w, h = face</span><br><span class="line">            cv2.rectangle(cv_image, (x, y), (x+w, y+h), <span class="variable language_">self</span>.color, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将识别后的图像转换成ROS消息并发布</span></span><br><span class="line">    <span class="variable language_">self</span>.image_pub.publish(<span class="variable language_">self</span>.bridge.cv2_to_imgmsg(cv_image, <span class="string">&quot;bgr8&quot;</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="人脸识别"><a href="#人脸识别" class="headerlink" title="人脸识别"></a>人脸识别</h3><p>直接调用OpenCV提供的人脸识别接口，与数据库中的人脸特征进行匹配。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">detect_face</span>(<span class="params">self, input_image</span>):</span><br><span class="line">    <span class="comment"># 首先匹配正面人脸的模型</span></span><br><span class="line">    <span class="keyword">if</span> <span class="variable language_">self</span>.cascade_1:</span><br><span class="line">        faces = <span class="variable language_">self</span>.cascade_1.detectMultiScale(input_image, </span><br><span class="line">                <span class="variable language_">self</span>.haar_scaleFactor, </span><br><span class="line">                <span class="variable language_">self</span>.haar_minNeighbors, </span><br><span class="line">                cv2.CASCADE_SCALE_IMAGE, </span><br><span class="line">                (<span class="variable language_">self</span>.haar_minSize, <span class="variable language_">self</span>.haar_maxSize))</span><br><span class="line">                                     </span><br><span class="line">    <span class="comment"># 如果正面人脸匹配失败，那么就尝试匹配侧面人脸的模型</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(faces) == <span class="number">0</span> <span class="keyword">and</span> <span class="variable language_">self</span>.cascade_2:</span><br><span class="line">        faces = <span class="variable language_">self</span>.cascade_2.detectMultiScale(input_image, </span><br><span class="line">                <span class="variable language_">self</span>.haar_scaleFactor, </span><br><span class="line">                <span class="variable language_">self</span>.haar_minNeighbors, </span><br><span class="line">                cv2.CASCADE_SCALE_IMAGE, </span><br><span class="line">                (<span class="variable language_">self</span>.haar_minSize, <span class="variable language_">self</span>.haar_maxSize))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> faces</span><br></pre></td></tr></table></figure>
+
+<p>代码中一些参数还有话题需要在launch文件中设置，所以需要编写一个launch文件：robot_vision&#x2F;face_detector.launch</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">name</span>=<span class="string">&quot;face_detector&quot;</span> <span class="attr">type</span>=<span class="string">&quot;face_detector.py&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;input_rgb_image&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/camera/color/image_raw&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span>&gt;</span></span><br><span class="line">            haar_scaleFactor: 1.2</span><br><span class="line">            haar_minNeighbors: 2</span><br><span class="line">            haar_minSize: 40</span><br><span class="line">            haar_maxSize: 60</span><br><span class="line">        <span class="tag">&lt;/<span class="name">rosparam</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;cascade_1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(find robot_vision)/data/haar_detectors/haarcascade_frontalface_alt.xml&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;cascade_2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(find robot_vision)/data/haar_detectors/haarcascade_profileface.xml&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -952,555 +1765,6 @@
 <p>可以动态修改参数</p>
 <p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/rqt.png"></p>
 <p>这样的话小车就能正常移动了.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.2%20%E5%BB%BA%E5%9B%BE%E5%8F%8A%E5%85%B6%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/9.2%20%E5%BB%BA%E5%9B%BE%E5%8F%8A%E5%85%B6%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">9.2 建图及其相关操作</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-06-23 15:17:18" itemprop="dateModified" datetime="2025-06-23T15:17:18+08:00">2025-06-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="9-2-建图及其相关操作"><a href="#9-2-建图及其相关操作" class="headerlink" title="9.2 建图及其相关操作"></a>9.2 建图及其相关操作</h1><h2 id="编写gmapping节点相关launch文件"><a href="#编写gmapping节点相关launch文件" class="headerlink" title="编写gmapping节点相关launch文件"></a>编写gmapping节点相关launch文件</h2><p>在上一节创建的导航功能包中新建 launch 目录，并新建launch文件（文件名自定义，比如： gmapping.launch），</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E6%96%B0%E5%BB%BAlaunch%E6%96%87%E4%BB%B6.png"></p>
-<p>代码示例如下:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;gmapping&quot;</span> <span class="attr">type</span>=<span class="string">&quot;slam_gmapping&quot;</span> <span class="attr">name</span>=<span class="string">&quot;slam_gmapping&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;scan&quot;</span> <span class="attr">to</span>=<span class="string">&quot;scan&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;base_frame&quot;</span> <span class="attr">value</span>=<span class="string">&quot;base_link&quot;</span>/&gt;</span><span class="comment">&lt;!--底盘坐标系--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_frame&quot;</span> <span class="attr">value</span>=<span class="string">&quot;odom&quot;</span>/&gt;</span> <span class="comment">&lt;!--里程计坐标系--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;map_update_interval&quot;</span> <span class="attr">value</span>=<span class="string">&quot;5.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;maxUrange&quot;</span> <span class="attr">value</span>=<span class="string">&quot;16.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;sigma&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;kernelSize&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lstep&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;astep&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;iterations&quot;</span> <span class="attr">value</span>=<span class="string">&quot;5&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lsigma&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.075&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;ogain&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lskip&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;srr&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;srt&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;str&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;stt&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;linearUpdate&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;angularUpdate&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;temporalUpdate&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;resampleThreshold&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;particles&quot;</span> <span class="attr">value</span>=<span class="string">&quot;30&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;xmin&quot;</span> <span class="attr">value</span>=<span class="string">&quot;-50.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;ymin&quot;</span> <span class="attr">value</span>=<span class="string">&quot;-50.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;xmax&quot;</span> <span class="attr">value</span>=<span class="string">&quot;50.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;ymax&quot;</span> <span class="attr">value</span>=<span class="string">&quot;50.0&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;delta&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;llsamplerange&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.01&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;llsamplestep&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.01&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lasamplerange&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.005&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;lasamplestep&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.005&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>关键代码解释：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;scan&quot;</span> <span class="attr">to</span>=<span class="string">&quot;scan&quot;</span>/&gt;</span><span class="comment">&lt;!-- 雷达话题 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;base_frame&quot;</span> <span class="attr">value</span>=<span class="string">&quot;base_footprint&quot;</span>/&gt;</span><span class="comment">&lt;!--底盘坐标系--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_frame&quot;</span> <span class="attr">value</span>=<span class="string">&quot;odom&quot;</span>/&gt;</span> <span class="comment">&lt;!--里程计坐标系--&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这里修改了底盘坐标系</p>
-<p>修改start_mycar.launch文件</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 机器人启动文件：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find lslidar_driver)/launch/start.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find pointcloud_to_laserscan)/launch/pointcloud_scan.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_bringup)/launch/scout_robot_base.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_bringup)/launch/scout_teleop_keyboard.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_description)/launch/display_scout_mini.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h2><ol>
-<li>启动机器人，并且加载机器人模型</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000  <span class="comment">#can通信</span></span><br><span class="line">roslaunch mycar_start start_mycar.launch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>启动地图绘制launch文件：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch nav gmapping.launch</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li><p>可以在键盘上控制，同时也可以使用遥控器，两者的使用在前面松灵机器人教学上都有写。</p>
-</li>
-<li><p>在rviz中添加地图显示组件，通过机器人运动，同时可以在rviz中显示gmapping发布的栅格地图数据。下一步将地图单独保存。</p>
-</li>
-</ol>
-<h2 id="地图服务"><a href="#地图服务" class="headerlink" title="地图服务"></a>地图服务</h2><p>通过mao_server实现地图保存与读取</p>
-<h3 id="保存launch文件"><a href="#保存launch文件" class="headerlink" title="保存launch文件"></a>保存launch文件</h3><p>首先在自定义的导航功能包下新建 map 目录，用于保存生成的地图数据。地图保存的语法比较简单，在nav&#x2F;launch中编写一个launch文件map_save.launch，内容如下:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;filename&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(find nav)/map/nav&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">name</span>=<span class="string">&quot;map_save&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">type</span>=<span class="string">&quot;map_saver&quot;</span> <span class="attr">args</span>=<span class="string">&quot;-f $(arg filename)&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>其中通过 filename 指定了地图的保存路径以及保存的文件名称。</p>
-<p>SLAM建图完毕后，执行该launch文件即可。</p>
-<p><strong>测试:</strong></p>
-<p>首先，参考上一节，依次启动仿真环境，键盘控制节点与SLAM节点；</p>
-<p>然后，通过键盘控制机器人运动并绘图；</p>
-<p>最后，通过上述地图保存方式保存地图。</p>
-<p>结果：在指定路径下会生成两个文件，xxx.pgm 与 xxx.yaml</p>
-<h3 id="地图读取"><a href="#地图读取" class="headerlink" title="地图读取"></a>地图读取</h3><p>通过 map_server 的 map_server 节点可以读取栅格地图数据，编写 launch 文件map_server.launch如下:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;!-- 设置地图的配置文件 --&gt;</span><br><span class="line">    &lt;arg name=<span class="string">&quot;map&quot;</span> default=<span class="string">&quot;nav.yaml&quot;</span> /&gt;</span><br><span class="line">    &lt;!-- 运行地图服务器，并且加载设置的地图--&gt;</span><br><span class="line">    &lt;node name=<span class="string">&quot;map_server&quot;</span> pkg=<span class="string">&quot;map_server&quot;</span> <span class="built_in">type</span>=<span class="string">&quot;map_server&quot;</span> args=<span class="string">&quot;<span class="subst">$(find nav)</span>/map/<span class="subst">$(arg map)</span>&quot;</span>/&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
-
-<p>其中参数是地图描述文件的资源路径，执行该launch文件，该节点会发布话题:map(nav_msgs&#x2F;OccupancyGrid)，最后，在 rviz 中使用 map 组件可以显示栅格地图。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.5%20%E5%AF%BC%E8%88%AA%E4%B8%8Eslam%E8%87%AA%E4%B8%BB%E5%BB%BA%E5%9B%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/9.5%20%E5%AF%BC%E8%88%AA%E4%B8%8Eslam%E8%87%AA%E4%B8%BB%E5%BB%BA%E5%9B%BE/" class="post-title-link" itemprop="url">9.5 导航与slam自主建图</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-06-23 15:24:45" itemprop="dateModified" datetime="2025-06-23T15:24:45+08:00">2025-06-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="9-5-导航与slam自主建图"><a href="#9-5-导航与slam自主建图" class="headerlink" title="9.5 导航与slam自主建图"></a>9.5 导航与slam自主建图</h1><h2 id="编写launch文件"><a href="#编写launch文件" class="headerlink" title="编写launch文件"></a>编写launch文件</h2><p>当前launch文件（名称自定义，比如：auto_slam.launch）实现，无需调用map_server的相关节点，只需要启动SLAM节点与move_base节点，示例内容如下:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动SLAM节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/gmapping.launch&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 运行move_base节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/move_base.launch&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><ol>
-<li><p>执行相关launch文件，启动机器人并加载机器人模型：roslaunch mycar_start start.launch；</p>
-</li>
-<li><p>然后执行当前launch文件：roslaunch nav auto_slam.launch；</p>
-</li>
-<li><p>在rviz中通过2D Nav Goal设置目标点，机器人开始自主移动并建图了；</p>
-</li>
-<li><p>最后可以使用 map_server 保存地图。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/VNC%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/VNC%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">VNC远程桌面使用方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:48:13" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="VNC远程桌面使用方法"><a href="#VNC远程桌面使用方法" class="headerlink" title="VNC远程桌面使用方法"></a>VNC远程桌面使用方法</h1><p>把需要被显示的桌面称为移动端，显示移动端桌面并进行远程控制操作的称为遥控端</p>
-<h2 id="遥控端准备"><a href="#遥控端准备" class="headerlink" title="遥控端准备"></a>遥控端准备</h2><p>直接下载VNC Viewer，网址为：<a target="_blank" rel="noopener" href="https://www.realvnc.com/en/connect/download/viewer/">https://www.realvnc.com/en/connect/download/viewer/</a></p>
-<p>根据系统的不同选择不同版本，由于博主遥控端为Ubuntu，因此选择<strong>Linux-DEB X64</strong></p>
-<p>安装好之后，可以在终端：</p>
-<p><code>vncviewer</code></p>
-<p>可以打开软件，可能需要注册一下</p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/bcec45e62dece585db2af5d88839a5a1.png" alt="img"></p>
-<p>这样遥控端就准备好了</p>
-<h2 id="移动端准备"><a href="#移动端准备" class="headerlink" title="移动端准备"></a>移动端准备</h2><p>博主移动端也为Ubuntu系统。安装<strong>x11vnc</strong>：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="keyword">get</span> install x11vnc</span><br></pre></td></tr></table></figure>
-
-<p>可以把x11vncserver收藏起来</p>
-<p>打开后，首先出现的界面用来设置端口号，默认5900：</p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/a0047f0b499be328f012d01cd41bdd2f.png" alt="img"></p>
-<p>单击OK以后，稍等1、2秒，会弹出来第二个界面，用来设置通信密码，注意上面<strong>Accept Connections</strong>需要勾选：</p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/fc37a682a46f368b1d725308a55548ae.png" alt="img"></p>
-<p>密码随便设点简单的比如1、2之类的就行，方便。最后单击OK。</p>
-<h3 id="两端连接"><a href="#两端连接" class="headerlink" title="两端连接"></a>两端连接</h3><p>首先找到自己的移动端的IP</p>
-<p>命令行输入：</p>
-<p><code>ifconfig</code></p>
-<p>查看IP,这台工控机的IP是：192.168.3.127</p>
-<p>在遥控端输入：<code>192.168.3.127:5900</code></p>
-<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18</a> 20-24-21 的屏幕截图.png)</p>
-<p>输入密码即可实现远程桌面</p>
-<p>怎么关闭</p>
-<p>可以直接在远程桌面关闭</p>
-<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18</a> 20-27-49 的屏幕截图.png)</p>
-<p>左上角有一个小x号，这样就关闭了</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.3acml%E5%AE%9A%E4%BD%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/9.3acml%E5%AE%9A%E4%BD%8D/" class="post-title-link" itemprop="url">9.3 amcl定位</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2025-06-11 00:00:00 / 修改时间：14:50:40" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="acml定位"><a href="#acml定位" class="headerlink" title="acml定位"></a>acml定位</h1><h2 id="编写amcl节点相关launch文件"><a href="#编写amcl节点相关launch文件" class="headerlink" title="编写amcl节点相关launch文件"></a>编写amcl节点相关launch文件</h2><p>在nav下新建amcl.launch文件、</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;amcl&quot;</span> <span class="attr">type</span>=<span class="string">&quot;amcl&quot;</span> <span class="attr">name</span>=<span class="string">&quot;amcl&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Publish scans from best pose at a max of 10 Hz --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_model_type&quot;</span> <span class="attr">value</span>=<span class="string">&quot;diff&quot;</span>/&gt;</span><span class="comment">&lt;!-- 里程计模式为差分 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha5&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;transform_tolerance&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;gui_publish_rate&quot;</span> <span class="attr">value</span>=<span class="string">&quot;10.0&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_max_beams&quot;</span> <span class="attr">value</span>=<span class="string">&quot;30&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;min_particles&quot;</span> <span class="attr">value</span>=<span class="string">&quot;500&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;max_particles&quot;</span> <span class="attr">value</span>=<span class="string">&quot;5000&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;kld_err&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;kld_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.99&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- translation std dev, m --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha3&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.8&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_alpha4&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_z_hit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_z_short&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_z_max&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_z_rand&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_sigma_hit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_lambda_short&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_lambda_short&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.1&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_model_type&quot;</span> <span class="attr">value</span>=<span class="string">&quot;likelihood_field&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &lt;param name=&quot;laser_model_type&quot; value=&quot;beam&quot;/&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;laser_likelihood_max_dist&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2.0&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;update_min_d&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;update_min_a&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.5&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;odom_frame_id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;odom&quot;</span>/&gt;</span><span class="comment">&lt;!-- 里程计坐标系 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;base_frame_id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;base_link&quot;</span>/&gt;</span><span class="comment">&lt;!-- 添加机器人基坐标系 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;global_frame_id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;map&quot;</span>/&gt;</span><span class="comment">&lt;!-- 添加地图坐标系 --&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="编写测试launch文件"><a href="#编写测试launch文件" class="headerlink" title="编写测试launch文件"></a>编写测试launch文件</h2><p>amcl节点是不可以单独运行的，运行 amcl 节点之前，需要先加载全局地图，然后启动 rviz 显示定位结果，上述节点可以集成进launch文件，新建test_amcl.launch ,内容示例如下:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 设置地图的配置文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;map&quot;</span> <span class="attr">default</span>=<span class="string">&quot;nav.yaml&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 运行地图服务器，并且加载设置的地图--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">name</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">type</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">args</span>=<span class="string">&quot;$(find nav)/map/$(arg map)&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动AMCL节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/amcl.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>当然，launch文件中地图服务节点和amcl节点中的包名、文件名需要根据自己的设置修改。</p>
-<h2 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h2><ol>
-<li><p>建立can通信：sudo ip link set can0 up type can bitrate 500000</p>
-</li>
-<li><p>执行相关launch文件，启动机器人并加载机器人模型：roslaunch mycar_start start.launch；</p>
-</li>
-<li><p>启动上一步中集成地图服务、amcl 的 launch 文件：roslaunch nav test_amcl.launch；</p>
-</li>
-<li><p>启动rviz并添加RobotModel、Map组件，分别显示机器人模型与地图，添加 posearray 插件，设置topic为particlecloud来显示 amcl 预估的当前机器人的位姿，箭头越是密集，说明当前机器人处于此位置的概率越高；</p>
-</li>
-<li><p>通过键盘控制机器人运动，会发现 posearray 也随之而改变。运行结果与仿真环境下类似。</p>
-</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E5%AE%9A%E4%BD%8D%2Cpng"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/8.2%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E4%BC%A0%E6%84%9F%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250315215109.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Do not Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/8.2%20%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1-%E4%BC%A0%E6%84%9F%E5%99%A8/" class="post-title-link" itemprop="url">8.2 机器人平台设计</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-06-19 10:07:28" itemprop="dateModified" datetime="2025-06-19T10:07:28+08:00">2025-06-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">松灵机器人</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="8-2-机器人平台设计-传感器-雷达"><a href="#8-2-机器人平台设计-传感器-雷达" class="headerlink" title="8.2 机器人平台设计-传感器-雷达"></a>8.2 机器人平台设计-传感器-雷达</h1><h2 id="相关参数及连接"><a href="#相关参数及连接" class="headerlink" title="相关参数及连接"></a>相关参数及连接</h2><p>激光雷达(LiDAR)，英文全称为:Light Detection And Ranging，即<strong>光探测与测量</strong>。</p>
-<p>实验室雷达参数：</p>
-<p>名称：镭神智能——c16十六线三维激光雷达</p>
-<p>性能参数：</p>
-<p><img src="https://i-blog.csdnimg.cn/blog_migrate/bd030c149afa5ae4e4951ec3c139490d.png" alt="img"></p>
-<p>连接激光雷达</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E9%9B%B7%E8%BE%BE%E6%8E%A5%E7%BA%BF.png" alt="Ubuntu18.04鲁班猫ROS-melodic适配镭神智能C16多线激光雷达_镭神c16-CSDN博客"></p>
-<p>刚开始可能显示错误，没事，先设置一下网络。</p>
-<p>打开ubuntu网络设置，点击这个有线已连接。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C.png"></p>
-<p>点击小齿轮，设置有线连接的静态IP地址和掩码如下(IPv4)。需要选择”Manual - 手动”，同时设置”Address 192.168.1.102”，设置“Netmask 255.255.255.0”，其他的内容无需设置(网上相关教程还设置了其他内容，但是实际上没必要)。只需设置这个IPv4就可以了，其他内容不用管，官方手册上面的也不用管。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE.png"></p>
-<p> 之后，我们可以使用ifconfig查询连接的设备。运行ifconfig命令需要安装一个功能包，按照他的提醒信息进行安装即可。如下图所示，他会显示很多的设备，其中有一个设备的inet和netmask后面的数值正好是前面我们设置的192.168.1.102和255.255.255.0。每个人电脑上面的网口名称都不一样，下图中我的名称即为enp3s0，后面将会用的这个名称。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/ifconfig.png"></p>
-<p>我的名称是<strong>enp3s0</strong></p>
-<p>镭神C16激光雷达默认的ip地址为 192.168.1.200，我们使用 ping ip可以查看电脑与其是否成功连接。我们前面设置的192.168.1.102是电脑的静态IP，激光雷达他将会数据发送至192.168.1.102这个目标IP地址。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 192.168.1.200</span><br></pre></td></tr></table></figure>
-
-<p>如果连接成功的话会有显示</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-06-11_17-22-17.png"></p>
-<p>然后，我们可以进一步测试，看看我们的电脑是否能够正确收到雷达发送的数据。也就是从雷达IP 192.168.1.200发送到目标IP 192.168.1.102。如下图显示就说明连接成功啦。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sudo tcpdump -n -i [name]</span></span><br><span class="line"><span class="comment"># 我的设备名为 enp3s0</span></span><br><span class="line"><span class="built_in">sudo</span> tcpdump -n -i enp3s0</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-06-11_17-24-02.png"></p>
-<h2 id="ROS-Rviz测试"><a href="#ROS-Rviz测试" class="headerlink" title="ROS&amp;Rviz测试"></a>ROS&amp;Rviz测试</h2><p> 如果上面的两个测试都通过了，那就可以下载功能包进行一个简单的测试。创建新的工作空间，并将TB客服提供的功能包lslidar_ros和pointcloud_to_laserscan拷贝进src目录。当然也可以直接拷贝到现成的工作空间下的src目录。功能包下载：</p>
-<p><a href="https://link.zhihu.com/?target=https://wws.lanzouy.com/irayJ095dcpa">https://link.zhihu.com/?target=https%3A//wws.lanzouy.com/irayJ095dcpa</a></p>
-<p>编译过程中很可能会因为缺少相关的依赖而报错。主要会遇到两种报错，分别需要安装下面的两个功能包。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pcap.h  报错</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get install libpcap-dev</span><br><span class="line"><span class="comment"># tf2_sensor_msgs 报错</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get install ros-noetic-tf2-sensor-msgs</span><br><span class="line"><span class="comment">#根据自己ros版本来更改</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>之后，便可以运行对应的launch文件，获取点云数据，并将其显示到RVIZ中。顺便提一句，如果roscore启动失败，检查是不是忘了把之前分布式通信的文件修改下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd 到工作空间</span></span><br><span class="line"><span class="built_in">cd</span> ~/lslidar_ws</span><br><span class="line"></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch lslidar_driver start.launch</span><br><span class="line"></span><br><span class="line"><span class="comment">#新建一个终端窗口</span></span><br><span class="line"><span class="built_in">cd</span> ~/lslidar_ws</span><br><span class="line"><span class="comment">#   </span></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch pointcloud_to_laserscan pointcloud_scan.launch</span><br><span class="line"></span><br><span class="line"><span class="comment">#新建一个终端窗口</span></span><br><span class="line">rviz</span><br><span class="line"></span><br><span class="line"><span class="comment">#  可视化点云数据</span></span><br><span class="line">rviz</span><br></pre></td></tr></table></figure>
-
-<p> 如果电脑没能成功连接激光雷达，运行roslaunch lslidar_driver start.launch时，终端有黄色的”time out”提示。打开rviz之后，我们需要简单设置一下。需要在rviz中，添加PointCloud2组件，并选择话题&#x2F;point_cloud_raw。同时，点击上方的Fixed Frame处的map，直接输入laser并回车。此时就可以在rviz中看见激光雷达的点云数据了。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-06-11_17-26-21.png"></p>
-<p>s</p>
 
       
     </div>
