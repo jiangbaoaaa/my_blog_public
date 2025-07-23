@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,104 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/%E7%BB%93%E5%90%88ROS%E5%92%8COpenCV%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/01/%E7%BB%93%E5%90%88ROS%E5%92%8COpenCV%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/" class="post-title-link" itemprop="url">结合ROS和OpenCV实现人脸识别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="结合ROS和OpenCV实现人脸识别"><a href="#结合ROS和OpenCV实现人脸识别" class="headerlink" title="结合ROS和OpenCV实现人脸识别"></a>结合ROS和OpenCV实现人脸识别</h1><h2 id="源码实现：face-detector-py"><a href="#源码实现：face-detector-py" class="headerlink" title="源码实现：face_detector.py"></a>源码实现：face_detector.py</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image, RegionOfInterest</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge, CvBridgeError</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">faceDetector</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        rospy.on_shutdown(<span class="variable language_">self</span>.cleanup);</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建cv_bridge</span></span><br><span class="line">        <span class="variable language_">self</span>.bridge = CvBridge()</span><br><span class="line">        <span class="variable language_">self</span>.image_pub = rospy.Publisher(<span class="string">&quot;cv_bridge_image&quot;</span>, Image, queue_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取haar特征的级联表的XML文件，文件路径在launch文件中传入</span></span><br><span class="line">        cascade_1 = rospy.get_param(<span class="string">&quot;~cascade_1&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">        cascade_2 = rospy.get_param(<span class="string">&quot;~cascade_2&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 使用级联表初始化haar特征检测器</span></span><br><span class="line">        <span class="variable language_">self</span>.cascade_1 = cv2.CascadeClassifier(cascade_1)</span><br><span class="line">        <span class="variable language_">self</span>.cascade_2 = cv2.CascadeClassifier(cascade_2)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置级联表的参数，优化人脸识别，可以在launch文件中重新配置</span></span><br><span class="line">        <span class="variable language_">self</span>.haar_scaleFactor  = rospy.get_param(<span class="string">&quot;~haar_scaleFactor&quot;</span>, <span class="number">1.2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.haar_minNeighbors = rospy.get_param(<span class="string">&quot;~haar_minNeighbors&quot;</span>, <span class="number">2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.haar_minSize      = rospy.get_param(<span class="string">&quot;~haar_minSize&quot;</span>, <span class="number">40</span>)</span><br><span class="line">        <span class="variable language_">self</span>.haar_maxSize      = rospy.get_param(<span class="string">&quot;~haar_maxSize&quot;</span>, <span class="number">60</span>)</span><br><span class="line">        <span class="variable language_">self</span>.color = (<span class="number">50</span>, <span class="number">255</span>, <span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 初始化订阅rgb格式图像数据的订阅者，此处图像topic的话题名可以在launch文件中重映射</span></span><br><span class="line">        <span class="variable language_">self</span>.image_sub = rospy.Subscriber(<span class="string">&quot;input_rgb_image&quot;</span>, Image, <span class="variable language_">self</span>.image_callback, queue_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">image_callback</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="comment"># 使用cv_bridge将ROS的图像数据转换成OpenCV的图像格式</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cv_image = <span class="variable language_">self</span>.bridge.imgmsg_to_cv2(data, <span class="string">&quot;bgr8&quot;</span>)     </span><br><span class="line">            frame = np.array(cv_image, dtype=np.uint8)</span><br><span class="line">        <span class="keyword">except</span> CvBridgeError, e:</span><br><span class="line">            <span class="built_in">print</span> e</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建灰度图像</span></span><br><span class="line">        grey_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建平衡直方图，减少光线影响</span></span><br><span class="line">        grey_image = cv2.equalizeHist(grey_image)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 尝试检测人脸</span></span><br><span class="line">        faces_result = <span class="variable language_">self</span>.detect_face(grey_image)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 在opencv的窗口中框出所有人脸区域</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(faces_result)&gt;<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> face <span class="keyword">in</span> faces_result: </span><br><span class="line">                x, y, w, h = face</span><br><span class="line">                cv2.rectangle(cv_image, (x, y), (x+w, y+h), <span class="variable language_">self</span>.color, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 将识别后的图像转换成ROS消息并发布</span></span><br><span class="line">        <span class="variable language_">self</span>.image_pub.publish(<span class="variable language_">self</span>.bridge.cv2_to_imgmsg(cv_image, <span class="string">&quot;bgr8&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">detect_face</span>(<span class="params">self, input_image</span>):</span><br><span class="line">        <span class="comment"># 首先匹配正面人脸的模型</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.cascade_1:</span><br><span class="line">            faces = <span class="variable language_">self</span>.cascade_1.detectMultiScale(input_image, </span><br><span class="line">                    <span class="variable language_">self</span>.haar_scaleFactor, </span><br><span class="line">                    <span class="variable language_">self</span>.haar_minNeighbors, </span><br><span class="line">                    cv2.CASCADE_SCALE_IMAGE, </span><br><span class="line">                    (<span class="variable language_">self</span>.haar_minSize, <span class="variable language_">self</span>.haar_maxSize))</span><br><span class="line">                                         </span><br><span class="line">        <span class="comment"># 如果正面人脸匹配失败，那么就尝试匹配侧面人脸的模型</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(faces) == <span class="number">0</span> <span class="keyword">and</span> <span class="variable language_">self</span>.cascade_2:</span><br><span class="line">            faces = <span class="variable language_">self</span>.cascade_2.detectMultiScale(input_image, </span><br><span class="line">                    <span class="variable language_">self</span>.haar_scaleFactor, </span><br><span class="line">                    <span class="variable language_">self</span>.haar_minNeighbors, </span><br><span class="line">                    cv2.CASCADE_SCALE_IMAGE, </span><br><span class="line">                    (<span class="variable language_">self</span>.haar_minSize, <span class="variable language_">self</span>.haar_maxSize))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> faces</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cleanup</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;Shutting down vision node.&quot;</span></span><br><span class="line">        cv2.destroyAllWindows()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 初始化ros节点</span></span><br><span class="line">        rospy.init_node(<span class="string">&quot;face_detector&quot;</span>)</span><br><span class="line">        faceDetector()</span><br><span class="line">        rospy.loginfo(<span class="string">&quot;Face detector is started..&quot;</span>)</span><br><span class="line">        rospy.loginfo(<span class="string">&quot;Please subscribe the ROS image.&quot;</span>)</span><br><span class="line">        rospy.spin()</span><br><span class="line">    <span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;Shutting down face detector node.&quot;</span></span><br><span class="line">        cv2.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化部分"><a href="#初始化部分" class="headerlink" title="初始化部分"></a>初始化部分</h3><p>完成ROS节点、图像、识别参数的设置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">    rospy.on_shutdown(<span class="variable language_">self</span>.cleanup);</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建cv_bridge</span></span><br><span class="line">    <span class="variable language_">self</span>.bridge = CvBridge()</span><br><span class="line">    <span class="variable language_">self</span>.image_pub = rospy.Publisher(<span class="string">&quot;cv_bridge_image&quot;</span>, Image, queue_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取haar特征的级联表的XML文件，文件路径在launch文件中传入</span></span><br><span class="line">    cascade_1 = rospy.get_param(<span class="string">&quot;~cascade_1&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">    cascade_2 = rospy.get_param(<span class="string">&quot;~cascade_2&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用级联表初始化haar特征检测器</span></span><br><span class="line">    <span class="variable language_">self</span>.cascade_1 = cv2.CascadeClassifier(cascade_1)</span><br><span class="line">    <span class="variable language_">self</span>.cascade_2 = cv2.CascadeClassifier(cascade_2)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设置级联表的参数，优化人脸识别，可以在launch文件中重新配置</span></span><br><span class="line">    <span class="variable language_">self</span>.haar_scaleFactor  = rospy.get_param(<span class="string">&quot;~haar_scaleFactor&quot;</span>, <span class="number">1.2</span>)</span><br><span class="line">    <span class="variable language_">self</span>.haar_minNeighbors = rospy.get_param(<span class="string">&quot;~haar_minNeighbors&quot;</span>, <span class="number">2</span>)</span><br><span class="line">    <span class="variable language_">self</span>.haar_minSize      = rospy.get_param(<span class="string">&quot;~haar_minSize&quot;</span>, <span class="number">40</span>)</span><br><span class="line">    <span class="variable language_">self</span>.haar_maxSize      = rospy.get_param(<span class="string">&quot;~haar_maxSize&quot;</span>, <span class="number">60</span>)</span><br><span class="line">    <span class="variable language_">self</span>.color = (<span class="number">50</span>, <span class="number">255</span>, <span class="number">50</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 初始化订阅rgb格式图像数据的订阅者，此处图像topic的话题名可以在launch文件中重映射</span></span><br><span class="line">    <span class="variable language_">self</span>.image_sub = rospy.Subscriber(<span class="string">&quot;input_rgb_image&quot;</span>, Image, <span class="variable language_">self</span>.image_callback, queue_size=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="ROS图像回调函数"><a href="#ROS图像回调函数" class="headerlink" title="ROS图像回调函数"></a>ROS图像回调函数</h3><p>例程节点收到摄像头发布的RGB图像数据之后进入回调函数，将图像转成OpenCV的数据格式，然后预处理之后开始调用人脸识别的功能函数，最后发布识别结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">image_callback</span>(<span class="params">self, data</span>):</span><br><span class="line">    <span class="comment"># 使用cv_bridge将ROS的图像数据转换成OpenCV的图像格式</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        cv_image = <span class="variable language_">self</span>.bridge.imgmsg_to_cv2(data, <span class="string">&quot;bgr8&quot;</span>)     </span><br><span class="line">        frame = np.array(cv_image, dtype=np.uint8)</span><br><span class="line">    <span class="keyword">except</span> CvBridgeError, e:</span><br><span class="line">        <span class="built_in">print</span> e</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建灰度图像</span></span><br><span class="line">    grey_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建平衡直方图，减少光线影响</span></span><br><span class="line">    grey_image = cv2.equalizeHist(grey_image)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 尝试检测人脸</span></span><br><span class="line">    faces_result = <span class="variable language_">self</span>.detect_face(grey_image)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 在opencv的窗口中框出所有人脸区域</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(faces_result)&gt;<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">for</span> face <span class="keyword">in</span> faces_result: </span><br><span class="line">            x, y, w, h = face</span><br><span class="line">            cv2.rectangle(cv_image, (x, y), (x+w, y+h), <span class="variable language_">self</span>.color, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将识别后的图像转换成ROS消息并发布</span></span><br><span class="line">    <span class="variable language_">self</span>.image_pub.publish(<span class="variable language_">self</span>.bridge.cv2_to_imgmsg(cv_image, <span class="string">&quot;bgr8&quot;</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="人脸识别"><a href="#人脸识别" class="headerlink" title="人脸识别"></a>人脸识别</h3><p>直接调用OpenCV提供的人脸识别接口，与数据库中的人脸特征进行匹配。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">detect_face</span>(<span class="params">self, input_image</span>):</span><br><span class="line">    <span class="comment"># 首先匹配正面人脸的模型</span></span><br><span class="line">    <span class="keyword">if</span> <span class="variable language_">self</span>.cascade_1:</span><br><span class="line">        faces = <span class="variable language_">self</span>.cascade_1.detectMultiScale(input_image, </span><br><span class="line">                <span class="variable language_">self</span>.haar_scaleFactor, </span><br><span class="line">                <span class="variable language_">self</span>.haar_minNeighbors, </span><br><span class="line">                cv2.CASCADE_SCALE_IMAGE, </span><br><span class="line">                (<span class="variable language_">self</span>.haar_minSize, <span class="variable language_">self</span>.haar_maxSize))</span><br><span class="line">                                     </span><br><span class="line">    <span class="comment"># 如果正面人脸匹配失败，那么就尝试匹配侧面人脸的模型</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(faces) == <span class="number">0</span> <span class="keyword">and</span> <span class="variable language_">self</span>.cascade_2:</span><br><span class="line">        faces = <span class="variable language_">self</span>.cascade_2.detectMultiScale(input_image, </span><br><span class="line">                <span class="variable language_">self</span>.haar_scaleFactor, </span><br><span class="line">                <span class="variable language_">self</span>.haar_minNeighbors, </span><br><span class="line">                cv2.CASCADE_SCALE_IMAGE, </span><br><span class="line">                (<span class="variable language_">self</span>.haar_minSize, <span class="variable language_">self</span>.haar_maxSize))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> faces</span><br></pre></td></tr></table></figure>
+
+<p>代码中一些参数还有话题需要在launch文件中设置，所以需要编写一个launch文件：robot_vision&#x2F;face_detector.launch</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">name</span>=<span class="string">&quot;face_detector&quot;</span> <span class="attr">type</span>=<span class="string">&quot;face_detector.py&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;input_rgb_image&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/camera/color/image_raw&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span>&gt;</span></span><br><span class="line">            haar_scaleFactor: 1.2</span><br><span class="line">            haar_minNeighbors: 2</span><br><span class="line">            haar_minSize: 40</span><br><span class="line">            haar_maxSize: 60</span><br><span class="line">        <span class="tag">&lt;/<span class="name">rosparam</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;cascade_1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(find robot_vision)/data/haar_detectors/haarcascade_frontalface_alt.xml&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;cascade_2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$(find robot_vision)/data/haar_detectors/haarcascade_profileface.xml&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1442,118 +1540,6 @@
 <li><p>最后可以使用 map_server 保存地图。</p>
 </li>
 </ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/VNC%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/VNC%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">VNC远程桌面使用方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="VNC远程桌面使用方法"><a href="#VNC远程桌面使用方法" class="headerlink" title="VNC远程桌面使用方法"></a>VNC远程桌面使用方法</h1><p>把需要被显示的桌面称为移动端，显示移动端桌面并进行远程控制操作的称为遥控端</p>
-<h2 id="遥控端准备"><a href="#遥控端准备" class="headerlink" title="遥控端准备"></a>遥控端准备</h2><p>直接下载VNC Viewer，网址为：<a target="_blank" rel="noopener" href="https://www.realvnc.com/en/connect/download/viewer/">https://www.realvnc.com/en/connect/download/viewer/</a></p>
-<p>根据系统的不同选择不同版本，由于博主遥控端为Ubuntu，因此选择<strong>Linux-DEB X64</strong></p>
-<p>安装好之后，可以在终端：</p>
-<p><code>vncviewer</code></p>
-<p>可以打开软件，可能需要注册一下</p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/bcec45e62dece585db2af5d88839a5a1.png" alt="img"></p>
-<p>这样遥控端就准备好了</p>
-<h2 id="移动端准备"><a href="#移动端准备" class="headerlink" title="移动端准备"></a>移动端准备</h2><p>博主移动端也为Ubuntu系统。安装<strong>x11vnc</strong>：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="keyword">get</span> install x11vnc</span><br></pre></td></tr></table></figure>
-
-<p>可以把x11vncserver收藏起来</p>
-<p>打开后，首先出现的界面用来设置端口号，默认5900：</p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/a0047f0b499be328f012d01cd41bdd2f.png" alt="img"></p>
-<p>单击OK以后，稍等1、2秒，会弹出来第二个界面，用来设置通信密码，注意上面<strong>Accept Connections</strong>需要勾选：</p>
-<p><img src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/fc37a682a46f368b1d725308a55548ae.png" alt="img"></p>
-<p>密码随便设点简单的比如1、2之类的就行，方便。最后单击OK。</p>
-<h3 id="两端连接"><a href="#两端连接" class="headerlink" title="两端连接"></a>两端连接</h3><p>首先找到自己的移动端的IP</p>
-<p>命令行输入：</p>
-<p><code>ifconfig</code></p>
-<p>查看IP,这台工控机的IP是：192.168.3.127</p>
-<p>在遥控端输入：<code>192.168.3.127:5900</code></p>
-<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18</a> 20-24-21 的屏幕截图.png)</p>
-<p>输入密码即可实现远程桌面</p>
-<p>怎么关闭</p>
-<p>可以直接在远程桌面关闭</p>
-<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18">https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/2025-04-18</a> 20-27-49 的屏幕截图.png)</p>
-<p>左上角有一个小x号，这样就关闭了</p>
 
       
     </div>
