@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="利用move_base使得小车导航至火焰位置整体思路之前已经实现了使用小车，利用2D nav goal工具来设置目标点，只需要将这个目标点替换为火焰位置，这样就能实现火焰的导航。上一次已经实现了火焰相对于相机坐标系到火焰相对于小车坐标系的变换，现在只需要实现火焰坐标系到地图坐标系的转换即可。这便是整体思路 2D Nav Goal基本原理 在rviz中通过”2D Nav Goal”工具设置目标点时，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用move_base使得小车导航至火焰位置">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="利用move_base使得小车导航至火焰位置整体思路之前已经实现了使用小车，利用2D nav goal工具来设置目标点，只需要将这个目标点替换为火焰位置，这样就能实现火焰的导航。上一次已经实现了火焰相对于相机坐标系到火焰相对于小车坐标系的变换，现在只需要实现火焰坐标系到地图坐标系的转换即可。这便是整体思路 2D Nav Goal基本原理 在rviz中通过”2D Nav Goal”工具设置目标点时，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2d%20nav%20goal%E5%8E%9F%E7%90%86.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-22_16-52-25.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-35.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-02.png">
+<meta property="article:published_time" content="2025-07-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-23T06:58:09.930Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2d%20nav%20goal%E5%8E%9F%E7%90%86.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/","path":"2025/07/23/火焰位置导航/","title":"利用move_base使得小车导航至火焰位置"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>利用move_base使得小车导航至火焰位置 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A9%E7%94%A8move-base%E4%BD%BF%E5%BE%97%E5%B0%8F%E8%BD%A6%E5%AF%BC%E8%88%AA%E8%87%B3%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">利用move_base使得小车导航至火焰位置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%80%9D%E8%B7%AF"><span class="nav-number">1.1.</span> <span class="nav-text">整体思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2D-Nav-Goal%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">2D Nav Goal基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.</span> <span class="nav-text">具体实现</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="利用move_base使得小车导航至火焰位置 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用move_base使得小车导航至火焰位置
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-07-23 00:00:00 / 修改时间：14:58:09" itemprop="dateCreated datePublished" datetime="2025-07-23T00:00:00+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="利用move-base使得小车导航至火焰位置"><a href="#利用move-base使得小车导航至火焰位置" class="headerlink" title="利用move_base使得小车导航至火焰位置"></a>利用move_base使得小车导航至火焰位置</h1><h2 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h2><p>之前已经实现了使用小车，利用2D nav goal工具来设置目标点，只需要将这个目标点替换为火焰位置，这样就能实现火焰的导航。上一次已经实现了火焰相对于相机坐标系到火焰相对于小车坐标系的变换，现在只需要实现火焰坐标系到地图坐标系的转换即可。这便是整体思路</p>
+<h2 id="2D-Nav-Goal基本原理"><a href="#2D-Nav-Goal基本原理" class="headerlink" title="2D Nav Goal基本原理"></a>2D Nav Goal基本原理</h2><ul>
+<li><p>在rviz中通过”2D Nav Goal”工具设置目标点时，会发布geometry_msgs&#x2F;PoseStamped类型的消息到&#x2F;move_base_simple&#x2F;goal话题</p>
+</li>
+<li><p>move_base节点订阅该话题，将目标点转换为导航任务，并启动全局&#x2F;局部路径规划</p>
+</li>
+<li><p>目标点坐标基于用户指定的参考系（通常为map或odom坐标系）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2d%20nav%20goal%E5%8E%9F%E7%90%86.png"></p>
+</li>
+</ul>
+<p>有了上述理解之后，可以尝试设置一个目标点，通过脚本来实现小车的移动</p>
+<p>新建脚本文件：scripts&#x2F;goal.publisher.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf.transformations <span class="keyword">import</span> quaternion_from_euler</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_goal</span>(<span class="params">x, y, yaw</span>):  <span class="comment"># yaw 为朝向偏航角（弧度）</span></span><br><span class="line">    pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">    rospy.sleep(<span class="number">1</span>)  <span class="comment"># 确保发布器已完全初始化</span></span><br><span class="line"></span><br><span class="line">    goal = PoseStamped()</span><br><span class="line">    goal.header.frame_id = <span class="string">&quot;map&quot;</span></span><br><span class="line">    goal.header.stamp = rospy.get_rostime()  <span class="comment"># 使用 ROS 时间戳</span></span><br><span class="line">    goal.pose.position.x = x</span><br><span class="line">    goal.pose.position.y = y</span><br><span class="line">    goal.pose.position.z = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将偏航角转换为四元数</span></span><br><span class="line">    q = quaternion_from_euler(<span class="number">0</span>, <span class="number">0</span>, yaw)</span><br><span class="line">    goal.pose.orientation.x = q[<span class="number">0</span>]</span><br><span class="line">    goal.pose.orientation.y = q[<span class="number">1</span>]</span><br><span class="line">    goal.pose.orientation.z = q[<span class="number">2</span>]</span><br><span class="line">    goal.pose.orientation.w = q[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发布目标消息</span></span><br><span class="line">    pub.publish(goal)</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;Goal published: x=%.2f, y=%.2f, yaw=%.2f&quot;</span>, x, y, yaw)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;goal_publisher&#x27;</span>)  <span class="comment"># 初始化 ROS 节点</span></span><br><span class="line">        rospy.sleep(<span class="number">1</span>)  <span class="comment"># 等待一秒，确保节点已启动</span></span><br><span class="line">        send_goal(<span class="number">0.2</span>, <span class="number">0.15</span>, <span class="number">0.785</span>)  <span class="comment"># 示例：目标 (0.1, 0.15)，朝向 45° (0.785 弧度)</span></span><br><span class="line">    <span class="keyword">except</span> rospy.ROSInterruptException:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>打开导航以及小车底盘控制节点，即可在终端查看消息数据.</p>
+<p>具体命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rostopic echo /move_base_simple/goal</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-22_16-52-25.png" alt="Snipaste_2025-07-22_16-52-25"></p>
+<hr>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>新建一个脚本：scripts&#x2F;fire_navigator.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> tf2_ros</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PointStamped, PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf2_geometry_msgs <span class="keyword">import</span> do_transform_point</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FireGoalConverter</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;fire_goal_converter&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.tf_buffer = tf2_ros.Buffer()</span><br><span class="line">        <span class="variable language_">self</span>.tf_listener = tf2_ros.TransformListener(<span class="variable language_">self</span>.tf_buffer)</span><br><span class="line">        <span class="variable language_">self</span>.pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/fire_position_3d&quot;</span>, PointStamped, <span class="variable language_">self</span>.callback)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            transform = <span class="variable language_">self</span>.tf_buffer.lookup_transform(<span class="string">&quot;map&quot;</span>, msg.header.frame_id, rospy.Time(<span class="number">0</span>))</span><br><span class="line">            map_point = do_transform_point(msg, transform)</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;坐标转换成功: <span class="subst">&#123;msg.header.frame_id&#125;</span> -&gt; map&quot;</span>)</span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;转换后的坐标: x=<span class="subst">&#123;map_point.point.x&#125;</span>, y=<span class="subst">&#123;map_point.point.y&#125;</span>, z=<span class="subst">&#123;map_point.point.z&#125;</span>&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            goal = PoseStamped()</span><br><span class="line">            goal.header = map_point.header</span><br><span class="line">            goal.pose.position.x = map_point.point.x</span><br><span class="line">            goal.pose.position.y = map_point.point.y</span><br><span class="line">            goal.pose.position.z = <span class="number">0.0</span></span><br><span class="line">            goal.pose.orientation.w = <span class="number">1.0</span></span><br><span class="line">            <span class="variable language_">self</span>.pub.publish(goal)</span><br><span class="line">        <span class="keyword">except</span> (tf2_ros.LookupException, tf2_ros.ConnectivityException) <span class="keyword">as</span> e:</span><br><span class="line">            rospy.logerr(<span class="string">f&quot;坐标转换失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    FireGoalConverter()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>同时编辑一下cmakelists以及赋予可执行权限</p>
+<p>在打开机器人底盘控制节点，导航节点，火焰识别节点之后，再打开这个节点，即可实现火焰的导航。</p>
+<p>为了方便打开多个节点，编写一个火焰识别launch文件：</p>
+<p>新建文件：launch&#x2F;fire_detector.launch</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 添加RealSense相机启动配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find realsense2_camera)/launch/rs_camera.launch&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;align_depth&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰识别节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_detector.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_detector&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰定位节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_3D_locator.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_3D_locator&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动marker节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_marker_publisher.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_marker_publisher&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/test_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">rosrun scout_bringup bringup_can2usb.bash</span><br><span class="line">roslaunch mycar_start start_mycar.launch</span><br><span class="line">roslaunch nav nav.launch</span><br><span class="line"></span><br><span class="line">/fire_reco_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch robot_vision fire_detector.launch</span><br><span class="line">rosrun robot_vision fire_navigator.py</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>执行完成这些之后，可以在窗口看到一些信息：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-35.png" alt="Snipaste_2025-07-23_11-16-35"><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-02.png" alt="Snipaste_2025-07-23_11-16-02"></p>
+<p>至此，整个系统就完成了简单的实现。虽然存在很多问题，但是整体功能以及框架较为完整。后续可以对SLAM 、路径规划、火焰识别等方面进行优化，会达到更好的效果。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/07/23/%E5%B0%8F%E8%BD%A6%E8%87%AA%E4%B8%BB%E7%81%AB%E7%84%B0%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F/" rel="prev" title="小车自主火焰定位系统搭建">
+                  <i class="fa fa-angle-left"></i> 小车自主火焰定位系统搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
