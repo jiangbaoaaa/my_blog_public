@@ -847,113 +847,6 @@ rosrun robot_vision fire_marker_publisher.py
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/inter%20Realsense%20D435%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/01/inter%20Realsense%20D435%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">inter Realsense D435使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="inter-Realsense-D435使用"><a href="#inter-Realsense-D435使用" class="headerlink" title="inter Realsense D435使用"></a>inter Realsense D435使用</h1><h2 id="安装ros软件包"><a href="#安装ros软件包" class="headerlink" title="安装ros软件包"></a>安装ros软件包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-<span class="variable">$ROS_DISTRO</span>-realsense2-camera</span><br></pre></td></tr></table></figure>
-
-<p>终端运行如下指令,替换成自己的ros版本。</p>
-<h2 id="启动相机节点"><a href="#启动相机节点" class="headerlink" title="启动相机节点"></a>启动相机节点</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch</span><br></pre></td></tr></table></figure>
-
-<p>可以选择将其他流分辨率和帧速率作为参数提供给<strong>rs_camera.launch</strong>文件</p>
-<p>使用 <code>rostopic list</code>查看已经发布的话题。使用 <code>rostopic info /话题名称</code>查看话题信息</p>
-<h2 id="点云数据"><a href="#点云数据" class="headerlink" title="点云数据"></a>点云数据</h2><p>可以使用pointcloud 选项启动camera ，使得发布点云实例</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch filters:=pointcloud</span><br></pre></td></tr></table></figure>
-
-<p>之后可以打开rviz查看点云信息。</p>
-<h2 id="对齐深度坐标系"><a href="#对齐深度坐标系" class="headerlink" title="对齐深度坐标系"></a>对齐深度坐标系</h2><p>以下示例说明了如何启动 Camera 节点并将其将对齐的深度流发布到其他可用流，例如颜色或红外流。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="使用Dynamic-Reconfigure-Params-设置摄像头参数"><a href="#使用Dynamic-Reconfigure-Params-设置摄像头参数" class="headerlink" title="使用Dynamic Reconfigure Params 设置摄像头参数"></a>使用Dynamic Reconfigure Params 设置摄像头参数</h2><p>使用rqt来更改相机控制值</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun rqt_reconfigure rqt_reconfigure</span><br></pre></td></tr></table></figure>
-
-<h2 id="ros-obiect-analytics"><a href="#ros-obiect-analytics" class="headerlink" title="ros_obiect_analytics"></a>ros_obiect_analytics</h2><p>用于实时对象检测、定位和跟踪的 ROS 包装器,已经停止维护了。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros_object_analytics">https://github.com/intel/ros_object_analytics</a></p>
-<h2 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy?tab=readme-ov-file">https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy?tab=readme-ov-file</a></li>
-<li><a target="_blank" rel="noopener" href="https://dev.intelrealsense.com/docs/docs-get-started">https://dev.intelrealsense.com/docs/docs-get-started</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/CMake%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1315,6 +1208,113 @@ rosrun robot_vision fire_marker_publisher.py
 <p>参考<a target="_blank" rel="noopener" href="https://www.runoob.com/cmake/cmake-exercises.html">https://www.runoob.com/cmake/cmake-exercises.html</a></p>
 <hr>
 <h2 id="CMake-实战练习"><a href="#CMake-实战练习" class="headerlink" title="CMake 实战练习"></a>CMake 实战练习</h2><p>参考：<a target="_blank" rel="noopener" href="https://www.runoob.com/cmake/cmake-exercises.html">https://www.runoob.com/cmake/cmake-exercises.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/inter%20Realsense%20D435%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/01/inter%20Realsense%20D435%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">inter Realsense D435使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="inter-Realsense-D435使用"><a href="#inter-Realsense-D435使用" class="headerlink" title="inter Realsense D435使用"></a>inter Realsense D435使用</h1><h2 id="安装ros软件包"><a href="#安装ros软件包" class="headerlink" title="安装ros软件包"></a>安装ros软件包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-<span class="variable">$ROS_DISTRO</span>-realsense2-camera</span><br></pre></td></tr></table></figure>
+
+<p>终端运行如下指令,替换成自己的ros版本。</p>
+<h2 id="启动相机节点"><a href="#启动相机节点" class="headerlink" title="启动相机节点"></a>启动相机节点</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch</span><br></pre></td></tr></table></figure>
+
+<p>可以选择将其他流分辨率和帧速率作为参数提供给<strong>rs_camera.launch</strong>文件</p>
+<p>使用 <code>rostopic list</code>查看已经发布的话题。使用 <code>rostopic info /话题名称</code>查看话题信息</p>
+<h2 id="点云数据"><a href="#点云数据" class="headerlink" title="点云数据"></a>点云数据</h2><p>可以使用pointcloud 选项启动camera ，使得发布点云实例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch filters:=pointcloud</span><br></pre></td></tr></table></figure>
+
+<p>之后可以打开rviz查看点云信息。</p>
+<h2 id="对齐深度坐标系"><a href="#对齐深度坐标系" class="headerlink" title="对齐深度坐标系"></a>对齐深度坐标系</h2><p>以下示例说明了如何启动 Camera 节点并将其将对齐的深度流发布到其他可用流，例如颜色或红外流。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用Dynamic-Reconfigure-Params-设置摄像头参数"><a href="#使用Dynamic-Reconfigure-Params-设置摄像头参数" class="headerlink" title="使用Dynamic Reconfigure Params 设置摄像头参数"></a>使用Dynamic Reconfigure Params 设置摄像头参数</h2><p>使用rqt来更改相机控制值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun rqt_reconfigure rqt_reconfigure</span><br></pre></td></tr></table></figure>
+
+<h2 id="ros-obiect-analytics"><a href="#ros-obiect-analytics" class="headerlink" title="ros_obiect_analytics"></a>ros_obiect_analytics</h2><p>用于实时对象检测、定位和跟踪的 ROS 包装器,已经停止维护了。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros_object_analytics">https://github.com/intel/ros_object_analytics</a></p>
+<h2 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy?tab=readme-ov-file">https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy?tab=readme-ov-file</a></li>
+<li><a target="_blank" rel="noopener" href="https://dev.intelrealsense.com/docs/docs-get-started">https://dev.intelrealsense.com/docs/docs-get-started</a></li>
+</ul>
 
       
     </div>
