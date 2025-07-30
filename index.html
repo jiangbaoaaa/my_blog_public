@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,7 +183,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/30/docker%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
@@ -201,7 +201,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/" class="post-title-link" itemprop="url">利用move_base使得小车导航至火焰位置</a>
+          <a href="/2025/07/30/docker%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Docker 安装及使用</a>
         </h2>
 
         <div class="post-meta-container">
@@ -213,7 +213,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-07-23 00:00:00 / 修改时间：19:41:37" itemprop="dateCreated datePublished" datetime="2025-07-23T00:00:00+08:00">2025-07-23</time>
+      <time title="创建时间：2025-07-30 00:00:00 / 修改时间：16:27:29" itemprop="dateCreated datePublished" datetime="2025-07-30T00:00:00+08:00">2025-07-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -221,7 +221,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
         </span>
     </span>
 
@@ -235,41 +235,273 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="利用move-base使得小车导航至火焰位置"><a href="#利用move-base使得小车导航至火焰位置" class="headerlink" title="利用move_base使得小车导航至火焰位置"></a>利用move_base使得小车导航至火焰位置</h1><h2 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h2><p>之前已经实现了使用小车，利用2D nav goal工具来设置目标点，只需要将这个目标点替换为火焰位置，这样就能实现火焰的导航。上一次已经实现了火焰相对于相机坐标系到火焰相对于小车坐标系的变换，现在只需要实现火焰坐标系到地图坐标系的转换即可。这便是整体思路</p>
-<h2 id="2D-Nav-Goal基本原理"><a href="#2D-Nav-Goal基本原理" class="headerlink" title="2D Nav Goal基本原理"></a>2D Nav Goal基本原理</h2><ul>
-<li><p>在rviz中通过”2D Nav Goal”工具设置目标点时，会发布geometry_msgs&#x2F;PoseStamped类型的消息到&#x2F;move_base_simple&#x2F;goal话题</p>
-</li>
-<li><p>move_base节点订阅该话题，将目标点转换为导航任务，并启动全局&#x2F;局部路径规划</p>
-</li>
-<li><p>目标点坐标基于用户指定的参考系（通常为map或odom坐标系）</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2d%20nav%20goal%E5%8E%9F%E7%90%86.png"></p>
-</li>
+          <h1 id="docker安装及使用"><a href="#docker安装及使用" class="headerlink" title="docker安装及使用"></a>docker安装及使用</h1><h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><p><strong>环境介绍</strong> ：</p>
+<ul>
+<li>虚拟机：vmware 17pro</li>
+<li>系统：ubuntu20.04</li>
 </ul>
-<p>有了上述理解之后，可以尝试设置一个目标点，通过脚本来实现小车的移动</p>
-<p>新建脚本文件：scripts&#x2F;goal.publisher.py</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf.transformations <span class="keyword">import</span> quaternion_from_euler</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_goal</span>(<span class="params">x, y, yaw</span>):  <span class="comment"># yaw 为朝向偏航角（弧度）</span></span><br><span class="line">    pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">    rospy.sleep(<span class="number">1</span>)  <span class="comment"># 确保发布器已完全初始化</span></span><br><span class="line"></span><br><span class="line">    goal = PoseStamped()</span><br><span class="line">    goal.header.frame_id = <span class="string">&quot;map&quot;</span></span><br><span class="line">    goal.header.stamp = rospy.get_rostime()  <span class="comment"># 使用 ROS 时间戳</span></span><br><span class="line">    goal.pose.position.x = x</span><br><span class="line">    goal.pose.position.y = y</span><br><span class="line">    goal.pose.position.z = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将偏航角转换为四元数</span></span><br><span class="line">    q = quaternion_from_euler(<span class="number">0</span>, <span class="number">0</span>, yaw)</span><br><span class="line">    goal.pose.orientation.x = q[<span class="number">0</span>]</span><br><span class="line">    goal.pose.orientation.y = q[<span class="number">1</span>]</span><br><span class="line">    goal.pose.orientation.z = q[<span class="number">2</span>]</span><br><span class="line">    goal.pose.orientation.w = q[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发布目标消息</span></span><br><span class="line">    pub.publish(goal)</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;Goal published: x=%.2f, y=%.2f, yaw=%.2f&quot;</span>, x, y, yaw)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;goal_publisher&#x27;</span>)  <span class="comment"># 初始化 ROS 节点</span></span><br><span class="line">        rospy.sleep(<span class="number">1</span>)  <span class="comment"># 等待一秒，确保节点已启动</span></span><br><span class="line">        send_goal(<span class="number">0.2</span>, <span class="number">0.15</span>, <span class="number">0.785</span>)  <span class="comment"># 示例：目标 (0.1, 0.15)，朝向 45° (0.785 弧度)</span></span><br><span class="line">    <span class="keyword">except</span> rospy.ROSInterruptException:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>打开导航以及小车底盘控制节点，即可在终端查看消息数据.</p>
-<p>具体命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rostopic echo /move_base_simple/goal</span><br></pre></td></tr></table></figure>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-22_16-52-25.png" alt="Snipaste_2025-07-22_16-52-25"></p>
+<h3 id="下载Docker"><a href="#下载Docker" class="headerlink" title="下载Docker"></a>下载Docker</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1323800">最详细的ubuntu 安装 docker教程-阿里云开发者社区</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24228872523">(49 封私信 &#x2F; 76 条消息) docker配置镜像Docker pull时报错：https://registry-1.docker.io/v2/ - 知乎</a></li>
+</ul>
 <hr>
-<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>新建一个脚本：scripts&#x2F;fire_navigator.py</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> tf2_ros</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PointStamped, PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf2_geometry_msgs <span class="keyword">import</span> do_transform_point</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FireGoalConverter</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;fire_goal_converter&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.tf_buffer = tf2_ros.Buffer()</span><br><span class="line">        <span class="variable language_">self</span>.tf_listener = tf2_ros.TransformListener(<span class="variable language_">self</span>.tf_buffer)</span><br><span class="line">        <span class="variable language_">self</span>.pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/fire_position_3d&quot;</span>, PointStamped, <span class="variable language_">self</span>.callback)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            transform = <span class="variable language_">self</span>.tf_buffer.lookup_transform(<span class="string">&quot;map&quot;</span>, msg.header.frame_id, rospy.Time(<span class="number">0</span>))</span><br><span class="line">            map_point = do_transform_point(msg, transform)</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;坐标转换成功: <span class="subst">&#123;msg.header.frame_id&#125;</span> -&gt; map&quot;</span>)</span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;转换后的坐标: x=<span class="subst">&#123;map_point.point.x&#125;</span>, y=<span class="subst">&#123;map_point.point.y&#125;</span>, z=<span class="subst">&#123;map_point.point.z&#125;</span>&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            goal = PoseStamped()</span><br><span class="line">            goal.header = map_point.header</span><br><span class="line">            goal.pose.position.x = map_point.point.x</span><br><span class="line">            goal.pose.position.y = map_point.point.y</span><br><span class="line">            goal.pose.position.z = <span class="number">0.0</span></span><br><span class="line">            goal.pose.orientation.w = <span class="number">1.0</span></span><br><span class="line">            <span class="variable language_">self</span>.pub.publish(goal)</span><br><span class="line">        <span class="keyword">except</span> (tf2_ros.LookupException, tf2_ros.ConnectivityException) <span class="keyword">as</span> e:</span><br><span class="line">            rospy.logerr(<span class="string">f&quot;坐标转换失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    FireGoalConverter()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="使用Docker"><a href="#使用Docker" class="headerlink" title="使用Docker"></a>使用Docker</h2><h3 id="Docker基本组成"><a href="#Docker基本组成" class="headerlink" title="Docker基本组成"></a>Docker基本组成</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250726105837573.png" alt="image-20250726105837573"></p>
+<p><strong>镜像(image)</strong>：只是一个只读的模板，可以用来创建容器，一个镜像可以创建多个容器。</p>
+<p><strong>容器(container)</strong> ：利用容器独立运行一个或者一组应用，容器时用镜像创建的运行实例。每个容器是相互隔离的，一个容器相当于一个简易版的环境。它的定义和镜像类似，唯一的区别在于容器的最上面一层是可读可写的。</p>
+<p><strong>仓库(repository)</strong>：仓库是集中存放镜文件的场所，最大的公开仓库是Docker Hub。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250726110258459.png" alt="image-20250726110258459"></p>
+<hr>
+<h2 id="Docker-常用命令"><a href="#Docker-常用命令" class="headerlink" title="Docker 常用命令"></a>Docker 常用命令</h2><h3 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker -v 		# 显示Docker版本信息</span><br><span class="line">docker info 	# 显示Docker系统信息，包括镜像和容器数</span><br><span class="line">docker --help 	# 帮助</span><br></pre></td></tr></table></figure>
 
-<p>同时编辑一下cmakelists以及赋予可执行权限</p>
-<p>在打开机器人底盘控制节点，导航节点，火焰识别节点之后，再打开这个节点，即可实现火焰的导航。</p>
-<p>为了方便打开多个节点，编写一个火焰识别launch文件：</p>
-<p>新建文件：launch&#x2F;fire_detector.launch</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 添加RealSense相机启动配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find realsense2_camera)/launch/rs_camera.launch&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;align_depth&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰识别节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_detector.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_detector&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰定位节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_3D_locator.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_3D_locator&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动marker节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_marker_publisher.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_marker_publisher&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h3><ol>
+<li>docker images</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker images		# 列出本地主机上的镜像</span><br><span class="line"># 解释</span><br><span class="line">REPOSITORY   镜像的仓库源</span><br><span class="line">TAG          镜像的标签</span><br><span class="line">IMAGE ID     镜像的ID</span><br><span class="line"> CREATED      镜像创建时间</span><br><span class="line">SIZE         镜像大小</span><br><span class="line"></span><br><span class="line">-a：        列出本地所有镜像</span><br><span class="line">-q：        只显示镜像id</span><br><span class="line">--digests： 显示镜像的摘要信息</span><br></pre></td></tr></table></figure>
 
+<ol start="2">
+<li>docker search</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search 镜像名称		# 例如 docker search mysql</span><br></pre></td></tr></table></figure>
 
+<ol start="3">
+<li>docker pull</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull 镜像名称		# 例如 docker pull mysql</span><br><span class="line"># 如果不添加tag，则拉取最新的，也可以添加tag：docker pull mysql:5.7  具体的tag可以去docker hub 查看</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/test_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">rosrun scout_bringup bringup_can2usb.bash</span><br><span class="line">roslaunch mycar_start start_mycar.launch</span><br><span class="line">roslaunch nav nav.launch</span><br><span class="line"></span><br><span class="line">/fire_reco_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch robot_vision fire_detector.launch</span><br><span class="line">rosrun robot_vision fire_navigator.py</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>docker rmi(remove image)</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker rmi -f 镜像id</span><br><span class="line">docker rmi -f $(docker images -qa)		# 删除全部</span><br></pre></td></tr></table></figure>
 
-<p>执行完成这些之后，可以在窗口看到一些信息：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-35.png" alt="Snipaste_2025-07-23_11-16-35"><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-02.png" alt="Snipaste_2025-07-23_11-16-02"></p>
-<p>至此，整个系统就完成了简单的实现。虽然存在很多问题，但是整体功能以及框架较为完整。后续可以对SLAM 、路径规划、火焰识别等方面进行优化，会达到更好的效果。</p>
+<h3 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h3><p>必须要先下载镜像才能创建容器，使用centos镜像来测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull centos</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>新建容器并启动</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">docker run [选项] image [指令]</span><br><span class="line"></span><br><span class="line"># 常用选项：</span><br><span class="line">--name=&quot;Name&quot;               # 给容器指定一个名字</span><br><span class="line">-d                          # 后台方式运行容器，并返回容器的id！</span><br><span class="line">-i                          # 以交互模式运行容器，通过和 -t 一起使用</span><br><span class="line">-t                          # 给容器重新分配一个终端，通常和 -i 一起使用</span><br><span class="line">-P                          # 随机端口映射（大写）</span><br><span class="line">-p                          # 指定端口映射（小写）</span><br><span class="line"></span><br><span class="line"># 使用centos进行交互式启动容器，在容器中执行/bin/bash命令</span><br><span class="line">docker run -it centos /bin/bash</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>列出所有运行的容器</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker ps </span><br><span class="line"></span><br><span class="line"># 常用选项</span><br><span class="line">-a 	# 列出当前所有正在运行的容器和历史运行的容器</span><br><span class="line">-l 	#显示最近创建的容器</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>退出容器</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exit		# 退出容器并且停止</span><br><span class="line">ctrl+p+q	# 容器不停止退出</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>启动停止容器</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker start (容器id or 容器名)        # 启动容器</span><br><span class="line">docker restart (容器id or 容器名)      # 重启容器</span><br><span class="line">docker stop (容器id or 容器名)         # 停止容器</span><br><span class="line">docker kill (容器id or 容器名)         # 强制停止容器</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>删除容器</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker rm 容器id                  # 删除指定容器</span><br><span class="line">docker rm -f $(docker ps -a -q)  # 删除所有容器</span><br><span class="line">docker ps -a -q|xargs docker rm  # 删除所有容器</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用其他命令"><a href="#常用其他命令" class="headerlink" title="常用其他命令"></a>常用其他命令</h3><ol>
+<li>后台启动容器</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dockerrun -d 容器名</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>查看容器中运行的进程信息</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker top 容器id</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>查看容器&#x2F;镜像的元数据</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect 容器id</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>进入正在运行的容器</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 容器名</span><br><span class="line">docker attach 容器id</span><br><span class="line"></span><br><span class="line"># 区别</span><br><span class="line"># exec   是在容器中打开新的终端，并且可以启动新的进程</span><br><span class="line"># attach 直接进入容器启动命令的终端，不会启动新的进程</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>从容器内拷贝文件到主机</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp 容器id:容器内路径 目的地路径</span><br></pre></td></tr></table></figure>
+
+<h3 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h3><p>Portainer安装</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9000:9000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce</span><br></pre></td></tr></table></figure>
+
+<p>Portainer是Docker的图形化管理工具，提供状态显示面板、应用模板快速部署、容器镜像网络数据卷 的基本操作（包括上传下载镜像，创建容器等操作）、事件日志显示、容器控制台操作、Swarm集群和 服务等集中管理和操作、登录用户管理和控制等功能。功能十分全面，基本能满足中小型单位对容器管 理的全部需求。</p>
+<p>访问方式：<a target="_blank" rel="noopener" href="http://ip:9000/">http://ip:9000</a></p>
+<p>查看自己的ip:<code>ifconfig</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250726154933589.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250726154809192.png"></p>
+<hr>
+<h2 id="Docker镜像讲解"><a href="#Docker镜像讲解" class="headerlink" title="Docker镜像讲解"></a>Docker镜像讲解</h2><p> 镜像是一种轻量级、可执行的独立软件包，用来打包软件运行环境和基于运行环境开发的软件，它包含 运行某个软件所需的所有内容，包括代码、运行时、库、环境变量和配置文件。</p>
+<p>Docker镜像都是只读的，当容器启动时，一个新的可写层被加载到镜像的顶部！ 这一层就是我们通常说的容器层，容器之下的都叫镜像层！</p>
+<h3 id="镜像Commit"><a href="#镜像Commit" class="headerlink" title="镜像Commit"></a>镜像Commit</h3><p>docker commit 从容器创建一个新的镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker commit -m=&quot;提交的信息&quot; -a=&quot;作者&quot; 容器id 要创建的目标镜像名:[标签名]</span><br><span class="line">如果要保留现在容器的状态，可以通过commit，提交镜像，方便使用，类似于vm中的快照。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="容器数据卷"><a href="#容器数据卷" class="headerlink" title="容器数据卷"></a>容器数据卷</h2><h3 id="什么是容器数据卷"><a href="#什么是容器数据卷" class="headerlink" title="什么是容器数据卷"></a>什么是容器数据卷</h3><p>容器之间可以共享数据，可以保存数据，让数据挂在到本地，数据就不会因为容器删除丢失。<strong>容器数据卷可以使得容器持久化，保证容器之间数据的共享以及继承。</strong></p>
+<h3 id="使用数据卷"><a href="#使用数据卷" class="headerlink" title="使用数据卷"></a>使用数据卷</h3><blockquote>
+<p>方式一：容器中直接使用命令添加</p>
+</blockquote>
+<p><strong>挂载</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -v 宿主机绝对路径目录：容器内目录 镜像名</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">docker run  -it -v /home/test:/home ubuntu:20.04 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>查看是否挂载成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 查看容器id</span><br><span class="line">docker ps -a</span><br><span class="line"></span><br><span class="line">hita@hita-vm:/$ docker ps -a</span><br><span class="line">CONTAINER ID   IMAGE          COMMAND                   CREATED         STATUS                     PORTS     NAMES</span><br><span class="line">0bbaf7ac2bdc   ubuntu:20.04   &quot;/bin/bash&quot;               3 minutes ago   Exited (0) 3 minutes ago             keen_dirac</span><br><span class="line">8aa9983a7e8f   2cd1d97f893f   &quot;/docker-entrypoint.…&quot;   2 days ago      Exited (0) 2 days ago                mynginx</span><br><span class="line">63cfb2f424a8   74cc54e27dc4   &quot;/hello&quot;                  3 days ago      Exited (0) 3 days ago                sad_chaum</span><br><span class="line">c06b8b5fe3d7   74cc54e27dc4   &quot;/hello&quot;                  3 days ago      Exited (0) 3 days ago                suspicious_snyder</span><br><span class="line"></span><br><span class="line"># 查看元数据</span><br><span class="line">docker inspect 0bbaf7ac2bdc</span><br></pre></td></tr></table></figure>
+
+<p>可以看到有这一段：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250728163658066.png"></p>
+<p>测试容器和宿主机之间数据共享：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 容器内</span><br><span class="line">root@0bbaf7ac2bdc:/# cd home</span><br><span class="line">root@0bbaf7ac2bdc:/home# ls</span><br><span class="line">root@0bbaf7ac2bdc:/home# touch test.java</span><br><span class="line">root@0bbaf7ac2bdc:/home# ls</span><br><span class="line">test.java</span><br><span class="line"></span><br><span class="line"># 宿主机</span><br><span class="line">hita@hita-vm:/home$ cd test</span><br><span class="line">hita@hita-vm:/home/test$ ls</span><br><span class="line">test.java</span><br></pre></td></tr></table></figure>
+
+<p>在容器中创建的会在宿主机中看到，反过来也一样，相当于在宿主机与容器内目录下新建任何文件，都会同步。并且就算是容器停止退出之后，主机修改数据，同样在容器中也会同步。只要是在预设的目录下的文件。就算是把容器删除之后，同样能够在主机中保留删除前的数据。</p>
+<blockquote>
+<p>方式二：通过Docker File添加容器数据卷</p>
+</blockquote>
+<p>DockerFile是用来构建Docker镜像的构建文件，是由一系列命令和参数构成的脚本。</p>
+<p><strong>测试</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 在宿主机 /home 目录下新建一个 docker-test-volume 文件夹</span><br><span class="line">hita@hita-vm:~$ mkdir docker-test-volume</span><br><span class="line">hita@hita-vm:~$ cd /home</span><br><span class="line">hita@hita-vm:/home$ sudo mkdir docker-test-volume</span><br><span class="line">[sudo] hita 的密码：       </span><br><span class="line">hita@hita-vm:/home$ ls</span><br><span class="line">docker-test-volume  hita  test</span><br><span class="line"></span><br><span class="line"># 编写 DockerFile 文件</span><br><span class="line">hita@hita-vm:/home$ pwd</span><br><span class="line">/home</span><br><span class="line">hita@hita-vm:/home$ cd docker-test-volume/</span><br><span class="line">hita@hita-vm:/home/docker-test-volume$ sudo gedit dockerfile1</span><br><span class="line"></span><br><span class="line"># 内容</span><br><span class="line">FROM ubuntu:20.04</span><br><span class="line"></span><br><span class="line">VOLUME [&quot;/dataVolumeContainer1&quot;,&quot;/dataVolumeContainer2&quot;]</span><br><span class="line"> </span><br><span class="line">CMD /bin/bash &amp;&amp; echo &quot;-------finish------&quot;</span><br><span class="line"></span><br><span class="line"># ubild 后生成镜像，获得一个新的镜像</span><br><span class="line">hita@hita-vm:/home/docker-test-volume$ docker build -f /home/docker-test-volume/dockerfile1 -t test/ubuntu .</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250728201212958.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250728201720395.png"></p>
+<p>可以看到新增了一个镜像test&#x2F;ubuntu.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 启动容器</span><br><span class="line">docker run -it 1350 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>可以看到新建的两个数据卷。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250728202757745.png"></p>
+<p>通过上述步骤，已经知道了容器内卷目录的地址，但是不知道对应主机的目录地址在哪</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 在数据卷中新建一个文件</span><br><span class="line">root@9d4fe1d5212f:/# cd dataVolumeContainer1</span><br><span class="line">root@9d4fe1d5212f:/dataVolumeContainer1# pwd</span><br><span class="line">/dataVolumeContainer1</span><br><span class="line">root@9d4fe1d5212f:/dataVolumeContainer1# touch container.txt</span><br><span class="line">root@9d4fe1d5212f:/dataVolumeContainer1# ls -l</span><br><span class="line">total 0</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 28 12:32 container.txt</span><br><span class="line"></span><br><span class="line"># 查看容器信息</span><br><span class="line">hita@hita-vm:~$ docker inspect 1350</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250728203555017.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 在容器内新建一个文件</span><br><span class="line">root@9d4fe1d5212f:/# cd dataVolumeContainer1</span><br><span class="line">root@9d4fe1d5212f:/dataVolumeContainer1# touch container.txt</span><br><span class="line">root@9d4fe1d5212f:/dataVolumeContainer1# ls</span><br><span class="line">container.txt</span><br><span class="line"></span><br><span class="line"># 在宿主机查看位置</span><br><span class="line">hita@hita-vm:~$ docker ps</span><br><span class="line">CONTAINER ID   IMAGE          COMMAND       CREATED          STATUS          PORTS     NAMES</span><br><span class="line">9d4fe1d5212f   1350           &quot;/bin/bash&quot;   36 minutes ago   Up 36 minutes             eager_banzai</span><br><span class="line">0bbaf7ac2bdc   ubuntu:20.04   &quot;/bin/bash&quot;   5 hours ago      Up 4 hours                keen_dirac</span><br><span class="line">hita@hita-vm:~$ docker inspect 9d4f</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250728205826749.png"></p>
+<p>这属于是匿名挂载，后面会讲。</p>
+<p>接下来测试在容器内新建的文件是否同步了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~$ sudo -i</span><br><span class="line">root@hita-vm:~# cd /var/lib/docker/volumes/ce568fe2101804c5e79cd74df09d8cd49993ab7f4c71a5c0b80173e298837f3b/_data</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250728211334028.png"></p>
+<p>这个卷是在主机的默认位置。</p>
+<hr>
+<h3 id="匿名挂载和具名挂载"><a href="#匿名挂载和具名挂载" class="headerlink" title="匿名挂载和具名挂载"></a>匿名挂载和具名挂载</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># 匿名挂载</span><br><span class="line">-v 容器内路径</span><br><span class="line">docker run -d -p -- name nginx01 -v /etc/nginx nginx</span><br><span class="line"></span><br><span class="line"># 匿名挂载缺点是不好维护，通常使用docker volume 维护</span><br><span class="line">docker volume ls</span><br><span class="line"></span><br><span class="line"># 具名挂载</span><br><span class="line">-v 卷名：/容器内路径</span><br><span class="line">docker run -d -P --name nginx02 -v nginxconfig:/etc/nginx nginx</span><br><span class="line"></span><br><span class="line"># 查看挂载的路径</span><br><span class="line"></span><br><span class="line">hita@hita-vm:~$ docker volume inspect nginxconfig </span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;CreatedAt&quot;: &quot;2025-07-29T10:20:20+08:00&quot;,</span><br><span class="line">        &quot;Driver&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Labels&quot;: null,</span><br><span class="line">        &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/nginxconfig/_data&quot;,</span><br><span class="line">        &quot;Name&quot;: &quot;nginxconfig&quot;,</span><br><span class="line">        &quot;Options&quot;: null,</span><br><span class="line">        &quot;Scope&quot;: &quot;local&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>挂载卷跟挂载目录有什么区别呢？</strong></p>
+<p>挂载卷用于在容器之间持久化和共享数据，存储在docker主机的特定目录中。如上nginxconfig就是一个挂载卷，目录挂载就是将Docker容器与主机的目录进行映射，Docker不会像管理卷一样管理这个目录。</p>
+<ul>
+<li><strong>挂载卷</strong>是由 Docker 管理的数据存储机制，适合用于持久化和共享数据。</li>
+<li><strong>挂载目录</strong>是用户直接指定的本地文件系统路径，适合用于开发和直接操作主机文件系统的场景。</li>
+</ul>
+<p>需要判断挂载的是卷名而不是本机目录名？</p>
+<p>挂载创建的时候：<strong>不是&#x2F;开始就是卷名，是&#x2F;开始就是目录名。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 目录挂载</span><br><span class="line">docker run  -it -v /home/test:/home ubuntu:20.04 /bin/bash</span><br><span class="line"></span><br><span class="line"># 卷挂载</span><br><span class="line">docker run -d -P --name nginx02 -v nginxconfig:/etc/nginx nginx</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="数据卷容器"><a href="#数据卷容器" class="headerlink" title="数据卷容器"></a>数据卷容器</h3><p>命名的容器挂载数据卷，其他容器通过挂载在这个父容器实现数据共享，挂载数据卷的容器，就是数据卷容器。其本身不运行任何应用程序，仅用于存储数据。</p>
+<ol>
+<li>先启动那个父容器docker 然后再datavolumecontainer2添加新文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~$ docker run -it --name docker test/ubuntu:latest </span><br><span class="line">-------finish------</span><br><span class="line">root@713998876d0c:/# ls -l</span><br><span class="line">total 56</span><br><span class="line">lrwxrwxrwx   1 root root    7 Apr  4 02:03 bin -&gt; usr/bin</span><br><span class="line">drwxr-xr-x   2 root root 4096 Apr 15  2020 boot</span><br><span class="line">drwxr-xr-x   2 root root 4096 Jul 29 02:54 dataVolumeContainer1</span><br><span class="line">drwxr-xr-x   2 root root 4096 Jul 29 02:54 dataVolumeContainer2</span><br><span class="line">drwxr-xr-x   5 root root  360 Jul 29 02:54 dev</span><br><span class="line">drwxr-xr-x   1 root root 4096 Jul 29 02:54 etc</span><br><span class="line">drwxr-xr-x   2 root root 4096 Apr 15  2020 home</span><br><span class="line">lrwxrwxrwx   1 root root    7 Apr  4 02:03 lib -&gt; usr/lib</span><br><span class="line">lrwxrwxrwx   1 root root    9 Apr  4 02:03 lib32 -&gt; usr/lib32</span><br><span class="line">lrwxrwxrwx   1 root root    9 Apr  4 02:03 lib64 -&gt; usr/lib64</span><br><span class="line">lrwxrwxrwx   1 root root   10 Apr  4 02:03 libx32 -&gt; usr/libx32</span><br><span class="line">drwxr-xr-x   2 root root 4096 Apr  4 02:03 media</span><br><span class="line">drwxr-xr-x   2 root root 4096 Apr  4 02:03 mnt</span><br><span class="line">drwxr-xr-x   2 root root 4096 Apr  4 02:03 opt</span><br><span class="line">dr-xr-xr-x 475 root root    0 Jul 29 02:54 proc</span><br><span class="line">drwx------   2 root root 4096 Apr  4 02:09 root</span><br><span class="line">drwxr-xr-x   5 root root 4096 Apr  4 02:09 run</span><br><span class="line">lrwxrwxrwx   1 root root    8 Apr  4 02:03 sbin -&gt; usr/sbin</span><br><span class="line">drwxr-xr-x   2 root root 4096 Apr  4 02:03 srv</span><br><span class="line">dr-xr-xr-x  13 root root    0 Jul 29 02:54 sys</span><br><span class="line">drwxrwxrwt   2 root root 4096 Apr  4 02:09 tmp</span><br><span class="line">drwxr-xr-x  13 root root 4096 Apr  4 02:03 usr</span><br><span class="line">drwxr-xr-x  11 root root 4096 Apr  4 02:09 var</span><br><span class="line">root@713998876d0c:/# cd dataVolumeContainer2</span><br><span class="line">root@713998876d0c:/dataVolumeContainer2# touch docker.txt</span><br><span class="line">root@713998876d0c:/dataVolumeContainer2# ls</span><br><span class="line">docker.txt</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建docker02 ,docker03继承docker</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">创建docker02</span><br><span class="line">hita@hita-vm:~$ cd /home/docker-test-volume/</span><br><span class="line">hita@hita-vm:/home/docker-test-volume$ docker run -it --name docker02 --volumes-from docker test/ubuntu:latest </span><br><span class="line">-------finish------</span><br><span class="line">root@389cd5a12747:/# cd dataVolumeContainer2</span><br><span class="line">root@389cd5a12747:/dataVolumeContainer2# ls</span><br><span class="line">docker.txt</span><br><span class="line">root@389cd5a12747:/dataVolumeContainer2# touch docker02.txt</span><br><span class="line">root@389cd5a12747:/dataVolumeContainer2# ls</span><br><span class="line">docker.txt  docker02.txt</span><br><span class="line"></span><br><span class="line"># 创建docker03</span><br><span class="line">hita@hita-vm:~$ cd /home</span><br><span class="line">hita@hita-vm:/home$ cd docker-test-volume/</span><br><span class="line">hita@hita-vm:/home/docker-test-volume$ docker run -it --name docker03 --volumes-from docker test/ubuntu:latest </span><br><span class="line">-------finish------</span><br><span class="line">root@8e3c5ff93b8a:/# cd dataVolumeContainer2</span><br><span class="line">root@8e3c5ff93b8a:/dataVolumeContainer2# ls</span><br><span class="line">docker.txt  docker02.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，docker02继承了docker 的文件docker.txt.在docker03中新建文件docker03.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@8e3c5ff93b8a:/dataVolumeContainer2# touch docker03.txt</span><br><span class="line">root@8e3c5ff93b8a:/dataVolumeContainer2# ls</span><br><span class="line">docker.txt  docker02.txt  docker03.txt</span><br><span class="line">root@8e3c5ff93b8a:/dataVolumeContainer2# </span><br><span class="line"></span><br><span class="line"># 在docker 中查看</span><br><span class="line">root@389cd5a12747:/dataVolumeContainer2# ls                                    </span><br><span class="line">docker.txt  docker02.txt  docker03.txt</span><br></pre></td></tr></table></figure>
+
+<p>可以发现docker02 docker03创建的共享文件。</p>
+<ol start="3">
+<li>删除docker ,修改docker02 后，docker03还能不能访问</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 删除docker</span><br><span class="line">hita@hita-vm:/home/docker-test-volume$ docker rm -f docker</span><br><span class="line"></span><br><span class="line"># 修改docker02</span><br><span class="line">root@389cd5a12747:/dataVolumeContainer2# ls -l</span><br><span class="line">total 0</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 02:56 docker.txt</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 03:01 docker02.txt</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 03:03 docker03.txt</span><br><span class="line">root@389cd5a12747:/dataVolumeContainer2# touch docker02-update.txt</span><br><span class="line">root@389cd5a12747:/dataVolumeContainer2# ls -l</span><br><span class="line">total 0</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 02:56 docker.txt</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 03:12 docker02-update.txt</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 03:01 docker02.txt</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 03:03 docker03.txt</span><br><span class="line"></span><br><span class="line"># 查看docker03变化</span><br><span class="line">root@8e3c5ff93b8a:/dataVolumeContainer2# ls -l</span><br><span class="line">total 0</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 02:56 docker.txt</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 03:12 docker02-update.txt</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 03:01 docker02.txt</span><br><span class="line">-rw-r--r-- 1 root root 0 Jul 29 03:03 docker03.txt</span><br></pre></td></tr></table></figure>
+
+<p>后续同样删除docker02容器，docker03同样可以访问原来的共享文件，如果新建docker04来继承docker03，在删除docker03，同样可以访问共享文件。所以得出结论：</p>
+<p><strong>容器之间配置信息的传递，数据卷的生命周期会一直持续到没有容器使用它位置，存储在本机的文件会一直保留。</strong></p>
+<hr>
+<h2 id="DockerFile"><a href="#DockerFile" class="headerlink" title="DockerFile"></a>DockerFile</h2><h3 id="什么是DockerFile"><a href="#什么是DockerFile" class="headerlink" title="什么是DockerFile"></a>什么是DockerFile</h3><p>dockerfile是用来构建Docker镜像的构建文件，<strong>是由一系列命令和参数构成的脚本</strong></p>
+<p>构建步骤：</p>
+<ol>
+<li>编写DockerFile文件</li>
+<li>docker build 构建镜像</li>
+<li>docker run</li>
+</ol>
+<hr>
+<h3 id="DockerFile构建过程"><a href="#DockerFile构建过程" class="headerlink" title="DockerFile构建过程"></a>DockerFile构建过程</h3><p><strong>基础知识</strong></p>
+<ol>
+<li>每条保留字指令都必须大写并且后面至少跟随一个参数</li>
+<li>指令从上到下顺序执行</li>
+<li>#表示注释</li>
+<li>每条指令都会创建一个新的镜像层，并且对镜像进行提交</li>
+</ol>
+<p><strong>流程</strong></p>
+<ol>
+<li>docker 从基础镜像运行一个容器</li>
+<li>执行一条指令并且对容器做出修改</li>
+<li>执行类似 docker commit 的操作提交新的镜像层</li>
+<li>Docker 再基于刚提交的镜像运行一个新的容器</li>
+<li>执行dockerfile中的下一条指令直到所有的指令都执行完成</li>
+</ol>
+<p><strong>说明</strong></p>
+<p>从应用软件角度，DockerFile 、docker镜像与docker容器分别代表软件的三个不同阶段</p>
+<ul>
+<li>DockerFile是软件的原材料（代码）</li>
+<li>Docker镜像是软件的交付品（.apk）</li>
+<li>Docker容器则是软件的运行状态（客户下载安装执行）</li>
+</ul>
+<p><img src="https://static001.geekbang.org/infoq/22/22c8413e4b9d8570d178aab1c54da58e.png" alt="img"></p>
+<p><strong>DockerFile</strong>：需要定义一个DockerFile，DockerFile定义了进程需要的一切东西。DockerFile涉及的内容 包括执行代码或者是文件、环境变量、依赖包、运行时环境、动态链接库、操作系统的发行版、服务进 程和内核进程（当引用进行需要和系统服务和内核进程打交道，这时需要考虑如何设计 namespace的权 限控制）等等。 </p>
+<p><strong>Docker镜像</strong>：在DockerFile 定义了一个文件之后，Docker build 时会产生一个Docker镜像，当运行  Docker 镜像时，会真正开始提供服务；</p>
+<p> <strong>Docker容器</strong>：容器是直接提供服务的。</p>
+<hr>
+<p>DockerFile指令</p>
+<p><img src="https://th.bing.com/th/id/R.60fb3eed56951276ca0ce0431552ab1e?rik=GhYbCOyx/cwvxg&riu=http://www.178linux.com/wp-content/uploads/2018/08/dockerfile%E6%8C%87%E4%BB%A4.png&ehk=bd5ZcaxiwZrFiGvUmg6ZlLEkpWF1uZOa9T80sPwfK2U=&risl=&pid=ImgRaw&r=0" alt="Docker容器技术之Dockerfile | Linux运维部落"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250729200359835.png"></p>
+<h3 id="实战测试"><a href="#实战测试" class="headerlink" title="实战测试"></a>实战测试</h3><blockquote>
+<p>自定义一个 ubuntu20.04</p>
+</blockquote>
+<ol>
+<li>编写DockerFile</li>
+</ol>
+<p>查看下官方默认的ubuntu:20.04的情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~$ docker run -it ubuntu:20.04 </span><br><span class="line">root@59ceb0729bd7:/# pwd</span><br><span class="line">/</span><br><span class="line">root@59ceb0729bd7:/# vim a.txt</span><br><span class="line">bash: vim: command not found</span><br><span class="line">root@59ceb0729bd7:/# ifconfig</span><br><span class="line">bash: ifconfig: command not found</span><br><span class="line">root@59ceb0729bd7:/# </span><br></pre></td></tr></table></figure>
+
+<p><strong>修改目的</strong>：使得自己的镜像具备如下功能：登陆后的默认路径、vim编译器、查看网络配置ifconfig支持</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">FROM ubuntu:20.04</span><br><span class="line">MAINTAINER kuangshen&lt;24736743@qq.com&gt;</span><br><span class="line"></span><br><span class="line"># 设置环境变量</span><br><span class="line">ENV MYPATH /usr/local</span><br><span class="line"></span><br><span class="line"># 设置工作目录</span><br><span class="line">WORKDIR $MYPATH</span><br><span class="line"></span><br><span class="line"># 更新apt-get并安装vim和net-tools</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y vim net-tools </span><br><span class="line"></span><br><span class="line"># 暴露80端口</span><br><span class="line">EXPOSE 80</span><br><span class="line"></span><br><span class="line"># 输出环境变量MYPATH</span><br><span class="line">CMD echo $MYPATH</span><br><span class="line"></span><br><span class="line"># 输出结束信息</span><br><span class="line">CMD echo &quot;----------end--------&quot;</span><br><span class="line"></span><br><span class="line"># 启动bash</span><br><span class="line">CMD /bin/bash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>构建</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -f mydockerfile-test -t myubuntu:0.1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250730151940676.png"></p>
+<ol start="3">
+<li>运行</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it myubuntu:0.1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250730152426781.png"></p>
+<p>可以看到，镜像已经支持vim&#x2F;ifconfig的命令了</p>
+<ol start="4">
+<li>列出镜像的变更历史</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker history myubuntu:0.1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250730153312945.png"></p>
+<hr>
+<blockquote>
+<p>CMD和ENTRYPOINT的区别</p>
+</blockquote>
+<p>CMD: DockerFile 中可以有很多cmd指令,但只有最后一个生效,cmd会被 docker run 之后的参数替换</p>
+<p>ENTRYPOINT: docker run 之后的参数会被当作参数传递给ENTROPOINT 之后形成新的命令组合</p>
+<hr>
+<h3 id="发布镜像"><a href="#发布镜像" class="headerlink" title="发布镜像"></a>发布镜像</h3><p>留个坑，后面再填</p>
+<hr>
+<p>参考视频：</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1og4y1q7M4/?p=34&spm_id_from=333.1007.top_right_bar_window_history.content.click">https://www.bilibili.com/video/BV1og4y1q7M4/?p=34&amp;spm_id_from=333.1007.top_right_bar_window_history.content.click</a></p>
 
       
     </div>
@@ -411,6 +643,119 @@
 <p>这样就完成了相机的组成。看一下效果：</p>
 <img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-15_10-23-24.png" style="zoom:50%;" />
 
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/" class="post-title-link" itemprop="url">利用move_base使得小车导航至火焰位置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-07-23 00:00:00 / 修改时间：19:41:37" itemprop="dateCreated datePublished" datetime="2025-07-23T00:00:00+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="利用move-base使得小车导航至火焰位置"><a href="#利用move-base使得小车导航至火焰位置" class="headerlink" title="利用move_base使得小车导航至火焰位置"></a>利用move_base使得小车导航至火焰位置</h1><h2 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h2><p>之前已经实现了使用小车，利用2D nav goal工具来设置目标点，只需要将这个目标点替换为火焰位置，这样就能实现火焰的导航。上一次已经实现了火焰相对于相机坐标系到火焰相对于小车坐标系的变换，现在只需要实现火焰坐标系到地图坐标系的转换即可。这便是整体思路</p>
+<h2 id="2D-Nav-Goal基本原理"><a href="#2D-Nav-Goal基本原理" class="headerlink" title="2D Nav Goal基本原理"></a>2D Nav Goal基本原理</h2><ul>
+<li><p>在rviz中通过”2D Nav Goal”工具设置目标点时，会发布geometry_msgs&#x2F;PoseStamped类型的消息到&#x2F;move_base_simple&#x2F;goal话题</p>
+</li>
+<li><p>move_base节点订阅该话题，将目标点转换为导航任务，并启动全局&#x2F;局部路径规划</p>
+</li>
+<li><p>目标点坐标基于用户指定的参考系（通常为map或odom坐标系）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2d%20nav%20goal%E5%8E%9F%E7%90%86.png"></p>
+</li>
+</ul>
+<p>有了上述理解之后，可以尝试设置一个目标点，通过脚本来实现小车的移动</p>
+<p>新建脚本文件：scripts&#x2F;goal.publisher.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf.transformations <span class="keyword">import</span> quaternion_from_euler</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_goal</span>(<span class="params">x, y, yaw</span>):  <span class="comment"># yaw 为朝向偏航角（弧度）</span></span><br><span class="line">    pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">    rospy.sleep(<span class="number">1</span>)  <span class="comment"># 确保发布器已完全初始化</span></span><br><span class="line"></span><br><span class="line">    goal = PoseStamped()</span><br><span class="line">    goal.header.frame_id = <span class="string">&quot;map&quot;</span></span><br><span class="line">    goal.header.stamp = rospy.get_rostime()  <span class="comment"># 使用 ROS 时间戳</span></span><br><span class="line">    goal.pose.position.x = x</span><br><span class="line">    goal.pose.position.y = y</span><br><span class="line">    goal.pose.position.z = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将偏航角转换为四元数</span></span><br><span class="line">    q = quaternion_from_euler(<span class="number">0</span>, <span class="number">0</span>, yaw)</span><br><span class="line">    goal.pose.orientation.x = q[<span class="number">0</span>]</span><br><span class="line">    goal.pose.orientation.y = q[<span class="number">1</span>]</span><br><span class="line">    goal.pose.orientation.z = q[<span class="number">2</span>]</span><br><span class="line">    goal.pose.orientation.w = q[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发布目标消息</span></span><br><span class="line">    pub.publish(goal)</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;Goal published: x=%.2f, y=%.2f, yaw=%.2f&quot;</span>, x, y, yaw)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;goal_publisher&#x27;</span>)  <span class="comment"># 初始化 ROS 节点</span></span><br><span class="line">        rospy.sleep(<span class="number">1</span>)  <span class="comment"># 等待一秒，确保节点已启动</span></span><br><span class="line">        send_goal(<span class="number">0.2</span>, <span class="number">0.15</span>, <span class="number">0.785</span>)  <span class="comment"># 示例：目标 (0.1, 0.15)，朝向 45° (0.785 弧度)</span></span><br><span class="line">    <span class="keyword">except</span> rospy.ROSInterruptException:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>打开导航以及小车底盘控制节点，即可在终端查看消息数据.</p>
+<p>具体命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rostopic echo /move_base_simple/goal</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-22_16-52-25.png" alt="Snipaste_2025-07-22_16-52-25"></p>
+<hr>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>新建一个脚本：scripts&#x2F;fire_navigator.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> tf2_ros</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PointStamped, PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf2_geometry_msgs <span class="keyword">import</span> do_transform_point</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FireGoalConverter</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;fire_goal_converter&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.tf_buffer = tf2_ros.Buffer()</span><br><span class="line">        <span class="variable language_">self</span>.tf_listener = tf2_ros.TransformListener(<span class="variable language_">self</span>.tf_buffer)</span><br><span class="line">        <span class="variable language_">self</span>.pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/fire_position_3d&quot;</span>, PointStamped, <span class="variable language_">self</span>.callback)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            transform = <span class="variable language_">self</span>.tf_buffer.lookup_transform(<span class="string">&quot;map&quot;</span>, msg.header.frame_id, rospy.Time(<span class="number">0</span>))</span><br><span class="line">            map_point = do_transform_point(msg, transform)</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;坐标转换成功: <span class="subst">&#123;msg.header.frame_id&#125;</span> -&gt; map&quot;</span>)</span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;转换后的坐标: x=<span class="subst">&#123;map_point.point.x&#125;</span>, y=<span class="subst">&#123;map_point.point.y&#125;</span>, z=<span class="subst">&#123;map_point.point.z&#125;</span>&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            goal = PoseStamped()</span><br><span class="line">            goal.header = map_point.header</span><br><span class="line">            goal.pose.position.x = map_point.point.x</span><br><span class="line">            goal.pose.position.y = map_point.point.y</span><br><span class="line">            goal.pose.position.z = <span class="number">0.0</span></span><br><span class="line">            goal.pose.orientation.w = <span class="number">1.0</span></span><br><span class="line">            <span class="variable language_">self</span>.pub.publish(goal)</span><br><span class="line">        <span class="keyword">except</span> (tf2_ros.LookupException, tf2_ros.ConnectivityException) <span class="keyword">as</span> e:</span><br><span class="line">            rospy.logerr(<span class="string">f&quot;坐标转换失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    FireGoalConverter()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>同时编辑一下cmakelists以及赋予可执行权限</p>
+<p>在打开机器人底盘控制节点，导航节点，火焰识别节点之后，再打开这个节点，即可实现火焰的导航。</p>
+<p>为了方便打开多个节点，编写一个火焰识别launch文件：</p>
+<p>新建文件：launch&#x2F;fire_detector.launch</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 添加RealSense相机启动配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find realsense2_camera)/launch/rs_camera.launch&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;align_depth&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰识别节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_detector.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_detector&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰定位节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_3D_locator.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_3D_locator&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动marker节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_marker_publisher.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_marker_publisher&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/test_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">rosrun scout_bringup bringup_can2usb.bash</span><br><span class="line">roslaunch mycar_start start_mycar.launch</span><br><span class="line">roslaunch nav nav.launch</span><br><span class="line"></span><br><span class="line">/fire_reco_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch robot_vision fire_detector.launch</span><br><span class="line">rosrun robot_vision fire_navigator.py</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>执行完成这些之后，可以在窗口看到一些信息：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-35.png" alt="Snipaste_2025-07-23_11-16-35"><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-02.png" alt="Snipaste_2025-07-23_11-16-02"></p>
+<p>至此，整个系统就完成了简单的实现。虽然存在很多问题，但是整体功能以及框架较为完整。后续可以对SLAM 、路径规划、火焰识别等方面进行优化，会达到更好的效果。</p>
 
       
     </div>
@@ -1567,146 +1912,6 @@ rosrun robot_vision fire_marker_publisher.py
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_detector.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_detector&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- 可添加RealSense相机启动配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find realsense2_camera)/launch/rs_camera.launch&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;enable_color&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>看看效果：<br><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E7%81%AB%E7%84%B0%E8%AF%86%E5%88%AB%2Cpng" alt="image-20250630203948668">这个只是简单测试，还不够稳定，后续可以对算法进行改进。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/%E5%9C%A8ROS%E4%B8%AD%E7%BB%93%E5%90%88opencv%E5%A4%84%E7%90%86%E6%9D%A5%E8%87%AA%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BARealsense%20D435%E7%9A%84%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/01/%E5%9C%A8ROS%E4%B8%AD%E7%BB%93%E5%90%88opencv%E5%A4%84%E7%90%86%E6%9D%A5%E8%87%AA%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BARealsense%20D435%E7%9A%84%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">在ROS中结合opencv处理来自深度相机Realsense D435的图像数据</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="在ROS中结合opencv处理来自深度相机Realsense-D435的图像数据"><a href="#在ROS中结合opencv处理来自深度相机Realsense-D435的图像数据" class="headerlink" title="在ROS中结合opencv处理来自深度相机Realsense D435的图像数据"></a>在ROS中结合opencv处理来自深度相机Realsense D435的图像数据</h1><h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><ul>
-<li>相机：realsense d435(具体配置参考文档<strong>inter Realsense D435使用</strong>)</li>
-<li>软件：opencv</li>
-</ul>
-<h2 id="安装opencv"><a href="#安装opencv" class="headerlink" title="安装opencv"></a>安装opencv</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install ros-noetic-desktop-full</span><br><span class="line"><span class="built_in">sudo</span> apt install libopencv-dev <span class="comment">#安装opencv（可能本身就安装好了）</span></span><br></pre></td></tr></table></figure>
-
-<p>如果之前看过D435使用的文档，就不需要安装Realsense驱动了。这里不再追述。</p>
-<h2 id="启动Realsense驱动程序"><a href="#启动Realsense驱动程序" class="headerlink" title="启动Realsense驱动程序"></a>启动Realsense驱动程序</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch</span><br></pre></td></tr></table></figure>
-
-<p><strong>检查：</strong></p>
-<p>使用 <code>rostopic list</code> 查看发布的话题，应该可以看到：<strong>&#x2F;camera&#x2F;color&#x2F;image_raw</strong> 和 <strong>&#x2F;camera&#x2F;depth&#x2F;image_rect_raw</strong> 这两个话题，分别包含 RGB 图像和深度图像数据。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/realsense%E7%BB%93%E5%90%88opencv%E5%AE%9E%E4%BE%8B.png" alt="image-20250624164903403"></p>
-<h2 id="在ROS中使用Opencv处理Realsense数据测试"><a href="#在ROS中使用Opencv处理Realsense数据测试" class="headerlink" title="在ROS中使用Opencv处理Realsense数据测试"></a>在ROS中使用Opencv处理Realsense数据测试</h2><p>如果想要在ROS中使用Opencv来处理图像数据，需要创建一个ROS节点，订阅Realsense发布的图像话题，（刚才已经在list中查看了），然后使用opencv进行处理，可以使用RoS中的<strong>cv_bridge</strong>包来将ROS中的消息转换为Opencv格式的图像数据，并且调用Opencv库进行各种图像处理，或者将Opencv处理过后的数据转换成ROS图像，通过话题发布，实现各个节点之间的图像传输。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/cv_bridge%E5%8A%9F%E8%83%BD%E5%8C%85%E7%9A%84%E4%BD%9C%E7%94%A8.png" alt="在这里插入图片描述"></p>
-<h3 id="安装-cv-bridge包"><a href="#安装-cv-bridge包" class="headerlink" title="安装 cv_bridge包"></a>安装 <strong>cv_bridge</strong>包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-noetic-cv-bridge</span><br></pre></td></tr></table></figure>
-
-<h3 id="创建一个ros节点来处理图像数据"><a href="#创建一个ros节点来处理图像数据" class="headerlink" title="创建一个ros节点来处理图像数据"></a>创建一个ros节点来处理图像数据</h3><ul>
-<li>创建ROS功能包</li>
-</ul>
-<p>例如我新建了一个 <strong>fire_reco_ws</strong> 工作空间，作为后面这个项目的工作空间。按照惯例，先 <code>Control + Shift + B</code>添加 <code>tasks.json</code>文件</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="comment">// 有关 tasks.json 格式的文档，请参见</span></span><br><span class="line">    <span class="comment">// https://go.microsoft.com/fwlink/?LinkId=733558</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tasks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;label&quot;</span><span class="punctuation">:</span> <span class="string">&quot;catkin_make:debug&quot;</span><span class="punctuation">,</span> <span class="comment">//代表提示的描述性信息</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;shell&quot;</span><span class="punctuation">,</span>  <span class="comment">//可以选择shell或者process,如果是shell代码是在shell里面运行一个命令，如果是process代表作为一个进程来运行</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;catkin_make&quot;</span><span class="punctuation">,</span><span class="comment">//这个是我们需要运行的命令</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="comment">//如果需要在命令后面加一些后缀，可以写在这里，比如-DCATKIN_WHITELIST_PACKAGES=“pac1;pac2”</span></span><br><span class="line">            <span class="attr">&quot;group&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;kind&quot;</span><span class="punctuation">:</span><span class="string">&quot;build&quot;</span><span class="punctuation">,</span><span class="attr">&quot;isDefault&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;presentation&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;reveal&quot;</span><span class="punctuation">:</span> <span class="string">&quot;always&quot;</span><span class="comment">//可选always或者silence，代表是否输出信息</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;problemMatcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$msCompile&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>cd到src目录，右键，新建一个软件包，我命名为：<strong>test01</strong>,添加依赖：std_msgs roscpp rospy sensor_msgs cv_bridge</p>
-<p>或者直接在终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/fire_reco_ws/src</span><br><span class="line">catkin_create_pkg opencv_realsense std_msgs rospy sensor_msgs cv_bridge roscpp</span><br><span class="line"><span class="built_in">cd</span> opencv_realsense</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>创建一个<strong>scripts</strong>文件夹并且写一个简单的python脚本来订阅Realsense图像话题并且使用Opencv进行处理：</li>
-</ul>
-<p>在 scripts 目录下创建 realsense_opencv_test.py 文件：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">data</span>):</span><br><span class="line">    bridge = CvBridge()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 将 ROS 图像消息转换为 OpenCV 格式</span></span><br><span class="line">        cv_image = bridge.imgmsg_to_cv2(data, desired_encoding=<span class="string">&quot;bgr8&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 在这里可以处理图像</span></span><br><span class="line">        <span class="comment"># 例如：显示图像</span></span><br><span class="line">        cv2.imshow(<span class="string">&quot;RealSense Image&quot;</span>, cv_image)</span><br><span class="line">        cv2.waitKey(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        rospy.logerr(<span class="string">&quot;Failed to convert image: %s&quot;</span>, <span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    rospy.init_node(<span class="string">&#x27;realsense_opencv_node&#x27;</span>, anonymous=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 订阅 RealSense 相机的 RGB 图像话题</span></span><br><span class="line">    rospy.Subscriber(<span class="string">&quot;/camera/color/image_raw&quot;</span>, Image, callback)</span><br><span class="line"></span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>这个脚本将订阅的Realsense的RGB图像话题（&#x2F;camera&#x2F;color&#x2F;image_raw）,然后使用Opencv显示图像。</p>
-<h3 id="给脚本可执行权限："><a href="#给脚本可执行权限：" class="headerlink" title="给脚本可执行权限："></a>给脚本可执行权限：</h3><p>先cd到scripts文件夹，在终端输入ll，可以发现该文件没有可执行权限，不是绿色。再在终端输入：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x realsense_opencv_test.py <span class="comment">#一般会自动补齐，否则是出现了问题。</span></span><br></pre></td></tr></table></figure>
-
-<p>再输入ll,发现文件变绿了。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E6%B7%BB%E5%8A%A0%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90.png" alt="image-20250624171915491"></p>
-<h3 id="编辑CMake-List"><a href="#编辑CMake-List" class="headerlink" title="编辑CMake_List"></a>编辑CMake_List</h3><p>打开test01下面的CMake_List。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E7%BC%96%E8%BE%91cmake_list.png" alt="image-20250624172110850"></p>
-<p>修改此处：</p>
-<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250624172231086.png" alt="image-20250624172231086" style="zoom: 67%;" />
-
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">catkin_install_python(PROGRAMS scripts/自定义文件名.py</span><br><span class="line">  DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<h3 id="编译ROS包"><a href="#编译ROS包" class="headerlink" title="编译ROS包"></a>编译ROS包</h3><p>可以直接快捷键：<code>control + B + shift</code></p>
-<p>也可以在终端：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/fire_reco_ws/</span><br><span class="line">catkin_make</span><br><span class="line"><span class="built_in">source</span> devel/setup.bash</span><br></pre></td></tr></table></figure>
-
-<h3 id="运行ROS节点"><a href="#运行ROS节点" class="headerlink" title="运行ROS节点"></a>运行ROS节点</h3><p>确保已经运行了Realsense驱动程序：<code>roslaunch realsense2_camera rs_camera.launch</code> ,然后在另外一个终端运行节点：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun opencv_realsense realsense_opencv.py</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250624173321705.png" alt="image-20250624173321705"></p>
-<p>此时，可以看到来自Realsense D435 的数据，并且可以使用Opencv来处理数据。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250624173350863.png" alt="image-20250624173350863"></p>
-<p>至此，已经可以灵活地在ROS中处理来自Realsense相机的图像和深度数据，结合Opencv进行更多的图像处理。</p>
 
       
     </div>

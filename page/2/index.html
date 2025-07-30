@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,146 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/%E5%9C%A8ROS%E4%B8%AD%E7%BB%93%E5%90%88opencv%E5%A4%84%E7%90%86%E6%9D%A5%E8%87%AA%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BARealsense%20D435%E7%9A%84%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/01/%E5%9C%A8ROS%E4%B8%AD%E7%BB%93%E5%90%88opencv%E5%A4%84%E7%90%86%E6%9D%A5%E8%87%AA%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BARealsense%20D435%E7%9A%84%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">在ROS中结合opencv处理来自深度相机Realsense D435的图像数据</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="在ROS中结合opencv处理来自深度相机Realsense-D435的图像数据"><a href="#在ROS中结合opencv处理来自深度相机Realsense-D435的图像数据" class="headerlink" title="在ROS中结合opencv处理来自深度相机Realsense D435的图像数据"></a>在ROS中结合opencv处理来自深度相机Realsense D435的图像数据</h1><h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><ul>
+<li>相机：realsense d435(具体配置参考文档<strong>inter Realsense D435使用</strong>)</li>
+<li>软件：opencv</li>
+</ul>
+<h2 id="安装opencv"><a href="#安装opencv" class="headerlink" title="安装opencv"></a>安装opencv</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install ros-noetic-desktop-full</span><br><span class="line"><span class="built_in">sudo</span> apt install libopencv-dev <span class="comment">#安装opencv（可能本身就安装好了）</span></span><br></pre></td></tr></table></figure>
+
+<p>如果之前看过D435使用的文档，就不需要安装Realsense驱动了。这里不再追述。</p>
+<h2 id="启动Realsense驱动程序"><a href="#启动Realsense驱动程序" class="headerlink" title="启动Realsense驱动程序"></a>启动Realsense驱动程序</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch</span><br></pre></td></tr></table></figure>
+
+<p><strong>检查：</strong></p>
+<p>使用 <code>rostopic list</code> 查看发布的话题，应该可以看到：<strong>&#x2F;camera&#x2F;color&#x2F;image_raw</strong> 和 <strong>&#x2F;camera&#x2F;depth&#x2F;image_rect_raw</strong> 这两个话题，分别包含 RGB 图像和深度图像数据。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/realsense%E7%BB%93%E5%90%88opencv%E5%AE%9E%E4%BE%8B.png" alt="image-20250624164903403"></p>
+<h2 id="在ROS中使用Opencv处理Realsense数据测试"><a href="#在ROS中使用Opencv处理Realsense数据测试" class="headerlink" title="在ROS中使用Opencv处理Realsense数据测试"></a>在ROS中使用Opencv处理Realsense数据测试</h2><p>如果想要在ROS中使用Opencv来处理图像数据，需要创建一个ROS节点，订阅Realsense发布的图像话题，（刚才已经在list中查看了），然后使用opencv进行处理，可以使用RoS中的<strong>cv_bridge</strong>包来将ROS中的消息转换为Opencv格式的图像数据，并且调用Opencv库进行各种图像处理，或者将Opencv处理过后的数据转换成ROS图像，通过话题发布，实现各个节点之间的图像传输。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/cv_bridge%E5%8A%9F%E8%83%BD%E5%8C%85%E7%9A%84%E4%BD%9C%E7%94%A8.png" alt="在这里插入图片描述"></p>
+<h3 id="安装-cv-bridge包"><a href="#安装-cv-bridge包" class="headerlink" title="安装 cv_bridge包"></a>安装 <strong>cv_bridge</strong>包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-noetic-cv-bridge</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建一个ros节点来处理图像数据"><a href="#创建一个ros节点来处理图像数据" class="headerlink" title="创建一个ros节点来处理图像数据"></a>创建一个ros节点来处理图像数据</h3><ul>
+<li>创建ROS功能包</li>
+</ul>
+<p>例如我新建了一个 <strong>fire_reco_ws</strong> 工作空间，作为后面这个项目的工作空间。按照惯例，先 <code>Control + Shift + B</code>添加 <code>tasks.json</code>文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="comment">// 有关 tasks.json 格式的文档，请参见</span></span><br><span class="line">    <span class="comment">// https://go.microsoft.com/fwlink/?LinkId=733558</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tasks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;label&quot;</span><span class="punctuation">:</span> <span class="string">&quot;catkin_make:debug&quot;</span><span class="punctuation">,</span> <span class="comment">//代表提示的描述性信息</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;shell&quot;</span><span class="punctuation">,</span>  <span class="comment">//可以选择shell或者process,如果是shell代码是在shell里面运行一个命令，如果是process代表作为一个进程来运行</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;catkin_make&quot;</span><span class="punctuation">,</span><span class="comment">//这个是我们需要运行的命令</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="comment">//如果需要在命令后面加一些后缀，可以写在这里，比如-DCATKIN_WHITELIST_PACKAGES=“pac1;pac2”</span></span><br><span class="line">            <span class="attr">&quot;group&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;kind&quot;</span><span class="punctuation">:</span><span class="string">&quot;build&quot;</span><span class="punctuation">,</span><span class="attr">&quot;isDefault&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;presentation&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;reveal&quot;</span><span class="punctuation">:</span> <span class="string">&quot;always&quot;</span><span class="comment">//可选always或者silence，代表是否输出信息</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;problemMatcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$msCompile&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>cd到src目录，右键，新建一个软件包，我命名为：<strong>test01</strong>,添加依赖：std_msgs roscpp rospy sensor_msgs cv_bridge</p>
+<p>或者直接在终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/fire_reco_ws/src</span><br><span class="line">catkin_create_pkg opencv_realsense std_msgs rospy sensor_msgs cv_bridge roscpp</span><br><span class="line"><span class="built_in">cd</span> opencv_realsense</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建一个<strong>scripts</strong>文件夹并且写一个简单的python脚本来订阅Realsense图像话题并且使用Opencv进行处理：</li>
+</ul>
+<p>在 scripts 目录下创建 realsense_opencv_test.py 文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">data</span>):</span><br><span class="line">    bridge = CvBridge()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 将 ROS 图像消息转换为 OpenCV 格式</span></span><br><span class="line">        cv_image = bridge.imgmsg_to_cv2(data, desired_encoding=<span class="string">&quot;bgr8&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 在这里可以处理图像</span></span><br><span class="line">        <span class="comment"># 例如：显示图像</span></span><br><span class="line">        cv2.imshow(<span class="string">&quot;RealSense Image&quot;</span>, cv_image)</span><br><span class="line">        cv2.waitKey(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        rospy.logerr(<span class="string">&quot;Failed to convert image: %s&quot;</span>, <span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    rospy.init_node(<span class="string">&#x27;realsense_opencv_node&#x27;</span>, anonymous=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 订阅 RealSense 相机的 RGB 图像话题</span></span><br><span class="line">    rospy.Subscriber(<span class="string">&quot;/camera/color/image_raw&quot;</span>, Image, callback)</span><br><span class="line"></span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这个脚本将订阅的Realsense的RGB图像话题（&#x2F;camera&#x2F;color&#x2F;image_raw）,然后使用Opencv显示图像。</p>
+<h3 id="给脚本可执行权限："><a href="#给脚本可执行权限：" class="headerlink" title="给脚本可执行权限："></a>给脚本可执行权限：</h3><p>先cd到scripts文件夹，在终端输入ll，可以发现该文件没有可执行权限，不是绿色。再在终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x realsense_opencv_test.py <span class="comment">#一般会自动补齐，否则是出现了问题。</span></span><br></pre></td></tr></table></figure>
+
+<p>再输入ll,发现文件变绿了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E6%B7%BB%E5%8A%A0%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90.png" alt="image-20250624171915491"></p>
+<h3 id="编辑CMake-List"><a href="#编辑CMake-List" class="headerlink" title="编辑CMake_List"></a>编辑CMake_List</h3><p>打开test01下面的CMake_List。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E7%BC%96%E8%BE%91cmake_list.png" alt="image-20250624172110850"></p>
+<p>修改此处：</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250624172231086.png" alt="image-20250624172231086" style="zoom: 67%;" />
+
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">catkin_install_python(PROGRAMS scripts/自定义文件名.py</span><br><span class="line">  DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译ROS包"><a href="#编译ROS包" class="headerlink" title="编译ROS包"></a>编译ROS包</h3><p>可以直接快捷键：<code>control + B + shift</code></p>
+<p>也可以在终端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/fire_reco_ws/</span><br><span class="line">catkin_make</span><br><span class="line"><span class="built_in">source</span> devel/setup.bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行ROS节点"><a href="#运行ROS节点" class="headerlink" title="运行ROS节点"></a>运行ROS节点</h3><p>确保已经运行了Realsense驱动程序：<code>roslaunch realsense2_camera rs_camera.launch</code> ,然后在另外一个终端运行节点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun opencv_realsense realsense_opencv.py</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250624173321705.png" alt="image-20250624173321705"></p>
+<p>此时，可以看到来自Realsense D435 的数据，并且可以使用Opencv来处理数据。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250624173350863.png" alt="image-20250624173350863"></p>
+<p>至此，已经可以灵活地在ROS中处理来自Realsense相机的图像和深度数据，结合Opencv进行更多的图像处理。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1207,138 +1347,6 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;!-- 设置地图的配置文件 --&gt;</span><br><span class="line">    &lt;arg name=<span class="string">&quot;map&quot;</span> default=<span class="string">&quot;nav.yaml&quot;</span> /&gt;</span><br><span class="line">    &lt;!-- 运行地图服务器，并且加载设置的地图--&gt;</span><br><span class="line">    &lt;node name=<span class="string">&quot;map_server&quot;</span> pkg=<span class="string">&quot;map_server&quot;</span> <span class="built_in">type</span>=<span class="string">&quot;map_server&quot;</span> args=<span class="string">&quot;<span class="subst">$(find nav)</span>/map/<span class="subst">$(arg map)</span>&quot;</span>/&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
 
 <p>其中参数是地图描述文件的资源路径，执行该launch文件，该节点会发布话题:map(nav_msgs&#x2F;OccupancyGrid)，最后，在 rviz 中使用 map 组件可以显示栅格地图。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.4%20%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/9.4%20%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/" class="post-title-link" itemprop="url">9.4路径规划</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="9-4-路径规划"><a href="#9-4-路径规划" class="headerlink" title="9.4 路径规划"></a>9.4 路径规划</h1><h2 id="编写launch文件"><a href="#编写launch文件" class="headerlink" title="编写launch文件"></a>编写launch文件</h2><p>新建move_base.launch</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;move_base&quot;</span> <span class="attr">type</span>=<span class="string">&quot;move_base&quot;</span> <span class="attr">respawn</span>=<span class="string">&quot;false&quot;</span> <span class="attr">name</span>=<span class="string">&quot;move_base&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span> <span class="attr">clear_params</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/costmap_common_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> <span class="attr">ns</span>=<span class="string">&quot;global_costmap&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/costmap_common_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> <span class="attr">ns</span>=<span class="string">&quot;local_costmap&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/local_costmap_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/global_costmap_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rosparam</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/param/base_local_planner_params.yaml&quot;</span> <span class="attr">command</span>=<span class="string">&quot;load&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>新增4个配置文件：<br>新建param文件夹：</p>
-<ol>
-<li>costmap_common_params.yaml:</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#机器人几何参，如果机器人是圆形，设置 robot_radius,如果是其他形状设置 footprint</span></span><br><span class="line"><span class="comment">#robot_radius: 0.12 #圆形</span></span><br><span class="line"><span class="attr">footprint:</span> [[<span class="number">-0.35</span>, <span class="number">-0.35</span>], [<span class="number">-0.35</span>, <span class="number">0.35</span>], [<span class="number">0.35</span>, <span class="number">0.35</span>], [<span class="number">0.35</span>, <span class="number">-0.35</span>]] <span class="comment"># 表示小车底盘长宽均为0.7m</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attr">obstacle_range:</span> <span class="number">3.0</span> <span class="comment"># 用于障碍物探测，比如: 值为 3.0，意味着检测到距离小于 3 米的障碍物时，就会引入代价地图</span></span><br><span class="line"><span class="attr">raytrace_range:</span> <span class="number">3.5</span> <span class="comment"># 用于清除障碍物，比如：值为 3.5，意味着清除代价地图中 3.5 米以外的障碍物</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#膨胀半径，扩展在碰撞区域以外的代价区域，使得机器人规划路径避开障碍物</span></span><br><span class="line"><span class="attr">inflation_radius:</span> <span class="number">0.2</span></span><br><span class="line"><span class="comment">#代价比例系数，越大则代价值越小</span></span><br><span class="line"><span class="attr">cost_scaling_factor:</span> <span class="number">3.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#地图类型</span></span><br><span class="line"><span class="attr">map_type:</span> <span class="string">costmap</span></span><br><span class="line"><span class="comment">#导航包所需要的传感器</span></span><br><span class="line"><span class="attr">observation_sources:</span> <span class="string">scan</span></span><br><span class="line"><span class="comment">#对传感器的坐标系和数据进行配置。这个也会用于代价地图添加和清除障碍物。例如，你可以用激光雷达传感器用于在代价地图添加障碍物，再添加kinect用于导航和清除障碍物。</span></span><br><span class="line"><span class="attr">scan:</span> &#123;<span class="attr">sensor_frame:</span> <span class="string">laser</span>, <span class="attr">data_type:</span> <span class="string">LaserScan</span>, <span class="attr">topic:</span> <span class="string">scan</span>, <span class="attr">marking:</span> <span class="literal">true</span>, <span class="attr">clearing:</span> <span class="literal">true</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>修改了一下小车几何参数。</p>
-<ol start="2">
-<li>local_costmap_params.yaml</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">local_costmap:</span></span><br><span class="line">  <span class="attr">global_frame:</span> <span class="string">odom</span> <span class="comment">#里程计坐标系</span></span><br><span class="line">  <span class="attr">robot_base_frame:</span> <span class="string">base_link</span> <span class="comment">#机器人坐标系</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">update_frequency:</span> <span class="number">10.0</span> <span class="comment">#代价地图更新频率</span></span><br><span class="line">  <span class="attr">publish_frequency:</span> <span class="number">10.0</span> <span class="comment">#代价地图的发布频率</span></span><br><span class="line">  <span class="attr">transform_tolerance:</span> <span class="number">0.5</span> <span class="comment">#等待坐标变换发布信息的超时时间</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">static_map:</span> <span class="literal">false</span>  <span class="comment">#不需要静态地图，可以提升导航效果</span></span><br><span class="line">  <span class="attr">rolling_window:</span> <span class="literal">true</span> <span class="comment">#是否使用动态窗口，默认为false，在静态的全局地图中，地图不会变化</span></span><br><span class="line">  <span class="attr">width:</span> <span class="number">3</span> <span class="comment"># 局部地图宽度 单位是 m</span></span><br><span class="line">  <span class="attr">height:</span> <span class="number">3</span> <span class="comment"># 局部地图高度 单位是 m</span></span><br><span class="line">  <span class="attr">resolution:</span> <span class="number">0.05</span> <span class="comment"># 局部地图分辨率 单位是 m，一般与静态地图分辨率保持一致</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>global_costmap_params.yaml</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">global_costmap:</span></span><br><span class="line">  <span class="attr">global_frame:</span> <span class="string">map</span> <span class="comment">#地图坐标系</span></span><br><span class="line">  <span class="attr">robot_base_frame:</span> <span class="string">base_link</span> <span class="comment">#机器人坐标系</span></span><br><span class="line">  <span class="comment"># 以此实现坐标变换</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">update_frequency:</span> <span class="number">1.0</span> <span class="comment">#代价地图更新频率</span></span><br><span class="line">  <span class="attr">publish_frequency:</span> <span class="number">1.0</span> <span class="comment">#代价地图的发布频率</span></span><br><span class="line">  <span class="attr">transform_tolerance:</span> <span class="number">0.5</span> <span class="comment">#等待坐标变换发布信息的超时时间</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">static_map:</span> <span class="literal">true</span> <span class="comment"># 是否使用一个地图或者地图服务器来初始化全局代价地图，如果不使用静态地图，这个参数为false.</span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>base_local_planner_params.yaml</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">TrajectoryPlannerROS:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Robot Configuration Parameters</span></span><br><span class="line">  <span class="attr">max_vel_x:</span> <span class="number">0.2</span> <span class="comment"># X 方向最大速度</span></span><br><span class="line">  <span class="attr">min_vel_x:</span> <span class="number">0.1</span> <span class="comment"># X 方向最小速速</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">max_vel_theta:</span>  <span class="number">1.0</span> <span class="comment"># </span></span><br><span class="line">  <span class="attr">min_vel_theta:</span> <span class="number">-1.0</span></span><br><span class="line">  <span class="attr">min_in_place_vel_theta:</span> <span class="number">1.0</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">acc_lim_x:</span> <span class="number">1.0</span> <span class="comment"># X 加速限制</span></span><br><span class="line">  <span class="attr">acc_lim_y:</span> <span class="number">0.0</span> <span class="comment"># Y 加速限制</span></span><br><span class="line">  <span class="attr">acc_lim_theta:</span> <span class="number">0.6</span> <span class="comment"># 角速度加速限制</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Goal Tolerance Parameters，目标公差</span></span><br><span class="line">  <span class="attr">xy_goal_tolerance:</span> <span class="number">0.10</span></span><br><span class="line">  <span class="attr">yaw_goal_tolerance:</span> <span class="number">0.05</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Differential-drive robot configuration</span></span><br><span class="line"><span class="comment"># 是否是全向移动机器人</span></span><br><span class="line">  <span class="attr">holonomic_robot:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Forward Simulation Parameters，前进模拟参数</span></span><br><span class="line">  <span class="attr">sim_time:</span> <span class="number">0.8</span></span><br><span class="line">  <span class="attr">vx_samples:</span> <span class="number">18</span></span><br><span class="line">  <span class="attr">vtheta_samples:</span> <span class="number">20</span></span><br><span class="line">  <span class="attr">sim_granularity:</span> <span class="number">0.05</span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>新建nav.launch文件</li>
-</ol>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 设置地图的配置文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;map&quot;</span> <span class="attr">default</span>=<span class="string">&quot;nav.yaml&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 运行地图服务器，并且加载设置的地图--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">name</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">type</span>=<span class="string">&quot;map_server&quot;</span> <span class="attr">args</span>=<span class="string">&quot;$(find nav)/map/$(arg map)&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动AMCL节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/amcl.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 运行move_base节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find nav)/launch/move_base.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="执行测试"><a href="#执行测试" class="headerlink" title="执行测试"></a>执行测试</h2><ol>
-<li><p>执行相关launch文件，启动机器人并加载机器人模型：roslaunch mycar_start start.launch；</p>
-</li>
-<li><p>启动导航相关的 launch 文件：roslaunch nav nav.launch；</p>
-</li>
-<li><p>添加Rviz组件实现导航（参考仿真实现）。</p>
-</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/nav.launch.png"></p>
-<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>配置成功之后,使用2D Pose Estinament</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2dpose.png"></p>
-<p>测试导航效果,发现小车没有移动,并且终端报错:</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/nav%E6%8A%A5%E9%94%99.png"></p>
-<p>问题是在amcl.launch文件中transform_tolerance 设置的太小了,可以修改大一点,同样可以在rqt中动态修改参数:</p>
-<p>终端输入rqt,找到plugins中的dynamic reconfigure</p>
-<p>可以动态修改参数</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/rqt.png"></p>
-<p>这样的话小车就能正常移动了.</p>
 
       
     </div>
