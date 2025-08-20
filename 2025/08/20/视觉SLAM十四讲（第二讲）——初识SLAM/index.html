@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="视觉SLAM十四讲（第二讲）——初识SLAM经典视觉SLAM框架 流程  传感器信息读取：主要为相机图像信息的读取和预处理。如果在机器人中，可能还有码盘、惯性传感器等信息的读取和同步。 前端视觉里程计(visual odometry ,vo)：视觉里程计的任务是估算相邻图像间相机的运动，以及局部地图的样子，vo又称为前端。 后端（非线性）优化(Optimization)：后端接受不同时刻里程计测量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二讲-初始SLAM">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%8C%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%88%9D%E8%AF%86SLAM/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="视觉SLAM十四讲（第二讲）——初识SLAM经典视觉SLAM框架 流程  传感器信息读取：主要为相机图像信息的读取和预处理。如果在机器人中，可能还有码盘、惯性传感器等信息的读取和同步。 前端视觉里程计(visual odometry ,vo)：视觉里程计的任务是估算相邻图像间相机的运动，以及局部地图的样子，vo又称为前端。 后端（非线性）优化(Optimization)：后端接受不同时刻里程计测量">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://th.bing.com/th/id/R.2ecd915fe6af828b0dd93990ed5b5e3c?rik=/8Yy8oF28qLB9w&riu=http://download.broadview.com.cn/Original/17055494d435efcc231f&ehk=2ay/8ZjBGFFLUpgaacPUFPzbNJMHb8ldsjQ6NNwVEz8=&risl=&pid=ImgRaw&r=0">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250801154105876.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/4f3bee86382c87ff3cfdedf7f6ffc7ad.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/dbb2dd50ecdd508e0c520ad269309f58.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818152557183.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818152703369.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818153220320.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818162920119.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818162935116.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818170143539.png">
+<meta property="article:published_time" content="2025-08-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-20T08:22:27.138Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://th.bing.com/th/id/R.2ecd915fe6af828b0dd93990ed5b5e3c?rik=/8Yy8oF28qLB9w&riu=http://download.broadview.com.cn/Original/17055494d435efcc231f&ehk=2ay/8ZjBGFFLUpgaacPUFPzbNJMHb8ldsjQ6NNwVEz8=&risl=&pid=ImgRaw&r=0">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%8C%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%88%9D%E8%AF%86SLAM/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%8C%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%88%9D%E8%AF%86SLAM/","path":"2025/08/20/视觉SLAM十四讲（第二讲）——初识SLAM/","title":"第二讲-初始SLAM"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第二讲-初始SLAM | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%8C%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%88%9D%E8%AF%86SLAM"><span class="nav-number">1.</span> <span class="nav-text">视觉SLAM十四讲（第二讲）——初识SLAM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E8%A7%86%E8%A7%89SLAM%E6%A1%86%E6%9E%B6"><span class="nav-number">1.1.</span> <span class="nav-text">经典视觉SLAM框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E8%A7%89%E9%87%8C%E7%A8%8B%E8%AE%A1"><span class="nav-number">1.1.1.</span> <span class="nav-text">视觉里程计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF%E4%BC%98%E5%8C%96"><span class="nav-number">1.1.2.</span> <span class="nav-text">后端优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B"><span class="nav-number">1.1.3.</span> <span class="nav-text">回环检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E5%9B%BE"><span class="nav-number">1.1.4.</span> <span class="nav-text">建图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%A6%E9%87%8F%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">度量地图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E4%B9%89%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">语义地图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">拓扑地图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SLAM%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%AD%A6%E8%A1%A8%E8%BF%B0"><span class="nav-number">1.2.</span> <span class="nav-text">SLAM问题的数学表述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E7%BC%96%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">实践编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello-SLAM"><span class="nav-number">1.3.1.</span> <span class="nav-text">Hello SLAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8CMake"><span class="nav-number">1.3.2.</span> <span class="nav-text">使用CMake</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%BA%93"><span class="nav-number">1.3.3.</span> <span class="nav-text">使用库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8IDE"><span class="nav-number">1.3.4.</span> <span class="nav-text">使用IDE</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%8C%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%88%9D%E8%AF%86SLAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="第二讲-初始SLAM | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第二讲-初始SLAM
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-08-20 00:00:00 / 修改时间：16:22:27" itemprop="dateCreated datePublished" datetime="2025-08-20T00:00:00+08:00">2025-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/" itemprop="url" rel="index"><span itemprop="name">视觉SLAM十四讲</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="视觉SLAM十四讲（第二讲）——初识SLAM"><a href="#视觉SLAM十四讲（第二讲）——初识SLAM" class="headerlink" title="视觉SLAM十四讲（第二讲）——初识SLAM"></a>视觉SLAM十四讲（第二讲）——初识SLAM</h1><h2 id="经典视觉SLAM框架"><a href="#经典视觉SLAM框架" class="headerlink" title="经典视觉SLAM框架"></a>经典视觉SLAM框架</h2><p><img src="https://th.bing.com/th/id/R.2ecd915fe6af828b0dd93990ed5b5e3c?rik=/8Yy8oF28qLB9w&riu=http://download.broadview.com.cn/Original/17055494d435efcc231f&ehk=2ay/8ZjBGFFLUpgaacPUFPzbNJMHb8ldsjQ6NNwVEz8=&risl=&pid=ImgRaw&r=0" alt="经典视觉SLAM框架 - 博文视点"></p>
+<p><strong>流程</strong></p>
+<ol>
+<li>传感器信息读取：主要为相机图像信息的读取和预处理。如果在机器人中，可能还有码盘、惯性传感器等信息的读取和同步。</li>
+<li>前端视觉里程计(visual odometry ,vo)：视觉里程计的任务是估算相邻图像间相机的运动，以及局部地图的样子，vo又称为前端。</li>
+<li>后端（非线性）优化(Optimization)：后端接受不同时刻里程计测量的相机位姿，以及回环检测的信息，进行优化，得到全局一致的轨迹和地图。称为后端。</li>
+<li>回环检测（loop closure detection）：回环检测判断机器人是否到达过先前的位置，如果检测到回环，会把信息提供给后端处理</li>
+<li>建图（mapping）：根据估计的轨迹，建立与任务要求对应的地图。</li>
+</ol>
+<hr>
+<h3 id="视觉里程计"><a href="#视觉里程计" class="headerlink" title="视觉里程计"></a>视觉里程计</h3><p>视觉里程计能够通过相邻帧间的图像估计相机运动，并且恢复场景的空间结构。它之所以被称为里程计，是因为它实际上只计算相邻时刻的运动，和过去的信息没有关联。但是仅仅通过视觉里程计来估计轨迹，会出现累积漂移，需要后端优化和回环检测。回环检测负责把“机器人回到原始位置”的事情检测出来，后端优化则根据该信息，校正整个轨迹。</p>
+<h3 id="后端优化"><a href="#后端优化" class="headerlink" title="后端优化"></a>后端优化</h3><p>后端优化主要指处理SLAM过程中的噪声问题，前端给后端提供待优化的数据，后端负责整体的优化过程。只是面对数据，不关心数据的来源。前端和计算机视觉研究领域相关，如图像的特征提取和匹配，后端则主要是滤波和非线性优化算法。</p>
+<p>SLAM<strong>本质</strong>：对运动主体自身和周围环境空间不确定性的估计。</p>
+<h3 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h3><p>主要解决位置估计随时间漂移的问题，目的：让机器人知道自己是否已经回到了原点。</p>
+<p>回环检测与“定位”和“建图”二者有密切关系。需要让机器人具有识别去过的地方的能力。<strong>例如可以判断图像间的相似性</strong>来完成回环检测。<strong>视觉回环检测实质上就是一种计算图像数据相似性</strong>的算法。如果检测到，前后两点是同一个点这个信息，会发送给后端优化算法，从而把轨迹地图调整到符合回环检测的样子。</p>
+<h3 id="建图"><a href="#建图" class="headerlink" title="建图"></a>建图</h3><p>建图是指构建地图的过程，地图是对环境的描述。大体上可以分为：<strong>度量地图</strong> 和 <strong>拓扑地图</strong>两种</p>
+<h4 id="度量地图"><a href="#度量地图" class="headerlink" title="度量地图"></a>度量地图</h4><p>度量地图（Metic Map）或者几何地图（Geometric Map）强调精确表示地图中的位置关系，通过稀疏、稠密分类。常见的点云、八叉树、栅格地图等都属于度量地图。</p>
+<p>根据地图是否是连续的还可以分为连续地图和离散地图。例如栅格地图、体素地图就是典型的离散地图。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250801154105876.png" alt="image-20250801154105876"></p>
+<h4 id="语义地图"><a href="#语义地图" class="headerlink" title="语义地图"></a>语义地图</h4><p>语义地图包含语义信息，语义信息可以是物体的种类、姿态、形状等描述。只要是包含语义信息的就可以算是语义地图。下图为包含语义的点云地图。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/4f3bee86382c87ff3cfdedf7f6ffc7ad.png" alt="img"></p>
+<h4 id="拓扑地图"><a href="#拓扑地图" class="headerlink" title="拓扑地图"></a>拓扑地图</h4><p>拓扑地图(topological map)使用节点和边来表示环境，只考虑节点间的连续性，例如只关注A、B点是否联通，并不考虑是如何从A到B的。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/dbb2dd50ecdd508e0c520ad269309f58.png" alt="bbd00a222180cbc06ddf8031ffc95f99.png"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/CV_Autobot/article/details/140709472">原来如此！简单总结SLAM中的各种地图-CSDN博客</a></p>
+<hr>
+<h2 id="SLAM问题的数学表述"><a href="#SLAM问题的数学表述" class="headerlink" title="SLAM问题的数学表述"></a>SLAM问题的数学表述</h2><p>有点看不明白，先放着</p>
+<h2 id="实践编程"><a href="#实践编程" class="headerlink" title="实践编程"></a>实践编程</h2><p>我使用的是ubuntu 20.04虚拟机</p>
+<h3 id="Hello-SLAM"><a href="#Hello-SLAM" class="headerlink" title="Hello SLAM"></a>Hello SLAM</h3><p>下载源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/gaoxiang12/slambook2.git</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818152557183.png" alt="image-20250818152557183"></p>
+<p>使用编译器，把文本文件编译成可执行文件，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ helloSLAM.cpp</span><br></pre></td></tr></table></figure>
+
+<p>顺利执行之后会在目录里新增一个 a.out文件，这是一个可执行文件</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818152703369.png" alt="image-20250818152703369"></p>
+<p>在终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./a.out</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818153220320.png" alt="image-20250818153220320"></p>
+<hr>
+<h3 id="使用CMake"><a href="#使用CMake" class="headerlink" title="使用CMake"></a>使用CMake</h3><p>在一个cmake工程中，我们使用cmake命令生成一个makefile文件，然后使用make命令根据makefile内容编译整个工程。在<code>slamebook2/ch2/CMakeLists.txt</code>文件中：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 2.8)</span><br><span class="line">project(helloSLAM)</span><br><span class="line">add_executable(helloSLAM helloSLAM.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>在<code>slambook2/ch2/</code>目录下，调用cmake对该工程进行cmake编译：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ cmake .</span><br><span class="line">-- The C compiler identification is GNU 9.4.0</span><br><span class="line">-- The CXX compiler identification is GNU 9.4.0</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc -- works</span><br><span class="line">-- Detecting C compiler ABI info</span><br><span class="line">-- Detecting C compiler ABI info - done</span><br><span class="line">-- Detecting C compile features</span><br><span class="line">-- Detecting C compile features - done</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++ -- works</span><br><span class="line">-- Detecting CXX compiler ABI info</span><br><span class="line">-- Detecting CXX compiler ABI info - done</span><br><span class="line">-- Detecting CXX compile features</span><br><span class="line">-- Detecting CXX compile features - done</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ make</span><br><span class="line">Scanning dependencies of target helloSLAM</span><br><span class="line">[ 50%] Building CXX object CMakeFiles/helloSLAM.dir/helloSLAM.cpp.o</span><br><span class="line">[100%] Linking CXX executable helloSLAM</span><br><span class="line">[100%] Built target helloSLAM</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ ./helloSLAM </span><br><span class="line">hello SLAM!</span><br></pre></td></tr></table></figure>
+
+<p>同时也可以新建一个build文件夹，存放中间文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2/build$ cmake ..</span><br><span class="line">-- The C compiler identification is GNU 9.4.0</span><br><span class="line">-- The CXX compiler identification is GNU 9.4.0</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc -- works</span><br><span class="line">-- Detecting C compiler ABI info</span><br><span class="line">-- Detecting C compiler ABI info - done</span><br><span class="line">-- Detecting C compile features</span><br><span class="line">-- Detecting C compile features - done</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++ -- works</span><br><span class="line">-- Detecting CXX compiler ABI info</span><br><span class="line">-- Detecting CXX compiler ABI info - done</span><br><span class="line">-- Detecting CXX compile features</span><br><span class="line">-- Detecting CXX compile features - done</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2/build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ make</span><br><span class="line">Scanning dependencies of target helloSLAM</span><br><span class="line">[ 50%] Building CXX object CMakeFiles/helloSLAM.dir/helloSLAM.cpp.o</span><br><span class="line">[100%] Linking CXX executable helloSLAM</span><br><span class="line">[100%] Built target helloSLAM</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以实现源代码与中间文件的分离</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818162920119.png" alt="image-20250818162920119"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818162935116.png" alt="image-20250818162935116"></p>
+<h3 id="使用库"><a href="#使用库" class="headerlink" title="使用库"></a>使用库</h3><p>在<code>slambook/ch2/</code>目录下新建文件：<code>libHelloSLAM.cpp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 这是一个库文件</span><br><span class="line"># include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">void printHello() &#123;</span><br><span class="line">    cout &lt;&lt; &quot;Hello SLAM!&quot; &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个库文件提供一个printHello函数，调用此函数将输出一条信息。但是它没有主函数，意味着这个库中没有可执行文件，在CMakeLists.txt中加上如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add_library（hello libHelloSLAM.cpp）</span><br></pre></td></tr></table></figure>
+
+<p>这样就是告诉cmake，想要把这个文件编译成一个叫做hello的库，然后编译整个工程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ cd build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2/build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ make</span><br><span class="line">Scanning dependencies of target hello</span><br><span class="line">[ 25%] Building CXX object CMakeFiles/hello.dir/libHelloSLAM.cpp.o</span><br><span class="line">[ 50%] Linking CXX static library libhello.a</span><br><span class="line">[ 50%] Built target hello</span><br><span class="line">[100%] Built target helloSLAM</span><br></pre></td></tr></table></figure>
+
+<p>这时，在build 文件夹会生成一个libhello.a文件。这是我们得到的库</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818170143539.png" alt="image-20250818170143539"></p>
+<blockquote>
+<p>库文件</p>
+</blockquote>
+<p>在linux中库文件分为静态库和共享库，静态库以 .a为后缀，共享库以 .so 为后缀，所有的库都是一些函数打包后的集合，差别在于静态库每次调用都会生成一个副本，共享库则只有一个副本。库文件是一个压缩包。为了让别人使用这个库，需要提供一份头文件，说明库里面有什么。<strong>所以对于使用者，只需要拿到头文件和库文件就可以调用这个库</strong>。下面编写libhello的头文件</p>
+<p>新建文件 <code>slambook/ch2/libHelloSLAM.h</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#ifndef LIBHELLOSLAM_H_</span><br><span class="line">#define LIBHELLOSLAM_H_</span><br><span class="line"></span><br><span class="line">void printHello();</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以使用printHello函数了，最后，写一个可执行程序来调用函数</p>
+<p>新建文件 <code>slambook/ch2/useHello.cpp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;libHelloSLAM.h&quot;</span><br><span class="line"></span><br><span class="line">// 使用libHelloSLAM.h中的printHello()函数</span><br><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line">    printHello();</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，在CMakeLists.txt中添加一个可执行程序的生成命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add_executable(useHello useHello.cpp)</span><br><span class="line">target_link_libraries(useHello hello)</span><br></pre></td></tr></table></figure>
+
+<p>最后测试一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2/build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ make</span><br><span class="line">Scanning dependencies of target hello</span><br><span class="line">[ 25%] Building CXX object CMakeFiles/hello.dir/libHelloSLAM.cpp.o</span><br><span class="line">[ 50%] Linking CXX static library libhello.a</span><br><span class="line">[ 50%] Built target hello</span><br><span class="line">[100%] Built target helloSLAM</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2/build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ make</span><br><span class="line">[ 33%] Built target hello</span><br><span class="line">Scanning dependencies of target useHello</span><br><span class="line">[ 50%] Building CXX object CMakeFiles/useHello.dir/useHello.cpp.o</span><br><span class="line">[ 66%] Linking CXX executable useHello</span><br><span class="line">[ 66%] Built target useHello</span><br><span class="line">[100%] Built target helloSLAM</span><br></pre></td></tr></table></figure>
+
+<p>运行可执行文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ cd build/</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ ./useHello </span><br><span class="line">Hello SLAM!</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ </span><br></pre></td></tr></table></figure>
+
+<p>输出结果与之前一致。通过这个例子，演示了如何生成并且调用一个库。</p>
+<hr>
+<h3 id="使用IDE"><a href="#使用IDE" class="headerlink" title="使用IDE"></a>使用IDE</h3><p>我使用的是vscode。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/08/01/EndNote%20%E4%BD%BF%E7%94%A8/" rel="prev" title="EndNote使用">
+                  <i class="fa fa-angle-left"></i> EndNote使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%B8%89%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8/" rel="next" title="第三讲-三位刚体运动">
+                  第三讲-三位刚体运动 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

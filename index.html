@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,391 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%B8%89%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%B8%89%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8/" class="post-title-link" itemprop="url">第三讲-三位刚体运动</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-08-20 00:00:00 / 修改时间：16:23:09" itemprop="dateCreated datePublished" datetime="2025-08-20T00:00:00+08:00">2025-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/" itemprop="url" rel="index"><span itemprop="name">视觉SLAM十四讲</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="视觉SLAM十四讲（第三讲）——三维刚体运动"><a href="#视觉SLAM十四讲（第三讲）——三维刚体运动" class="headerlink" title="视觉SLAM十四讲（第三讲）——三维刚体运动"></a>视觉SLAM十四讲（第三讲）——三维刚体运动</h1><h2 id="旋转矩阵"><a href="#旋转矩阵" class="headerlink" title="旋转矩阵"></a>旋转矩阵</h2><h3 id="点、向量和坐标系"><a href="#点、向量和坐标系" class="headerlink" title="点、向量和坐标系"></a>点、向量和坐标系</h3><p>前面基础知识跳过</p>
+<p><strong>向量内积</strong></p>
+<p>公式如下<br>$$<br>a⋅b&#x3D;a<br>T<br> b&#x3D;<br>i&#x3D;1<br>∑<br>3<br>​<br> a<br>i<br>​<br> b<br>i<br>​<br> &#x3D;∣a∣∣b∣cos⟨a,b⟩<br>$$<br>内积可以描述向量间的投影关系，其中$$ &lt;a,b&gt;$$ 表示向量夹角。</p>
+<p><strong>向量外积</strong><br>$$<br>\boldsymbol{a} \times \boldsymbol{b} &#x3D; \begin{vmatrix}<br>\boldsymbol{e}_1 &amp; \boldsymbol{e}_2 &amp; \boldsymbol{e}_3 <br>a_1 &amp; a_2 &amp; a_3 <br>b_1 &amp; b_2 &amp; b_3<br>\end{vmatrix} &#x3D; \begin{bmatrix}<br>a_2b_3 - a_3b_2 <br>a_3b_1 - a_1b_3 <br>a_1b_2 - a_2b_1<br>\end{bmatrix} &#x3D; \begin{bmatrix}<br>0 &amp; -a_3 &amp; a_2 <br>a_3 &amp; 0 &amp; -a_1 <br>-a_2 &amp; a_1 &amp; 0<br>\end{bmatrix} \boldsymbol{b} \triangleq \boldsymbol{a}^\land \boldsymbol{b}<br>$$<br>外积的结果是一个向量，方向垂直两个向量，大小是$|a||b|sin&lt;a,b&gt;$ 是两个向量张成的四边形的有向面积.对于外积运算引入$∧$,是一个反对成符号。<br>$$<br>a ∧ &#x3D;<br>\begin{bmatrix}<br>0 &amp; -a_3 &amp; a_2 \<br>a_3 &amp; 0 &amp; -a_1 \<br>-a_2 &amp; a_1 &amp; 0<br>\end{bmatrix}<br>$$</p>
+<h3 id="坐标系间的欧氏变换"><a href="#坐标系间的欧氏变换" class="headerlink" title="坐标系间的欧氏变换"></a>坐标系间的欧氏变换</h3><p>旋转矩阵有一些特别的性质。它是一个行列式为1的正交矩阵。所以将$n$维旋转矩阵的集合定义为：<br>$$<br>\text{SO}(n)&#x3D;{ \boldsymbol{R} \in \mathbb{R}^{n \times n} \mid \boldsymbol{R}\boldsymbol{R}^{\text{T}} &#x3D; \boldsymbol{I}, \det(\boldsymbol{R}) &#x3D; 1 }<br>$$<br>so{n}是特殊正交群的意思（Special Orthogonal Group）。这个集合由n维空间的旋转矩阵组成，n&#x3D;3即三维空间的旋转矩阵。</p>
+<p>$R_{12}$是指把坐标系2的向量变换到坐标系1，而平移$t_{12}$是指在坐标系1下取的坐标，即从1指向2的向量在坐标系1下的坐标。</p>
+<h3 id="变换矩阵与齐次变换"><a href="#变换矩阵与齐次变换" class="headerlink" title="变换矩阵与齐次变换"></a>变换矩阵与齐次变换</h3><p>对于变换矩阵$T$,它具有比较特别的结构，左上角为旋转矩阵，右侧为平移向量，左下角为0向量，右下角为1.这种矩阵又称为特殊欧式群（Special Euclidean Group）<br>$$<br>\mathrm{SE}(3)&#x3D;\left{ \boldsymbol{T}&#x3D;\begin{bmatrix} \boldsymbol{R} &amp; \boldsymbol{t} \ \boldsymbol{0}^{\mathrm{T}} &amp; 1 \end{bmatrix} \in \mathbb{R}^{4\times4} \mid \boldsymbol{R} \in \mathrm{SO}(3), \boldsymbol{t} \in \mathbb{R}^3 \right}<br>$$<br>用$T_{12}$表示从2到1的变换。总的来说，坐标系之间的运动由欧式变换描述，由平移和旋转组成，旋转可以由旋转矩阵$SO(3)$描述，平移直接由一个$ \mathbb{R}^3$向量描述，最后，如果将平移与旋转放在一个矩阵中，就形成了变换矩阵$SE(3)$.</p>
+<hr>
+<h2 id="实践：Eigen"><a href="#实践：Eigen" class="headerlink" title="实践：Eigen"></a>实践：Eigen</h2><p>Eigen是一个开源的线性代数库，提供快速的有关矩阵的线性代数运算，下面是eigen3的官方文档链接：</p>
+<p><a target="_blank" rel="noopener" href="https://libeigen.gitlab.io/eigen/docs-nightly/"> Eigen: Main Page</a></p>
+<p>输入以下命令安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libeigen3-dev</span><br></pre></td></tr></table></figure>
+
+<p>一个库由头文件以及库文件组成，其中Eigen头文件所在位置可以通过：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo updatedb</span><br><span class="line">locate eigen3 | grep include</span><br></pre></td></tr></table></figure>
+
+<p>存放在：<code>/usr/include/eigen3/</code>中</p>
+<p>与其他库相比，Eigen是一个纯用头文件搭建的库，意味着只能找到它的头文件没有类似.so或者.a的二进制文件，只需要引入Eigen头文件即可使用。不需要链接库文件。可以写一段代码来实际练习EIgen:</p>
+<p>新建文件：<code>slambook/ch3/useEigen/eigenMatrix.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Dense&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Eigen;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MATRIX_SIZE 50</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">    Matrix&lt;<span class="type">float</span>, <span class="number">2</span>, <span class="number">3</span>&gt; matrix_23;</span><br><span class="line">    Vector3d v_3d;</span><br><span class="line">    Matrix&lt;<span class="type">float</span>, <span class="number">3</span>, <span class="number">1</span>&gt; vd_3d;</span><br><span class="line">    Matrix3d matrix_33 = Matrix3d::<span class="built_in">Zero</span>();</span><br><span class="line">    Matrix&lt;<span class="type">double</span>, Dynamic, Dynamic&gt; matrix_dynamic;</span><br><span class="line">    MatrixXd matrix_x;</span><br><span class="line"></span><br><span class="line">    matrix_23 &lt;&lt; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;matrix 2x3 from 1 to 6: \n&quot;</span> &lt;&lt; matrix_23 &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;print matrix 2x3: &quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">3</span>; j++) cout &lt;&lt; <span class="built_in">matrix_23</span>(i, j) &lt;&lt; <span class="string">&quot;\t&quot;</span>;</span><br><span class="line">        cout &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    v_3d &lt;&lt; <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>;</span><br><span class="line">    vd_3d &lt;&lt; <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    Matrix&lt;<span class="type">double</span>, <span class="number">2</span>, <span class="number">1</span>&gt; result = matrix_<span class="number">23.</span><span class="built_in">cast</span>&lt;<span class="type">double</span>&gt;() * v_3d;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;[1,2,3;4,5,6]*[3,2,1]=&quot;</span> &lt;&lt; result.<span class="built_in">transpose</span>() &lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    Matrix&lt;<span class="type">float</span>, <span class="number">2</span>,<span class="number">1</span>&gt; result2 = matrix_23 * vd_3d;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;[1,2,3;4,5,6]*[4,5,6]=&quot;</span> &lt;&lt; result<span class="number">2.</span><span class="built_in">transpose</span>() &lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    matrix_33 = Matrix3d::<span class="built_in">Random</span>();</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;random matrix: \n&quot;</span> &lt;&lt; matrix_33 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;transpose: \n&quot;</span> &lt;&lt; matrix_<span class="number">33.</span><span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;sum: &quot;</span> &lt;&lt; matrix_<span class="number">33.</span><span class="built_in">sum</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;tracd: &quot;</span> &lt;&lt; matrix_<span class="number">33.</span><span class="built_in">trace</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;times 10: \n&quot;</span> &lt;&lt; <span class="number">10</span> * matrix_33 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;inverse: \n&quot;</span> &lt;&lt; matrix_<span class="number">33.</span><span class="built_in">inverse</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;det: &quot;</span> &lt;&lt; matrix_<span class="number">33.</span><span class="built_in">determinant</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="function">SelfAdjointEigenSolver&lt;Matrix3d&gt; <span class="title">eigen_solver</span><span class="params">(matrix_<span class="number">33.</span>transpose() * matrix_33)</span></span>;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Eigen values = \n&quot;</span> &lt;&lt; eigen_solver.<span class="built_in">eigenvalues</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Eigen vactors = \n&quot;</span> &lt;&lt; eigen_solver.<span class="built_in">eigenvectors</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    Matrix&lt;<span class="type">double</span>, MATRIX_SIZE, MATRIX_SIZE&gt; matrix_NN</span><br><span class="line">        = MatrixXd::<span class="built_in">Random</span>(MATRIX_SIZE, MATRIX_SIZE);</span><br><span class="line">    matrix_NN = matrix_NN * matrix_NN.<span class="built_in">transpose</span>();</span><br><span class="line">    Matrix&lt;<span class="type">double</span>, MATRIX_SIZE, <span class="number">1</span>&gt; v_Nd = MatrixXd:: <span class="built_in">Random</span>(MATRIX_SIZE, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">clock_t</span> time_stt = <span class="built_in">clock</span>();</span><br><span class="line">    Matrix&lt;<span class="type">double</span>, MATRIX_SIZE, <span class="number">1</span>&gt; x = matrix_NN.<span class="built_in">inverse</span>() * v_Nd;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;time of normal inverse is &quot;</span> </span><br><span class="line">         &lt;&lt; <span class="number">1000</span> * (<span class="built_in">clock</span>() - time_stt) /(<span class="type">double</span>) CLOCKS_PER_SEC &lt;&lt; <span class="string">&quot;ms&quot;</span> &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;x = &quot;</span> &lt;&lt; x.<span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    time_stt = <span class="built_in">clock</span>();</span><br><span class="line">    x = matrix_NN.<span class="built_in">colPivHouseholderQr</span>().<span class="built_in">solve</span>(v_Nd);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;time of QR decomposition is &quot;</span> </span><br><span class="line">         &lt;&lt; <span class="number">1000</span> * (<span class="built_in">clock</span>() - time_stt) /(<span class="type">double</span>) CLOCKS_PER_SEC &lt;&lt; <span class="string">&quot;ms&quot;</span> &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;x = &quot;</span> &lt;&lt; x.<span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    time_stt = <span class="built_in">clock</span>();</span><br><span class="line">    x = matrix_NN.<span class="built_in">ldlt</span>().<span class="built_in">solve</span>(v_Nd);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;time of ldlt decomposition is &quot;</span> </span><br><span class="line">         &lt;&lt; <span class="number">1000</span> * (<span class="built_in">clock</span>() - time_stt) /(<span class="type">double</span>) CLOCKS_PER_SEC &lt;&lt; <span class="string">&quot;ms&quot;</span> &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;x = &quot;</span> &lt;&lt; x.<span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编辑CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 2.8)</span><br><span class="line">project(useEigen)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">include_directories( <span class="string">&quot;/usr/include/eigen3&quot;</span> )</span><br><span class="line">add_executable(eigenMatrix eigenMatrix.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>在终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch3/useEigen/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch3/useEigen/build</span><br><span class="line">hita@hita-vm:~/slambook/ch3/useEigen/build$ make</span><br><span class="line">[100%] Built target eigenMatrix</span><br><span class="line">hita@hita-vm:~/slambook/ch3/useEigen/build$ ./eigenMatrix </span><br><span class="line">matrix 2x3 from 1 to 6: </span><br><span class="line">1 2 3</span><br><span class="line">4 5 6</span><br><span class="line">print matrix 2x3: </span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<p>编译之后即可输出结果。</p>
+<hr>
+<h2 id="旋转向量与欧拉角"><a href="#旋转向量与欧拉角" class="headerlink" title="旋转向量与欧拉角"></a>旋转向量与欧拉角</h2><h3 id="旋转向量"><a href="#旋转向量" class="headerlink" title="旋转向量"></a>旋转向量</h3><blockquote>
+<p>旋转向量</p>
+</blockquote>
+<p>方向与旋转轴一致，向量长度来表示旋转角度。对于变换矩阵，使用一个旋转向量和一个平移向量来表示一次变换。这样就不再冗余。</p>
+<blockquote>
+<p>罗德里格斯旋转公式</p>
+</blockquote>
+<h1 id="vrot"><a href="#vrot" class="headerlink" title="$$vrot"></a>$$<br>v<br>r<br>o<br>t</h1><p>cos<br>θ<br>v<br>+<br>(<br>1<br>−<br>cos<br>θ<br>)<br>(<br>k<br>⋅<br>v<br>)<br>k<br>+<br>sin<br>θ<br>k<br>×<br>v<br>$$</p>
+<p>附上一张图片：</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Orthogonal_decomposition_unit_vector_rodrigues_rotation_formula.svg/350px-Orthogonal_decomposition_unit_vector_rodrigues_rotation_formula.svg.png" alt="img"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/1903168-20200217220414404-1389795950.png" alt="向量的分解图示"></p>
+<p>其中v是三维向量，k是与旋转轴同向的单位向量，θ是v绕着k的右手方向旋转角度。vrot表示旋转之后的向量。</p>
+<h1 id="矩阵形式-vrot"><a href="#矩阵形式-vrot" class="headerlink" title="矩阵形式$$vrot"></a><strong>矩阵形式</strong><br>$$<br>v<br>r<br>o<br>t</h1><h1 id="Rv-其中R是旋转矩阵，表示如下：-R"><a href="#Rv-其中R是旋转矩阵，表示如下：-R" class="headerlink" title="Rv$$其中R是旋转矩阵，表示如下：$$R"></a>R<br>v<br>$$<br>其中R是旋转矩阵，表示如下：<br>$$<br>R</h1><p>cos<br>θ<br>I<br>+<br>(<br>1<br>−<br>cos<br>θ<br>)<br>k<br>k<br>T<br>+<br>sin<br>θ<br>k<br>∧</p>
+<h1 id="其中I表示单位矩阵，K表示旋转向量，k-表示由k得到的反对成矩阵，-R"><a href="#其中I表示单位矩阵，K表示旋转向量，k-表示由k得到的反对成矩阵，-R" class="headerlink" title="$$其中I表示单位矩阵，K表示旋转向量，k^表示由k得到的反对成矩阵，$$R"></a>$$<br>其中I表示单位矩阵，K表示旋转向量，k^表示由k得到的反对成矩阵，<br>$$<br>R</h1><p>I<br>+<br>(<br>sin<br>θ<br>)<br>K<br>+<br>(<br>1<br>−<br>cos<br>θ<br>)<br>K<br>2<br>$$<br>其中K，表示旋转向量生成的反对成矩阵。</p>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1DF411s7sn/?spm_id_from=333.337.search-card.all.click&vd_source=f241df170c33a3be666ec10b59feb689">罗德里格斯公式推导_哔哩哔哩_bilibili</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wtyuan/p/12324495.html">罗德里格斯旋转公式（Rodrigues’ rotation formula）推导 - wtyuan - 博客园</a></p>
+<p>符号∧是向量到反对称矩阵的转换符。反之，我们也可以计算从一个旋转矩阵到旋转向量的转换。对于转角 θ，取两边的迹，有<br>$$<br>\begin{aligned}\operatorname{tr}(R)&amp;&#x3D;\cos\theta\operatorname{tr}(\boldsymbol{I})+(1-\cos\theta)\operatorname{tr}(\boldsymbol{k}\boldsymbol{k}^\mathrm{T})+\sin\theta\operatorname{tr}(\boldsymbol{k}^\wedge)\&amp;\mathrm{.}\&amp;&#x3D;1+2\cos\theta\end{aligned}<br>$$<br>得到：<br>$$<br>\theta&#x3D;\arccos\left(\frac{\operatorname{tr}(\boldsymbol{R})-1}{2}\right)<br>$$<br>旋转轴上的向量在旋转后不发生改变，说明：<br>$$<br>Rn &#x3D; n<br>$$</p>
+<hr>
+<h3 id="欧拉角"><a href="#欧拉角" class="headerlink" title="欧拉角"></a>欧拉角</h3><p>三个转角：</p>
+<ol>
+<li>绕物体的Z轴旋转，得到偏航角(yaw)</li>
+<li>绕旋转之后的Y轴旋转，得到俯仰角(pitch)</li>
+<li>绕旋转之后的X轴旋转，得到滚转角(roll)</li>
+</ol>
+<p>此时可以通过[r,p,y]T这样一个三维向量描述任意旋转，rpy角的旋转顺序是ZYX.</p>
+<blockquote>
+<p>万向锁</p>
+</blockquote>
+<p>欧拉角的一个重大问题就是会碰到万向锁问题，只有使用动态的欧拉角才会出现万向锁问题（绕物体坐标系的三个轴旋转），当第二次转动的角度为±90°的时候，第一次转动与第二次转动其实为绕同一个轴转动，所以在SLAM中很少用欧拉角来表示姿态。</p>
+<hr>
+<h2 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h2><h3 id="四元数定义"><a href="#四元数定义" class="headerlink" title="四元数定义"></a>四元数定义</h3><p>四元数是由实数加上三个元素i, j, k 组成，具有如下关系：</p>
+<p><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/104e96d68f7752e8741c1558bc33e99c5db2e0a5" alt="{\displaystyle i^{2}&#x3D;j^{2}&#x3D;k^{2}&#x3D;ijk&#x3D;-1\,}"></p>
+<p>每个四元数都是1， i， j,  k 的线性组合，可以用单位四元数表示三维空间的任意一个旋转。</p>
+<p>三个虚部满足如下关系：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250819201107925.png" alt="image-20250819201107925"></p>
+<p><strong>四元数中乘i是绕i轴旋转180°，与复数中有所不同。</strong></p>
+<hr>
+<h3 id="四元数的运算"><a href="#四元数的运算" class="headerlink" title="四元数的运算"></a>四元数的运算</h3><p>四元数同样由四则运算，这里不多介绍，值得注意的是，四元数的乘法通常是不可交换的。共轭是把虚部取负号。四元数和自己的逆的乘积为实四元数1。其他的详细可参考：</p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E5%9B%9B%E5%85%83%E6%95%B8">四元数 - 维基百科，自由的百科全书</a></p>
+<h3 id="用四元数表示旋转"><a href="#用四元数表示旋转" class="headerlink" title="用四元数表示旋转"></a>用四元数表示旋转</h3><p>首先把三维空间点用一个虚四元数来表述：<br>$$<br>p &#x3D; [0, x, y, z]T &#x3D; [0, v]T<br>$$<br>相当于把四元数的三个虚部与空间中的三个轴相对应。那么旋转后的点 p’ 可以表示为这样的乘积：<br>$$<br>P^{\prime}&#x3D;qpq^{-1}<br>$$<br>结果也是四元数，把虚部取出来，即为旋转之后点的坐标。</p>
+<h3 id="四元数到其他旋转表示的转换"><a href="#四元数到其他旋转表示的转换" class="headerlink" title="四元数到其他旋转表示的转换"></a>四元数到其他旋转表示的转换</h3><p>任意四元数描述了一个旋转，旋转可以用旋转矩阵或者旋转向量表示。四元数乘法可以有一种矩阵的乘法表示：<br>$$<br>q &#x3D; [s, v]^T<br>$$<br>定义如下符号：<br>$$<br>\left.q^+&#x3D;\left[\begin{array}{cc}s&amp;-v^\mathrm{T}\\v&amp;s\boldsymbol{I}+\boldsymbol{v}^\wedge\end{array}\right.\right]<br>$$</p>
+<p>$$<br>q^\oplus&#x3D;\begin{bmatrix}s&amp;-v^\mathrm{T}\\v&amp;s\boldsymbol{I}-\boldsymbol{v}^\mathrm{T}\end{bmatrix}<br>$$</p>
+<p>这两个符号将四元数映射为一个4x4的矩阵，于是四元数乘法可以写成矩阵形式：<br>$$<br>\left.q_1^+q_2&#x3D;\left[\begin{array}{cc}s_1&amp;-\boldsymbol{v}_1^T\\\boldsymbol{v}_1&amp;s_1\boldsymbol{I}+\boldsymbol{v}_1^\wedge\end{array}\right.\right]\begin{bmatrix}s_2\\\boldsymbol{v}_2\end{bmatrix}&#x3D;\begin{bmatrix}-\boldsymbol{v}_1^T\boldsymbol{v}_2+s_1s_2\\s_1\boldsymbol{v}_2+s_2\boldsymbol{v}_1+\boldsymbol{v}_1^\wedge\boldsymbol{v}_2\end{bmatrix}&#x3D;\boldsymbol{q}_1\boldsymbol{q}_2<br>$$<br>同理可得:<br>$$<br>q_1q_2&#x3D;q_1^+q_2&#x3D;q_2^\oplus q_1<br>$$<br>则有：<br>$$<br>\begin{aligned}p^{\prime}&amp;&#x3D;qpq^{-1}&#x3D;q^+p^+q^{-1}\&amp;&#x3D;q^+q^{-1}\oplus p\end{aligned}<br>$$<br>四元数到旋转向量的转换公式：<br>$$<br>\begin{cases}<br>\theta &#x3D; 2 \arccos q_0 \<br>[n_x, n_y, n_z]^\mathrm{T} &#x3D; \frac{[q_1, q_2, q_3]^\mathrm{T}}{\sin\frac{\theta}{2}}<br>\end{cases}</p>
+<p>$$</p>
+<hr>
+<h2 id="相似、仿射、射影变换"><a href="#相似、仿射、射影变换" class="headerlink" title="相似、仿射、射影变换"></a>相似、仿射、射影变换</h2><h3 id="相似变换"><a href="#相似变换" class="headerlink" title="相似变换"></a>相似变换</h3><p>允许物体进行均匀放缩。三维相似变换的集合也被叫做相似变换群，记为$Sim(3)$</p>
+<h3 id="仿射变换"><a href="#仿射变换" class="headerlink" title="仿射变换"></a>仿射变换</h3><p>该变换只要求A是一个可逆矩阵，不必是正交矩阵，经过仿射变换后，立方体不再是方的，但是各个面仍然是平行四边形。</p>
+<h3 id="射影变换"><a href="#射影变换" class="headerlink" title="射影变换"></a>射影变换</h3><p>从真实世界到相机照片的变换是一个射影变换。</p>
+<hr>
+<h2 id="实践：Eigen几何模块"><a href="#实践：Eigen几何模块" class="headerlink" title="实践：Eigen几何模块"></a>实践：Eigen几何模块</h2><h3 id="Eigen几何模块的数据演示"><a href="#Eigen几何模块的数据演示" class="headerlink" title="Eigen几何模块的数据演示"></a>Eigen几何模块的数据演示</h3><p>新建文件：<code>slambook/ch3/useGeometry/useGeometry.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Geometry&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Eigen;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">    Matrix3d rotation_matrix = Matrix3d::<span class="built_in">Identity</span>();</span><br><span class="line">    <span class="function">AngleAxisd <span class="title">rotation_vector</span><span class="params">(M_PI / <span class="number">4</span>, Vector3d(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>))</span></span>;</span><br><span class="line">    cout.<span class="built_in">precision</span>(<span class="number">3</span>);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;rotation matrix = \n &quot;</span> &lt;&lt; rotation_vector.<span class="built_in">matrix</span>() &lt;&lt; endl;</span><br><span class="line">    rotation_matrix = rotation_vector.<span class="built_in">toRotationMatrix</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function">Vector3d <span class="title">v</span><span class="params">(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    Vector3d v_rotated  = rotation_matrix * v;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;(1, 0, 0) after rotation (by angle axis) = &quot;</span> &lt;&lt; v_rotated.<span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    Vector3d euler_angles = rotation_matrix.<span class="built_in">eulerAngles</span>(<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;yaw pitch roll = &quot;</span> &lt;&lt; euler_angles.<span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line">    Isometry3d T = Isometry3d::<span class="built_in">Identity</span>();</span><br><span class="line">    T.<span class="built_in">rotate</span>(rotation_vector);</span><br><span class="line">    T.<span class="built_in">pretranslate</span>(<span class="built_in">Vector3d</span>(<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>));</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Transform matrix = \n&quot;</span> &lt;&lt; T.<span class="built_in">matrix</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    Vector3d v_transformed = T * v;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;v transformed = &quot;</span> &lt;&lt; v_transformed.<span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">    Quaterniond q = <span class="built_in">Quaterniond</span>(rotation_vector);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;quaternion from rotation vector = &quot;</span> &lt;&lt; q.<span class="built_in">coeffs</span>().<span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line">    q = <span class="built_in">Quaterniond</span>(rotation_matrix);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;quaternion from rotation matrix = &quot;</span> &lt;&lt; q.<span class="built_in">coeffs</span>().<span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    v_rotated = q * v;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;(1, 0, 0) after rotation = &quot;</span> &lt;&lt; v_rotated.<span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required( VERSION 2.8 )</span><br><span class="line">project( geometry )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加Eigen头文件</span></span><br><span class="line">include_directories( <span class="string">&quot;/usr/include/eigen3&quot;</span> )</span><br><span class="line"></span><br><span class="line">add_executable(eigenGeometry useGeometry.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch3/useGeometry$ mkdir build</span><br><span class="line">hita@hita-vm:~/slambook/ch3/useGeometry$ cd build</span><br><span class="line">hita@hita-vm:~/slambook/ch3/useGeometry/build$ cmake ..</span><br><span class="line">-- The C compiler identification is GNU 9.4.0</span><br><span class="line">-- The CXX compiler identification is GNU 9.4.0</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc -- works</span><br><span class="line">-- Detecting C compiler ABI info</span><br><span class="line">-- Detecting C compiler ABI info - done</span><br><span class="line">-- Detecting C compile features</span><br><span class="line">-- Detecting C compile features - done</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++ -- works</span><br><span class="line">-- Detecting CXX compiler ABI info</span><br><span class="line">-- Detecting CXX compiler ABI info - done</span><br><span class="line">-- Detecting CXX compile features</span><br><span class="line">-- Detecting CXX compile features - done</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch3/useGeometry/build</span><br><span class="line">hita@hita-vm:~/slambook/ch3/useGeometry/build$ make</span><br><span class="line">Scanning dependencies of target eigenGeometry</span><br><span class="line">[ 50%] Building CXX object CMakeFiles/eigenGeometry.dir/useGeometry.cpp.o</span><br><span class="line">[100%] Linking CXX executable eigenGeometry</span><br><span class="line">[100%] Built target eigenGeometry</span><br><span class="line">hita@hita-vm:~/slambook/ch3/useGeometry/build$ ./eigenGeometry </span><br><span class="line">rotation matrix = </span><br><span class="line">  0.707 -0.707      0</span><br><span class="line"> 0.707  0.707      0</span><br><span class="line">     0      0      1</span><br><span class="line">(1, 0, 0) after rotation (by angle axis) = 0.707 0.707     0</span><br><span class="line">yaw pitch roll = 0.785    -0     0</span><br><span class="line">Transform matrix = </span><br><span class="line"> 0.707 -0.707      0      1</span><br><span class="line"> 0.707  0.707      0      3</span><br><span class="line">     0      0      1      4</span><br><span class="line">     0      0      0      1</span><br><span class="line">v transformed = 1.71 3.71    4</span><br><span class="line">quaternion from rotation vector =     0     0 0.383 0.924</span><br><span class="line">quaternion from rotation matrix =     0     0 0.383 0.924</span><br><span class="line">(1, 0, 0) after rotation = 0.707 0.707     0</span><br></pre></td></tr></table></figure>
+
+<h3 id="实际的坐标变换例子"><a href="#实际的坐标变换例子" class="headerlink" title="实际的坐标变换例子"></a>实际的坐标变换例子</h3><p><strong>例子</strong></p>
+<p>设有机器人一号和机器人二号位于世界坐标系中。记世界坐标系为W，机器人的坐标系为 R1和R2。机器人一号的位姿为q1 &#x3D; [0.35, 0.2, 0.3, 0.1]T, t1 &#x3D; [0.3, 0.1, 0.1]T。机器人二号的位姿为q2 &#x3D; [−0.5, 0.4, −0.1, 0.2]T, t2 &#x3D; [−0.1, 0.5, 0.3]T。这里的q和t表达的是世界坐标系到相机坐标系的变换关系。机器人一号看到某个点在自身的坐标系下坐标为pR1 &#x3D; [0.5, 0, 0.2]T，求该向量在机器人二号坐标系下的坐标。</p>
+<p>新建文件 <code>slambook/ch3/examples/coordinateTransform.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Geometry&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Eigen;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> </span>&#123;</span><br><span class="line">    <span class="function">Quaterniond <span class="title">q1</span><span class="params">(<span class="number">0.35</span>, <span class="number">0.2</span>, <span class="number">0.3</span>, <span class="number">0.1</span>)</span>, <span class="title">q2</span><span class="params">(<span class="number">-0.5</span>, <span class="number">0.4</span>, <span class="number">-0.1</span>, <span class="number">0.2</span>)</span></span>;</span><br><span class="line">    q<span class="number">1.</span><span class="built_in">normalize</span>();</span><br><span class="line">    q<span class="number">2.</span><span class="built_in">normalize</span>();</span><br><span class="line">    <span class="function">Vector3d <span class="title">t1</span><span class="params">(<span class="number">0.3</span>, <span class="number">0.1</span>, <span class="number">0.1</span>)</span>, <span class="title">t2</span><span class="params">(<span class="number">-0.1</span>, <span class="number">0.5</span>, <span class="number">0.3</span>)</span></span>;</span><br><span class="line">    <span class="function">Vector3d <span class="title">p1</span><span class="params">(<span class="number">0.5</span>, <span class="number">0</span>, <span class="number">0.2</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">Isometry3d <span class="title">T1w</span><span class="params">(q1)</span>, <span class="title">T2w</span><span class="params">(q2)</span></span>;</span><br><span class="line">    T1w.<span class="built_in">pretranslate</span>(t1);</span><br><span class="line">    T2w.<span class="built_in">pretranslate</span>(t2);</span><br><span class="line"></span><br><span class="line">    Vector3d p2 = T2w * T1w.<span class="built_in">inverse</span>() * p1;</span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; p<span class="number">2.</span><span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 2.8)</span><br><span class="line">project(examples)</span><br><span class="line"></span><br><span class="line">include_directories(<span class="string">&quot;/usr/include/eigen3&quot;</span>)</span><br><span class="line">add_executable(coordinateTransform coordinateTransform.cpp)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch3/examples/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch3/examples/build</span><br><span class="line">hita@hita-vm:~/slambook/ch3/examples/build$ make</span><br><span class="line">[100%] Built target coordinateTransform</span><br><span class="line">hita@hita-vm:~/slambook/ch3/examples/build$ ./coordinateTransform </span><br><span class="line"></span><br><span class="line">-0.0309731    0.73499   0.296108</span><br></pre></td></tr></table></figure>
+
+<p>程序只需要计算：<br>$$<br>p_{R_2} &#x3D; T_{R_2,W} T_{W,R_1} p_{R_1}<br>$$<br>即可，四元数使用之前需要归一化处理确保计算结果正确、稳定高效。</p>
+<hr>
+<h2 id="可视化演示"><a href="#可视化演示" class="headerlink" title="可视化演示"></a>可视化演示</h2><blockquote>
+<p>安装Pangolin</p>
+</blockquote>
+<p>新建文件夹：<code>slambook/3rdparty/</code></p>
+<p>在终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/stevenlovegrove/Pangolin.git</span><br><span class="line">cd Pangolin</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake ..</span><br><span class="line">cmake --build .</span><br><span class="line">sudo make install</span><br><span class="line">sudo ldconfig</span><br></pre></td></tr></table></figure>
+
+<p>编译成功之后测试一下，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd Pangolin/build/examples/HelloPangolin</span><br><span class="line">./HelloPangolin</span><br></pre></td></tr></table></figure>
+
+<p>会看到一个结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250820153311084.png" alt="image-20250820153311084"></p>
+<p>这代表安装成功了</p>
+<p>新建文件 <code>slambook/ch3/examples/plotTrajectory.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pangolin/pangolin.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Eigen;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">// path to trajectory file</span></span><br><span class="line">string trajectory_file = <span class="string">&quot;../../examples/trajectory.txt&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DrawTrajectory</span><span class="params">(vector&lt;Isometry3d, Eigen::aligned_allocator&lt;Isometry3d&gt;&gt;)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">    vector&lt;Isometry3d, Eigen::aligned_allocator&lt;Isometry3d&gt;&gt; poses;</span><br><span class="line">    <span class="function">ifstream <span class="title">fin</span><span class="params">(trajectory_file)</span></span>;</span><br><span class="line">    <span class="keyword">if</span> (!fin) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;cannot find trajectory file at &quot;</span> &lt;&lt; trajectory_file &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (!fin.<span class="built_in">eof</span>()) &#123;</span><br><span class="line">        <span class="type">double</span> time, tx, ty, tz, qx, qy, qz, qw;</span><br><span class="line">        fin &gt;&gt; time &gt;&gt; tx &gt;&gt; ty &gt;&gt; tz &gt;&gt; qx &gt;&gt; qy &gt;&gt; qz &gt;&gt; qw;</span><br><span class="line">        <span class="function">Isometry3d <span class="title">Twr</span><span class="params">(Quaterniond(qw, qx, qy, qz))</span></span>;</span><br><span class="line">        Twr.<span class="built_in">pretranslate</span>(<span class="built_in">Vector3d</span>(tx, ty, tz));</span><br><span class="line">        poses.<span class="built_in">push_back</span>(Twr);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;read total&quot;</span> &lt;&lt; poses.<span class="built_in">size</span>() &lt;&lt; <span class="string">&quot;pose entries&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// draw trajectory in pangolin</span></span><br><span class="line">    <span class="built_in">DrawTrajectory</span>(poses);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DrawTrajectory</span><span class="params">(vector&lt;Isometry3d, Eigen::aligned_allocator&lt;Isometry3d&gt;&gt; poses)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// create pangolin window and plot the trajectory</span></span><br><span class="line">    pangolin::<span class="built_in">CreateWindowAndBind</span>(<span class="string">&quot;Trajectory Viewer&quot;</span>, <span class="number">1024</span>, <span class="number">768</span>);</span><br><span class="line">    <span class="built_in">glEnable</span>(GL_DEPTH_TEST);</span><br><span class="line">    <span class="built_in">glEnable</span>(GL_BLEND);</span><br><span class="line">    <span class="built_in">glBlendFunc</span>(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);</span><br><span class="line"></span><br><span class="line">    <span class="function">pangolin::OpenGlRenderState <span class="title">s_cam</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    pangolin::ProjectionMatrix(<span class="number">1024</span>, <span class="number">768</span>, <span class="number">500</span>, <span class="number">500</span>, <span class="number">512</span>, <span class="number">389</span>, <span class="number">0.1</span>, <span class="number">1000</span>),</span></span></span><br><span class="line"><span class="params"><span class="function">    pangolin::ModelViewLookAt(<span class="number">0</span>, <span class="number">-0.1</span>, <span class="number">-1.8</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>, <span class="number">0.0</span>)</span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span>;</span><br><span class="line"></span><br><span class="line">    pangolin::View &amp;d_cam = pangolin::<span class="built_in">CreateDisplay</span>()</span><br><span class="line">        .<span class="built_in">SetBounds</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">-1024.0f</span> / <span class="number">768.0f</span>)</span><br><span class="line">        .<span class="built_in">SetHandler</span>(<span class="keyword">new</span> pangolin::<span class="built_in">Handler3D</span>(s_cam));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (pangolin::<span class="built_in">ShouldQuit</span>() == <span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="built_in">glClear</span>(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br><span class="line">        d_cam.<span class="built_in">Activate</span>(s_cam);</span><br><span class="line">        <span class="built_in">glClearColor</span>(<span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">        <span class="built_in">glLineWidth</span>(<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; poses.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            <span class="comment">// 画每个位姿的三个坐标轴</span></span><br><span class="line">            Vector3d Ow = poses[i].<span class="built_in">translation</span>();</span><br><span class="line">            Vector3d Xw = poses[i] * (<span class="number">0.1</span> * <span class="built_in">Vector3d</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">            Vector3d Yw = poses[i] * (<span class="number">0.1</span> * <span class="built_in">Vector3d</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>));</span><br><span class="line">            Vector3d Zw = poses[i] * (<span class="number">0.1</span> * <span class="built_in">Vector3d</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>));</span><br><span class="line">            <span class="built_in">glBegin</span>(GL_LINES);</span><br><span class="line">            <span class="built_in">glColor3f</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>);</span><br><span class="line">            <span class="built_in">glVertex3d</span>(Ow[<span class="number">0</span>], Ow[<span class="number">1</span>], Ow[<span class="number">2</span>]);</span><br><span class="line">            <span class="built_in">glVertex3d</span>(Xw[<span class="number">0</span>], Xw[<span class="number">1</span>], Xw[<span class="number">2</span>]);</span><br><span class="line">            <span class="built_in">glColor3f</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>);</span><br><span class="line">            <span class="built_in">glVertex3d</span>(Ow[<span class="number">0</span>], Ow[<span class="number">1</span>], Ow[<span class="number">2</span>]);</span><br><span class="line">            <span class="built_in">glVertex3d</span>(Yw[<span class="number">0</span>], Yw[<span class="number">1</span>], Yw[<span class="number">2</span>]);</span><br><span class="line">            <span class="built_in">glColor3f</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">            <span class="built_in">glVertex3d</span>(Ow[<span class="number">0</span>], Ow[<span class="number">1</span>], Ow[<span class="number">2</span>]);</span><br><span class="line">            <span class="built_in">glVertex3d</span>(Zw[<span class="number">0</span>], Zw[<span class="number">1</span>], Zw[<span class="number">2</span>]);</span><br><span class="line">            <span class="built_in">glEnd</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 画出连线</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; poses.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            <span class="built_in">glColor3f</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>);</span><br><span class="line">            <span class="built_in">glBegin</span>(GL_LINES);</span><br><span class="line">            <span class="keyword">auto</span> p1 = poses[i], p2 = poses[i<span class="number">+1</span>];</span><br><span class="line">            <span class="built_in">glVertex3d</span>(p<span class="number">1.</span><span class="built_in">translation</span>()[<span class="number">0</span>], p<span class="number">1.</span><span class="built_in">translation</span>()[<span class="number">1</span>], p<span class="number">1.</span><span class="built_in">translation</span>()[<span class="number">2</span>]);</span><br><span class="line">            <span class="built_in">glVertex3d</span>(p<span class="number">2.</span><span class="built_in">translation</span>()[<span class="number">0</span>], p<span class="number">2.</span><span class="built_in">translation</span>()[<span class="number">1</span>], p<span class="number">2.</span><span class="built_in">translation</span>()[<span class="number">2</span>]);</span><br><span class="line">            <span class="built_in">glEnd</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        pangolin::<span class="built_in">FinishFrame</span>();</span><br><span class="line">        <span class="built_in">usleep</span>(<span class="number">5000</span>); <span class="comment">// sleep 5 ms</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>更新CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 2.8)</span><br><span class="line">project(examples)</span><br><span class="line"></span><br><span class="line">include_directories(<span class="string">&quot;/usr/include/eigen3&quot;</span>)</span><br><span class="line">add_executable(coordinateTransform coordinateTransform.cpp)</span><br><span class="line"></span><br><span class="line">find_package(Pangolin REQUIRED)</span><br><span class="line">include_directories($&#123;Pangolin_INCLUDE_DIRS&#125;)</span><br><span class="line">add_executable(plotTrajectory plotTrajectory.cpp)</span><br><span class="line">target_link_libraries(plotTrajectory $&#123;Pangolin_LIBRARIES&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch3/examples/build$ cmake ..</span><br><span class="line">-- Configuring <span class="keyword">done</span></span><br><span class="line">-- Generating <span class="keyword">done</span></span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch3/examples/build</span><br><span class="line">hita@hita-vm:~/slambook/ch3/examples/build$ make </span><br><span class="line">Scanning dependencies of target plotTrajectory</span><br><span class="line">[ 25%] Building CXX object CMakeFiles/plotTrajectory.<span class="built_in">dir</span>/plotTrajectory.cpp.o</span><br><span class="line">[ 50%] Linking CXX executable plotTrajectory</span><br><span class="line">[ 50%] Built target plotTrajectory</span><br><span class="line">[100%] Built target coordinateTransform</span><br><span class="line">hita@hita-vm:~/slambook/ch3/examples/build$ ./plotTrajectory </span><br><span class="line"><span class="built_in">read</span> total620pose entries</span><br></pre></td></tr></table></figure>
+
+<p>显示结果</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250820154628932.png" alt="image-20250820154628932"></p>
+<hr>
+<h3 id="显示相机位姿"><a href="#显示相机位姿" class="headerlink" title="显示相机位姿"></a>显示相机位姿</h3><p>新建文件 <code>slambook/ch3/visualizeGeometry.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Geometry&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Eigen;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pangolin/pangolin.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">RotationMatrix</span> &#123;</span><br><span class="line">  Matrix3d matrix = Matrix3d::<span class="built_in">Identity</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ostream &amp;<span class="keyword">operator</span>&lt;&lt;(ostream &amp;out, <span class="type">const</span> RotationMatrix &amp;r) &#123;</span><br><span class="line">  out.<span class="built_in">setf</span>(ios::fixed);</span><br><span class="line">  Matrix3d matrix = r.matrix;</span><br><span class="line">  out &lt;&lt; <span class="string">&#x27;=&#x27;</span>;</span><br><span class="line">  out &lt;&lt; <span class="string">&quot;[&quot;</span> &lt;&lt; <span class="built_in">setprecision</span>(<span class="number">2</span>) &lt;&lt; <span class="built_in">matrix</span>(<span class="number">0</span>, <span class="number">0</span>) &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; <span class="built_in">matrix</span>(<span class="number">0</span>, <span class="number">1</span>) &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; <span class="built_in">matrix</span>(<span class="number">0</span>, <span class="number">2</span>) &lt;&lt; <span class="string">&quot;],&quot;</span></span><br><span class="line">      &lt;&lt; <span class="string">&quot;[&quot;</span> &lt;&lt; <span class="built_in">matrix</span>(<span class="number">1</span>, <span class="number">0</span>) &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; <span class="built_in">matrix</span>(<span class="number">1</span>, <span class="number">1</span>) &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; <span class="built_in">matrix</span>(<span class="number">1</span>, <span class="number">2</span>) &lt;&lt; <span class="string">&quot;],&quot;</span></span><br><span class="line">      &lt;&lt; <span class="string">&quot;[&quot;</span> &lt;&lt; <span class="built_in">matrix</span>(<span class="number">2</span>, <span class="number">0</span>) &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; <span class="built_in">matrix</span>(<span class="number">2</span>, <span class="number">1</span>) &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; <span class="built_in">matrix</span>(<span class="number">2</span>, <span class="number">2</span>) &lt;&lt; <span class="string">&quot;]&quot;</span>;</span><br><span class="line">  <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">istream &amp;<span class="keyword">operator</span>&gt;&gt;(istream &amp;in, RotationMatrix &amp;r) &#123;</span><br><span class="line">  <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TranslationVector</span> &#123;</span><br><span class="line">  Vector3d trans = <span class="built_in">Vector3d</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ostream &amp;<span class="keyword">operator</span>&lt;&lt;(ostream &amp;out, <span class="type">const</span> TranslationVector &amp;t) &#123;</span><br><span class="line">  out &lt;&lt; <span class="string">&quot;=[&quot;</span> &lt;&lt; t.<span class="built_in">trans</span>(<span class="number">0</span>) &lt;&lt; <span class="string">&#x27;,&#x27;</span> &lt;&lt; t.<span class="built_in">trans</span>(<span class="number">1</span>) &lt;&lt; <span class="string">&#x27;,&#x27;</span> &lt;&lt; t.<span class="built_in">trans</span>(<span class="number">2</span>) &lt;&lt; <span class="string">&quot;]&quot;</span>;</span><br><span class="line">  <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">istream &amp;<span class="keyword">operator</span>&gt;&gt;(istream &amp;in, TranslationVector &amp;t) &#123;</span><br><span class="line">  <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">QuaternionDraw</span> &#123;</span><br><span class="line">  Quaterniond q;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ostream &amp;<span class="keyword">operator</span>&lt;&lt;(ostream &amp;out, <span class="type">const</span> QuaternionDraw quat) &#123;</span><br><span class="line">  <span class="keyword">auto</span> c = quat.q.<span class="built_in">coeffs</span>();</span><br><span class="line">  out &lt;&lt; <span class="string">&quot;=[&quot;</span> &lt;&lt; c[<span class="number">0</span>] &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; c[<span class="number">1</span>] &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; c[<span class="number">2</span>] &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; c[<span class="number">3</span>] &lt;&lt; <span class="string">&quot;]&quot;</span>;</span><br><span class="line">  <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">istream &amp;<span class="keyword">operator</span>&gt;&gt;(istream &amp;in, <span class="type">const</span> QuaternionDraw quat) &#123;</span><br><span class="line">  <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">  pangolin::<span class="built_in">CreateWindowAndBind</span>(<span class="string">&quot;visualize geometry&quot;</span>, <span class="number">1000</span>, <span class="number">600</span>);</span><br><span class="line">  <span class="built_in">glEnable</span>(GL_DEPTH_TEST);</span><br><span class="line">  <span class="function">pangolin::OpenGlRenderState <span class="title">s_cam</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    pangolin::ProjectionMatrix(<span class="number">1000</span>, <span class="number">600</span>, <span class="number">420</span>, <span class="number">420</span>, <span class="number">500</span>, <span class="number">300</span>, <span class="number">0.1</span>, <span class="number">1000</span>),</span></span></span><br><span class="line"><span class="params"><span class="function">    pangolin::ModelViewLookAt(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, pangolin::AxisY)</span></span></span><br><span class="line"><span class="params"><span class="function">  )</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">const</span> <span class="type">int</span> UI_WIDTH = <span class="number">500</span>;</span><br><span class="line"></span><br><span class="line">  pangolin::View &amp;d_cam = pangolin::<span class="built_in">CreateDisplay</span>().</span><br><span class="line">    <span class="built_in">SetBounds</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, pangolin::Attach::<span class="built_in">Pix</span>(UI_WIDTH), <span class="number">1.0</span>, <span class="number">-1000.0f</span> / <span class="number">600.0f</span>).</span><br><span class="line">    <span class="built_in">SetHandler</span>(<span class="keyword">new</span> pangolin::<span class="built_in">Handler3D</span>(s_cam));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ui</span></span><br><span class="line">  <span class="function">pangolin::Var&lt;RotationMatrix&gt; <span class="title">rotation_matrix</span><span class="params">(<span class="string">&quot;ui.R&quot;</span>, RotationMatrix())</span></span>;</span><br><span class="line">  <span class="function">pangolin::Var&lt;TranslationVector&gt; <span class="title">translation_vector</span><span class="params">(<span class="string">&quot;ui.t&quot;</span>, TranslationVector())</span></span>;</span><br><span class="line">  <span class="function">pangolin::Var&lt;TranslationVector&gt; <span class="title">euler_angles</span><span class="params">(<span class="string">&quot;ui.rpy&quot;</span>, TranslationVector())</span></span>;</span><br><span class="line">  <span class="function">pangolin::Var&lt;QuaternionDraw&gt; <span class="title">quaternion</span><span class="params">(<span class="string">&quot;ui.q&quot;</span>, QuaternionDraw())</span></span>;</span><br><span class="line">  pangolin::<span class="built_in">CreatePanel</span>(<span class="string">&quot;ui&quot;</span>).<span class="built_in">SetBounds</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, pangolin::Attach::<span class="built_in">Pix</span>(UI_WIDTH));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (!pangolin::<span class="built_in">ShouldQuit</span>()) &#123;</span><br><span class="line">    <span class="built_in">glClear</span>(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    d_cam.<span class="built_in">Activate</span>(s_cam);</span><br><span class="line"></span><br><span class="line">    pangolin::OpenGlMatrix matrix = s_cam.<span class="built_in">GetModelViewMatrix</span>();</span><br><span class="line">    Matrix&lt;<span class="type">double</span>, <span class="number">4</span>, <span class="number">4</span>&gt; m = matrix;</span><br><span class="line"></span><br><span class="line">    RotationMatrix R;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">3</span>; j++)</span><br><span class="line">        R.<span class="built_in">matrix</span>(i, j) = <span class="built_in">m</span>(j, i);</span><br><span class="line">    rotation_matrix = R;</span><br><span class="line"></span><br><span class="line">    TranslationVector t;</span><br><span class="line">    t.trans = <span class="built_in">Vector3d</span>(<span class="built_in">m</span>(<span class="number">0</span>, <span class="number">3</span>), <span class="built_in">m</span>(<span class="number">1</span>, <span class="number">3</span>), <span class="built_in">m</span>(<span class="number">2</span>, <span class="number">3</span>));</span><br><span class="line">    t.trans = -R.matrix * t.trans;</span><br><span class="line">    translation_vector = t;</span><br><span class="line"></span><br><span class="line">    TranslationVector euler;</span><br><span class="line">    euler.trans = R.matrix.<span class="built_in">eulerAngles</span>(<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    euler_angles = euler;</span><br><span class="line"></span><br><span class="line">    QuaternionDraw quat;</span><br><span class="line">    quat.q = <span class="built_in">Quaterniond</span>(R.matrix);</span><br><span class="line">    quaternion = quat;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">glColor3f</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    pangolin::<span class="built_in">glDrawColouredCube</span>();</span><br><span class="line">    <span class="comment">// draw the original axis</span></span><br><span class="line">    <span class="built_in">glLineWidth</span>(<span class="number">3</span>);</span><br><span class="line">    <span class="built_in">glColor3f</span>(<span class="number">0.8f</span>, <span class="number">0.f</span>, <span class="number">0.f</span>);</span><br><span class="line">    <span class="built_in">glBegin</span>(GL_LINES);</span><br><span class="line">    <span class="built_in">glVertex3f</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">glVertex3f</span>(<span class="number">10</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">glColor3f</span>(<span class="number">0.f</span>, <span class="number">0.8f</span>, <span class="number">0.f</span>);</span><br><span class="line">    <span class="built_in">glVertex3f</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">glVertex3f</span>(<span class="number">0</span>, <span class="number">10</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">glColor3f</span>(<span class="number">0.2f</span>, <span class="number">0.2f</span>, <span class="number">1.f</span>);</span><br><span class="line">    <span class="built_in">glVertex3f</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">glVertex3f</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">glEnd</span>();</span><br><span class="line"></span><br><span class="line">    pangolin::<span class="built_in">FinishFrame</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cmake_minimum_required( VERSION 2.8 )</span><br><span class="line">project( visualizeGeometry )</span><br><span class="line"></span><br><span class="line">set(CMAKE_CXX_FLAGS <span class="string">&quot;-std=c++14&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加Eigen头文件</span></span><br><span class="line">include_directories( <span class="string">&quot;/usr/include/eigen3&quot;</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加Pangolin依赖</span></span><br><span class="line">find_package( Pangolin )</span><br><span class="line">include_directories( $&#123;Pangolin_INCLUDE_DIRS&#125; )</span><br><span class="line"></span><br><span class="line">add_executable( visualizeGeometry visualizeGeometry.cpp )</span><br><span class="line">target_link_libraries( visualizeGeometry $&#123;Pangolin_LIBRARIES&#125; )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch3/visualizeGeometry/build$ cmake ..</span><br><span class="line">-- Configuring <span class="keyword">done</span></span><br><span class="line">-- Generating <span class="keyword">done</span></span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch3/visualizeGeometry/build</span><br><span class="line">hita@hita-vm:~/slambook/ch3/visualizeGeometry/build$ make</span><br><span class="line">[100%] Built target visualizeGeometry</span><br><span class="line">hita@hita-vm:~/slambook/ch3/visualizeGeometry/build$ ./visualizeGeometry </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250820160139624.png" alt="image-20250820160139624"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%8C%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%88%9D%E8%AF%86SLAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%8C%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%88%9D%E8%AF%86SLAM/" class="post-title-link" itemprop="url">第二讲-初始SLAM</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-08-20 00:00:00 / 修改时间：16:22:27" itemprop="dateCreated datePublished" datetime="2025-08-20T00:00:00+08:00">2025-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/" itemprop="url" rel="index"><span itemprop="name">视觉SLAM十四讲</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="视觉SLAM十四讲（第二讲）——初识SLAM"><a href="#视觉SLAM十四讲（第二讲）——初识SLAM" class="headerlink" title="视觉SLAM十四讲（第二讲）——初识SLAM"></a>视觉SLAM十四讲（第二讲）——初识SLAM</h1><h2 id="经典视觉SLAM框架"><a href="#经典视觉SLAM框架" class="headerlink" title="经典视觉SLAM框架"></a>经典视觉SLAM框架</h2><p><img src="https://th.bing.com/th/id/R.2ecd915fe6af828b0dd93990ed5b5e3c?rik=/8Yy8oF28qLB9w&riu=http://download.broadview.com.cn/Original/17055494d435efcc231f&ehk=2ay/8ZjBGFFLUpgaacPUFPzbNJMHb8ldsjQ6NNwVEz8=&risl=&pid=ImgRaw&r=0" alt="经典视觉SLAM框架 - 博文视点"></p>
+<p><strong>流程</strong></p>
+<ol>
+<li>传感器信息读取：主要为相机图像信息的读取和预处理。如果在机器人中，可能还有码盘、惯性传感器等信息的读取和同步。</li>
+<li>前端视觉里程计(visual odometry ,vo)：视觉里程计的任务是估算相邻图像间相机的运动，以及局部地图的样子，vo又称为前端。</li>
+<li>后端（非线性）优化(Optimization)：后端接受不同时刻里程计测量的相机位姿，以及回环检测的信息，进行优化，得到全局一致的轨迹和地图。称为后端。</li>
+<li>回环检测（loop closure detection）：回环检测判断机器人是否到达过先前的位置，如果检测到回环，会把信息提供给后端处理</li>
+<li>建图（mapping）：根据估计的轨迹，建立与任务要求对应的地图。</li>
+</ol>
+<hr>
+<h3 id="视觉里程计"><a href="#视觉里程计" class="headerlink" title="视觉里程计"></a>视觉里程计</h3><p>视觉里程计能够通过相邻帧间的图像估计相机运动，并且恢复场景的空间结构。它之所以被称为里程计，是因为它实际上只计算相邻时刻的运动，和过去的信息没有关联。但是仅仅通过视觉里程计来估计轨迹，会出现累积漂移，需要后端优化和回环检测。回环检测负责把“机器人回到原始位置”的事情检测出来，后端优化则根据该信息，校正整个轨迹。</p>
+<h3 id="后端优化"><a href="#后端优化" class="headerlink" title="后端优化"></a>后端优化</h3><p>后端优化主要指处理SLAM过程中的噪声问题，前端给后端提供待优化的数据，后端负责整体的优化过程。只是面对数据，不关心数据的来源。前端和计算机视觉研究领域相关，如图像的特征提取和匹配，后端则主要是滤波和非线性优化算法。</p>
+<p>SLAM<strong>本质</strong>：对运动主体自身和周围环境空间不确定性的估计。</p>
+<h3 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h3><p>主要解决位置估计随时间漂移的问题，目的：让机器人知道自己是否已经回到了原点。</p>
+<p>回环检测与“定位”和“建图”二者有密切关系。需要让机器人具有识别去过的地方的能力。<strong>例如可以判断图像间的相似性</strong>来完成回环检测。<strong>视觉回环检测实质上就是一种计算图像数据相似性</strong>的算法。如果检测到，前后两点是同一个点这个信息，会发送给后端优化算法，从而把轨迹地图调整到符合回环检测的样子。</p>
+<h3 id="建图"><a href="#建图" class="headerlink" title="建图"></a>建图</h3><p>建图是指构建地图的过程，地图是对环境的描述。大体上可以分为：<strong>度量地图</strong> 和 <strong>拓扑地图</strong>两种</p>
+<h4 id="度量地图"><a href="#度量地图" class="headerlink" title="度量地图"></a>度量地图</h4><p>度量地图（Metic Map）或者几何地图（Geometric Map）强调精确表示地图中的位置关系，通过稀疏、稠密分类。常见的点云、八叉树、栅格地图等都属于度量地图。</p>
+<p>根据地图是否是连续的还可以分为连续地图和离散地图。例如栅格地图、体素地图就是典型的离散地图。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250801154105876.png" alt="image-20250801154105876"></p>
+<h4 id="语义地图"><a href="#语义地图" class="headerlink" title="语义地图"></a>语义地图</h4><p>语义地图包含语义信息，语义信息可以是物体的种类、姿态、形状等描述。只要是包含语义信息的就可以算是语义地图。下图为包含语义的点云地图。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/4f3bee86382c87ff3cfdedf7f6ffc7ad.png" alt="img"></p>
+<h4 id="拓扑地图"><a href="#拓扑地图" class="headerlink" title="拓扑地图"></a>拓扑地图</h4><p>拓扑地图(topological map)使用节点和边来表示环境，只考虑节点间的连续性，例如只关注A、B点是否联通，并不考虑是如何从A到B的。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/dbb2dd50ecdd508e0c520ad269309f58.png" alt="bbd00a222180cbc06ddf8031ffc95f99.png"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/CV_Autobot/article/details/140709472">原来如此！简单总结SLAM中的各种地图-CSDN博客</a></p>
+<hr>
+<h2 id="SLAM问题的数学表述"><a href="#SLAM问题的数学表述" class="headerlink" title="SLAM问题的数学表述"></a>SLAM问题的数学表述</h2><p>有点看不明白，先放着</p>
+<h2 id="实践编程"><a href="#实践编程" class="headerlink" title="实践编程"></a>实践编程</h2><p>我使用的是ubuntu 20.04虚拟机</p>
+<h3 id="Hello-SLAM"><a href="#Hello-SLAM" class="headerlink" title="Hello SLAM"></a>Hello SLAM</h3><p>下载源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/gaoxiang12/slambook2.git</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818152557183.png" alt="image-20250818152557183"></p>
+<p>使用编译器，把文本文件编译成可执行文件，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ helloSLAM.cpp</span><br></pre></td></tr></table></figure>
+
+<p>顺利执行之后会在目录里新增一个 a.out文件，这是一个可执行文件</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818152703369.png" alt="image-20250818152703369"></p>
+<p>在终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./a.out</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818153220320.png" alt="image-20250818153220320"></p>
+<hr>
+<h3 id="使用CMake"><a href="#使用CMake" class="headerlink" title="使用CMake"></a>使用CMake</h3><p>在一个cmake工程中，我们使用cmake命令生成一个makefile文件，然后使用make命令根据makefile内容编译整个工程。在<code>slamebook2/ch2/CMakeLists.txt</code>文件中：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 2.8)</span><br><span class="line">project(helloSLAM)</span><br><span class="line">add_executable(helloSLAM helloSLAM.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>在<code>slambook2/ch2/</code>目录下，调用cmake对该工程进行cmake编译：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ cmake .</span><br><span class="line">-- The C compiler identification is GNU 9.4.0</span><br><span class="line">-- The CXX compiler identification is GNU 9.4.0</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc -- works</span><br><span class="line">-- Detecting C compiler ABI info</span><br><span class="line">-- Detecting C compiler ABI info - done</span><br><span class="line">-- Detecting C compile features</span><br><span class="line">-- Detecting C compile features - done</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++ -- works</span><br><span class="line">-- Detecting CXX compiler ABI info</span><br><span class="line">-- Detecting CXX compiler ABI info - done</span><br><span class="line">-- Detecting CXX compile features</span><br><span class="line">-- Detecting CXX compile features - done</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ make</span><br><span class="line">Scanning dependencies of target helloSLAM</span><br><span class="line">[ 50%] Building CXX object CMakeFiles/helloSLAM.dir/helloSLAM.cpp.o</span><br><span class="line">[100%] Linking CXX executable helloSLAM</span><br><span class="line">[100%] Built target helloSLAM</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ ./helloSLAM </span><br><span class="line">hello SLAM!</span><br></pre></td></tr></table></figure>
+
+<p>同时也可以新建一个build文件夹，存放中间文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2/build$ cmake ..</span><br><span class="line">-- The C compiler identification is GNU 9.4.0</span><br><span class="line">-- The CXX compiler identification is GNU 9.4.0</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc -- works</span><br><span class="line">-- Detecting C compiler ABI info</span><br><span class="line">-- Detecting C compiler ABI info - done</span><br><span class="line">-- Detecting C compile features</span><br><span class="line">-- Detecting C compile features - done</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++</span><br><span class="line">-- Check for working CXX compiler: /usr/bin/c++ -- works</span><br><span class="line">-- Detecting CXX compiler ABI info</span><br><span class="line">-- Detecting CXX compiler ABI info - done</span><br><span class="line">-- Detecting CXX compile features</span><br><span class="line">-- Detecting CXX compile features - done</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2/build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ make</span><br><span class="line">Scanning dependencies of target helloSLAM</span><br><span class="line">[ 50%] Building CXX object CMakeFiles/helloSLAM.dir/helloSLAM.cpp.o</span><br><span class="line">[100%] Linking CXX executable helloSLAM</span><br><span class="line">[100%] Built target helloSLAM</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以实现源代码与中间文件的分离</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818162920119.png" alt="image-20250818162920119"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818162935116.png" alt="image-20250818162935116"></p>
+<h3 id="使用库"><a href="#使用库" class="headerlink" title="使用库"></a>使用库</h3><p>在<code>slambook/ch2/</code>目录下新建文件：<code>libHelloSLAM.cpp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 这是一个库文件</span><br><span class="line"># include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">void printHello() &#123;</span><br><span class="line">    cout &lt;&lt; &quot;Hello SLAM!&quot; &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个库文件提供一个printHello函数，调用此函数将输出一条信息。但是它没有主函数，意味着这个库中没有可执行文件，在CMakeLists.txt中加上如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add_library（hello libHelloSLAM.cpp）</span><br></pre></td></tr></table></figure>
+
+<p>这样就是告诉cmake，想要把这个文件编译成一个叫做hello的库，然后编译整个工程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ cd build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2/build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ make</span><br><span class="line">Scanning dependencies of target hello</span><br><span class="line">[ 25%] Building CXX object CMakeFiles/hello.dir/libHelloSLAM.cpp.o</span><br><span class="line">[ 50%] Linking CXX static library libhello.a</span><br><span class="line">[ 50%] Built target hello</span><br><span class="line">[100%] Built target helloSLAM</span><br></pre></td></tr></table></figure>
+
+<p>这时，在build 文件夹会生成一个libhello.a文件。这是我们得到的库</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250818170143539.png" alt="image-20250818170143539"></p>
+<blockquote>
+<p>库文件</p>
+</blockquote>
+<p>在linux中库文件分为静态库和共享库，静态库以 .a为后缀，共享库以 .so 为后缀，所有的库都是一些函数打包后的集合，差别在于静态库每次调用都会生成一个副本，共享库则只有一个副本。库文件是一个压缩包。为了让别人使用这个库，需要提供一份头文件，说明库里面有什么。<strong>所以对于使用者，只需要拿到头文件和库文件就可以调用这个库</strong>。下面编写libhello的头文件</p>
+<p>新建文件 <code>slambook/ch2/libHelloSLAM.h</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#ifndef LIBHELLOSLAM_H_</span><br><span class="line">#define LIBHELLOSLAM_H_</span><br><span class="line"></span><br><span class="line">void printHello();</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以使用printHello函数了，最后，写一个可执行程序来调用函数</p>
+<p>新建文件 <code>slambook/ch2/useHello.cpp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;libHelloSLAM.h&quot;</span><br><span class="line"></span><br><span class="line">// 使用libHelloSLAM.h中的printHello()函数</span><br><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line">    printHello();</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，在CMakeLists.txt中添加一个可执行程序的生成命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add_executable(useHello useHello.cpp)</span><br><span class="line">target_link_libraries(useHello hello)</span><br></pre></td></tr></table></figure>
+
+<p>最后测试一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2/build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ make</span><br><span class="line">Scanning dependencies of target hello</span><br><span class="line">[ 25%] Building CXX object CMakeFiles/hello.dir/libHelloSLAM.cpp.o</span><br><span class="line">[ 50%] Linking CXX static library libhello.a</span><br><span class="line">[ 50%] Built target hello</span><br><span class="line">[100%] Built target helloSLAM</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch2/build</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ make</span><br><span class="line">[ 33%] Built target hello</span><br><span class="line">Scanning dependencies of target useHello</span><br><span class="line">[ 50%] Building CXX object CMakeFiles/useHello.dir/useHello.cpp.o</span><br><span class="line">[ 66%] Linking CXX executable useHello</span><br><span class="line">[ 66%] Built target useHello</span><br><span class="line">[100%] Built target helloSLAM</span><br></pre></td></tr></table></figure>
+
+<p>运行可执行文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch2$ cd build/</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ ./useHello </span><br><span class="line">Hello SLAM!</span><br><span class="line">hita@hita-vm:~/slambook/ch2/build$ </span><br></pre></td></tr></table></figure>
+
+<p>输出结果与之前一致。通过这个例子，演示了如何生成并且调用一个库。</p>
+<hr>
+<h3 id="使用IDE"><a href="#使用IDE" class="headerlink" title="使用IDE"></a>使用IDE</h3><p>我使用的是vscode。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/08/01/EndNote%20%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -211,9 +596,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-08-01 00:00:00 / 修改时间：09:57:49" itemprop="dateCreated datePublished" datetime="2025-08-01T00:00:00+08:00">2025-08-01</time>
+      <time title="创建时间：2025-08-01 00:00:00" itemprop="dateCreated datePublished" datetime="2025-08-01T00:00:00+08:00">2025-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-08-20 16:19:20" itemprop="dateModified" datetime="2025-08-20T16:19:20+08:00">2025-08-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -221,7 +612,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">工具使用</span></a>
+          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
         </span>
     </span>
 
@@ -1236,6 +1627,116 @@ rosrun robot_vision fire_marker_publisher.py
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/04/%E4%BD%BF%E7%94%A8Realsense%20D435%E5%B0%86RGB%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%AF%B9%E9%BD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/04/%E4%BD%BF%E7%94%A8Realsense%20D435%E5%B0%86RGB%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%AF%B9%E9%BD%90/" class="post-title-link" itemprop="url">使用Realsense D435将RGB图像与深度图像对齐</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-07-04 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-04T00:00:00+08:00">2025-07-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="使用Realsense-D435将RGB图像与深度图像对齐"><a href="#使用Realsense-D435将RGB图像与深度图像对齐" class="headerlink" title="使用Realsense D435将RGB图像与深度图像对齐"></a>使用Realsense D435将RGB图像与深度图像对齐</h1><h2 id="深度图像简介"><a href="#深度图像简介" class="headerlink" title="深度图像简介"></a>深度图像简介</h2><p>RealSense D435 配备了两个摄像头（左、右）和红外传感器，采用 <strong>双目立体视觉</strong> 技术。该技术模拟人眼通过两个视角获取的图像差异来计算景物的深度信息。</p>
+<p>深度图像是一种特殊的图像类型，用来表示场景中每个像素到相机的距离，没有颜色信息，通过灰度值或者伪彩色来表示不同深度。</p>
+<p>深度图像可以通过多种技术生成，常见的生成方法包括：</p>
+<ol>
+<li>立体视觉：使用两台相机从不同角度拍摄同一场景，计算图像中的视差来获取深度。</li>
+<li>飞行时间（ToF）传感器：通过发射光脉冲并测量其反射回传感器的时间来计算物体距离。</li>
+<li>结构光技术：通过投射已知图案到物体表面，并分析图案的变形来计算深度。</li>
+<li>激光雷达（LiDAR）：通过激光扫描场景并测量光束反射的时间来获得深度信息。</li>
+</ol>
+<p>这款RealsenseD435采用双目立体视觉与红外结构光相结合的方式生成深度图像，可以有效捕捉高精度的深度信息。</p>
+<hr>
+<h2 id="深度图像显示"><a href="#深度图像显示" class="headerlink" title="深度图像显示"></a>深度图像显示</h2><ol>
+<li>启动相机节点</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开rviz</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rviz</span><br></pre></td></tr></table></figure>
+
+<p>选择Image插件，选择**&#x2F;camera&#x2F;aligned_depth_to_color&#x2F;image_raw<strong>话题，即可查看对齐的深度图像，再选择</strong>&#x2F;camera&#x2F;color&#x2F;image_raw**，即可查看RGB图像。</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/1.png" alt="image-20250703160602119" style="zoom:50%;" />
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250703160954999.png" alt="image-20250703160954999"></p>
+<p>这样简单的一个深度图像对齐后显示就完成了。后续进行火源识别与定位会起到作用。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/04/%E5%88%A9%E7%94%A8RealsenseD435%E5%AE%9E%E7%8E%B0%E7%81%AB%E7%84%B0%E8%AF%86%E5%88%AB%E5%8F%8A%E5%AE%9A%E4%BD%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1369,610 +1870,6 @@ rosrun robot_vision fire_marker_publisher.py
 <p><strong>X表示距离相机左右的距离（米），向右为正，Y表示距离相机的垂直方向，向上为正，Z表示距离相机的深度，向前为正。</strong></p>
 <p>也就是说，图中最后一行表示：火焰位置在相机的右方0.06m,上方0m，前方0.27m.</p>
 <p>这样，基本的火焰识别与定位就实现了。后续可以将火焰的相对坐标进行转换，可以接入消防小车的自主导航系统中了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/04/%E4%BD%BF%E7%94%A8Realsense%20D435%E5%B0%86RGB%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%AF%B9%E9%BD%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/04/%E4%BD%BF%E7%94%A8Realsense%20D435%E5%B0%86RGB%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%AF%B9%E9%BD%90/" class="post-title-link" itemprop="url">使用Realsense D435将RGB图像与深度图像对齐</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-07-04 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-04T00:00:00+08:00">2025-07-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="使用Realsense-D435将RGB图像与深度图像对齐"><a href="#使用Realsense-D435将RGB图像与深度图像对齐" class="headerlink" title="使用Realsense D435将RGB图像与深度图像对齐"></a>使用Realsense D435将RGB图像与深度图像对齐</h1><h2 id="深度图像简介"><a href="#深度图像简介" class="headerlink" title="深度图像简介"></a>深度图像简介</h2><p>RealSense D435 配备了两个摄像头（左、右）和红外传感器，采用 <strong>双目立体视觉</strong> 技术。该技术模拟人眼通过两个视角获取的图像差异来计算景物的深度信息。</p>
-<p>深度图像是一种特殊的图像类型，用来表示场景中每个像素到相机的距离，没有颜色信息，通过灰度值或者伪彩色来表示不同深度。</p>
-<p>深度图像可以通过多种技术生成，常见的生成方法包括：</p>
-<ol>
-<li>立体视觉：使用两台相机从不同角度拍摄同一场景，计算图像中的视差来获取深度。</li>
-<li>飞行时间（ToF）传感器：通过发射光脉冲并测量其反射回传感器的时间来计算物体距离。</li>
-<li>结构光技术：通过投射已知图案到物体表面，并分析图案的变形来计算深度。</li>
-<li>激光雷达（LiDAR）：通过激光扫描场景并测量光束反射的时间来获得深度信息。</li>
-</ol>
-<p>这款RealsenseD435采用双目立体视觉与红外结构光相结合的方式生成深度图像，可以有效捕捉高精度的深度信息。</p>
-<hr>
-<h2 id="深度图像显示"><a href="#深度图像显示" class="headerlink" title="深度图像显示"></a>深度图像显示</h2><ol>
-<li>启动相机节点</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打开rviz</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rviz</span><br></pre></td></tr></table></figure>
-
-<p>选择Image插件，选择**&#x2F;camera&#x2F;aligned_depth_to_color&#x2F;image_raw<strong>话题，即可查看对齐的深度图像，再选择</strong>&#x2F;camera&#x2F;color&#x2F;image_raw**，即可查看RGB图像。</p>
-<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/1.png" alt="image-20250703160602119" style="zoom:50%;" />
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250703160954999.png" alt="image-20250703160954999"></p>
-<p>这样简单的一个深度图像对齐后显示就完成了。后续进行火源识别与定位会起到作用。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/CMake%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/01/CMake%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">CMake安装与使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="CMake安装与使用"><a href="#CMake安装与使用" class="headerlink" title="CMake安装与使用"></a>CMake安装与使用</h1><p>CMake 是个一个开源的跨平台自动化建构系统，用来管理软件建置的程序，并不依赖于某特定编译器，并可支持多层目录、多个应用程序与多个函数库。</p>
-<p>CMake 通过使用简单的配置文件 CMakeLists.txt，自动生成不同平台的构建文件（如 Makefile、Ninja 构建文件、Visual Studio 工程文件等），简化了项目的编译和构建过程。</p>
-<p>CMake 本身不是构建工具，而是生成构建系统的工具，它生成的构建系统可以使用不同的编译器和工具链。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Cmake.svg" alt="img"></p>
-<ul>
-<li>CMakeLists.txt 文件： CMake 的配置文件，用于定义项目的构建规则、依赖关系、编译选项等。每个 CMake 项目通常包含一个或多个 CMakeLists.txt 文件。</li>
-<li>构建目录： 为了保持源代码的整洁，CMake 鼓励使用独立的构建目录（Out-of-source 构建）。这样，构建生成的文件与源代码分开存放。</li>
-</ul>
-<hr>
-<p><strong>基本流程</strong></p>
-<ol>
-<li>编写 CMakeLists.txt 文件： 定义项目的构建规则和依赖关系。</li>
-<li>生成构建文件： 使用 CMake 生成适合当前平台的构建系统文件（例如 Makefile、Visual Studio 工程文件）。</li>
-<li>执行构建： 使用生成的构建系统文件（如 make、ninja、msbuild）来编译项目。</li>
-</ol>
-<h2 id="安装cmake"><a href="#安装cmake" class="headerlink" title="安装cmake"></a>安装cmake</h2><p>Linux:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update  <span class="comment">#更新APT列表</span></span><br><span class="line"><span class="built_in">sudo</span> apt install cmake  <span class="comment">#下载</span></span><br><span class="line">cmake --version  <span class="comment">#查看版本</span></span><br></pre></td></tr></table></figure>
-
-<p>如果你通过APT或Snap安装CMake，一般不需要额外的配置。安装完成后，CMake应该能够正常工作并且系统会自动将它添加到环境变量中。不过，如果你是通过源代码编译安装CMake，可能需要一些额外的配置来确保它在系统中正确工作。这里直接使用APT安装，不需要配置环境。</p>
-<hr>
-<h2 id="CMake基础"><a href="#CMake基础" class="headerlink" title="CMake基础"></a>CMake基础</h2><h3 id="CMakeLists-txt-文件"><a href="#CMakeLists-txt-文件" class="headerlink" title="CMakeLists.txt 文件"></a>CMakeLists.txt 文件</h3><p>这个文件是CMake的配置文件，用于定义项目的构建规则、依赖关系、编译选项等。</p>
-<p>每个项目都需要一个或者多个CMakeLists.txt文件</p>
-<h4 id="文件结构及基本语法"><a href="#文件结构及基本语法" class="headerlink" title="文件结构及基本语法"></a>文件结构及基本语法</h4><p><strong>常见指令</strong></p>
-<ol>
-<li>指定CMake的最低版本要求</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION &lt;version&gt;)</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>定义项目的名称和使用的编程语言</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">project</span>(MyProject CXX)</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>指定要生成的可执行文件和其源文件</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(&lt;<span class="keyword">target</span>&gt; &lt;source_files&gt;...)</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(scout_base_node src/scout_base_node.cpp)</span><br></pre></td></tr></table></figure>
-
-<p>其作用是告诉CMake生成一个名为<strong>scout_base_node</strong>的可执行文件，这个文件是由src&#x2F;scout_base_node.cpp这个源文件编译而来的。</p>
-<ol start="4">
-<li>创建一个库（静态库或者动态库）及其元文件</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(&lt;<span class="keyword">target</span>&gt; &lt;source_files&gt;...)</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(scout_messenger STATIC src/scout_messenger.cpp)</span><br></pre></td></tr></table></figure>
-
-<p>这个就是用于生成一个库文件为：scout_messenger，构建完成之后，CMake会生成一个名为 libscout_messenger.a 的静态库文件（在Linux系统中）</p>
-<p>STATIC：这个关键字表示你要生成的是一个静态库。静态库是一个包含已编译代码的文件，在链接时会将整个库的内容直接复制到最终的可执行文件或其他库中。与动态库（shared 或 dll）不同，静态库在运行时不需要依赖库文件。</p>
-<p>src&#x2F;scout_messenger.cpp：这是生成静态库所需的源文件。在这个例子中，scout_messenger.cpp 这个源文件会被编译并打包成 scout_messenger 静态库。</p>
-<ol start="5">
-<li>链接目标文件与其他库</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(&lt;<span class="keyword">target</span>&gt; &lt;libraries&gt;...)</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(scout_messenger <span class="variable">$&#123;catkin_LIBRARIES&#125;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>在 CMake 中用来将 scout_messenger 目标与 ROS 所需的库（即 catkin_LIBRARIES）进行链接的命令。通过它，scout_messenger 可以访问这些 ROS 库中的功能，确保程序能够正常运行在 ROS 环境下。</p>
-<ol start="6">
-<li>添加头文件搜索路径</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_directories</span>(&lt;dirs&gt;...)</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_directories</span>(</span><br><span class="line">    <span class="keyword">include</span></span><br><span class="line">    <span class="variable">$&#123;catkin_INCLUDE_DIRS&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>include：这是一个相对路径，指向当前项目的 include 文件夹，通常用来存放项目的头文件。通过将 include 添加到 include_directories 中，编译器会在编译过程中查找该目录中的头文件。</p>
-</li>
-<li><p>${catkin_INCLUDE_DIRS}：这是一个 CMake 变量，通常是在使用 ROS 构建系统时定义的。catkin_INCLUDE_DIRS 包含了与 ROS 环境相关的所有头文件路径。这个变量会自动由 catkin 设置，包含了 ROS 包和依赖项的头文件路径。例如，如果你的项目依赖于 roscpp 或其他 ROS 包，catkin_INCLUDE_DIRS 就会包含这些包的头文件路径。</p>
-</li>
-</ul>
-<ol start="7">
-<li>设置变量的值</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(&lt;variable&gt; &lt;value&gt;...)</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>设置目标属性</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_include_directories</span>(<span class="keyword">TARGET</span> target_name</span><br><span class="line">                          [BEFORE | AFTER]</span><br><span class="line">                          [SYSTEM] [PUBLIC | PRIVATE | INTERFACE]</span><br><span class="line">                          [items1...])</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_include_directories</span>(MyExecutable PRIVATE <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>)</span><br></pre></td></tr></table></figure>
-
-<ol start="9">
-<li>安装规则</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">install</span>(TARGETS target1 [target2 ...]</span><br><span class="line">        [RUNTIME DESTINATION dir]</span><br><span class="line">        [LIBRARY DESTINATION dir]</span><br><span class="line">        [ARCHIVE DESTINATION dir]</span><br><span class="line">        [INCLUDES DESTINATION [dir ...]]</span><br><span class="line">        [PRIVATE_HEADER DESTINATION dir]</span><br><span class="line">        [PUBLIC_HEADER DESTINATION dir])</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">install</span>(TARGETS scout_messenger scout_base_node</span><br><span class="line">  RUNTIME DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_BIN_DESTINATION&#125;</span></span><br><span class="line">  LIBRARY DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_LIB_DESTINATION&#125;</span></span><br><span class="line">  ARCHIVE DESTINATION <span class="variable">$&#123;CATKIN_PACKAGE_LIB_DESTINATION&#125;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这些 install 命令的作用是将构建后的文件（如可执行文件、库文件、头文件、launch 文件等）安装到适当的目录中，以便能够在安装后正确运行和使用。</p>
-<ol start="10">
-<li>条件语句</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(expression)</span><br><span class="line">  <span class="comment"># Commands</span></span><br><span class="line"><span class="keyword">elseif</span>(expression)</span><br><span class="line">  <span class="comment"># Commands</span></span><br><span class="line"><span class="keyword">else</span>()</span><br><span class="line">  <span class="comment"># Commands</span></span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(CMAKE_BUILD_TYPE <span class="keyword">STREQUAL</span> <span class="string">&quot;Debug&quot;</span>)</span><br><span class="line">  <span class="keyword">message</span>(<span class="string">&quot;Debug build&quot;</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
-
-<ol start="11">
-<li>自定义命令（add_custom_command 命令）</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_custom_command</span>(</span><br><span class="line">   <span class="keyword">TARGET</span> <span class="keyword">target</span></span><br><span class="line">   PRE_BUILD | PRE_LINK | POST_BUILD</span><br><span class="line">   <span class="keyword">COMMAND</span> command1 [ARGS] [WORKING_DIRECTORY dir]</span><br><span class="line">   [<span class="keyword">COMMAND</span> command2 [ARGS]]</span><br><span class="line">   [DEPENDS [depend1 [depend2 ...]]]</span><br><span class="line">   [COMMENT comment]</span><br><span class="line">   [VERBATIM]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p>例如：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_custom_command</span>(</span><br><span class="line">   <span class="keyword">TARGET</span> MyExecutable POST_BUILD</span><br><span class="line">   <span class="keyword">COMMAND</span> <span class="variable">$&#123;CMAKE_COMMAND&#125;</span> -E echo <span class="string">&quot;Build completed.&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p>这段代码的作用是，在构建 MyExecutable 完成后，执行一个自定义的命令，打印出 “Build completed.” 到控制台。</p>
-<hr>
-<h3 id="变量和缓存"><a href="#变量和缓存" class="headerlink" title="变量和缓存"></a>变量和缓存</h3><p>CMake 使用变量来存储和传递信息，这些变量可以在 CMakeLists.txt 文件中定义和使用。</p>
-<p>变量可以分为普通变量和缓存变量。</p>
-<h4 id="变量定义和缓存"><a href="#变量定义和缓存" class="headerlink" title="变量定义和缓存"></a>变量定义和缓存</h4><p><strong>定义变量</strong></p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(MY_VAR <span class="string">&quot;Hello World&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>使用变量</strong></p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;Variable MY_VAR is $&#123;MY_VAR&#125;&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>运行 CMake 配置或生成过程时，CMake 会输出：</p>
-<p>– Variable MY_VAR is Hello World</p>
-<h4 id="缓存变量"><a href="#缓存变量" class="headerlink" title="缓存变量"></a>缓存变量</h4><p>缓存变量存储在 CMake 的缓存文件中，用户可以在 CMake 配置时修改这些值。缓存变量通常用于用户输入的设置，例如编译选项和路径。</p>
-<p><strong>定义缓存变量：</strong></p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(MY_CACHE_VAR <span class="string">&quot;DefaultValue&quot;</span> CACHE <span class="keyword">STRING</span> <span class="string">&quot;A cache variable&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>使用缓存变量：</strong></p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;Cache variable MY_CACHE_VAR is $&#123;MY_CACHE_VAR&#125;&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="查找库和包"><a href="#查找库和包" class="headerlink" title="查找库和包"></a>查找库和包</h3><p>CMake 可以通过 find_package() 指令自动检测和配置外部库和包。</p>
-<p>常用于查找系统安装的库或第三方库。</p>
-<h4 id="find-package-指令"><a href="#find-package-指令" class="headerlink" title="find_package()指令"></a>find_package()指令</h4><p>基本用法：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(Boost REQUIRED)</span><br></pre></td></tr></table></figure>
-
-<p>指定版本：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(Boost <span class="number">1.70</span> REQUIRED)</span><br></pre></td></tr></table></figure>
-
-<p>查找库并指定路径：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(OpenCV REQUIRED PATHS /path/to/opencv)</span><br></pre></td></tr></table></figure>
-
-<p>使用查找到的库：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(MyExecutable Boost::Boost)</span><br></pre></td></tr></table></figure>
-
-<p>设置包含目录和链接目录：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;Boost_INCLUDE_DIRS&#125;</span>)</span><br><span class="line"><span class="keyword">link_directories</span>(<span class="variable">$&#123;Boost_LIBRARY_DIRS&#125;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>实例</strong>：</p>
-<p>假设想在项目上使用Boost库，CMakeLists.txt文件应该如下:</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"><span class="keyword">project</span>(MyProject CXX)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找 Boost 库</span></span><br><span class="line"><span class="keyword">find_package</span>(Boost REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加源文件</span></span><br><span class="line"><span class="keyword">add_executable</span>(MyExecutable main.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接 Boost 库</span></span><br><span class="line"><span class="keyword">target_link_libraries</span>(MyExecutable Boost::Boost)</span><br></pre></td></tr></table></figure>
-
-<h2 id="CMake-构建流程"><a href="#CMake-构建流程" class="headerlink" title="CMake 构建流程"></a>CMake 构建流程</h2><p>主要分为以下几步：</p>
-<ol>
-<li>创建构建目录：保持源代码目录整洁。</li>
-<li>使用 CMake 生成构建文件：配置项目并生成适合平台的构建文件。</li>
-<li>编译和构建：使用生成的构建文件执行编译和构建。</li>
-<li>清理构建文件：删除中间文件和目标文件。</li>
-<li>重新配置和构建：处理项目设置的更改。</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/cmake-simple-flowchart.png" alt="img"></p>
-<h3 id="创建构建目录"><a href="#创建构建目录" class="headerlink" title="创建构建目录"></a>创建构建目录</h3><p>CMakes使用”Out-of-source” 构建方式，即将构建文件放在源代码目录之外的独立目录中。</p>
-<p>这样可以保持源代码目录的整洁，并方便管理不同的构建配置。</p>
-<h4 id="创建构建目录："><a href="#创建构建目录：" class="headerlink" title="创建构建目录："></a>创建构建目录：</h4><p>在项目的根目录下，创建一个新的构建目录。例如，可以创建一个名为 <strong>build</strong> 的目录。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> build</span><br></pre></td></tr></table></figure>
-
-<h4 id="进入构建目录："><a href="#进入构建目录：" class="headerlink" title="进入构建目录："></a>进入构建目录：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> build</span><br></pre></td></tr></table></figure>
-
-<h3 id="使用CMake-生成构建文件"><a href="#使用CMake-生成构建文件" class="headerlink" title="使用CMake 生成构建文件"></a>使用CMake 生成构建文件</h3><p>在构建目录中运行 CMake，以生成适合当前平台的构建系统文件（例如 Makefile、Ninja 构建文件、Visual Studio 工程文件等）。</p>
-<h4 id="运行-CMake-配置："><a href="#运行-CMake-配置：" class="headerlink" title="运行 CMake 配置："></a>运行 CMake 配置：</h4><p>在构建目录中运行 CMake 命令，指定源代码目录。源代码目录是包含 CMakeLists.txt 文件的目录。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake ..</span><br></pre></td></tr></table></figure>
-
-<p>如果需要指定生成器（如 Ninja、Visual Studio），可以使用 -G 选项。例如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake -G <span class="string">&quot;Ninja&quot;</span> ..</span><br></pre></td></tr></table></figure>
-
-<p>如果需要指定构建类型（如 Debug 或 Release），可以使用 -DCMAKE_BUILD_TYPE 选项。例如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake -DCMAKE_BUILD_TYPE=Release ..</span><br></pre></td></tr></table></figure>
-
-<h4 id="检查配置结果："><a href="#检查配置结果：" class="headerlink" title="检查配置结果："></a>检查配置结果：</h4><p>CMake 会输出配置过程中的详细信息，包括找到的库、定义的选项等，如果没有错误，构建系统文件将被生成到构建目录中。</p>
-<h3 id="编译和构建"><a href="#编译和构建" class="headerlink" title="编译和构建"></a>编译和构建</h3><p>使用生成的构建文件进行编译和构建。</p>
-<p>不同的构建系统使用不同的命令。</p>
-<h4 id="使用Makefile"><a href="#使用Makefile" class="headerlink" title="使用Makefile"></a>使用Makefile</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nake</span><br></pre></td></tr></table></figure>
-
-<p>如果要构建特定目标，指定目标名，如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make MyExecutable</span><br></pre></td></tr></table></figure>
-
-<h3 id="清理构建文件"><a href="#清理构建文件" class="headerlink" title="清理构建文件"></a>清理构建文件</h3><p>构建过程中生成的中间文件和目标文件可以通过清理操作删除。</p>
-<h4 id="使用Makefile-1"><a href="#使用Makefile-1" class="headerlink" title="使用Makefile:"></a>使用Makefile:</h4><p>运行 make clean 命令（如果定义了清理规则）来删除生成的文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make clean</span><br></pre></td></tr></table></figure>
-
-<h3 id="重新配置和构建"><a href="#重新配置和构建" class="headerlink" title="重新配置和构建"></a>重新配置和构建</h3><p>如果修改了 CMakeLists.txt 文件或项目设置，可能需要重新配置和构建项目。</p>
-<h4 id="重新运行CMake配置："><a href="#重新运行CMake配置：" class="headerlink" title="重新运行CMake配置："></a>重新运行CMake配置：</h4><p>在构建目录中重新运行 CMake 配置命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake ..</span><br></pre></td></tr></table></figure>
-
-<h4 id="重新编译："><a href="#重新编译：" class="headerlink" title="重新编译："></a>重新编译：</h4><p>使用构建命令重新编译项目。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h2 id="构建实例"><a href="#构建实例" class="headerlink" title="构建实例"></a>构建实例</h2><p>构建步骤如下：</p>
-<ol>
-<li>创建CMakeLists.txt文件：定义项目、目标和依赖</li>
-<li>创建构建目录：保持源代码整洁</li>
-<li>配置项目：使用CMake生成构建文件</li>
-<li>编译项目：使用构建系统文件编译项目</li>
-<li>运行可执行文件：执行生成的程序</li>
-<li>清理构建文件：删除中间文件和目标文件</li>
-</ol>
-<p>假设我们有一个简单的 C++ 项目，包含一个主程序文件和一个库文件，我们将使用 CMake 构建这个项目。</p>
-<p>参考网址：<a target="_blank" rel="noopener" href="https://www.runoob.com/cmake/cmake-build-demo.html">https://www.runoob.com/cmake/cmake-build-demo.html</a></p>
-<hr>
-<h2 id="CMake-高级特性"><a href="#CMake-高级特性" class="headerlink" title="CMake 高级特性"></a>CMake 高级特性</h2><p>CMake 高级特性允许我们更灵活地管理和配置 CMake 项目，以适应复杂的构建需求和环境。</p>
-<ol>
-<li>自定义CMake模块和脚本：创建自定义模块和脚本以简化构建过程</li>
-<li>构建配置和目标：使用多配置生成器和定义多个构建目标</li>
-<li>高级查找和配置：灵活地查找和配置构建选项</li>
-<li>生成自定义构建步骤：添加自定义命令和目标以执行额外的构建操作</li>
-<li>跨平台和交叉编译：支持不同平台的构建和交叉编译</li>
-<li>目标属性和配置：设置和修改目标的属性，满足特定需求</li>
-</ol>
-<hr>
-<h3 id="自定义CMake模块和脚本"><a href="#自定义CMake模块和脚本" class="headerlink" title="自定义CMake模块和脚本"></a>自定义CMake模块和脚本</h3><h4 id="自定义CMake模块"><a href="#自定义CMake模块" class="headerlink" title="自定义CMake模块"></a>自定义CMake模块</h4><p>CMake 允许你创建和使用自定义模块，以简化常见的构建任务。</p>
-<p>自定义模块通常包含自定义的 CMake 脚本和函数。</p>
-<h5 id="创建自定义模块："><a href="#创建自定义模块：" class="headerlink" title="创建自定义模块："></a>创建自定义模块：</h5><ul>
-<li><p>在项目目录下创建一个cmake&#x2F; 目录，用于存放自定义cmake模块</p>
-</li>
-<li><p>在cmake&#x2F; 目录下创建一个MyModule.cmake文件</p>
-</li>
-<li><p>在CMakeLists.txt文件中包含自定义模块：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">list</span>(APPEND CMAKE_MODULE_PATH <span class="string">&quot;$&#123;CMAKE_SOURCE_DIR&#125;/cmake&quot;</span>)</span><br><span class="line"><span class="keyword">include</span>(MyModule)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>list(APPEND CMAKE_MODULE_PATH …) 用于扩展 CMake 的模块搜索路径。</p>
-</li>
-<li><p>include(MyModule) 用于加载并执行指定的 CMake 模块文件。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h5 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h5><p>MyModule.cmake 文件：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>(my_custom_function)</span><br><span class="line">  <span class="keyword">message</span>(STATUS <span class="string">&quot;This is a custom function!&quot;</span>)</span><br><span class="line"><span class="keyword">endfunction</span>()</span><br></pre></td></tr></table></figure>
-
-<p>function(my_custom_function)：定义了一个名为 my_custom_function 的自定义函数。函数名 my_custom_function 可以用来在其他地方调用该函数。</p>
-<p>message(STATUS “This is a custom function!”)：这是一个 CMake 内置命令，用于输出消息。STATUS 是消息类型，表示这条消息是状态信息，通常会在编译时显示出来。 “This is a custom function!” 是你要输出的消息内容。</p>
-<p>endfunction()：结束自定义函数的定义，标志着函数体的结束。</p>
-<p>所以，这段代码的作用是定义了一个名为 my_custom_function 的函数，在该函数被调用时，它会输出消息 This is a custom function!。</p>
-<p>在CMakeLists.txt中调用自定义函数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">my_custom_function()</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用自定义CMake脚本"><a href="#使用自定义CMake脚本" class="headerlink" title="使用自定义CMake脚本"></a>使用自定义CMake脚本</h4><p>自定义 CMake 脚本允许你执行自定义配置操作，灵活处理复杂的构建要求。</p>
-<h5 id="创建自定义脚本："><a href="#创建自定义脚本：" class="headerlink" title="创建自定义脚本："></a>创建自定义脚本：</h5><ul>
-<li>在项目中创建一个脚本文件（例如 config.cmake）。</li>
-<li>在脚本中编写 CMake 指令。</li>
-</ul>
-<h5 id="在-CMakeLists-txt-文件中调用脚本："><a href="#在-CMakeLists-txt-文件中调用脚本：" class="headerlink" title="在 CMakeLists.txt 文件中调用脚本："></a>在 CMakeLists.txt 文件中调用脚本：</h5><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(<span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/config.cmake)</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="构建配置和目标"><a href="#构建配置和目标" class="headerlink" title="构建配置和目标"></a>构建配置和目标</h4><h5 id="多配置生成器"><a href="#多配置生成器" class="headerlink" title="多配置生成器"></a>多配置生成器</h5><p>CMake 支持多种构建配置（如 Debug、Release）。</p>
-<p>多配置生成器允许你在同一构建目录中同时生成不同配置的构建。</p>
-<p><strong>指定配置类型</strong></p>
-<p>在 CMakeLists.txt 中设置默认配置：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_BUILD_TYPE <span class="string">&quot;Release&quot;</span> CACHE <span class="keyword">STRING</span> <span class="string">&quot;Build type&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>使用 Visual Studio：</p>
-<p>在 Visual Studio 中选择构建配置（Debug 或 Release）。</p>
-<h5 id="构建目标"><a href="#构建目标" class="headerlink" title="构建目标"></a>构建目标</h5><p>可以定义多个构建目标，每个目标可以有不同的构建设置和选项。</p>
-<p>添加多个目标：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(MyExecutable1 src/main1.cpp)</span><br><span class="line"><span class="keyword">add_executable</span>(MyExecutable2 src/main2.cpp)</span><br></pre></td></tr></table></figure>
-
-<p>设置目标属性：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set_target_properties</span>(MyExecutable1 PROPERTIES COMPILE_DEFINITIONS <span class="string">&quot;DEBUG&quot;</span>)</span><br><span class="line"><span class="keyword">set_target_properties</span>(MyExecutable2 PROPERTIES COMPILE_DEFINITIONS <span class="string">&quot;RELEASE&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<h4 id="高级查找和配置"><a href="#高级查找和配置" class="headerlink" title="高级查找和配置"></a>高级查找和配置</h4><h5 id="查找包的高级用法"><a href="#查找包的高级用法" class="headerlink" title="查找包的高级用法"></a>查找包的高级用法</h5><p>find_package() 指令可以用于查找和配置复杂的第三方库和包。</p>
-<p>查找包的高级选项：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(Boost REQUIRED COMPONENTS filesystem system)</span><br></pre></td></tr></table></figure>
-
-<p>设置查找路径：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(BOOST_ROOT <span class="string">&quot;/path/to/boost&quot;</span>)</span><br><span class="line"><span class="keyword">find_package</span>(Boost REQUIRED)</span><br></pre></td></tr></table></figure>
-
-<h5 id="配置文件和构建选项"><a href="#配置文件和构建选项" class="headerlink" title="配置文件和构建选项"></a>配置文件和构建选项</h5><p>你可以通过 CMake 配置文件来控制构建选项和配置。</p>
-<p>配置选项：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">configure_file</span>(config.h.in config.h)</span><br></pre></td></tr></table></figure>
-
-<p>配置文件 (config.h.in)：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> VERSION <span class="string">&quot;@PROJECT_VERSION@&quot;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>在源文件中包含配置文件：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;config.h&quot;</span></span></span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<p>后面还有一些高级配置，暂时用不到，先不管。</p>
-<p>参考<a target="_blank" rel="noopener" href="https://www.runoob.com/cmake/cmake-exercises.html">https://www.runoob.com/cmake/cmake-exercises.html</a></p>
-<hr>
-<h2 id="CMake-实战练习"><a href="#CMake-实战练习" class="headerlink" title="CMake 实战练习"></a>CMake 实战练习</h2><p>参考：<a target="_blank" rel="noopener" href="https://www.runoob.com/cmake/cmake-exercises.html">https://www.runoob.com/cmake/cmake-exercises.html</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/01/inter%20Realsense%20D435%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/01/inter%20Realsense%20D435%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">inter Realsense D435使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-01T00:00:00+08:00">2025-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="inter-Realsense-D435使用"><a href="#inter-Realsense-D435使用" class="headerlink" title="inter Realsense D435使用"></a>inter Realsense D435使用</h1><h2 id="安装ros软件包"><a href="#安装ros软件包" class="headerlink" title="安装ros软件包"></a>安装ros软件包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install ros-<span class="variable">$ROS_DISTRO</span>-realsense2-camera</span><br></pre></td></tr></table></figure>
-
-<p>终端运行如下指令,替换成自己的ros版本。</p>
-<h2 id="启动相机节点"><a href="#启动相机节点" class="headerlink" title="启动相机节点"></a>启动相机节点</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch</span><br></pre></td></tr></table></figure>
-
-<p>可以选择将其他流分辨率和帧速率作为参数提供给<strong>rs_camera.launch</strong>文件</p>
-<p>使用 <code>rostopic list</code>查看已经发布的话题。使用 <code>rostopic info /话题名称</code>查看话题信息</p>
-<h2 id="点云数据"><a href="#点云数据" class="headerlink" title="点云数据"></a>点云数据</h2><p>可以使用pointcloud 选项启动camera ，使得发布点云实例</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch filters:=pointcloud</span><br></pre></td></tr></table></figure>
-
-<p>之后可以打开rviz查看点云信息。</p>
-<h2 id="对齐深度坐标系"><a href="#对齐深度坐标系" class="headerlink" title="对齐深度坐标系"></a>对齐深度坐标系</h2><p>以下示例说明了如何启动 Camera 节点并将其将对齐的深度流发布到其他可用流，例如颜色或红外流。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="使用Dynamic-Reconfigure-Params-设置摄像头参数"><a href="#使用Dynamic-Reconfigure-Params-设置摄像头参数" class="headerlink" title="使用Dynamic Reconfigure Params 设置摄像头参数"></a>使用Dynamic Reconfigure Params 设置摄像头参数</h2><p>使用rqt来更改相机控制值</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun rqt_reconfigure rqt_reconfigure</span><br></pre></td></tr></table></figure>
-
-<h2 id="ros-obiect-analytics"><a href="#ros-obiect-analytics" class="headerlink" title="ros_obiect_analytics"></a>ros_obiect_analytics</h2><p>用于实时对象检测、定位和跟踪的 ROS 包装器,已经停止维护了。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros_object_analytics">https://github.com/intel/ros_object_analytics</a></p>
-<h2 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy?tab=readme-ov-file">https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy?tab=readme-ov-file</a></li>
-<li><a target="_blank" rel="noopener" href="https://dev.intelrealsense.com/docs/docs-get-started">https://dev.intelrealsense.com/docs/docs-get-started</a></li>
-</ul>
 
       
     </div>
