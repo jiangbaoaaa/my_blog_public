@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,393 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/08/25/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%94%E8%AE%B2%EF%BC%89--%E7%9B%B8%E6%9C%BA%E4%B8%8E%E5%9B%BE%E5%83%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/08/25/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%94%E8%AE%B2%EF%BC%89--%E7%9B%B8%E6%9C%BA%E4%B8%8E%E5%9B%BE%E5%83%8F/" class="post-title-link" itemprop="url">第五讲-相机与图像</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-08-25 00:00:00 / 修改时间：11:31:01" itemprop="dateCreated datePublished" datetime="2025-08-25T00:00:00+08:00">2025-08-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/" itemprop="url" rel="index"><span itemprop="name">视觉SLAM十四讲</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="视觉SLAM十四讲（第五讲）–相机与图像"><a href="#视觉SLAM十四讲（第五讲）–相机与图像" class="headerlink" title="视觉SLAM十四讲（第五讲）–相机与图像"></a>视觉SLAM十四讲（第五讲）–相机与图像</h1><p>计算机中，一张照片由很多像素组成，每个像素记录色彩或亮度的信息。</p>
+<h2 id="相机模型"><a href="#相机模型" class="headerlink" title="相机模型"></a>相机模型</h2><p>相机将三维坐标点映射到二位图像平面可以由一个几何模型描述。例如针孔模型。同时，由于相机镜头有透镜，使得光线投影到成像平面的过程中会产生畸变，因此需要针孔和畸变模型描述投影过程。两个模型可以将外部的三维点投影到相机内部成像平面，构成<code>内参数</code>。</p>
+<h3 id="针孔相机模型"><a href="#针孔相机模型" class="headerlink" title="针孔相机模型"></a>针孔相机模型</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20190102115709713.png" alt="Overview of each camera model (pinhole + fisheye) - Programmer Sought"></p>
+<p>$$<br>\frac{Z}{f} &#x3D; -\frac{X}{X’} &#x3D; -\frac{Y}{Y’}<br>$$<br>由图可以知道如上式关系，其中负号表示成像是倒立的。为了更符合实际，等价将成像平面对称地放到相机前方，和三维空间点放到摄像机坐标系同一侧，如下图所示，所得等式也稍作调整：<br>$$<br>\frac{Z}{f} &#x3D; \frac{X}{X’} &#x3D; \frac{Y}{Y’}<br>$$<br><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20181113171148585.png" alt="几何光学 | 1-1 几何光学基本定律与成像基本概念 - 知乎"></p>
+<p>整理一下上述公式：<br>$$<br>X’ &#x3D; f\frac{X}{Z}<br>\<br>Y’ &#x3D; f\frac{Y}{Z}<br>$$<br>进行处理后的正像被称为针孔模型。在相机中，我们最终获得的是一个个像素，需要在成像平面上对像进行采样和量化，为了描述将光线转换成图像像素的过程，在物理平面上固定一个**像素平面$o-u-v$。**在像素平面得到$P^{‘}$的像素坐标：$[u, v]^T$​​。</p>
+<p>下图是不同坐标系的表示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/f15758757d381093fa8e45670bfc09d4.png"></p>
+<blockquote>
+<p>像素坐标系</p>
+</blockquote>
+<p>表示三维空间物体在图像平面的投影，像素是离散化的。坐标原点在CCD图像平面的左上角，u轴平行于CCD平面水平向右，v轴垂直与u轴向下，坐标使用(u, v)表示。像素坐标系与成像平面之间相差一个<code>缩放</code>和一个<code>远点的平移</code>。设像素坐标在u轴上缩放了α倍，在v轴上缩放了β倍。同时原点平移了$[c_x,c_y]^T$。那么，$P^{‘}$的坐标与像素坐标$[u, v]^ T$的关系是：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822194654199.png" alt="image-20250822194654199"></p>
+<p>其中，中间的两组成的矩阵$K$称为相机的内参数矩阵，通常不会发生改变。如果需要自己确定相机内参的话，就需要所谓的标定技术例如张正友标定法。至于外参，我们使用的是$P$在相机坐标系（就是实际的相机的坐标系）下的坐标，但是实际上由于相机在运动，所以$P$的相机坐标应该是他的世界坐标系，即根据相机当前的位姿变换到相机坐标系的结果$P_w$。相机的位姿由它的旋转矩阵R和平移向量t描述：<br>$$<br>ZP_{uv} &#x3D; Z \begin{bmatrix} u \ v \ 1 \end{bmatrix} &#x3D; \mathbf{K}(\mathbf{R}P_{w} + \mathbf{t}) &#x3D; \mathbf{K}\mathbf{T}P_{w}<br>$$<br>其中，相机的位姿R，t又称为<code>相机的外参数</code>。</p>
+<p>投影相当于在由世界坐标系到相机坐标系的转化过程中，再除掉最后一维的数值（深度）。相当于进行一个归一化处理，得到点$P$在相机<strong>归一化平面</strong>上的投影：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822201917962.png" alt="image-20250822201917962"></p>
+<p><strong>归一化坐标</strong>可以理解为相机前方z &#x3D; 1处的平面上的点，这个平面也称为归一化平面，归一化坐标左乘内参就是像素坐标，如果对于相机坐标系同时乘以任意非零常数，得到的归一化坐标都是一样的，这就是<strong>点的深度在投影过程中丢失了</strong>，所以单目视觉得不到像素点的深度值。</p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/MengYa_Dream/article/details/120233806">图像处理——4个坐标系及相关转换图像像素坐标系 图像物理坐标系 相机坐标系 世界坐标系_图像坐标系-CSDN博客</a></p>
+<hr>
+<h3 id="畸变模型"><a href="#畸变模型" class="headerlink" title="畸变模型"></a>畸变模型</h3><p>为了获得好的成像效果，会在相机前方加上透镜，会影响光线传播，由透镜形状引起的畸变称为径向畸变，主要分为：桶形畸变和枕形畸变。除了透镜的形状会引入畸变，由于相机的组装过程中不能使透镜与成像面严格平行，所以会引入切向畸变。所以要进行畸变校正，具体参考书本101页。</p>
+<p>主要是理解四个坐标系之间的变换关系。</p>
+<hr>
+<h3 id="双目相机模型"><a href="#双目相机模型" class="headerlink" title="双目相机模型"></a>双目相机模型</h3><p>由于根据单个相机无法确定空间点的具体位置，只有当P的深度确定时，才能确切知道空间位置。可以通过同步采集左右相机的图像，计算图像间的视差，估计每一个像素的深度。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/stereo.PNG" alt="stereo"></p>
+<p>双目相机一般由左眼和右眼两个<strong>水平放置</strong>的相机组成。上图中左右两个相机都是使用针孔相机模型，两个相机的成像平面在同一个水平面上，同时两个相机光心是水平放置的，因此对于一个P点，其在两个图像上的投影点的行坐标是相同的，我们通过对其纵坐标的处理便可以得到视差了。</p>
+<p>图中两个相机光心之间的距离b被成为双目相机的<strong>基线</strong>，是与焦距f一样重要的参数。</p>
+<p>根据上图，假设一个空间点P，在左右目各成一像$P_L$与$P_R$，分别以两个光心垂直的位置为二维坐标原点，则$P_L$的横坐标为$u_L$，$P_R$的横坐标为$u_R$，可以发现$u_R$是一个负数。根据上图中右侧三角形相似的原理，可以得到下面公式<br>$$<br>\frac{z-f}{z}&#x3D;\frac{b-u_{L}+u_{R}}{b}<br>$$<br>得到：<br>$$<br>z &#x3D; \frac{fb}{d}, d&#x3D; u_L -u_R<br>$$<br>d称为视差。</p>
+<hr>
+<h3 id="RGB-D相机模型"><a href="#RGB-D相机模型" class="headerlink" title="RGB-D相机模型"></a>RGB-D相机模型</h3><p>相较于双目相机通过视差计算深度，RGB-D相机能够主动测量每个像素的深度，主要分为两类RGB-D相机：</p>
+<ol>
+<li>通过红外结构光原理测量像素距离</li>
+<li>通过飞行实践原理测量像素距离</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/cae3ffa05c1d4dd7a52cd9cc25b860c9.png" alt="img"></p>
+<p>无论哪种，都要向探测目标发射一束光线（通常为红外光）。在红外结构光原理中，相机根据返回的结构光图案，计算物体与自身的距离。在TOF原理中，先发射脉冲光，根据发送到返回之间的光束飞行时间计算物体与自身的距离。这里只做简单介绍</p>
+<hr>
+<h2 id="图像"><a href="#图像" class="headerlink" title="图像"></a>图像</h2><p>数学中，图像可以用一个矩阵描述，计算机中，可以用二维数组表示。我们使用OpenCV来进行图像处理，在一张灰度图中，每个像素位置$(x, y)$对应一个灰度值$I$，所以一张宽度为$w$、高度为$h$的图像，在数学上记为一个函数：<br>$$<br>I(x, y) : \mathbb{R}^{2} \mapsto \mathbb{R}<br>$$<br>$(x, y)$是像素坐标。用0~255的整数表达图像的灰度读数。那么一张宽度为640像素、高度为480像素分辨率的灰度图可以表示为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">char</span> image[<span class="number">480</span>][<span class="number">640</span>]</span><br></pre></td></tr></table></figure>
+
+<p>因为在图像中，数组的行数对应图像的高度，列数对应图像的宽度。图像以二维数组形式存储，当访问某一个像素时，需要指明所处的坐标。</p>
+<p>我们讨论一个位于x,y处的像素，访问方式是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">char</span> pixel = image[y][x]</span><br></pre></td></tr></table></figure>
+
+<p>至于像素数据的记录，只做一个简单介绍，如下图展示的，例如一般灰度值用8位整数记录0~255d的值，彩色图则使用三通道，24位记录。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822214528123.png" alt="image-20250822214528123"></p>
+<hr>
+<h2 id="实践：计算机中的图像"><a href="#实践：计算机中的图像" class="headerlink" title="实践：计算机中的图像"></a>实践：计算机中的图像</h2><h3 id="OpenCV基本使用方法"><a href="#OpenCV基本使用方法" class="headerlink" title="OpenCV基本使用方法"></a>OpenCV基本使用方法</h3><blockquote>
+<p>安装opencv</p>
+</blockquote>
+<p>环境：ubuntu20.04 vm17</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt upgrate -y</span><br><span class="line"><span class="built_in">sudo</span> apt install libopencv-dev python3-opencv -y</span><br></pre></td></tr></table></figure>
+
+
+
+<p>新建文件夹及文件：<code>slambook/ch5/imageBasics/imageBasics.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 读取argv[1]指定的图像</span></span><br><span class="line">  cv::Mat image;</span><br><span class="line">  image = cv::<span class="built_in">imread</span>(argv[<span class="number">1</span>]); <span class="comment">//cv::imread函数读取指定路径下的图像</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断图像文件是否正确读取</span></span><br><span class="line">  <span class="keyword">if</span> (image.data == <span class="literal">nullptr</span>) &#123; <span class="comment">//数据不存在,可能是文件不存在</span></span><br><span class="line">    cerr &lt;&lt; <span class="string">&quot;文件&quot;</span> &lt;&lt; argv[<span class="number">1</span>] &lt;&lt; <span class="string">&quot;不存在.&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 文件顺利读取, 首先输出一些基本信息</span></span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;图像宽为&quot;</span> &lt;&lt; image.cols &lt;&lt; <span class="string">&quot;,高为&quot;</span> &lt;&lt; image.rows &lt;&lt; <span class="string">&quot;,通道数为&quot;</span> &lt;&lt; image.<span class="built_in">channels</span>() &lt;&lt; endl;</span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;image&quot;</span>, image);      <span class="comment">// 用cv::imshow显示图像</span></span><br><span class="line">  cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);                  <span class="comment">// 暂停程序,等待一个按键输入</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断image的类型</span></span><br><span class="line">  <span class="keyword">if</span> (image.<span class="built_in">type</span>() != CV_8UC1 &amp;&amp; image.<span class="built_in">type</span>() != CV_8UC3) &#123;</span><br><span class="line">    <span class="comment">// 图像类型不符合要求</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;请输入一张彩色图或灰度图.&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 遍历图像, 请注意以下遍历方式亦可使用于随机像素访问</span></span><br><span class="line">  <span class="comment">// 使用 std::chrono 来给算法计时</span></span><br><span class="line">  chrono::steady_clock::time_point t1 = chrono::steady_clock::<span class="built_in">now</span>();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">size_t</span> y = <span class="number">0</span>; y &lt; image.rows; y++) &#123;</span><br><span class="line">    <span class="comment">// 用cv::Mat::ptr获得图像的行指针</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> *row_ptr = image.<span class="built_in">ptr</span>&lt;<span class="type">unsigned</span> <span class="type">char</span>&gt;(y);  <span class="comment">// row_ptr是第y行的头指针</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">size_t</span> x = <span class="number">0</span>; x &lt; image.cols; x++) &#123;</span><br><span class="line">      <span class="comment">// 访问位于 x,y 处的像素</span></span><br><span class="line">      <span class="type">unsigned</span> <span class="type">char</span> *data_ptr = &amp;row_ptr[x * image.<span class="built_in">channels</span>()]; <span class="comment">// data_ptr 指向待访问的像素数据</span></span><br><span class="line">      <span class="comment">// 输出该像素的每个通道,如果是灰度图就只有一个通道</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> c = <span class="number">0</span>; c != image.<span class="built_in">channels</span>(); c++) &#123;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">char</span> data = data_ptr[c]; <span class="comment">// data为I(x,y)第c个通道的值</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  chrono::steady_clock::time_point t2 = chrono::steady_clock::<span class="built_in">now</span>();</span><br><span class="line">  chrono::duration&lt;<span class="type">double</span>&gt; time_used = chrono::duration_cast &lt; chrono::duration &lt; <span class="type">double</span> &gt;&gt; (t2 - t1);</span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;遍历图像用时：&quot;</span> &lt;&lt; time_used.<span class="built_in">count</span>() &lt;&lt; <span class="string">&quot; 秒。&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 关于 cv::Mat 的拷贝</span></span><br><span class="line">  <span class="comment">// 直接赋值并不会拷贝数据</span></span><br><span class="line">  cv::Mat image_another = image;</span><br><span class="line">  <span class="comment">// 修改 image_another 会导致 image 发生变化</span></span><br><span class="line">  <span class="built_in">image_another</span>(cv::<span class="built_in">Rect</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>)).<span class="built_in">setTo</span>(<span class="number">0</span>); <span class="comment">// 将左上角100*100的块置零</span></span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;image&quot;</span>, image);</span><br><span class="line">  cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 使用clone函数来拷贝数据</span></span><br><span class="line">  cv::Mat image_clone = image.<span class="built_in">clone</span>();</span><br><span class="line">  <span class="built_in">image_clone</span>(cv::<span class="built_in">Rect</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>)).<span class="built_in">setTo</span>(<span class="number">255</span>);</span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;image&quot;</span>, image);</span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;image_clone&quot;</span>, image_clone);</span><br><span class="line">  cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 对于图像还有很多基本的操作,如剪切,旋转,缩放等,限于篇幅就不一一介绍了,请参看OpenCV官方文档查询每个函数的调用方法.</span></span><br><span class="line">  cv::<span class="built_in">destroyAllWindows</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line"></span><br><span class="line">project(imageBasics)</span><br><span class="line"></span><br><span class="line">set( CMAKE_CXX_FLAGS <span class="string">&quot;-std=c++14&quot;</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找OpenCV</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果找到OpenCV，则执行以下操作</span></span><br><span class="line">if(OpenCV_FOUND)</span><br><span class="line">  <span class="comment"># 包含OpenCV的头文件目录</span></span><br><span class="line">  include_directories($&#123;OpenCV_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 添加可执行文件</span></span><br><span class="line">  add_executable(imageBasics imageBasics.cpp)</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 链接OpenCV库</span></span><br><span class="line">  target_link_libraries(imageBasics $&#123;OpenCV_LIBRARIES&#125;)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+
+<p>把源代码中的图片复制到同一文件夹下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250825101854724.png"></p>
+<p>在终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch5/imageBasics/build</span><br><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ make</span><br><span class="line">[100%] Built target imageBasics</span><br><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ ./imageBasics ../ubuntu.png </span><br><span class="line">图像宽为1200,高为674,通道数为3</span><br><span class="line">遍历图像用时：0.00393242 秒。</span><br></pre></td></tr></table></figure>
+
+<p>结果为：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825102058073.png" alt="image-20250825102058073"></p>
+<hr>
+<h3 id="图像去畸变"><a href="#图像去畸变" class="headerlink" title="图像去畸变"></a>图像去畸变</h3><p>新建文件 <code>slambook/ch5/imageBasics/undistrotImage.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">string image_file = <span class="string">&quot;../distorted.png&quot;</span>;   <span class="comment">// 请确保路径正确</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 本程序实现去畸变部分的代码。尽管我们可以调用OpenCV的去畸变，但自己实现一遍有助于理解。</span></span><br><span class="line">  <span class="comment">// 畸变参数</span></span><br><span class="line">  <span class="type">double</span> k1 = <span class="number">-0.28340811</span>, k2 = <span class="number">0.07395907</span>, p1 = <span class="number">0.00019359</span>, p2 = <span class="number">1.76187114e-05</span>;</span><br><span class="line">  <span class="comment">// 内参</span></span><br><span class="line">  <span class="type">double</span> fx = <span class="number">458.654</span>, fy = <span class="number">457.296</span>, cx = <span class="number">367.215</span>, cy = <span class="number">248.375</span>;</span><br><span class="line"></span><br><span class="line">  cv::Mat image = cv::<span class="built_in">imread</span>(image_file, <span class="number">0</span>);   <span class="comment">// 图像是灰度图，CV_8UC1</span></span><br><span class="line">  <span class="type">int</span> rows = image.rows, cols = image.cols;</span><br><span class="line">  cv::Mat image_undistort = cv::<span class="built_in">Mat</span>(rows, cols, CV_8UC1);   <span class="comment">// 去畸变以后的图</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算去畸变后图像的内容</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> v = <span class="number">0</span>; v &lt; rows; v++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> u = <span class="number">0</span>; u &lt; cols; u++) &#123;</span><br><span class="line">      <span class="comment">// 按照公式，计算点(u,v)对应到畸变图像中的坐标(u_distorted, v_distorted)</span></span><br><span class="line">      <span class="type">double</span> x = (u - cx) / fx, y = (v - cy) / fy;</span><br><span class="line">      <span class="type">double</span> r = <span class="built_in">sqrt</span>(x * x + y * y);</span><br><span class="line">      <span class="type">double</span> x_distorted = x * (<span class="number">1</span> + k1 * r * r + k2 * r * r * r * r) + <span class="number">2</span> * p1 * x * y + p2 * (r * r + <span class="number">2</span> * x * x);</span><br><span class="line">      <span class="type">double</span> y_distorted = y * (<span class="number">1</span> + k1 * r * r + k2 * r * r * r * r) + p1 * (r * r + <span class="number">2</span> * y * y) + <span class="number">2</span> * p2 * x * y;</span><br><span class="line">      <span class="type">double</span> u_distorted = fx * x_distorted + cx;</span><br><span class="line">      <span class="type">double</span> v_distorted = fy * y_distorted + cy;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 赋值 (最近邻插值)</span></span><br><span class="line">      <span class="keyword">if</span> (u_distorted &gt;= <span class="number">0</span> &amp;&amp; v_distorted &gt;= <span class="number">0</span> &amp;&amp; u_distorted &lt; cols &amp;&amp; v_distorted &lt; rows) &#123;</span><br><span class="line">        image_undistort.<span class="built_in">at</span>&lt;uchar&gt;(v, u) = image.<span class="built_in">at</span>&lt;uchar&gt;((<span class="type">int</span>) v_distorted, (<span class="type">int</span>) u_distorted);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        image_undistort.<span class="built_in">at</span>&lt;uchar&gt;(v, u) = <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 画图去畸变后图像</span></span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;distorted&quot;</span>, image);</span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;undistorted&quot;</span>, image_undistort);</span><br><span class="line">  cv::<span class="built_in">waitKey</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>修改CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line"></span><br><span class="line">project(imageBasics)</span><br><span class="line"></span><br><span class="line">set( CMAKE_CXX_FLAGS <span class="string">&quot;-std=c++14&quot;</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找OpenCV</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果找到OpenCV，则执行以下操作</span></span><br><span class="line">if(OpenCV_FOUND)</span><br><span class="line">  <span class="comment"># 包含OpenCV的头文件目录</span></span><br><span class="line">  include_directories($&#123;OpenCV_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 添加可执行文件</span></span><br><span class="line">  add_executable(imageBasics imageBasics.cpp)</span><br><span class="line">  add_executable(undistortImage undistortImage.cpp)</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 链接OpenCV库</span></span><br><span class="line">  target_link_libraries(imageBasics $&#123;OpenCV_LIBRARIES&#125;)</span><br><span class="line">  target_link_libraries(undistortImage $&#123;OpenCV_LIBRARIES&#125;)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+
+<p>终端输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ cmake ..</span><br><span class="line">-- Configuring <span class="keyword">done</span></span><br><span class="line">-- Generating <span class="keyword">done</span></span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch5/imageBasics/build</span><br><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ make</span><br><span class="line">Scanning dependencies of target undistortImage</span><br><span class="line">[ 25%] Building CXX object CMakeFiles/undistortImage.<span class="built_in">dir</span>/undistortImage.cpp.o</span><br><span class="line">[ 50%] Linking CXX executable undistortImage</span><br><span class="line">[ 50%] Built target undistortImage</span><br><span class="line">[100%] Built target imageBasics</span><br><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ ./undistortImage </span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825104800880.png" alt="image-20250825104800880"></p>
+<h2 id="实践：3D视觉"><a href="#实践：3D视觉" class="headerlink" title="实践：3D视觉"></a>实践：3D视觉</h2><h3 id="双目视觉"><a href="#双目视觉" class="headerlink" title="双目视觉"></a>双目视觉</h3><p>可以从双目视觉的左右图像出发，计算图像对应的视差图，计算各像素在相机坐标系下的坐标，生成点云。</p>
+<p>新建文件夹及文件：<code>slambook/ch5/stereoVision/stereoVision.cpp</code></p>
+<p>首先讲源代码中两个图像放置在该文件夹下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pangolin/pangolin.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Eigen;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 文件路径</span></span><br><span class="line">string left_file = <span class="string">&quot;../left.png&quot;</span>;</span><br><span class="line">string right_file = <span class="string">&quot;../right.png&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在pangolin中画图，已写好，无需调整</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">showPointCloud</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> vector&lt;Vector4d, Eigen::aligned_allocator&lt;Vector4d&gt;&gt; &amp;pointcloud)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 内参</span></span><br><span class="line">    <span class="type">double</span> fx = <span class="number">718.856</span>, fy = <span class="number">718.856</span>, cx = <span class="number">607.1928</span>, cy = <span class="number">185.2157</span>;</span><br><span class="line">    <span class="comment">// 基线</span></span><br><span class="line">    <span class="type">double</span> b = <span class="number">0.573</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 读取图像</span></span><br><span class="line">    cv::Mat left = cv::<span class="built_in">imread</span>(left_file, <span class="number">0</span>);</span><br><span class="line">    cv::Mat right = cv::<span class="built_in">imread</span>(right_file, <span class="number">0</span>);</span><br><span class="line">    cv::Ptr&lt;cv::StereoSGBM&gt; sgbm = cv::StereoSGBM::<span class="built_in">create</span>(</span><br><span class="line">        <span class="number">0</span>, <span class="number">96</span>, <span class="number">9</span>, <span class="number">8</span> * <span class="number">9</span> * <span class="number">9</span>, <span class="number">32</span> * <span class="number">9</span> * <span class="number">9</span>, <span class="number">1</span>, <span class="number">63</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">32</span>);    <span class="comment">// 神奇的参数</span></span><br><span class="line">    cv::Mat disparity_sgbm, disparity;</span><br><span class="line">    sgbm-&gt;<span class="built_in">compute</span>(left, right, disparity_sgbm);</span><br><span class="line">    disparity_sgbm.<span class="built_in">convertTo</span>(disparity, CV_32F, <span class="number">1.0</span> / <span class="number">16.0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 生成点云</span></span><br><span class="line">    vector&lt;Vector4d, Eigen::aligned_allocator&lt;Vector4d&gt;&gt; pointcloud;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果你的机器慢，请把后面的v++和u++改成v+=2, u+=2</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> v = <span class="number">0</span>; v &lt; left.rows; v++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> u = <span class="number">0</span>; u &lt; left.cols; u++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (disparity.<span class="built_in">at</span>&lt;<span class="type">float</span>&gt;(v, u) &lt;= <span class="number">0.0</span> || disparity.<span class="built_in">at</span>&lt;<span class="type">float</span>&gt;(v, u) &gt;= <span class="number">96.0</span>) <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">            <span class="function">Vector4d <span class="title">point</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, left.at&lt;uchar&gt;(v, u) / <span class="number">255.0</span>)</span></span>; <span class="comment">// 前三维为xyz,第四维为颜色</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 根据双目模型计算 point 的位置</span></span><br><span class="line">            <span class="type">double</span> x = (u - cx) / fx;</span><br><span class="line">            <span class="type">double</span> y = (v - cy) / fy;</span><br><span class="line">            <span class="type">double</span> depth = fx * b / (disparity.<span class="built_in">at</span>&lt;<span class="type">float</span>&gt;(v, u));</span><br><span class="line">            point[<span class="number">0</span>] = x * depth;</span><br><span class="line">            point[<span class="number">1</span>] = y * depth;</span><br><span class="line">            point[<span class="number">2</span>] = depth;</span><br><span class="line"></span><br><span class="line">            pointcloud.<span class="built_in">push_back</span>(point);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    cv::<span class="built_in">imshow</span>(<span class="string">&quot;disparity&quot;</span>, disparity / <span class="number">96.0</span>);</span><br><span class="line">    cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="comment">// 画出点云</span></span><br><span class="line">    <span class="built_in">showPointCloud</span>(pointcloud);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">showPointCloud</span><span class="params">(<span class="type">const</span> vector&lt;Vector4d, Eigen::aligned_allocator&lt;Vector4d&gt;&gt; &amp;pointcloud)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pointcloud.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">        cerr &lt;&lt; <span class="string">&quot;Point cloud is empty!&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    pangolin::<span class="built_in">CreateWindowAndBind</span>(<span class="string">&quot;Point Cloud Viewer&quot;</span>, <span class="number">1024</span>, <span class="number">768</span>);</span><br><span class="line">    <span class="built_in">glEnable</span>(GL_DEPTH_TEST);</span><br><span class="line">    <span class="built_in">glEnable</span>(GL_BLEND);</span><br><span class="line">    <span class="built_in">glBlendFunc</span>(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);</span><br><span class="line"></span><br><span class="line">    <span class="function">pangolin::OpenGlRenderState <span class="title">s_cam</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        pangolin::ProjectionMatrix(<span class="number">1024</span>, <span class="number">768</span>, <span class="number">500</span>, <span class="number">500</span>, <span class="number">512</span>, <span class="number">389</span>, <span class="number">0.1</span>, <span class="number">1000</span>),</span></span></span><br><span class="line"><span class="params"><span class="function">        pangolin::ModelViewLookAt(<span class="number">0</span>, <span class="number">-0.1</span>, <span class="number">-1.8</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>, <span class="number">0.0</span>)</span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span>;</span><br><span class="line"></span><br><span class="line">    pangolin::View &amp;d_cam = pangolin::<span class="built_in">CreateDisplay</span>()</span><br><span class="line">        .<span class="built_in">SetBounds</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, pangolin::Attach::<span class="built_in">Pix</span>(<span class="number">175</span>), <span class="number">1.0</span>, <span class="number">-1024.0f</span> / <span class="number">768.0f</span>)</span><br><span class="line">        .<span class="built_in">SetHandler</span>(<span class="keyword">new</span> pangolin::<span class="built_in">Handler3D</span>(s_cam));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (pangolin::<span class="built_in">ShouldQuit</span>() == <span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="built_in">glClear</span>(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">        d_cam.<span class="built_in">Activate</span>(s_cam);</span><br><span class="line">        <span class="built_in">glClearColor</span>(<span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">glPointSize</span>(<span class="number">2</span>);</span><br><span class="line">        <span class="built_in">glBegin</span>(GL_POINTS);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;p: pointcloud) &#123;</span><br><span class="line">            <span class="built_in">glColor3f</span>(p[<span class="number">3</span>], p[<span class="number">3</span>], p[<span class="number">3</span>]);</span><br><span class="line">            <span class="built_in">glVertex3d</span>(p[<span class="number">0</span>], p[<span class="number">1</span>], p[<span class="number">2</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">glEnd</span>();</span><br><span class="line">        pangolin::<span class="built_in">FinishFrame</span>();</span><br><span class="line">        <span class="built_in">usleep</span>(<span class="number">5000</span>);   <span class="comment">// sleep 5 ms</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line">project(stereoVision)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 C++ 标准</span></span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line">set(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找所有依赖库</span></span><br><span class="line"><span class="comment"># 这会设置相应的变量，如 *_INCLUDE_DIRS 和 *_LIBRARIES</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line">find_package(Eigen3 REQUIRED)</span><br><span class="line">find_package(Pangolin REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加头文件搜索目录</span></span><br><span class="line"><span class="comment"># 编译器需要知道去哪里找 .hpp 文件</span></span><br><span class="line">include_directories(</span><br><span class="line">    $&#123;OpenCV_INCLUDE_DIRS&#125;</span><br><span class="line">    $&#123;EIGEN3_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;Pangolin_INCLUDE_DIRS&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加可执行文件</span></span><br><span class="line">add_executable(stereoVision stereoVision.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接库文件</span></span><br><span class="line"><span class="comment"># 链接器需要知道去哪里找库的实现文件</span></span><br><span class="line">target_link_libraries(stereoVision</span><br><span class="line">    $&#123;OpenCV_LIBRARIES&#125;</span><br><span class="line">    $&#123;Pangolin_LIBRARIES&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>在终端输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch5/steroVision/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch5/steroVision/build</span><br><span class="line">hita@hita-vm:~/slambook/ch5/steroVision/build$ make </span><br><span class="line">[100%] Built target stereoVision</span><br><span class="line">hita@hita-vm:~/slambook/ch5/steroVision/build$ ./stereoVision </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825110158793.png" alt="image-20250825110158793"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825110214053.png" alt="image-20250825110214053"></p>
+<h3 id="RGB-D视觉"><a href="#RGB-D视觉" class="headerlink" title="RGB-D视觉"></a>RGB-D视觉</h3><p>RGB-D相机可以通过物理的方法获取像素深度信息，如果已知相机内外参，就可以计算任何一个像素在世界坐标系下的位置，从而建立一个点云地图。将相关文件放置到<code>slambook/ch5/rgbd/</code>文件夹下，有类似结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── CMakeLists.txt</span><br><span class="line">├── color</span><br><span class="line">│   ├── 1.png</span><br><span class="line">│   ├── 2.png</span><br><span class="line">│   ├── 3.png</span><br><span class="line">│   ├── 4.png</span><br><span class="line">│   └── 5.png</span><br><span class="line">├── depth</span><br><span class="line">│   ├── 1.pgm</span><br><span class="line">│   ├── 2.pgm</span><br><span class="line">│   ├── 3.pgm</span><br><span class="line">│   ├── 4.pgm</span><br><span class="line">│   └── 5.pgm</span><br><span class="line">├── joinMap.cpp</span><br><span class="line">└── pose.txt</span><br></pre></td></tr></table></figure>
+
+<p>分别对应RGB图，深度图和五张图像的相机外参位姿（以$T_{wc}$形式）。为平移向量+旋转四元数。</p>
+<p>新建文件<code>slambook/ch5/rgbd/jointMap.cpp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;fstream&gt;</span><br><span class="line">#include &lt;opencv2/opencv.hpp&gt;</span><br><span class="line">#include &lt;boost/format.hpp&gt;  // for formating strings</span><br><span class="line">#include &lt;pangolin/pangolin.h&gt;</span><br><span class="line">#include &lt;sophus/se3.hpp&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">typedef vector&lt;Sophus::SE3d, Eigen::aligned_allocator&lt;Sophus::SE3d&gt;&gt; TrajectoryType;</span><br><span class="line">typedef Eigen::Matrix&lt;double, 6, 1&gt; Vector6d;</span><br><span class="line"></span><br><span class="line">// 在pangolin中画图，已写好，无需调整</span><br><span class="line">void showPointCloud(</span><br><span class="line">    const vector&lt;Vector6d, Eigen::aligned_allocator&lt;Vector6d&gt;&gt; &amp;pointcloud);</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line">    vector&lt;cv::Mat&gt; colorImgs, depthImgs;    // 彩色图和深度图</span><br><span class="line">    TrajectoryType poses;         // 相机位姿</span><br><span class="line"></span><br><span class="line">    ifstream fin(&quot;../pose.txt&quot;);</span><br><span class="line">    if (!fin) &#123;</span><br><span class="line">        cerr &lt;&lt; &quot;请在有pose.txt的目录下运行此程序&quot; &lt;&lt; endl;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; 5; i++) &#123;</span><br><span class="line">        boost::format fmt(&quot;../%s/%d.%s&quot;); //图像文件格式</span><br><span class="line">        colorImgs.push_back(cv::imread((fmt % &quot;color&quot; % (i + 1) % &quot;png&quot;).str()));</span><br><span class="line">        depthImgs.push_back(cv::imread((fmt % &quot;depth&quot; % (i + 1) % &quot;pgm&quot;).str(), -1)); // 使用-1读取原始图像</span><br><span class="line"></span><br><span class="line">        double data[7] = &#123;0&#125;;</span><br><span class="line">        for (auto &amp;d:data)</span><br><span class="line">            fin &gt;&gt; d;</span><br><span class="line">        Sophus::SE3d pose(Eigen::Quaterniond(data[6], data[3], data[4], data[5]),</span><br><span class="line">                          Eigen::Vector3d(data[0], data[1], data[2]));</span><br><span class="line">        poses.push_back(pose);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 计算点云并拼接</span><br><span class="line">    // 相机内参 </span><br><span class="line">    double cx = 325.5;</span><br><span class="line">    double cy = 253.5;</span><br><span class="line">    double fx = 518.0;</span><br><span class="line">    double fy = 519.0;</span><br><span class="line">    double depthScale = 1000.0;</span><br><span class="line">    vector&lt;Vector6d, Eigen::aligned_allocator&lt;Vector6d&gt;&gt; pointcloud;</span><br><span class="line">    pointcloud.reserve(1000000);</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; 5; i++) &#123;</span><br><span class="line">        cout &lt;&lt; &quot;转换图像中: &quot; &lt;&lt; i + 1 &lt;&lt; endl;</span><br><span class="line">        cv::Mat color = colorImgs[i];</span><br><span class="line">        cv::Mat depth = depthImgs[i];</span><br><span class="line">        Sophus::SE3d T = poses[i];</span><br><span class="line">        for (int v = 0; v &lt; color.rows; v++)</span><br><span class="line">            for (int u = 0; u &lt; color.cols; u++) &#123;</span><br><span class="line">                unsigned int d = depth.ptr&lt;unsigned short&gt;(v)[u]; // 深度值</span><br><span class="line">                if (d == 0) continue; // 为0表示没有测量到</span><br><span class="line">                Eigen::Vector3d point;</span><br><span class="line">                point[2] = double(d) / depthScale;</span><br><span class="line">                point[0] = (u - cx) * point[2] / fx;</span><br><span class="line">                point[1] = (v - cy) * point[2] / fy;</span><br><span class="line">                Eigen::Vector3d pointWorld = T * point;</span><br><span class="line"></span><br><span class="line">                Vector6d p;</span><br><span class="line">                p.head&lt;3&gt;() = pointWorld;</span><br><span class="line">                p[5] = color.data[v * color.step + u * color.channels()];   // blue</span><br><span class="line">                p[4] = color.data[v * color.step + u * color.channels() + 1]; // green</span><br><span class="line">                p[3] = color.data[v * color.step + u * color.channels() + 2]; // red</span><br><span class="line">                pointcloud.push_back(p);</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; &quot;点云共有&quot; &lt;&lt; pointcloud.size() &lt;&lt; &quot;个点.&quot; &lt;&lt; endl;</span><br><span class="line">    showPointCloud(pointcloud);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void showPointCloud(const vector&lt;Vector6d, Eigen::aligned_allocator&lt;Vector6d&gt;&gt; &amp;pointcloud) &#123;</span><br><span class="line"></span><br><span class="line">    if (pointcloud.empty()) &#123;</span><br><span class="line">        cerr &lt;&lt; &quot;Point cloud is empty!&quot; &lt;&lt; endl;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    pangolin::CreateWindowAndBind(&quot;Point Cloud Viewer&quot;, 1024, 768);</span><br><span class="line">    glEnable(GL_DEPTH_TEST);</span><br><span class="line">    glEnable(GL_BLEND);</span><br><span class="line">    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);</span><br><span class="line"></span><br><span class="line">    pangolin::OpenGlRenderState s_cam(</span><br><span class="line">        pangolin::ProjectionMatrix(1024, 768, 500, 500, 512, 389, 0.1, 1000),</span><br><span class="line">        pangolin::ModelViewLookAt(0, -0.1, -1.8, 0, 0, 0, 0.0, -1.0, 0.0)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    pangolin::View &amp;d_cam = pangolin::CreateDisplay()</span><br><span class="line">        .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -1024.0f / 768.0f)</span><br><span class="line">        .SetHandler(new pangolin::Handler3D(s_cam));</span><br><span class="line"></span><br><span class="line">    while (pangolin::ShouldQuit() == false) &#123;</span><br><span class="line">        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">        d_cam.Activate(s_cam);</span><br><span class="line">        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);</span><br><span class="line"></span><br><span class="line">        glPointSize(2);</span><br><span class="line">        glBegin(GL_POINTS);</span><br><span class="line">        for (auto &amp;p: pointcloud) &#123;</span><br><span class="line">            glColor3d(p[3] / 255.0, p[4] / 255.0, p[5] / 255.0);</span><br><span class="line">            glVertex3d(p[0], p[1], p[2]);</span><br><span class="line">        &#125;</span><br><span class="line">        glEnd();</span><br><span class="line">        pangolin::FinishFrame();</span><br><span class="line">        usleep(5000);   // sleep 5 ms</span><br><span class="line">    &#125;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line">project(joinMap)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 C++ 标准</span></span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line">set(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找所有依赖库</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line">find_package(Eigen3 REQUIRED)</span><br><span class="line">find_package(Pangolin REQUIRED)</span><br><span class="line">find_package(Sophus REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加头文件搜索目录</span></span><br><span class="line">include_directories(</span><br><span class="line">    $&#123;OpenCV_INCLUDE_DIRS&#125;</span><br><span class="line">    $&#123;EIGEN3_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;Pangolin_INCLUDE_DIRS&#125;</span><br><span class="line">    $&#123;Sophus_INCLUDE_DIRS&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加可执行文件</span></span><br><span class="line">add_executable(joinMap joinMap.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接库文件</span></span><br><span class="line">target_link_libraries(joinMap</span><br><span class="line">    $&#123;OpenCV_LIBRARIES&#125;</span><br><span class="line">    $&#123;Pangolin_LIBRARIES&#125;</span><br><span class="line">    $&#123;Sophus_LIBRARIES&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch5/rgbd/build$ cmake ..</span><br><span class="line">-- Configuring <span class="keyword">done</span></span><br><span class="line">-- Generating <span class="keyword">done</span></span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch5/rgbd/build</span><br><span class="line">hita@hita-vm:~/slambook/ch5/rgbd/build$ make</span><br><span class="line">[100%] Built target joinMap</span><br><span class="line">hita@hita-vm:~/slambook/ch5/rgbd/build$ ./joinMap </span><br><span class="line">转换图像中: 1</span><br><span class="line">转换图像中: 2</span><br><span class="line">转换图像中: 3</span><br><span class="line">转换图像中: 4</span><br><span class="line">转换图像中: 5</span><br><span class="line">点云共有1081843个点.</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825112657741.png" alt="image-20250825112657741"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/08/20/2025-08-20-%E7%AC%AC%E5%9B%9B%E8%AE%B2-%E6%9D%8E%E7%BE%A4%E6%9D%8E%E4%BB%A3%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/08/20/2025-08-20-%E7%AC%AC%E5%9B%9B%E8%AE%B2-%E6%9D%8E%E7%BE%A4%E6%9D%8E%E4%BB%A3%E6%95%B0/" class="post-title-link" itemprop="url">第四讲-李群李代数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-08-20 00:00:00" itemprop="dateCreated datePublished" datetime="2025-08-20T00:00:00+08:00">2025-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-08-22 16:01:51" itemprop="dateModified" datetime="2025-08-22T16:01:51+08:00">2025-08-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/" itemprop="url" rel="index"><span itemprop="name">视觉SLAM十四讲</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="视觉SLAM十四讲（第四讲）——李群李代数"><a href="#视觉SLAM十四讲（第四讲）——李群李代数" class="headerlink" title="视觉SLAM十四讲（第四讲）——李群李代数"></a>视觉SLAM十四讲（第四讲）——李群李代数</h1><h2 id="李群与李代数基础"><a href="#李群与李代数基础" class="headerlink" title="李群与李代数基础"></a>李群与李代数基础</h2><p>三维旋转矩阵构成了特殊的正交群 $SO(3)$,而变换矩阵构成了特殊欧式群$SE(3)$.有如下格式：<br>$$<br>\begin{align*}<br>\mathrm{SO}(3) &amp;&#x3D; { R \in \mathbb{R}^{3 \times 3} \mid RR^T &#x3D; I, \det(R) &#x3D; 1 }, \<br>\mathrm{SE}(3) &amp;&#x3D; \left{ T &#x3D;<br>\begin{bmatrix}<br>R &amp; t \<br>0^T &amp; 1<br>\end{bmatrix} \in \mathbb{R}^{4 \times 4} \mid R \in \mathrm{SO}(3), t \in \mathbb{R}^3 \right}.<br>\end{align*}<br>$$<br>这些旋转矩阵或者变换矩阵对于加法是不封闭的，即任意两个旋转矩阵按照矩阵加法的定义，和不再是一个旋转矩阵。但是他们的乘法是封闭的。对于这种只有一个（良好的）运算的集合，称之为群。</p>
+<h3 id="群"><a href="#群" class="headerlink" title="群"></a>群</h3><p>群（Group）是一种集合加上一种运算的的代数结构。把集合记作A，运算记为. 群可以记作$G &#x3D; (A,.)$.群要求满足条件：</p>
+<blockquote>
+<p>封结幺逆（丰俭由你）</p>
+</blockquote>
+<ol>
+<li>封：两个元素都属于群，乘积也属于群</li>
+<li>结：结合律</li>
+<li>幺元：群中至少有一个元素，别的元素与其相乘都是自身</li>
+<li>逆：对于群中所有的元素，群中至少有一个元素，与其他元素相乘都得到一个固定元素</li>
+</ol>
+<hr>
+<h3 id="李代数的引出"><a href="#李代数的引出" class="headerlink" title="李代数的引出"></a>李代数的引出</h3><blockquote>
+<p>反对成矩阵</p>
+</blockquote>
+<p>$$<br>A^T &#x3D; -A<br>\<br>a_ji &#x3D; -aij<br>\<br>$$</p>
+<p>对角线元素为零，对称位置元素互为相反数。</p>
+<p>在三维欧几里得空间中，两个向量的叉积运算可以完全等价为一个反对称矩阵和一个向量的乘法来表示。</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250820204806939.png" alt="image-20250820204806939" style="zoom:67%;" />
+
+<p>在书中用^表示将一个向量构造成一个反对称矩阵。叉积等价于矩阵乘法。</p>
+<p>若$R$是任意旋转矩阵，代表某个相机的旋转，它会随时间连续变化，是时间的函数：$R(t)$</p>
+<p>由：$$R(t)R(t)^{T} &#x3D; I$$，对等式两边求导：</p>
+<p>$$<br>\dot{R}(t)R(t)^{T} + R(t)\dot{R}(t)^{T} &#x3D; 0<br>\<br>\dot{R}(t)R(t)^{T} &#x3D; -(\dot{R}(t)R(t)^{T})^{T}<br>$$<br>所以，矩阵：$\dot{R}(t)R(t)^{T}$是一个反对称矩阵。根据上面叉积的知识，我们可以找到一个三维向量$\phi(t) \in \mathbb{R}^{3}$​与之对应:<br>$$<br>\dot{\mathbf{R}}(t)\mathbf{R}(t)^{T} &#x3D; \phi(t)^{\wedge}<br>$$<br>等式两边右乘$\mathbf{R}(t)$,由于是正交阵，所以有：<br>$$<br>\dot{\mathbf{R}}(t) &#x3D; \phi(t)^{\wedge}\mathbf{R}(t) &#x3D; \begin{bmatrix} 0 &amp; -\phi_{3} &amp; \phi_{2} \ \phi_{3} &amp; 0 &amp; -\phi_{1} \ -\phi_{2} &amp; \phi_{1} &amp; 0 \end{bmatrix} \mathbf{R}(t)<br>$$<br>可以看到，每次对旋转矩阵求一次导数，只需要左乘一个$\phi(t)^{\wedge}$​即可。</p>
+<p>可以把上式子看成一个微分方程，解得：<br>$$<br>\mathbf{R}(t) &#x3D; \exp(\hat{\phi}_{0}t)<br>$$<br>说明：</p>
+<ol>
+<li>给定某时刻的R，我们就能求出一个$\phi$,它描述了R在局部的导数关系。与R对应的$\phi$ 有什么含义.其实  $\phi$ 正是对应到  $SO(3)$ 上的李代数 $\mathfrak{so}(3)$.</li>
+<li>其次，给定某个向量$\phi$时，矩阵指数$\exp(\phi^{\wedge})$如何计算？反之，给定R，能否有相反的运算来计算$\phi$，事实上，这正是李群与李代数之间的指数对数映射。</li>
+</ol>
+<hr>
+<h3 id="李代数定义"><a href="#李代数定义" class="headerlink" title="李代数定义"></a>李代数定义</h3><blockquote>
+<p>李代数定义</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250821111930875.png" alt="image-20250821111930875"></p>
+<ol>
+<li>每个李群都有与之对应的李代数。如上式中**$\phi(t)$就是李代数，$R(t)$就是李群**，李代数描述了李群的局部性质。例如$\mathfrak{so}(3)$就反映了$SO(3)$​的局部导数性质。</li>
+<li>两个向量还有李括号运算，表达了两个元素的差异。例如叉积就是一种李括号。</li>
+</ol>
+<hr>
+<h3 id="李代数-mathfrak-so-3"><a href="#李代数-mathfrak-so-3" class="headerlink" title="李代数$\mathfrak{so}(3)$"></a>李代数$\mathfrak{so}(3)$</h3><p>之前提到的$\phi$就是一种李代数。每个$\phi$都可以生成一个反对称矩阵：<br>$$<br>\mathbf{\Phi} &#x3D; \phi^{\wedge} &#x3D; \begin{bmatrix} 0 &amp; -\phi_{3} &amp; \phi_{2} \ \phi_{3} &amp; 0 &amp; -\phi_{1} \ -\phi_{2} &amp; \phi_{1} &amp; 0 \end{bmatrix} \in \mathbb{R}^{3\times3}<br>$$<br>在此定义下，两个向量$\phi_1,\phi_2$的李括号是：<br>$$<br>[\phi_{1}, \phi_{2}] &#x3D; (\mathbf{\Phi}<em>{1}\mathbf{\Phi}</em>{2} - \mathbf{\Phi}<em>{2}\mathbf{\Phi}</em>{1})^{\vee}<br>$$<br>该向量与反对成矩阵是一一对应的，不存在歧义的情况。即$\mathfrak{so}(3)$的元素是三维向量或者三维反对成矩阵，不加区别：<br>$$<br>\mathbf{so}(3) &#x3D; { \phi \in \mathbb{R}^{3}, \mathbf{\Phi} &#x3D; \phi^{\wedge} \in \mathbb{R}^{3\times3} }<br>$$<br>可以看到$\mathfrak{so}(3)$的内容：它们是一个由三维向量组成的集合，每个向量对应一个反对称矩阵，可以用于表达旋转矩阵的倒数，它与R的关系由指数映射给定：<br>$$<br>\mathbf{R}(t) &#x3D; \exp(\phi^{\wedge})<br>$$</p>
+<hr>
+<h3 id="李代数-mathfrak-se-3"><a href="#李代数-mathfrak-se-3" class="headerlink" title="李代数$\mathfrak{se}(3)$"></a>李代数$\mathfrak{se}(3)$</h3><p>对于$SE(3)$,也有对应李代数$\mathfrak{se}(3)$。位于$\mathbb{R}^6$空间中：<br>$$<br>\mathbf{se}(3) &#x3D; \left{ \boldsymbol{\xi} &#x3D; \begin{bmatrix} \rho \ \phi \end{bmatrix} \in \mathbb{R}^{6}, \rho \in \mathbb{R}^{3}, \phi \in \mathbf{so}(3), \boldsymbol{\xi}^{\wedge} &#x3D; \begin{bmatrix} \phi^{\wedge} &amp; \rho \ \mathbf{0}^{T} &amp; 0 \end{bmatrix} \in \mathbb{R}^{4\times4} \right}<br>$$<br>将每个$\mathfrak{se}(3)$元素记为$ \xi $,这是一个六维向量。前三维表示平移，后三维旋转。同时拓展了^的含义。<strong>使用$\wedge,\vee$​，指代“从向量到矩阵”和”从矩阵到向量“的关系</strong>。</p>
+<p>李括号：<br>$$<br>[\boldsymbol{\xi}<em>{1}, \boldsymbol{\xi}</em>{2}] &#x3D; (\hat{\boldsymbol{\xi}}<em>{1}\hat{\boldsymbol{\xi}}</em>{2} - \hat{\boldsymbol{\xi}}<em>{2}\hat{\boldsymbol{\xi}}</em>{1})^{\vee}<br>$$</p>
+<hr>
+<h2 id="指数与对数映射"><a href="#指数与对数映射" class="headerlink" title="指数与对数映射"></a>指数与对数映射</h2><h3 id="SO-3-上的指数映射"><a href="#SO-3-上的指数映射" class="headerlink" title="$SO(3)$上的指数映射"></a>$SO(3)$上的指数映射</h3><p>指数映射，即$ \exp(\phi^{\wedge})$​的泰勒展开:<br>$$<br>\exp(\phi^{\wedge}) &#x3D; \sum_{n&#x3D;0}^{\infty} \frac{1}{n!} (\phi^{\wedge})^{n}<br>$$<br>简化计算方法，$\phi$是三维向量，可以定义它的模长和方向，分别记为：$\theta,a$于是就有$\phi &#x3D; \theta a$，这里$a$是一个长度为1的方向向量，对于$a^\wedge$,有以下两条性质：<br>$$<br>\mathbf{a}^{\wedge}\mathbf{a}^{\wedge} &#x3D; \begin{bmatrix} -a_{2}^{2} - a_{3}^{2} &amp; a_{1}a_{2} &amp; a_{1}a_{3} \ a_{1}a_{2} &amp; -a_{1}^{2} - a_{3}^{2} &amp; a_{2}a_{3} \ a_{1}a_{3} &amp; a_{2}a_{3} &amp; -a_{1}^{2} - a_{2}^{2} \end{bmatrix} &#x3D; \mathbf{a}\mathbf{a}^{T} - I<br>\<br>\<br>\mathbf{a}^{\wedge}\mathbf{a}^{\wedge}\mathbf{a}^{\wedge} &#x3D; \mathbf{a}^{\wedge}(\mathbf{a}\mathbf{a}^{T} - I) &#x3D; -\mathbf{a}^{\wedge}<br>$$<br>由此提供了$a^ \wedge$的高阶项方法。可以写成：<br>$$<br>\exp(\theta\mathbf{a}^{\wedge}) &#x3D; \cos\theta I + (1 - \cos\theta)\mathbf{a}\mathbf{a}^{T} + \sin\theta\mathbf{a}^{\wedge}<br>$$<br>（具体参考14讲公式4-22）这个和罗德里格斯公式是一样的，说明：$\mathfrak{se}(3)$实际上是由所谓的旋转向量组成的空间。指数映射就是罗德里格斯公式。通过这个就可以把$\mathfrak{se}(3)$中任意一个向量对应到一个位于$SO(3)$中的旋转矩阵。反之定义对数映射，也可以把$SO(3)$中的元素对应到$\mathfrak{se}(3)$中：<br>$$<br>\phi &#x3D; \ln(\mathbf{R})^{\vee} &#x3D; \left( \sum_{n&#x3D;0}^{\infty} \frac{(-1)^{n}}{n+1} (\mathbf{R}-I)^{n+1} \right)^{\vee}<br>$$<br>至于怎么根据对应的旋转矩阵求解李代数，可以利用迹的性质以及特征向量来求旋转角度与旋转轴。具体如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250821161823738.png" alt="image-20250821161823738"></p>
+<p>这样就求得了旋转角度，关于转轴，由于$Rn &#x3D; n$说明转轴$n$是矩阵$R$特征值为1对应的特征向量。求解方程，归一化之后即可得到旋转轴。</p>
+<p>值得注意的是，指数映射是一个满射并不是单射，意味着在一个李群可以找到一个李代数，但是可能存在多个李代数映射同一个李群。旋转角具有周期性，如果把旋转角固定到±$\pi$​之间那么李群与李代数之间的就是一一对应了。</p>
+<h3 id="SE-3-上的指数映射"><a href="#SE-3-上的指数映射" class="headerlink" title="$SE(3)$上的指数映射"></a>$SE(3)$上的指数映射</h3><p>$\mathfrak{se}(3)$上的指数映射形式是：<br>$$<br>\exp(\boldsymbol{\xi}^{\wedge}) &#x3D; \begin{bmatrix} \displaystyle\sum_{n&#x3D;0}^{\infty} \frac{1}{n!} (\phi^{\wedge})^{n} &amp; \displaystyle\sum_{n&#x3D;0}^{\infty} \frac{1}{(n+1)!} (\phi^{\wedge})^{n} \rho \ \mathbf{0}^{T} &amp; 1 \end{bmatrix}<br>\<br>\<br>\triangleq \begin{bmatrix} \mathbf{R} &amp; J\rho \ \mathbf{0}^{T} &amp; 1 \end{bmatrix} &#x3D; \mathbf{T}<br>$$<br>指数映射中：右上角$J$可得出：<br>$$<br>\mathbf{J} &#x3D; \frac{\sin\theta}{\theta} I + \left(1 - \frac{\sin\theta}{\theta}\right) \mathbf{a}\mathbf{a}^{T} + \frac{1 - \cos\theta}{\theta} \mathbf{a}^{\wedge}<br>$$<br>与罗德里格斯公式类似，左上为旋转矩阵，右上为平移部分，是以$J$为稀矩阵的线性变换。具体的转换关系可以由下图展示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20201128193021844.png" alt="李群和李代数以及线性变换相关笔记_李代数的几何意义-CSDN博客"></p>
+<h2 id="李代数求导与扰动模型"><a href="#李代数求导与扰动模型" class="headerlink" title="李代数求导与扰动模型"></a>李代数求导与扰动模型</h2><h3 id="BHC公式与近似形式"><a href="#BHC公式与近似形式" class="headerlink" title="BHC公式与近似形式"></a>BHC公式与近似形式</h3><p>使用李代数可以进行优化，在优化中导数是非常有必要的信息，会在非线性优化中使用。</p>
+<p>矩阵做乘法时，李代数发生什么变化？并不是简单的加法。即<br>$$<br>\exp(\hat{\phi}<em>{1}^{\wedge}) \exp(\hat{\phi}</em>{2}^{\wedge}) &#x3D; \exp\left( (\phi_{1} + \phi_{2})^{\wedge} \right)<br>$$<br>或者等价于：<br>$$<br>\ln(\exp(\mathbf{A})\exp(\mathbf{B})) &#x3D; \mathbf{A} + \mathbf{B}<br>$$<br>该式在矩阵时<strong>不成立</strong>。两个李代数指数映射乘积的完整形式，由BCH公式给出：<br>$$<br>\ln(\exp(A)\exp(B)) &#x3D; A + B + \frac{1}{2}[A, B] + \frac{1}{12}[A, [A, B]] - \frac{1}{12}[B, [A, B]] + \dots<br>$$<br>其中$[]$​是李括号。这表明，当处理两个矩阵之积时，会产生一些由李括号组成的余项。当$\phi_1 \phi_2$为小量时，小量二次以上的项都可以忽略不计。此时近似为：<br>$$<br>\ln(\exp(\phi_{1}^{\wedge})\exp(\phi_{2}^{\wedge}))^{\vee} \approx \begin{cases} J_{l}(\phi_{2})^{-1}\phi_{1} + \phi_{2} &amp; \text{当}\phi_1\text{为小量,} \ J_{r}(\phi_{1})^{-1}\phi_{2} + \phi_{1} &amp; \text{当}\phi_2\text{为小量.} \end{cases}<br>$$<br>下标$l$就是左乘，下标$r$就是右乘，其中$J$就是之前转换的那个$J$。</p>
+<p>如第一个近似：当对一个旋转矩阵$R_2$（李代数为$\phi_2$）左乘一个微小旋转矩阵$R_1$（李代数为$\phi_1$）时，可以近似看作在原有的李代数上加一项$J_1(\phi_2)^-1\phi_1$​.</p>
+<p><strong>记忆方法</strong>：</p>
+<ol>
+<li>小量在哪边，雅可比的下标方向就在哪边</li>
+<li>大量进雅可比自变量</li>
+<li>最后结果时雅可比乘小量，再加上大量</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250821210325423.png" alt="image-20250821210325423"></p>
+<p>这样就可以谈论李群乘法与李代数加法的关系了。其实就是研究两者之间是怎么变换的近似关系的。</p>
+<hr>
+<h3 id="SO-3-上的李代数求导"><a href="#SO-3-上的李代数求导" class="headerlink" title="$SO(3)$上的李代数求导"></a>$SO(3)$上的李代数求导</h3><p>在SLAM中，要估计一个相机的位置和姿态，该位姿是由$SO(3)$山的旋转矩阵或者$SE(3)$上的变换矩阵描述的。设某个时刻机器人的位姿$T$。观察到世界坐标位于$p$的点,产生了一个观测数据$z$。那么，由坐标变换关系可知：<br>$$<br>\mathbf{z} &#x3D; \mathbf{T}\mathbf{p} + \mathbf{\omega}<br>$$<br>其中$\omega$是随机噪声。所以通常会计算理想的观测与实际数据的误差：<br>$$<br>e &#x3D; \mathbf{z} - \mathbf{T}\mathbf{p}<br>$$<br>假设一共有N个这样的路标点和观测点，于是有N个上式。对于机器人进行位姿估计，相当于寻找一个最优的T，使得整体误差最小化：<br>$$<br>\min_{T} J(T) &#x3D; \sum_{i&#x3D;1}^{N} |\mathbf{z}<em>{i} - T\mathbf{p}</em>{i}|_{2}^{2}<br>$$<br>求解此问题，就需要计算目标函数$J$关于变换矩阵$T$的导数。重要的是，<strong>我们经常构建与位姿有关的函数，然后讨论该函数关于位子的导数，来调整当前的估计值</strong>。我们把$T$当作普通矩阵<strong>处理优化</strong>，就必须要加以约束，李代数有向量组成，具有良好的加法运算，所以使用李代数解决求导问题可以放分为两个思路：</p>
+<ol>
+<li>用李代数表示姿态，根据李代数加法对李代数求导</li>
+<li>对李群左乘或者右乘微小扰动，然后对扰动求导，称为左扰动和右扰动模型。</li>
+</ol>
+<p>第一种是李代数求导模型，第二种是扰动模型。</p>
+<hr>
+<h3 id="李代数求导"><a href="#李代数求导" class="headerlink" title="李代数求导"></a>李代数求导</h3><p>考虑$SO(3)$上的情况，假设对于一个空间点$p$进行旋转，得到$Rp$。仙子啊，要计算旋转之后点的坐标相对于旋转的导数，可以暂且记为：<br>$$<br>\frac{\partial(R\mathbf{p})}{\partial R}<br>$$<br>由于$SO(3)$没有加法，所以导数无法正常计算，使用对应的李代数$\phi$计算：<br>$$<br>\frac{\partial(exp(\phi^{\wedge}p))}{\partial \phi}<br>$$<br>推导出旋转以后的点相对于李代数的导数：<br>$$<br>\frac{\partial(\mathbf{R}\mathbf{p})}{\partial\phi} &#x3D; (-\mathbf{R}\mathbf{p})^{\wedge}\mathbf{J}_{l}<br>$$</p>
+<h3 id="扰动模型（左乘）"><a href="#扰动模型（左乘）" class="headerlink" title="扰动模型（左乘）"></a>扰动模型（左乘）</h3><p>上述提到的另外一个求导方式是对于R进行一次扰动$\Delta R$，看结果相对于扰动的变化率。可以是左乘也可以是右乘，有些许差异。设左扰动$\Delta R$​对应的李代数是$\varphi$,对其求导：<br>$$<br>\frac{\partial(\mathbf{R}\mathbf{p})}{\partial\boldsymbol{\varphi}} &#x3D; \lim_{\varphi \to 0} \frac{\exp(\varphi^{\wedge})\exp(\mathbf{\phi}^{\wedge})\mathbf{p} - \exp(\mathbf{\phi}^{\wedge})\mathbf{p}}{\varphi}<br>&#x3D; -(Rp)^{\wedge}<br>$$<br>可见，相较于李代数求导，省去一个雅可比的计算，使得扰动模型更为实用。</p>
+<hr>
+<h3 id="SE-3-上的李代数求导"><a href="#SE-3-上的李代数求导" class="headerlink" title="$SE(3)$上的李代数求导"></a>$SE(3)$上的李代数求导</h3><p>假设，某空间点$p$经过一次变换$T$(对应李代数是$\xi$),得到$Tp$，现在给$T$左乘一个扰动$\Delta T &#x3D; \mathbf{exp}(\delta \xi^\wedge)$,扰动项的李代数是：$\delta \xi &#x3D; [\delta \rho,\delta \phi]^T$。</p>
+<p>直接给出扰动模型：<br>$$<br>\frac{\partial(\mathbf{T}\mathbf{p})}{\partial\delta\boldsymbol{\xi}} &#x3D; \lim_{\delta\boldsymbol{\xi} \to 0} \frac{\exp((\delta\boldsymbol{\xi})^{\wedge})\exp(\boldsymbol{\xi}^{\wedge})\mathbf{p} - \exp(\boldsymbol{\xi}^{\wedge})\mathbf{p}}{\delta\boldsymbol{\xi}}<br>\ &#x3D; \begin{bmatrix} \mathbf{I} &amp; -(\mathbf{R}\mathbf{p} + \mathbf{t})^{\wedge} \ \mathbf{0}^{T} &amp; \mathbf{0}^{T} \end{bmatrix} \stackrel{\mathrm{def}}{&#x3D;} (\mathbf{T}\mathbf{p})^{\odot}<br>$$<br>最后一个是运算符，它把一个齐次坐标的空间点变换成一个4x6的矩阵。假设$a,b,x,y$都是列向量，那么在运算符写法下，有：<br>$$<br>\frac{d \begin{bmatrix} a \ b \end{bmatrix}}{d \begin{bmatrix} x \ y \end{bmatrix}} &#x3D; \left( \frac{d[a, b]^{T}}{d \begin{bmatrix} x \ y \end{bmatrix}} \right)^{T} &#x3D; \begin{bmatrix} \frac{da}{dx} &amp; \frac{db}{dx} \ \frac{da}{dy} &amp; \frac{db}{dy} \end{bmatrix}^{T} &#x3D; \begin{bmatrix} \frac{da}{dx} &amp; \frac{da}{dy} \ \frac{db}{dx} &amp; \frac{db}{dy} \end{bmatrix}<br>$$</p>
+<h2 id="实践：Sophus"><a href="#实践：Sophus" class="headerlink" title="实践：Sophus"></a>实践：Sophus</h2><h3 id="Sophus的基本使用"><a href="#Sophus的基本使用" class="headerlink" title="Sophus的基本使用"></a>Sophus的基本使用</h3><p>Sophus库支持$SO(3)$和$SE(3)$，是直接在Eigen上开发的，这个库只需要编译，不需要安装。</p>
+<blockquote>
+<p>使用Sophus</p>
+</blockquote>
+<ol>
+<li>安装fmt</li>
+</ol>
+<p>首先安装fmt,由于使用的代码使用的是模板库，所以需要安装。</p>
+<p>打开终端，可以在文件夹 <code>3rdparty</code>打开终端，这次忘了，懒得改了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/fmtlib/fmt.git</span><br><span class="line">cd fmt</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake ..</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装Sophus库</li>
+</ol>
+<p>同样在终端打开：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/strasdat/Sophus.git</span><br><span class="line">cd Sophus</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake ..</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<p>如果出现报错，可能需要修改一下CMakeLists.txt文件。</p>
+<p>安装成功之后，可以测试一下。</p>
+<p>新建文件：<code>slambook/ch4/useSophus.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;Eigen/Geometry&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&quot;sophus/se3.hpp&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Eigen;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">  Matrix3d R = <span class="built_in">AngleAxisd</span>(M_PI / <span class="number">2</span>, <span class="built_in">Vector3d</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)).<span class="built_in">toRotationMatrix</span>();</span><br><span class="line">  <span class="function">Quaterniond <span class="title">q</span><span class="params">(R)</span></span>;</span><br><span class="line">  <span class="function">Sophus::SO3d <span class="title">SO3_R</span><span class="params">(R)</span></span>;</span><br><span class="line">  <span class="function">Sophus::SO3d <span class="title">SO3_q</span><span class="params">(q)</span></span>;</span><br><span class="line"></span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;SO(3) from matrix:\n&quot;</span> &lt;&lt; SO3_R.<span class="built_in">matrix</span>() &lt;&lt; endl;</span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;SO(3) from quaternion:\n&quot;</span> &lt;&lt; SO3_q.<span class="built_in">matrix</span>() &lt;&lt; endl;</span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;they are equal&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">  Vector3d so3 = SO3_R.<span class="built_in">log</span>();</span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;so3 = &quot;</span> &lt;&lt; so<span class="number">3.</span><span class="built_in">transpose</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;so3 hat=\n&quot;</span> &lt;&lt; Sophus::SO3d::<span class="built_in">hat</span>(so3) &lt;&lt; endl;</span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;so3 hat vee= &quot;</span> &lt;&lt; Sophus::SO3d::<span class="built_in">vee</span>(Sophus::SO3d::<span class="built_in">hat</span>(so3)).<span class="built_in">transpose</span>() &lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">  <span class="function">Vector3d <span class="title">update_so3</span><span class="params">(<span class="number">1e-4</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">  Sophus::SO3d SO3_updated = Sophus::SO3d::<span class="built_in">exp</span>(update_so3) * SO3_R;</span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;SO3 updated = \n&quot;</span> &lt;&lt; SO3_updated.<span class="built_in">matrix</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编写CmakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line">project(useSophus)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为使用 sophus，需要使用find_package命令找到它</span></span><br><span class="line">find_package(Sophus REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Eigen</span></span><br><span class="line">include_directories(<span class="string">&quot;/usr/include/eigen3&quot;</span>)</span><br><span class="line">add_executable(useSophus useSophus.cpp)</span><br><span class="line">target_link_libraries(useSophus Sophus::Sophus)</span><br></pre></td></tr></table></figure>
+
+<p>在终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch4/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch4/build</span><br><span class="line">hita@hita-vm:~/slambook/ch4/build$ make </span><br><span class="line">[100%] Built target useSophus</span><br><span class="line">hita@hita-vm:~/slambook/ch4/build$ ./useSophus </span><br><span class="line">SO(3) from matrix:</span><br><span class="line">2.22045e-16          -1           0</span><br><span class="line">          1 2.22045e-16           0</span><br><span class="line">          0           0           1</span><br><span class="line">SO(3) from quaternion:</span><br><span class="line">2.22045e-16          -1           0</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="例子：评估轨迹的误差"><a href="#例子：评估轨迹的误差" class="headerlink" title="例子：评估轨迹的误差"></a>例子：评估轨迹的误差</h3><p>在实际工程中，需要评估一个算法的估计轨迹与真实轨迹的差异来评价算法的精度。现在来计算两条轨迹的误差。有很多种误差评估指标，<strong>如绝对轨迹误差</strong>，每个位姿李代数的<strong>均方根误差</strong>，还有<strong>绝对平移误差</strong>等。利用Sophus库，可以实现计算。分别有<code>groundtruth.txt</code>和<code>estimated.txt</code>两条轨迹,计算误差，显示到3D窗口。</p>
+<p>新建文件：<code>slambook/ch4/examples/trajectoryError.cpp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;fstream&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;pangolin/pangolin.h&gt;</span><br><span class="line">#include &lt;sophus/se3.hpp&gt;</span><br><span class="line"></span><br><span class="line">using namespace Sophus;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">string groundtruth_file = &quot;../../examples/groundtruth.txt&quot;;</span><br><span class="line">string estimated_file = &quot;../../examples/estimated.txt&quot;;</span><br><span class="line"></span><br><span class="line">typedef vector&lt;Sophus::SE3d, Eigen::aligned_allocator&lt;Sophus::SE3d&gt;&gt; TrajectoryType;</span><br><span class="line"></span><br><span class="line">void DrawTrajectory(const TrajectoryType &amp;gt, const TrajectoryType &amp;esti);</span><br><span class="line"></span><br><span class="line">TrajectoryType ReadTrajectory(const string &amp;path);</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line">  TrajectoryType groundtruth = ReadTrajectory(groundtruth_file);</span><br><span class="line">  TrajectoryType estimated = ReadTrajectory(estimated_file);</span><br><span class="line">  assert(!groundtruth.empty() &amp;&amp; !estimated.empty());</span><br><span class="line">  assert(groundtruth.size() == estimated.size());</span><br><span class="line"></span><br><span class="line">  // compute rmse</span><br><span class="line">  double rmse = 0;</span><br><span class="line">  for (size_t i = 0; i &lt; estimated.size(); i++) &#123;</span><br><span class="line">    Sophus::SE3d p1 = estimated[i], p2 = groundtruth[i];</span><br><span class="line">    double error = (p2.inverse() * p1).log().norm();</span><br><span class="line">    rmse += error * error;</span><br><span class="line">  &#125;</span><br><span class="line">  rmse = rmse / double(estimated.size());</span><br><span class="line">  rmse = sqrt(rmse);</span><br><span class="line">  cout &lt;&lt; &quot;RMSE = &quot; &lt;&lt; rmse &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">  DrawTrajectory(groundtruth, estimated);</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">TrajectoryType ReadTrajectory(const string &amp;path) &#123;</span><br><span class="line">  ifstream fin(path);</span><br><span class="line">  TrajectoryType trajectory;</span><br><span class="line">  if (!fin) &#123;</span><br><span class="line">    cerr &lt;&lt; &quot;trajectory &quot; &lt;&lt; path &lt;&lt; &quot; not found.&quot; &lt;&lt; endl;</span><br><span class="line">    return trajectory;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  while (!fin.eof()) &#123;</span><br><span class="line">    double time, tx, ty, tz, qx, qy, qz, qw;</span><br><span class="line">    fin &gt;&gt; time &gt;&gt; tx &gt;&gt; ty &gt;&gt; tz &gt;&gt; qx &gt;&gt; qy &gt;&gt; qz &gt;&gt; qw;</span><br><span class="line">    Sophus::SE3d p1(Eigen::Quaterniond(qw, qx, qy, qz), Eigen::Vector3d(tx, ty, tz));</span><br><span class="line">    trajectory.push_back(p1);</span><br><span class="line">  &#125;</span><br><span class="line">  return trajectory;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void DrawTrajectory(const TrajectoryType &amp;gt, const TrajectoryType &amp;esti) &#123;</span><br><span class="line">  // create pangolin window and plot the trajectory</span><br><span class="line">  pangolin::CreateWindowAndBind(&quot;Trajectory Viewer&quot;, 1024, 768);</span><br><span class="line">  glEnable(GL_DEPTH_TEST);</span><br><span class="line">  glEnable(GL_BLEND);</span><br><span class="line">  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);</span><br><span class="line"></span><br><span class="line">  pangolin::OpenGlRenderState s_cam(</span><br><span class="line">      pangolin::ProjectionMatrix(1024, 768, 500, 500, 512, 389, 0.1, 1000),</span><br><span class="line">      pangolin::ModelViewLookAt(0, -0.1, -1.8, 0, 0, 0, 0.0, -1.0, 0.0)</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  pangolin::View &amp;d_cam = pangolin::CreateDisplay()</span><br><span class="line">      .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -1024.0f / 768.0f)</span><br><span class="line">      .SetHandler(new pangolin::Handler3D(s_cam));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  while (pangolin::ShouldQuit() == false) &#123;</span><br><span class="line">    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    d_cam.Activate(s_cam);</span><br><span class="line">    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);</span><br><span class="line"></span><br><span class="line">    glLineWidth(2);</span><br><span class="line">    for (size_t i = 0; i &lt; gt.size() - 1; i++) &#123;</span><br><span class="line">      glColor3f(0.0f, 0.0f, 1.0f);  // blue for ground truth</span><br><span class="line">      glBegin(GL_LINES);</span><br><span class="line">      auto p1 = gt[i], p2 = gt[i + 1];</span><br><span class="line">      glVertex3d(p1.translation()[0], p1.translation()[1], p1.translation()[2]);</span><br><span class="line">      glVertex3d(p2.translation()[0], p2.translation()[1], p2.translation()[2]);</span><br><span class="line">      glEnd();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (size_t i = 0; i &lt; esti.size() - 1; i++) &#123;</span><br><span class="line">      glColor3f(1.0f, 0.0f, 0.0f);  // red for estimated</span><br><span class="line">      glBegin(GL_LINES);</span><br><span class="line">      auto p1 = esti[i], p2 = esti[i + 1];</span><br><span class="line">      glVertex3d(p1.translation()[0], p1.translation()[1], p1.translation()[2]);</span><br><span class="line">      glVertex3d(p2.translation()[0], p2.translation()[1], p2.translation()[2]);</span><br><span class="line">      glEnd();</span><br><span class="line">    &#125;</span><br><span class="line">    pangolin::FinishFrame();</span><br><span class="line">    usleep(5000);   // sleep 5 ms</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line">project(trajectoryError)</span><br><span class="line"></span><br><span class="line">option(USE_UBUNTU_20 &quot;Set to ON if you are using Ubuntu 20.04&quot; OFF)</span><br><span class="line">find_package(Pangolin REQUIRED)</span><br><span class="line">if(USE_UBUNTU_20)</span><br><span class="line">    message(&quot;You are using Ubuntu 20.04, fmt::fmt will be linked&quot;)</span><br><span class="line">    find_package(fmt REQUIRED)</span><br><span class="line">    set(FMT_LIBRARIES fmt::fmt)</span><br><span class="line">endif()</span><br><span class="line">include_directories($&#123;Pangolin_INCLUDE_DIRS&#125;)</span><br><span class="line">add_executable(trajectoryError trajectoryError.cpp)</span><br><span class="line">target_link_libraries(trajectoryError $&#123;Pangolin_LIBRARIES&#125; $&#123;FMT_LIBRARIES&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>记得把源代码中的两个轨迹保存到<code>slambook/ch4/examples/</code></p>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch4/examples/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch4/examples/build</span><br><span class="line">hita@hita-vm:~/slambook/ch4/examples/build$ make</span><br><span class="line">[100%] Built target trajectoryError</span><br><span class="line">hita@hita-vm:~/slambook/ch4/examples/build$ ./trajectoryError </span><br><span class="line">RMSE = 2.20728</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822155141451.png" alt="image-20250822155141451"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/08/20/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%B8%89%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,7 +600,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-08-20 00:00:00 / 修改时间：16:23:09" itemprop="dateCreated datePublished" datetime="2025-08-20T00:00:00+08:00">2025-08-20</time>
+      <time title="创建时间：2025-08-20 00:00:00 / 修改时间：19:57:49" itemprop="dateCreated datePublished" datetime="2025-08-20T00:00:00+08:00">2025-08-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -276,8 +663,7 @@
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Orthogonal_decomposition_unit_vector_rodrigues_rotation_formula.svg/350px-Orthogonal_decomposition_unit_vector_rodrigues_rotation_formula.svg.png" alt="img"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/1903168-20200217220414404-1389795950.png" alt="向量的分解图示"></p>
 <p>其中v是三维向量，k是与旋转轴同向的单位向量，θ是v绕着k的右手方向旋转角度。vrot表示旋转之后的向量。</p>
-<h1 id="矩阵形式-vrot"><a href="#矩阵形式-vrot" class="headerlink" title="矩阵形式$$vrot"></a><strong>矩阵形式</strong><br>$$<br>v<br>r<br>o<br>t</h1><h1 id="Rv-其中R是旋转矩阵，表示如下：-R"><a href="#Rv-其中R是旋转矩阵，表示如下：-R" class="headerlink" title="Rv$$其中R是旋转矩阵，表示如下：$$R"></a>R<br>v<br>$$<br>其中R是旋转矩阵，表示如下：<br>$$<br>R</h1><p>cos<br>θ<br>I<br>+<br>(<br>1<br>−<br>cos<br>θ<br>)<br>k<br>k<br>T<br>+<br>sin<br>θ<br>k<br>∧</p>
-<h1 id="其中I表示单位矩阵，K表示旋转向量，k-表示由k得到的反对成矩阵，-R"><a href="#其中I表示单位矩阵，K表示旋转向量，k-表示由k得到的反对成矩阵，-R" class="headerlink" title="$$其中I表示单位矩阵，K表示旋转向量，k^表示由k得到的反对成矩阵，$$R"></a>$$<br>其中I表示单位矩阵，K表示旋转向量，k^表示由k得到的反对成矩阵，<br>$$<br>R</h1><p>I<br>+<br>(<br>sin<br>θ<br>)<br>K<br>+<br>(<br>1<br>−<br>cos<br>θ<br>)<br>K<br>2<br>$$<br>其中K，表示旋转向量生成的反对成矩阵。</p>
+<h1 id="矩阵形式-vrot"><a href="#矩阵形式-vrot" class="headerlink" title="矩阵形式$$vrot"></a><strong>矩阵形式</strong><br>$$<br>v<br>r<br>o<br>t</h1><h1 id="Rv-其中R是旋转矩阵，表示如下：-R"><a href="#Rv-其中R是旋转矩阵，表示如下：-R" class="headerlink" title="Rv$$其中R是旋转矩阵，表示如下：$$R"></a>R<br>v<br>$$<br>其中R是旋转矩阵，表示如下：<br>$$<br>R</h1><h1 id="cosθI-1−cosθ-kkT-sinθk∧-其中I表示单位矩阵，K表示旋转向量，k-表示由k得到的反对成矩阵，-R"><a href="#cosθI-1−cosθ-kkT-sinθk∧-其中I表示单位矩阵，K表示旋转向量，k-表示由k得到的反对成矩阵，-R" class="headerlink" title="cosθI+(1−cosθ)kkT+sinθk∧$$其中I表示单位矩阵，K表示旋转向量，k^表示由k得到的反对成矩阵，$$R"></a>cos<br>θ<br>I<br>+<br>(<br>1<br>−<br>cos<br>θ<br>)<br>k<br>k<br>T<br>+<br>sin<br>θ<br>k<br>∧<br>$$<br>其中I表示单位矩阵，K表示旋转向量，k^表示由k得到的反对成矩阵，<br>$$<br>R</h1><p>I<br>+<br>(<br>sin<br>θ<br>)<br>K<br>+<br>(<br>1<br>−<br>cos<br>θ<br>)<br>K<br>2<br>$$<br>其中K，表示旋转向量生成的反对成矩阵。</p>
 <p>参考资料：</p>
 <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1DF411s7sn/?spm_id_from=333.337.search-card.all.click&vd_source=f241df170c33a3be666ec10b59feb689">罗德里格斯公式推导_哔哩哔哩_bilibili</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wtyuan/p/12324495.html">罗德里格斯旋转公式（Rodrigues’ rotation formula）推导 - wtyuan - 博客园</a></p>
@@ -307,8 +693,7 @@
 <h3 id="用四元数表示旋转"><a href="#用四元数表示旋转" class="headerlink" title="用四元数表示旋转"></a>用四元数表示旋转</h3><p>首先把三维空间点用一个虚四元数来表述：<br>$$<br>p &#x3D; [0, x, y, z]T &#x3D; [0, v]T<br>$$<br>相当于把四元数的三个虚部与空间中的三个轴相对应。那么旋转后的点 p’ 可以表示为这样的乘积：<br>$$<br>P^{\prime}&#x3D;qpq^{-1}<br>$$<br>结果也是四元数，把虚部取出来，即为旋转之后点的坐标。</p>
 <h3 id="四元数到其他旋转表示的转换"><a href="#四元数到其他旋转表示的转换" class="headerlink" title="四元数到其他旋转表示的转换"></a>四元数到其他旋转表示的转换</h3><p>任意四元数描述了一个旋转，旋转可以用旋转矩阵或者旋转向量表示。四元数乘法可以有一种矩阵的乘法表示：<br>$$<br>q &#x3D; [s, v]^T<br>$$<br>定义如下符号：<br>$$<br>\left.q^+&#x3D;\left[\begin{array}{cc}s&amp;-v^\mathrm{T}\\v&amp;s\boldsymbol{I}+\boldsymbol{v}^\wedge\end{array}\right.\right]<br>$$</p>
 <p>$$<br>q^\oplus&#x3D;\begin{bmatrix}s&amp;-v^\mathrm{T}\\v&amp;s\boldsymbol{I}-\boldsymbol{v}^\mathrm{T}\end{bmatrix}<br>$$</p>
-<p>这两个符号将四元数映射为一个4x4的矩阵，于是四元数乘法可以写成矩阵形式：<br>$$<br>\left.q_1^+q_2&#x3D;\left[\begin{array}{cc}s_1&amp;-\boldsymbol{v}_1^T\\\boldsymbol{v}_1&amp;s_1\boldsymbol{I}+\boldsymbol{v}_1^\wedge\end{array}\right.\right]\begin{bmatrix}s_2\\\boldsymbol{v}_2\end{bmatrix}&#x3D;\begin{bmatrix}-\boldsymbol{v}_1^T\boldsymbol{v}_2+s_1s_2\\s_1\boldsymbol{v}_2+s_2\boldsymbol{v}_1+\boldsymbol{v}_1^\wedge\boldsymbol{v}_2\end{bmatrix}&#x3D;\boldsymbol{q}_1\boldsymbol{q}_2<br>$$<br>同理可得:<br>$$<br>q_1q_2&#x3D;q_1^+q_2&#x3D;q_2^\oplus q_1<br>$$<br>则有：<br>$$<br>\begin{aligned}p^{\prime}&amp;&#x3D;qpq^{-1}&#x3D;q^+p^+q^{-1}\&amp;&#x3D;q^+q^{-1}\oplus p\end{aligned}<br>$$<br>四元数到旋转向量的转换公式：<br>$$<br>\begin{cases}<br>\theta &#x3D; 2 \arccos q_0 \<br>[n_x, n_y, n_z]^\mathrm{T} &#x3D; \frac{[q_1, q_2, q_3]^\mathrm{T}}{\sin\frac{\theta}{2}}<br>\end{cases}</p>
-<p>$$</p>
+<p>这两个符号将四元数映射为一个4x4的矩阵，于是四元数乘法可以写成矩阵形式：<br>$$<br>\left.q_1^+q_2&#x3D;\left[\begin{array}{cc}s_1&amp;-\boldsymbol{v}_1^T\\\boldsymbol{v}_1&amp;s_1\boldsymbol{I}+\boldsymbol{v}_1^\wedge\end{array}\right.\right]\begin{bmatrix}s_2\\\boldsymbol{v}_2\end{bmatrix}&#x3D;\begin{bmatrix}-\boldsymbol{v}_1^T\boldsymbol{v}_2+s_1s_2\\s_1\boldsymbol{v}_2+s_2\boldsymbol{v}_1+\boldsymbol{v}_1^\wedge\boldsymbol{v}_2\end{bmatrix}&#x3D;\boldsymbol{q}_1\boldsymbol{q}_2<br>$$<br>同理可得:<br>$$<br>q_1q_2&#x3D;q_1^+q_2&#x3D;q_2^\oplus q_1<br>$$<br>则有：<br>$$<br>\begin{aligned}p^{\prime}&amp;&#x3D;qpq^{-1}&#x3D;q^+p^+q^{-1}\&amp;&#x3D;q^+q^{-1}\oplus p\end{aligned}<br>$$<br>四元数到旋转向量的转换公式：<br>$$<br>\begin{cases}<br>\theta &#x3D; 2 \arccos q_0 \<br>[n_x, n_y, n_z]^\mathrm{T} &#x3D; \frac{[q_1, q_2, q_3]^\mathrm{T}}{\sin\frac{\theta}{2}}<br>\end{cases}<br>$$</p>
 <hr>
 <h2 id="相似、仿射、射影变换"><a href="#相似、仿射、射影变换" class="headerlink" title="相似、仿射、射影变换"></a>相似、仿射、射影变换</h2><h3 id="相似变换"><a href="#相似变换" class="headerlink" title="相似变换"></a>相似变换</h3><p>允许物体进行均匀放缩。三维相似变换的集合也被叫做相似变换群，记为$Sim(3)$</p>
 <h3 id="仿射变换"><a href="#仿射变换" class="headerlink" title="仿射变换"></a>仿射变换</h3><p>该变换只要求A是一个可逆矩阵，不必是正交矩阵，经过仿射变换后，立方体不再是方的，但是各个面仍然是平行四边形。</p>
@@ -1091,6 +1476,119 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/" class="post-title-link" itemprop="url">利用move_base使得小车导航至火焰位置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-07-23 00:00:00 / 修改时间：19:41:37" itemprop="dateCreated datePublished" datetime="2025-07-23T00:00:00+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="利用move-base使得小车导航至火焰位置"><a href="#利用move-base使得小车导航至火焰位置" class="headerlink" title="利用move_base使得小车导航至火焰位置"></a>利用move_base使得小车导航至火焰位置</h1><h2 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h2><p>之前已经实现了使用小车，利用2D nav goal工具来设置目标点，只需要将这个目标点替换为火焰位置，这样就能实现火焰的导航。上一次已经实现了火焰相对于相机坐标系到火焰相对于小车坐标系的变换，现在只需要实现火焰坐标系到地图坐标系的转换即可。这便是整体思路</p>
+<h2 id="2D-Nav-Goal基本原理"><a href="#2D-Nav-Goal基本原理" class="headerlink" title="2D Nav Goal基本原理"></a>2D Nav Goal基本原理</h2><ul>
+<li><p>在rviz中通过”2D Nav Goal”工具设置目标点时，会发布geometry_msgs&#x2F;PoseStamped类型的消息到&#x2F;move_base_simple&#x2F;goal话题</p>
+</li>
+<li><p>move_base节点订阅该话题，将目标点转换为导航任务，并启动全局&#x2F;局部路径规划</p>
+</li>
+<li><p>目标点坐标基于用户指定的参考系（通常为map或odom坐标系）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2d%20nav%20goal%E5%8E%9F%E7%90%86.png"></p>
+</li>
+</ul>
+<p>有了上述理解之后，可以尝试设置一个目标点，通过脚本来实现小车的移动</p>
+<p>新建脚本文件：scripts&#x2F;goal.publisher.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf.transformations <span class="keyword">import</span> quaternion_from_euler</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_goal</span>(<span class="params">x, y, yaw</span>):  <span class="comment"># yaw 为朝向偏航角（弧度）</span></span><br><span class="line">    pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">    rospy.sleep(<span class="number">1</span>)  <span class="comment"># 确保发布器已完全初始化</span></span><br><span class="line"></span><br><span class="line">    goal = PoseStamped()</span><br><span class="line">    goal.header.frame_id = <span class="string">&quot;map&quot;</span></span><br><span class="line">    goal.header.stamp = rospy.get_rostime()  <span class="comment"># 使用 ROS 时间戳</span></span><br><span class="line">    goal.pose.position.x = x</span><br><span class="line">    goal.pose.position.y = y</span><br><span class="line">    goal.pose.position.z = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将偏航角转换为四元数</span></span><br><span class="line">    q = quaternion_from_euler(<span class="number">0</span>, <span class="number">0</span>, yaw)</span><br><span class="line">    goal.pose.orientation.x = q[<span class="number">0</span>]</span><br><span class="line">    goal.pose.orientation.y = q[<span class="number">1</span>]</span><br><span class="line">    goal.pose.orientation.z = q[<span class="number">2</span>]</span><br><span class="line">    goal.pose.orientation.w = q[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发布目标消息</span></span><br><span class="line">    pub.publish(goal)</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;Goal published: x=%.2f, y=%.2f, yaw=%.2f&quot;</span>, x, y, yaw)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;goal_publisher&#x27;</span>)  <span class="comment"># 初始化 ROS 节点</span></span><br><span class="line">        rospy.sleep(<span class="number">1</span>)  <span class="comment"># 等待一秒，确保节点已启动</span></span><br><span class="line">        send_goal(<span class="number">0.2</span>, <span class="number">0.15</span>, <span class="number">0.785</span>)  <span class="comment"># 示例：目标 (0.1, 0.15)，朝向 45° (0.785 弧度)</span></span><br><span class="line">    <span class="keyword">except</span> rospy.ROSInterruptException:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>打开导航以及小车底盘控制节点，即可在终端查看消息数据.</p>
+<p>具体命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rostopic echo /move_base_simple/goal</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-22_16-52-25.png" alt="Snipaste_2025-07-22_16-52-25"></p>
+<hr>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>新建一个脚本：scripts&#x2F;fire_navigator.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> tf2_ros</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PointStamped, PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf2_geometry_msgs <span class="keyword">import</span> do_transform_point</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FireGoalConverter</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;fire_goal_converter&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.tf_buffer = tf2_ros.Buffer()</span><br><span class="line">        <span class="variable language_">self</span>.tf_listener = tf2_ros.TransformListener(<span class="variable language_">self</span>.tf_buffer)</span><br><span class="line">        <span class="variable language_">self</span>.pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/fire_position_3d&quot;</span>, PointStamped, <span class="variable language_">self</span>.callback)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            transform = <span class="variable language_">self</span>.tf_buffer.lookup_transform(<span class="string">&quot;map&quot;</span>, msg.header.frame_id, rospy.Time(<span class="number">0</span>))</span><br><span class="line">            map_point = do_transform_point(msg, transform)</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;坐标转换成功: <span class="subst">&#123;msg.header.frame_id&#125;</span> -&gt; map&quot;</span>)</span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;转换后的坐标: x=<span class="subst">&#123;map_point.point.x&#125;</span>, y=<span class="subst">&#123;map_point.point.y&#125;</span>, z=<span class="subst">&#123;map_point.point.z&#125;</span>&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            goal = PoseStamped()</span><br><span class="line">            goal.header = map_point.header</span><br><span class="line">            goal.pose.position.x = map_point.point.x</span><br><span class="line">            goal.pose.position.y = map_point.point.y</span><br><span class="line">            goal.pose.position.z = <span class="number">0.0</span></span><br><span class="line">            goal.pose.orientation.w = <span class="number">1.0</span></span><br><span class="line">            <span class="variable language_">self</span>.pub.publish(goal)</span><br><span class="line">        <span class="keyword">except</span> (tf2_ros.LookupException, tf2_ros.ConnectivityException) <span class="keyword">as</span> e:</span><br><span class="line">            rospy.logerr(<span class="string">f&quot;坐标转换失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    FireGoalConverter()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>同时编辑一下cmakelists以及赋予可执行权限</p>
+<p>在打开机器人底盘控制节点，导航节点，火焰识别节点之后，再打开这个节点，即可实现火焰的导航。</p>
+<p>为了方便打开多个节点，编写一个火焰识别launch文件：</p>
+<p>新建文件：launch&#x2F;fire_detector.launch</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 添加RealSense相机启动配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find realsense2_camera)/launch/rs_camera.launch&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;align_depth&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰识别节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_detector.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_detector&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰定位节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_3D_locator.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_3D_locator&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动marker节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_marker_publisher.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_marker_publisher&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/test_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">rosrun scout_bringup bringup_can2usb.bash</span><br><span class="line">roslaunch mycar_start start_mycar.launch</span><br><span class="line">roslaunch nav nav.launch</span><br><span class="line"></span><br><span class="line">/fire_reco_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch robot_vision fire_detector.launch</span><br><span class="line">rosrun robot_vision fire_navigator.py</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>执行完成这些之后，可以在窗口看到一些信息：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-35.png" alt="Snipaste_2025-07-23_11-16-35"><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-02.png" alt="Snipaste_2025-07-23_11-16-02"></p>
+<p>至此，整个系统就完成了简单的实现。虽然存在很多问题，但是整体功能以及框架较为完整。后续可以对SLAM 、路径规划、火焰识别等方面进行优化，会达到更好的效果。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/23/%E5%B0%8F%E8%BD%A6%E8%87%AA%E4%B8%BB%E7%81%AB%E7%84%B0%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1206,119 +1704,6 @@
 <p>这样就完成了相机的组成。看一下效果：</p>
 <img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-15_10-23-24.png" style="zoom:50%;" />
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/23/%E7%81%AB%E7%84%B0%E4%BD%8D%E7%BD%AE%E5%AF%BC%E8%88%AA/" class="post-title-link" itemprop="url">利用move_base使得小车导航至火焰位置</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2025-07-23 00:00:00 / 修改时间：19:41:37" itemprop="dateCreated datePublished" datetime="2025-07-23T00:00:00+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="利用move-base使得小车导航至火焰位置"><a href="#利用move-base使得小车导航至火焰位置" class="headerlink" title="利用move_base使得小车导航至火焰位置"></a>利用move_base使得小车导航至火焰位置</h1><h2 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h2><p>之前已经实现了使用小车，利用2D nav goal工具来设置目标点，只需要将这个目标点替换为火焰位置，这样就能实现火焰的导航。上一次已经实现了火焰相对于相机坐标系到火焰相对于小车坐标系的变换，现在只需要实现火焰坐标系到地图坐标系的转换即可。这便是整体思路</p>
-<h2 id="2D-Nav-Goal基本原理"><a href="#2D-Nav-Goal基本原理" class="headerlink" title="2D Nav Goal基本原理"></a>2D Nav Goal基本原理</h2><ul>
-<li><p>在rviz中通过”2D Nav Goal”工具设置目标点时，会发布geometry_msgs&#x2F;PoseStamped类型的消息到&#x2F;move_base_simple&#x2F;goal话题</p>
-</li>
-<li><p>move_base节点订阅该话题，将目标点转换为导航任务，并启动全局&#x2F;局部路径规划</p>
-</li>
-<li><p>目标点坐标基于用户指定的参考系（通常为map或odom坐标系）</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/2d%20nav%20goal%E5%8E%9F%E7%90%86.png"></p>
-</li>
-</ul>
-<p>有了上述理解之后，可以尝试设置一个目标点，通过脚本来实现小车的移动</p>
-<p>新建脚本文件：scripts&#x2F;goal.publisher.py</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf.transformations <span class="keyword">import</span> quaternion_from_euler</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_goal</span>(<span class="params">x, y, yaw</span>):  <span class="comment"># yaw 为朝向偏航角（弧度）</span></span><br><span class="line">    pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">    rospy.sleep(<span class="number">1</span>)  <span class="comment"># 确保发布器已完全初始化</span></span><br><span class="line"></span><br><span class="line">    goal = PoseStamped()</span><br><span class="line">    goal.header.frame_id = <span class="string">&quot;map&quot;</span></span><br><span class="line">    goal.header.stamp = rospy.get_rostime()  <span class="comment"># 使用 ROS 时间戳</span></span><br><span class="line">    goal.pose.position.x = x</span><br><span class="line">    goal.pose.position.y = y</span><br><span class="line">    goal.pose.position.z = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将偏航角转换为四元数</span></span><br><span class="line">    q = quaternion_from_euler(<span class="number">0</span>, <span class="number">0</span>, yaw)</span><br><span class="line">    goal.pose.orientation.x = q[<span class="number">0</span>]</span><br><span class="line">    goal.pose.orientation.y = q[<span class="number">1</span>]</span><br><span class="line">    goal.pose.orientation.z = q[<span class="number">2</span>]</span><br><span class="line">    goal.pose.orientation.w = q[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发布目标消息</span></span><br><span class="line">    pub.publish(goal)</span><br><span class="line">    rospy.loginfo(<span class="string">&quot;Goal published: x=%.2f, y=%.2f, yaw=%.2f&quot;</span>, x, y, yaw)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;goal_publisher&#x27;</span>)  <span class="comment"># 初始化 ROS 节点</span></span><br><span class="line">        rospy.sleep(<span class="number">1</span>)  <span class="comment"># 等待一秒，确保节点已启动</span></span><br><span class="line">        send_goal(<span class="number">0.2</span>, <span class="number">0.15</span>, <span class="number">0.785</span>)  <span class="comment"># 示例：目标 (0.1, 0.15)，朝向 45° (0.785 弧度)</span></span><br><span class="line">    <span class="keyword">except</span> rospy.ROSInterruptException:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>打开导航以及小车底盘控制节点，即可在终端查看消息数据.</p>
-<p>具体命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rostopic echo /move_base_simple/goal</span><br></pre></td></tr></table></figure>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-22_16-52-25.png" alt="Snipaste_2025-07-22_16-52-25"></p>
-<hr>
-<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>新建一个脚本：scripts&#x2F;fire_navigator.py</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> tf2_ros</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> PointStamped, PoseStamped</span><br><span class="line"><span class="keyword">from</span> tf2_geometry_msgs <span class="keyword">import</span> do_transform_point</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FireGoalConverter</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        rospy.init_node(<span class="string">&#x27;fire_goal_converter&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.tf_buffer = tf2_ros.Buffer()</span><br><span class="line">        <span class="variable language_">self</span>.tf_listener = tf2_ros.TransformListener(<span class="variable language_">self</span>.tf_buffer)</span><br><span class="line">        <span class="variable language_">self</span>.pub = rospy.Publisher(<span class="string">&#x27;/move_base_simple/goal&#x27;</span>, PoseStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/fire_position_3d&quot;</span>, PointStamped, <span class="variable language_">self</span>.callback)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            transform = <span class="variable language_">self</span>.tf_buffer.lookup_transform(<span class="string">&quot;map&quot;</span>, msg.header.frame_id, rospy.Time(<span class="number">0</span>))</span><br><span class="line">            map_point = do_transform_point(msg, transform)</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;坐标转换成功: <span class="subst">&#123;msg.header.frame_id&#125;</span> -&gt; map&quot;</span>)</span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;转换后的坐标: x=<span class="subst">&#123;map_point.point.x&#125;</span>, y=<span class="subst">&#123;map_point.point.y&#125;</span>, z=<span class="subst">&#123;map_point.point.z&#125;</span>&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            goal = PoseStamped()</span><br><span class="line">            goal.header = map_point.header</span><br><span class="line">            goal.pose.position.x = map_point.point.x</span><br><span class="line">            goal.pose.position.y = map_point.point.y</span><br><span class="line">            goal.pose.position.z = <span class="number">0.0</span></span><br><span class="line">            goal.pose.orientation.w = <span class="number">1.0</span></span><br><span class="line">            <span class="variable language_">self</span>.pub.publish(goal)</span><br><span class="line">        <span class="keyword">except</span> (tf2_ros.LookupException, tf2_ros.ConnectivityException) <span class="keyword">as</span> e:</span><br><span class="line">            rospy.logerr(<span class="string">f&quot;坐标转换失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    FireGoalConverter()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>同时编辑一下cmakelists以及赋予可执行权限</p>
-<p>在打开机器人底盘控制节点，导航节点，火焰识别节点之后，再打开这个节点，即可实现火焰的导航。</p>
-<p>为了方便打开多个节点，编写一个火焰识别launch文件：</p>
-<p>新建文件：launch&#x2F;fire_detector.launch</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 添加RealSense相机启动配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find realsense2_camera)/launch/rs_camera.launch&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;align_depth&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰识别节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_detector.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_detector&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动火焰定位节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_3D_locator.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_3D_locator&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 启动marker节点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;robot_vision&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fire_marker_publisher.py&quot;</span> </span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fire_marker_publisher&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/test_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">rosrun scout_bringup bringup_can2usb.bash</span><br><span class="line">roslaunch mycar_start start_mycar.launch</span><br><span class="line">roslaunch nav nav.launch</span><br><span class="line"></span><br><span class="line">/fire_reco_ws</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch robot_vision fire_detector.launch</span><br><span class="line">rosrun robot_vision fire_navigator.py</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>执行完成这些之后，可以在窗口看到一些信息：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-35.png" alt="Snipaste_2025-07-23_11-16-35"><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-23_11-16-02.png" alt="Snipaste_2025-07-23_11-16-02"></p>
-<p>至此，整个系统就完成了简单的实现。虽然存在很多问题，但是整体功能以及框架较为完整。后续可以对SLAM 、路径规划、火焰识别等方面进行优化，会达到更好的效果。</p>
 
       
     </div>
@@ -1601,275 +1986,6 @@ rosrun robot_vision fire_marker_publisher.py
 
 <p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-14_15-11-11.png"></p>
 <p>这样既可以在rviz中显示火焰的位置，也可以在终端显示火焰相对于相机的具体位置。后续作用于小车上也很方便进行。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/04/%E4%BD%BF%E7%94%A8Realsense%20D435%E5%B0%86RGB%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%AF%B9%E9%BD%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/04/%E4%BD%BF%E7%94%A8Realsense%20D435%E5%B0%86RGB%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%AF%B9%E9%BD%90/" class="post-title-link" itemprop="url">使用Realsense D435将RGB图像与深度图像对齐</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-07-04 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-04T00:00:00+08:00">2025-07-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="使用Realsense-D435将RGB图像与深度图像对齐"><a href="#使用Realsense-D435将RGB图像与深度图像对齐" class="headerlink" title="使用Realsense D435将RGB图像与深度图像对齐"></a>使用Realsense D435将RGB图像与深度图像对齐</h1><h2 id="深度图像简介"><a href="#深度图像简介" class="headerlink" title="深度图像简介"></a>深度图像简介</h2><p>RealSense D435 配备了两个摄像头（左、右）和红外传感器，采用 <strong>双目立体视觉</strong> 技术。该技术模拟人眼通过两个视角获取的图像差异来计算景物的深度信息。</p>
-<p>深度图像是一种特殊的图像类型，用来表示场景中每个像素到相机的距离，没有颜色信息，通过灰度值或者伪彩色来表示不同深度。</p>
-<p>深度图像可以通过多种技术生成，常见的生成方法包括：</p>
-<ol>
-<li>立体视觉：使用两台相机从不同角度拍摄同一场景，计算图像中的视差来获取深度。</li>
-<li>飞行时间（ToF）传感器：通过发射光脉冲并测量其反射回传感器的时间来计算物体距离。</li>
-<li>结构光技术：通过投射已知图案到物体表面，并分析图案的变形来计算深度。</li>
-<li>激光雷达（LiDAR）：通过激光扫描场景并测量光束反射的时间来获得深度信息。</li>
-</ol>
-<p>这款RealsenseD435采用双目立体视觉与红外结构光相结合的方式生成深度图像，可以有效捕捉高精度的深度信息。</p>
-<hr>
-<h2 id="深度图像显示"><a href="#深度图像显示" class="headerlink" title="深度图像显示"></a>深度图像显示</h2><ol>
-<li>启动相机节点</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打开rviz</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rviz</span><br></pre></td></tr></table></figure>
-
-<p>选择Image插件，选择**&#x2F;camera&#x2F;aligned_depth_to_color&#x2F;image_raw<strong>话题，即可查看对齐的深度图像，再选择</strong>&#x2F;camera&#x2F;color&#x2F;image_raw**，即可查看RGB图像。</p>
-<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/1.png" alt="image-20250703160602119" style="zoom:50%;" />
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250703160954999.png" alt="image-20250703160954999"></p>
-<p>这样简单的一个深度图像对齐后显示就完成了。后续进行火源识别与定位会起到作用。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/04/%E5%88%A9%E7%94%A8RealsenseD435%E5%AE%9E%E7%8E%B0%E7%81%AB%E7%84%B0%E8%AF%86%E5%88%AB%E5%8F%8A%E5%AE%9A%E4%BD%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/04/%E5%88%A9%E7%94%A8RealsenseD435%E5%AE%9E%E7%8E%B0%E7%81%AB%E7%84%B0%E8%AF%86%E5%88%AB%E5%8F%8A%E5%AE%9A%E4%BD%8D/" class="post-title-link" itemprop="url">利用RealsenseD435实现火焰识别及定位</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-07-04 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-04T00:00:00+08:00">2025-07-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="利用RealsenseD435实现火焰识别及定位"><a href="#利用RealsenseD435实现火焰识别及定位" class="headerlink" title="利用RealsenseD435实现火焰识别及定位"></a>利用RealsenseD435实现火焰识别及定位</h1><h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p>首先需要将Realsense D435相机的深度图像与RGB图像对齐，大致意思就是使得深度图像显示的画面与RGB图像显示的画面匹配，方便后面确定火焰的位置。由于此相机内直接节点实现了相机标定的功能，所以只需要订阅相关节点即可实现两个图像的对齐。这里不再赘述，上一片有些许介绍，同时可以参考官网资料查看。如果只是应用的话，大可不必了解那么深入。完成对齐之后，利用之前简单的火焰识别算法，获取火焰在RGB图像中的像素位置，然后在深度图像中，转换成具体的3D位置，就大功告成了。其实整个框架很简单，但是算法的精度仍然需要花时间打磨，这里只是做一个简单的实现。</p>
-<hr>
-<h2 id="火焰识别算法改进"><a href="#火焰识别算法改进" class="headerlink" title="火焰识别算法改进"></a>火焰识别算法改进</h2><p>之前的文章中已经有了一个基础的火焰识别算法，但是只是标记了火焰的位置，并没有标记出坐标，同时需要发布坐标消息给定位算法订阅。所以做了些许改进。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> Point</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FireDetector</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.bridge = CvBridge()</span><br><span class="line">        <span class="comment"># 动态HSV阈值（初始值）</span></span><br><span class="line">        <span class="variable language_">self</span>.fire_pub = rospy.Publisher(<span class="string">&quot;/fire_center_px&quot;</span>, Point, queue_size=<span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.lower_fire = np.array([<span class="number">0</span>, <span class="number">150</span>, <span class="number">100</span>])  </span><br><span class="line">        <span class="variable language_">self</span>.upper_fire = np.array([<span class="number">30</span>, <span class="number">255</span>, <span class="number">255</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 运动检测相关</span></span><br><span class="line">        <span class="variable language_">self</span>.prev_gray = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.fgbg = cv2.createBackgroundSubtractorMOG2(history=<span class="number">500</span>, varThreshold=<span class="number">16</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 订阅图像</span></span><br><span class="line">        <span class="variable language_">self</span>.image_sub = rospy.Subscriber(<span class="string">&quot;/camera/color/image_raw&quot;</span>, </span><br><span class="line">                                        Image, <span class="variable language_">self</span>.image_callback)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">dynamic_threshold</span>(<span class="params">self, hsv_img</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;动态调整饱和度阈值&quot;&quot;&quot;</span></span><br><span class="line">        avg_sat = np.mean(hsv_img[:,:,<span class="number">1</span>])</span><br><span class="line">        <span class="variable language_">self</span>.lower_fire[<span class="number">1</span>] = <span class="built_in">max</span>(<span class="number">100</span>, <span class="built_in">int</span>(avg_sat * <span class="number">0.65</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">motion_analysis</span>(<span class="params">self, frame</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;运动特征分析&quot;&quot;&quot;</span></span><br><span class="line">        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</span><br><span class="line">        fgmask = <span class="variable language_">self</span>.fgbg.apply(gray)</span><br><span class="line">        <span class="keyword">return</span> cv2.medianBlur(fgmask, <span class="number">5</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">image_callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cv_image = <span class="variable language_">self</span>.bridge.imgmsg_to_cv2(msg, <span class="string">&quot;bgr8&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 预处理</span></span><br><span class="line">            blurred = cv2.GaussianBlur(cv_image, (<span class="number">7</span>,<span class="number">7</span>), <span class="number">0</span>)</span><br><span class="line">            hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 动态阈值调整</span></span><br><span class="line">            <span class="variable language_">self</span>.dynamic_threshold(hsv)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 颜色检测</span></span><br><span class="line">            color_mask = cv2.inRange(hsv, <span class="variable language_">self</span>.lower_fire, <span class="variable language_">self</span>.upper_fire)</span><br><span class="line">            color_mask = cv2.morphologyEx(color_mask, cv2.MORPH_CLOSE, </span><br><span class="line">                                        np.ones((<span class="number">7</span>,<span class="number">7</span>), np.uint8))</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 运动检测</span></span><br><span class="line">            motion_mask = <span class="variable language_">self</span>.motion_analysis(cv_image)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 多特征融合</span></span><br><span class="line">            combined_mask = cv2.bitwise_and(color_mask, motion_mask)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 精确轮廓检测</span></span><br><span class="line">            contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL,</span><br><span class="line">                                         cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> cnt <span class="keyword">in</span> contours:</span><br><span class="line">                area = cv2.contourArea(cnt)</span><br><span class="line">                <span class="keyword">if</span> area &gt; <span class="number">800</span>:  <span class="comment"># 增大面积阈值减少误检</span></span><br><span class="line">                    x,y,w,h = cv2.boundingRect(cnt)</span><br><span class="line">                    <span class="comment">#计算火焰中心点</span></span><br><span class="line">                    center = Point()</span><br><span class="line">                    center.x = x + w//<span class="number">2</span></span><br><span class="line">                    center.y = y + h//<span class="number">2</span></span><br><span class="line">                    <span class="variable language_">self</span>.fire_pub.publish(center)</span><br><span class="line"></span><br><span class="line">                    aspect_ratio = <span class="built_in">float</span>(w)/h</span><br><span class="line">                    <span class="keyword">if</span> <span class="number">0.5</span> &lt; aspect_ratio &lt; <span class="number">2.0</span>:  <span class="comment"># 火焰通常不是极端长条形</span></span><br><span class="line">                        </span><br><span class="line">                        <span class="comment">#可视化标记点</span></span><br><span class="line">                        cv2.rectangle(cv_image, (x,y), (x+w,y+h), (<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>), <span class="number">2</span>)     <span class="comment">#红色框标记火焰</span></span><br><span class="line">                        cv2.circle(cv_image, (center.x, center.y), <span class="number">5</span>, (<span class="number">255</span>,<span class="number">0</span>,<span class="number">0</span>), -<span class="number">1</span>)   <span class="comment">#蓝色小点表示火焰中心位置</span></span><br><span class="line">                        cv2.putText(cv_image, <span class="string">f&#x27;Fire <span class="subst">&#123;area:<span class="number">.0</span>f&#125;</span>&#x27;</span>, (x,y-<span class="number">10</span>),         </span><br><span class="line">                                   cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.7</span>, (<span class="number">0</span>,<span class="number">255</span>,<span class="number">0</span>), <span class="number">2</span>)     <span class="comment">#绿色表示像素面积</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 显示调试视图</span></span><br><span class="line">            debug_view = np.hstack([</span><br><span class="line">                cv_image,</span><br><span class="line">                cv2.cvtColor(combined_mask, cv2.COLOR_GRAY2BGR)</span><br><span class="line">            ])</span><br><span class="line">            cv2.imshow(<span class="string">&quot;Fire Detection&quot;</span>, debug_view)</span><br><span class="line">            cv2.waitKey(<span class="number">1</span>)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            rospy.logerr(<span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    rospy.init_node(<span class="string">&#x27;fire_detector&#x27;</span>)</span><br><span class="line">    detector = FireDetector()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>算法源码可以清楚看到，计算出火焰中心点后，会通过**&#x2F;fire_center_px<strong>话题发布为</strong>geometry_msgs&#x2F;Point**消息。</p>
-<hr>
-<h2 id="火焰3D定位"><a href="#火焰3D定位" class="headerlink" title="火焰3D定位"></a>火焰3D定位</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image, CameraInfo</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> Point, PointStamped</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Fire3DLocator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.bridge = CvBridge()</span><br><span class="line">        <span class="variable language_">self</span>.depth_image = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.intrinsics = <span class="literal">None</span></span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/camera/aligned_depth_to_color/image_raw&quot;</span>, Image, <span class="variable language_">self</span>.depth_callback)</span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/camera/color/camera_info&quot;</span>, CameraInfo, <span class="variable language_">self</span>.info_callback)</span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/fire_center_px&quot;</span>, Point, <span class="variable language_">self</span>.fire_callback)</span><br><span class="line">        <span class="variable language_">self</span>.pub = rospy.Publisher(<span class="string">&quot;/fire_position_3d&quot;</span>, PointStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">        cv2.namedWindow(<span class="string">&quot;Depth Visualization&quot;</span>, cv2.WINDOW_NORMAL)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">info_callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="variable language_">self</span>.intrinsics:</span><br><span class="line">            <span class="variable language_">self</span>.intrinsics = &#123;</span><br><span class="line">                <span class="string">&#x27;fx&#x27;</span>: msg.K[<span class="number">0</span>], <span class="string">&#x27;fy&#x27;</span>: msg.K[<span class="number">4</span>],</span><br><span class="line">                <span class="string">&#x27;cx&#x27;</span>: msg.K[<span class="number">2</span>], <span class="string">&#x27;cy&#x27;</span>: msg.K[<span class="number">5</span>]</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">depth_callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="variable language_">self</span>.depth_image = <span class="variable language_">self</span>.bridge.imgmsg_to_cv2(msg, <span class="string">&quot;passthrough&quot;</span>)</span><br><span class="line">        <span class="comment"># 深度图归一化显示</span></span><br><span class="line">        norm_depth = cv2.normalize(<span class="variable language_">self</span>.depth_image, <span class="literal">None</span>, <span class="number">0</span>, <span class="number">255</span>, cv2.NORM_MINMAX, dtype=cv2.CV_8U)</span><br><span class="line">        cv2.imshow(<span class="string">&quot;Depth Visualization&quot;</span>, cv2.applyColorMap(norm_depth, cv2.COLORMAP_JET))</span><br><span class="line">        cv2.waitKey(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fire_callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.depth_image <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> <span class="variable language_">self</span>.intrinsics <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">        u, v = <span class="built_in">int</span>(msg.x), <span class="built_in">int</span>(msg.y)</span><br><span class="line">        depth = <span class="variable language_">self</span>.depth_image[v, u] / <span class="number">1000.0</span>  <span class="comment"># mm转m</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="number">0.1</span> &lt; depth &lt; <span class="number">10.0</span>:  <span class="comment"># 有效距离范围</span></span><br><span class="line">            point = PointStamped()</span><br><span class="line">            point.header.stamp = rospy.Time.now()</span><br><span class="line">            point.header.frame_id = <span class="string">&quot;camera_color_optical_frame&quot;</span></span><br><span class="line">            point.point.x = (u - <span class="variable language_">self</span>.intrinsics[<span class="string">&#x27;cx&#x27;</span>]) * depth / <span class="variable language_">self</span>.intrinsics[<span class="string">&#x27;fx&#x27;</span>]</span><br><span class="line">            point.point.y = (v - <span class="variable language_">self</span>.intrinsics[<span class="string">&#x27;cy&#x27;</span>]) * depth / <span class="variable language_">self</span>.intrinsics[<span class="string">&#x27;fy&#x27;</span>]</span><br><span class="line">            point.point.z = depth</span><br><span class="line">            <span class="variable language_">self</span>.pub.publish(point)</span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;Fire 3D Position: X=<span class="subst">&#123;point.point.x:<span class="number">.2</span>f&#125;</span>m Y=<span class="subst">&#123;point.point.y:<span class="number">.2</span>f&#125;</span>m Z=<span class="subst">&#123;point.point.z:<span class="number">.2</span>f&#125;</span>m&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    rospy.init_node(<span class="string">&#x27;fire_3d_locator&#x27;</span>)</span><br><span class="line">    Fire3DLocator()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>大致步骤如下：</p>
-<ol>
-<li>创建fire_3d_locator节点，实现三订阅一发布的通信模式</li>
-<li>深度图订阅(&#x2F;camera&#x2F;aligned_depth_to_color&#x2F;image_raw)</li>
-<li>相机内参订阅(&#x2F;camera&#x2F;color&#x2F;camera_info)</li>
-<li>火焰像素坐标订阅(&#x2F;fire_center_px)</li>
-<li>3D坐标发布(&#x2F;fire_position_3d)</li>
-</ol>
-<hr>
-<h3 id="数据流处理链"><a href="#数据流处理链" class="headerlink" title="数据流处理链"></a>数据流处理链</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[深度图] --&gt; B[深度回调]</span><br><span class="line">    C[相机内参] --&gt; D[内参回调]</span><br><span class="line">    E[像素坐标] --&gt; F[3D坐标计算]</span><br><span class="line">    B --&gt; F</span><br><span class="line">    D --&gt; F</span><br><span class="line">    F --&gt; G[3D坐标发布]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="核心算法实现"><a href="#核心算法实现" class="headerlink" title="核心算法实现"></a>核心算法实现</h3><ol>
-<li>相机坐标系转换</li>
-</ol>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X = (u - cx) * Z / fx</span><br><span class="line">Y = (v - cy) * Z / fy </span><br></pre></td></tr></table></figure>
-
-<p>其中(u,v)为像素坐标，(cx,cy)为主点坐标，(fx,fy)为焦距</p>
-<ol start="2">
-<li>深度数据处理</li>
-</ol>
-<ul>
-<li>深度值单位转换：mm → m（除以1000）</li>
-<li>有效距离过滤：0.1m &lt; Z &lt; 10m</li>
-<li>深度图可视化：使用JET色图显示归一化深度</li>
-</ul>
-<ol start="3">
-<li>坐标发布规范</li>
-</ol>
-<ul>
-<li>采用PointStamped消息类型包含：</li>
-<li>时间戳(header.stamp)</li>
-<li>坐标系ID(camera_color_optical_frame)</li>
-<li>三维坐标值</li>
-</ul>
-<ol start="4">
-<li>彩色映射深度图像来增强深度感知</li>
-</ol>
-<hr>
-<p>这样，火焰识别与定位算法就大致实现了，虽然算法比较基础，但是能够对ROS话题发布、坐标系发布、消息之间的接受与发送有一个清楚的认识，为后续机器人学习打下基础。</p>
-<p>现在来展示一下效果如何。</p>
-<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
-<li>打开相机节点</li>
-</ol>
-<p>这次打开的相机节点有所不同，参考上一篇文章：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>运行火焰识别脚本</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun robot_vision fire_detector.py</span><br></pre></td></tr></table></figure>
-
-<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-04_16-06-22.png" style="zoom:50%;" />
-
-<ol start="3">
-<li>运行火焰定位脚本</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun robot_vision fire_3D_locator.py</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-04_16-06-34.png"></p>
-<p>合理首先会显示一个深度图像，会有更直观的感受。</p>
-<p>然后在终端可以查看具体的3D信息</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-04_16-06-58.png"></p>
-<p>值得注意的是：</p>
-<p><strong>X表示距离相机左右的距离（米），向右为正，Y表示距离相机的垂直方向，向上为正，Z表示距离相机的深度，向前为正。</strong></p>
-<p>也就是说，图中最后一行表示：火焰位置在相机的右方0.06m,上方0m，前方0.27m.</p>
-<p>这样，基本的火焰识别与定位就实现了。后续可以将火焰的相对坐标进行转换，可以接入消防小车的自主导航系统中了。</p>
 
       
     </div>

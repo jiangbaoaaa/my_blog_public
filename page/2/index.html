@@ -139,7 +139,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,275 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/04/%E4%BD%BF%E7%94%A8Realsense%20D435%E5%B0%86RGB%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%AF%B9%E9%BD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/04/%E4%BD%BF%E7%94%A8Realsense%20D435%E5%B0%86RGB%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%83%8F%E5%AF%B9%E9%BD%90/" class="post-title-link" itemprop="url">使用Realsense D435将RGB图像与深度图像对齐</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-07-04 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-04T00:00:00+08:00">2025-07-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="使用Realsense-D435将RGB图像与深度图像对齐"><a href="#使用Realsense-D435将RGB图像与深度图像对齐" class="headerlink" title="使用Realsense D435将RGB图像与深度图像对齐"></a>使用Realsense D435将RGB图像与深度图像对齐</h1><h2 id="深度图像简介"><a href="#深度图像简介" class="headerlink" title="深度图像简介"></a>深度图像简介</h2><p>RealSense D435 配备了两个摄像头（左、右）和红外传感器，采用 <strong>双目立体视觉</strong> 技术。该技术模拟人眼通过两个视角获取的图像差异来计算景物的深度信息。</p>
+<p>深度图像是一种特殊的图像类型，用来表示场景中每个像素到相机的距离，没有颜色信息，通过灰度值或者伪彩色来表示不同深度。</p>
+<p>深度图像可以通过多种技术生成，常见的生成方法包括：</p>
+<ol>
+<li>立体视觉：使用两台相机从不同角度拍摄同一场景，计算图像中的视差来获取深度。</li>
+<li>飞行时间（ToF）传感器：通过发射光脉冲并测量其反射回传感器的时间来计算物体距离。</li>
+<li>结构光技术：通过投射已知图案到物体表面，并分析图案的变形来计算深度。</li>
+<li>激光雷达（LiDAR）：通过激光扫描场景并测量光束反射的时间来获得深度信息。</li>
+</ol>
+<p>这款RealsenseD435采用双目立体视觉与红外结构光相结合的方式生成深度图像，可以有效捕捉高精度的深度信息。</p>
+<hr>
+<h2 id="深度图像显示"><a href="#深度图像显示" class="headerlink" title="深度图像显示"></a>深度图像显示</h2><ol>
+<li>启动相机节点</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开rviz</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rviz</span><br></pre></td></tr></table></figure>
+
+<p>选择Image插件，选择**&#x2F;camera&#x2F;aligned_depth_to_color&#x2F;image_raw<strong>话题，即可查看对齐的深度图像，再选择</strong>&#x2F;camera&#x2F;color&#x2F;image_raw**，即可查看RGB图像。</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/1.png" alt="image-20250703160602119" style="zoom:50%;" />
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250703160954999.png" alt="image-20250703160954999"></p>
+<p>这样简单的一个深度图像对齐后显示就完成了。后续进行火源识别与定位会起到作用。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/07/04/%E5%88%A9%E7%94%A8RealsenseD435%E5%AE%9E%E7%8E%B0%E7%81%AB%E7%84%B0%E8%AF%86%E5%88%AB%E5%8F%8A%E5%AE%9A%E4%BD%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/07/04/%E5%88%A9%E7%94%A8RealsenseD435%E5%AE%9E%E7%8E%B0%E7%81%AB%E7%84%B0%E8%AF%86%E5%88%AB%E5%8F%8A%E5%AE%9A%E4%BD%8D/" class="post-title-link" itemprop="url">利用RealsenseD435实现火焰识别及定位</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-07-04 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-04T00:00:00+08:00">2025-07-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="利用RealsenseD435实现火焰识别及定位"><a href="#利用RealsenseD435实现火焰识别及定位" class="headerlink" title="利用RealsenseD435实现火焰识别及定位"></a>利用RealsenseD435实现火焰识别及定位</h1><h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p>首先需要将Realsense D435相机的深度图像与RGB图像对齐，大致意思就是使得深度图像显示的画面与RGB图像显示的画面匹配，方便后面确定火焰的位置。由于此相机内直接节点实现了相机标定的功能，所以只需要订阅相关节点即可实现两个图像的对齐。这里不再赘述，上一片有些许介绍，同时可以参考官网资料查看。如果只是应用的话，大可不必了解那么深入。完成对齐之后，利用之前简单的火焰识别算法，获取火焰在RGB图像中的像素位置，然后在深度图像中，转换成具体的3D位置，就大功告成了。其实整个框架很简单，但是算法的精度仍然需要花时间打磨，这里只是做一个简单的实现。</p>
+<hr>
+<h2 id="火焰识别算法改进"><a href="#火焰识别算法改进" class="headerlink" title="火焰识别算法改进"></a>火焰识别算法改进</h2><p>之前的文章中已经有了一个基础的火焰识别算法，但是只是标记了火焰的位置，并没有标记出坐标，同时需要发布坐标消息给定位算法订阅。所以做了些许改进。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> Point</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FireDetector</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.bridge = CvBridge()</span><br><span class="line">        <span class="comment"># 动态HSV阈值（初始值）</span></span><br><span class="line">        <span class="variable language_">self</span>.fire_pub = rospy.Publisher(<span class="string">&quot;/fire_center_px&quot;</span>, Point, queue_size=<span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.lower_fire = np.array([<span class="number">0</span>, <span class="number">150</span>, <span class="number">100</span>])  </span><br><span class="line">        <span class="variable language_">self</span>.upper_fire = np.array([<span class="number">30</span>, <span class="number">255</span>, <span class="number">255</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 运动检测相关</span></span><br><span class="line">        <span class="variable language_">self</span>.prev_gray = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.fgbg = cv2.createBackgroundSubtractorMOG2(history=<span class="number">500</span>, varThreshold=<span class="number">16</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 订阅图像</span></span><br><span class="line">        <span class="variable language_">self</span>.image_sub = rospy.Subscriber(<span class="string">&quot;/camera/color/image_raw&quot;</span>, </span><br><span class="line">                                        Image, <span class="variable language_">self</span>.image_callback)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">dynamic_threshold</span>(<span class="params">self, hsv_img</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;动态调整饱和度阈值&quot;&quot;&quot;</span></span><br><span class="line">        avg_sat = np.mean(hsv_img[:,:,<span class="number">1</span>])</span><br><span class="line">        <span class="variable language_">self</span>.lower_fire[<span class="number">1</span>] = <span class="built_in">max</span>(<span class="number">100</span>, <span class="built_in">int</span>(avg_sat * <span class="number">0.65</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">motion_analysis</span>(<span class="params">self, frame</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;运动特征分析&quot;&quot;&quot;</span></span><br><span class="line">        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</span><br><span class="line">        fgmask = <span class="variable language_">self</span>.fgbg.apply(gray)</span><br><span class="line">        <span class="keyword">return</span> cv2.medianBlur(fgmask, <span class="number">5</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">image_callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cv_image = <span class="variable language_">self</span>.bridge.imgmsg_to_cv2(msg, <span class="string">&quot;bgr8&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 预处理</span></span><br><span class="line">            blurred = cv2.GaussianBlur(cv_image, (<span class="number">7</span>,<span class="number">7</span>), <span class="number">0</span>)</span><br><span class="line">            hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 动态阈值调整</span></span><br><span class="line">            <span class="variable language_">self</span>.dynamic_threshold(hsv)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 颜色检测</span></span><br><span class="line">            color_mask = cv2.inRange(hsv, <span class="variable language_">self</span>.lower_fire, <span class="variable language_">self</span>.upper_fire)</span><br><span class="line">            color_mask = cv2.morphologyEx(color_mask, cv2.MORPH_CLOSE, </span><br><span class="line">                                        np.ones((<span class="number">7</span>,<span class="number">7</span>), np.uint8))</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 运动检测</span></span><br><span class="line">            motion_mask = <span class="variable language_">self</span>.motion_analysis(cv_image)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 多特征融合</span></span><br><span class="line">            combined_mask = cv2.bitwise_and(color_mask, motion_mask)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 精确轮廓检测</span></span><br><span class="line">            contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL,</span><br><span class="line">                                         cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> cnt <span class="keyword">in</span> contours:</span><br><span class="line">                area = cv2.contourArea(cnt)</span><br><span class="line">                <span class="keyword">if</span> area &gt; <span class="number">800</span>:  <span class="comment"># 增大面积阈值减少误检</span></span><br><span class="line">                    x,y,w,h = cv2.boundingRect(cnt)</span><br><span class="line">                    <span class="comment">#计算火焰中心点</span></span><br><span class="line">                    center = Point()</span><br><span class="line">                    center.x = x + w//<span class="number">2</span></span><br><span class="line">                    center.y = y + h//<span class="number">2</span></span><br><span class="line">                    <span class="variable language_">self</span>.fire_pub.publish(center)</span><br><span class="line"></span><br><span class="line">                    aspect_ratio = <span class="built_in">float</span>(w)/h</span><br><span class="line">                    <span class="keyword">if</span> <span class="number">0.5</span> &lt; aspect_ratio &lt; <span class="number">2.0</span>:  <span class="comment"># 火焰通常不是极端长条形</span></span><br><span class="line">                        </span><br><span class="line">                        <span class="comment">#可视化标记点</span></span><br><span class="line">                        cv2.rectangle(cv_image, (x,y), (x+w,y+h), (<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>), <span class="number">2</span>)     <span class="comment">#红色框标记火焰</span></span><br><span class="line">                        cv2.circle(cv_image, (center.x, center.y), <span class="number">5</span>, (<span class="number">255</span>,<span class="number">0</span>,<span class="number">0</span>), -<span class="number">1</span>)   <span class="comment">#蓝色小点表示火焰中心位置</span></span><br><span class="line">                        cv2.putText(cv_image, <span class="string">f&#x27;Fire <span class="subst">&#123;area:<span class="number">.0</span>f&#125;</span>&#x27;</span>, (x,y-<span class="number">10</span>),         </span><br><span class="line">                                   cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.7</span>, (<span class="number">0</span>,<span class="number">255</span>,<span class="number">0</span>), <span class="number">2</span>)     <span class="comment">#绿色表示像素面积</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 显示调试视图</span></span><br><span class="line">            debug_view = np.hstack([</span><br><span class="line">                cv_image,</span><br><span class="line">                cv2.cvtColor(combined_mask, cv2.COLOR_GRAY2BGR)</span><br><span class="line">            ])</span><br><span class="line">            cv2.imshow(<span class="string">&quot;Fire Detection&quot;</span>, debug_view)</span><br><span class="line">            cv2.waitKey(<span class="number">1</span>)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            rospy.logerr(<span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    rospy.init_node(<span class="string">&#x27;fire_detector&#x27;</span>)</span><br><span class="line">    detector = FireDetector()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>算法源码可以清楚看到，计算出火焰中心点后，会通过**&#x2F;fire_center_px<strong>话题发布为</strong>geometry_msgs&#x2F;Point**消息。</p>
+<hr>
+<h2 id="火焰3D定位"><a href="#火焰3D定位" class="headerlink" title="火焰3D定位"></a>火焰3D定位</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> rospy</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Image, CameraInfo</span><br><span class="line"><span class="keyword">from</span> geometry_msgs.msg <span class="keyword">import</span> Point, PointStamped</span><br><span class="line"><span class="keyword">from</span> cv_bridge <span class="keyword">import</span> CvBridge</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Fire3DLocator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.bridge = CvBridge()</span><br><span class="line">        <span class="variable language_">self</span>.depth_image = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.intrinsics = <span class="literal">None</span></span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/camera/aligned_depth_to_color/image_raw&quot;</span>, Image, <span class="variable language_">self</span>.depth_callback)</span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/camera/color/camera_info&quot;</span>, CameraInfo, <span class="variable language_">self</span>.info_callback)</span><br><span class="line">        rospy.Subscriber(<span class="string">&quot;/fire_center_px&quot;</span>, Point, <span class="variable language_">self</span>.fire_callback)</span><br><span class="line">        <span class="variable language_">self</span>.pub = rospy.Publisher(<span class="string">&quot;/fire_position_3d&quot;</span>, PointStamped, queue_size=<span class="number">10</span>)</span><br><span class="line">        cv2.namedWindow(<span class="string">&quot;Depth Visualization&quot;</span>, cv2.WINDOW_NORMAL)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">info_callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="variable language_">self</span>.intrinsics:</span><br><span class="line">            <span class="variable language_">self</span>.intrinsics = &#123;</span><br><span class="line">                <span class="string">&#x27;fx&#x27;</span>: msg.K[<span class="number">0</span>], <span class="string">&#x27;fy&#x27;</span>: msg.K[<span class="number">4</span>],</span><br><span class="line">                <span class="string">&#x27;cx&#x27;</span>: msg.K[<span class="number">2</span>], <span class="string">&#x27;cy&#x27;</span>: msg.K[<span class="number">5</span>]</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">depth_callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="variable language_">self</span>.depth_image = <span class="variable language_">self</span>.bridge.imgmsg_to_cv2(msg, <span class="string">&quot;passthrough&quot;</span>)</span><br><span class="line">        <span class="comment"># 深度图归一化显示</span></span><br><span class="line">        norm_depth = cv2.normalize(<span class="variable language_">self</span>.depth_image, <span class="literal">None</span>, <span class="number">0</span>, <span class="number">255</span>, cv2.NORM_MINMAX, dtype=cv2.CV_8U)</span><br><span class="line">        cv2.imshow(<span class="string">&quot;Depth Visualization&quot;</span>, cv2.applyColorMap(norm_depth, cv2.COLORMAP_JET))</span><br><span class="line">        cv2.waitKey(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fire_callback</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.depth_image <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> <span class="variable language_">self</span>.intrinsics <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">        u, v = <span class="built_in">int</span>(msg.x), <span class="built_in">int</span>(msg.y)</span><br><span class="line">        depth = <span class="variable language_">self</span>.depth_image[v, u] / <span class="number">1000.0</span>  <span class="comment"># mm转m</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="number">0.1</span> &lt; depth &lt; <span class="number">10.0</span>:  <span class="comment"># 有效距离范围</span></span><br><span class="line">            point = PointStamped()</span><br><span class="line">            point.header.stamp = rospy.Time.now()</span><br><span class="line">            point.header.frame_id = <span class="string">&quot;camera_color_optical_frame&quot;</span></span><br><span class="line">            point.point.x = (u - <span class="variable language_">self</span>.intrinsics[<span class="string">&#x27;cx&#x27;</span>]) * depth / <span class="variable language_">self</span>.intrinsics[<span class="string">&#x27;fx&#x27;</span>]</span><br><span class="line">            point.point.y = (v - <span class="variable language_">self</span>.intrinsics[<span class="string">&#x27;cy&#x27;</span>]) * depth / <span class="variable language_">self</span>.intrinsics[<span class="string">&#x27;fy&#x27;</span>]</span><br><span class="line">            point.point.z = depth</span><br><span class="line">            <span class="variable language_">self</span>.pub.publish(point)</span><br><span class="line">            rospy.loginfo(<span class="string">f&quot;Fire 3D Position: X=<span class="subst">&#123;point.point.x:<span class="number">.2</span>f&#125;</span>m Y=<span class="subst">&#123;point.point.y:<span class="number">.2</span>f&#125;</span>m Z=<span class="subst">&#123;point.point.z:<span class="number">.2</span>f&#125;</span>m&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    rospy.init_node(<span class="string">&#x27;fire_3d_locator&#x27;</span>)</span><br><span class="line">    Fire3DLocator()</span><br><span class="line">    rospy.spin()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>大致步骤如下：</p>
+<ol>
+<li>创建fire_3d_locator节点，实现三订阅一发布的通信模式</li>
+<li>深度图订阅(&#x2F;camera&#x2F;aligned_depth_to_color&#x2F;image_raw)</li>
+<li>相机内参订阅(&#x2F;camera&#x2F;color&#x2F;camera_info)</li>
+<li>火焰像素坐标订阅(&#x2F;fire_center_px)</li>
+<li>3D坐标发布(&#x2F;fire_position_3d)</li>
+</ol>
+<hr>
+<h3 id="数据流处理链"><a href="#数据流处理链" class="headerlink" title="数据流处理链"></a>数据流处理链</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[深度图] --&gt; B[深度回调]</span><br><span class="line">    C[相机内参] --&gt; D[内参回调]</span><br><span class="line">    E[像素坐标] --&gt; F[3D坐标计算]</span><br><span class="line">    B --&gt; F</span><br><span class="line">    D --&gt; F</span><br><span class="line">    F --&gt; G[3D坐标发布]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="核心算法实现"><a href="#核心算法实现" class="headerlink" title="核心算法实现"></a>核心算法实现</h3><ol>
+<li>相机坐标系转换</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X = (u - cx) * Z / fx</span><br><span class="line">Y = (v - cy) * Z / fy </span><br></pre></td></tr></table></figure>
+
+<p>其中(u,v)为像素坐标，(cx,cy)为主点坐标，(fx,fy)为焦距</p>
+<ol start="2">
+<li>深度数据处理</li>
+</ol>
+<ul>
+<li>深度值单位转换：mm → m（除以1000）</li>
+<li>有效距离过滤：0.1m &lt; Z &lt; 10m</li>
+<li>深度图可视化：使用JET色图显示归一化深度</li>
+</ul>
+<ol start="3">
+<li>坐标发布规范</li>
+</ol>
+<ul>
+<li>采用PointStamped消息类型包含：</li>
+<li>时间戳(header.stamp)</li>
+<li>坐标系ID(camera_color_optical_frame)</li>
+<li>三维坐标值</li>
+</ul>
+<ol start="4">
+<li>彩色映射深度图像来增强深度感知</li>
+</ol>
+<hr>
+<p>这样，火焰识别与定位算法就大致实现了，虽然算法比较基础，但是能够对ROS话题发布、坐标系发布、消息之间的接受与发送有一个清楚的认识，为后续机器人学习打下基础。</p>
+<p>现在来展示一下效果如何。</p>
+<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
+<li>打开相机节点</li>
+</ol>
+<p>这次打开的相机节点有所不同，参考上一篇文章：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>运行火焰识别脚本</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun robot_vision fire_detector.py</span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-04_16-06-22.png" style="zoom:50%;" />
+
+<ol start="3">
+<li>运行火焰定位脚本</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun robot_vision fire_3D_locator.py</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-04_16-06-34.png"></p>
+<p>合理首先会显示一个深度图像，会有更直观的感受。</p>
+<p>然后在终端可以查看具体的3D信息</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/Snipaste_2025-07-04_16-06-58.png"></p>
+<p>值得注意的是：</p>
+<p><strong>X表示距离相机左右的距离（米），向右为正，Y表示距离相机的垂直方向，向上为正，Z表示距离相机的深度，向前为正。</strong></p>
+<p>也就是说，图中最后一行表示：火焰位置在相机的右方0.06m,上方0m，前方0.27m.</p>
+<p>这样，基本的火焰识别与定位就实现了。后续可以将火焰的相对坐标进行转换，可以接入消防小车的自主导航系统中了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1472,238 +1741,6 @@
 <h2 id="导航与slam自主建图"><a href="#导航与slam自主建图" class="headerlink" title="导航与slam自主建图"></a>导航与slam自主建图</h2><p>这一部分不用多说，就是单纯把前两布建图以及路径规划结合在一起，参考文档9.5导航与slam自主建图。</p>
 <hr>
 <p>至此，整个slam与路径规划项目大致结束，虽然使用算法简单，但是对整个系统的理解及后续算法的精进有很大帮助。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/8.3%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/8.3%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90/" class="post-title-link" itemprop="url">8.3 传感器集成</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">松灵机器人</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="8-3传感器集成"><a href="#8-3传感器集成" class="headerlink" title="8.3传感器集成"></a>8.3传感器集成</h1><h2 id="整体配置"><a href="#整体配置" class="headerlink" title="整体配置"></a>整体配置</h2><ol>
-<li><p>底盘：松灵scout mini(非omni)</p>
-</li>
-<li><p>工控机：Nuvo-7200VTC</p>
-</li>
-<li><p>激光雷达：镭神C16-151B</p>
-<hr>
-<p>存在问题：</p>
-<ol>
-<li><p>机器人启动时，需要逐一启动底盘控制、相机与激光雷达，操作冗余；</p>
-</li>
-<li><p>如果只是简单的启动这些节点，那么在 rviz 中显示时，会发现出现了TF转换异常，比如参考坐标系设置为odom时，雷达信息显示失败。</p>
-</li>
-</ol>
-</li>
-</ol>
-<p>本节主要目的是将底盘、雷达相关节点启动，并且通过坐标变换实现机器人底盘与里程计、雷达的关联。</p>
-<h3 id="合并源码"><a href="#合并源码" class="headerlink" title="合并源码"></a>合并源码</h3><p>先把之前下好的底盘以及雷达的功能包放在同一个工作空间下，方便管理</p>
-<h4 id="launch文件"><a href="#launch文件" class="headerlink" title="launch文件"></a>launch文件</h4><p>新建功能包mycar_start：</p>
-<p><code>catkin_create_pkg mycar_start lslidar_msgs pointcloud_to_laserscan roscpp rospy scout_base scout_bringup scout_msgs std_msgs</code></p>
-<p>除了基本的<code>roscpp rospy std_msgs</code>，其余的均为需要启动的launch文件中的功能包名称</p>
-<p>功能包下创建launch文件夹，launch文件夹中新建launch文件，start_mycar.launch</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 机器人启动文件：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find lslidar_driver)/launch/start.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find pointcloud_to_laserscan)/launch/pointcloud_scan.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_bringup)/launch/scout_robot_base.launch&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find scout_bringup)/launch/scout_teleop_keyboard.launch&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="坐标变换"><a href="#坐标变换" class="headerlink" title="坐标变换"></a>坐标变换</h4><p>如果启动时加载了机器人模型，且模型中设置的坐标系名称与机器人实体中设置的坐标系一致，那么可以不再添加坐标变换，因为机器人模型可以发布坐标变换信息，如果没有启动机器人模型，就需要自定义坐标变换实现了，继续新建launch文件，start_tf.launch</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 机器人启动文件：</span></span><br><span class="line"><span class="comment">        当不包含机器人模型时，需要发布坐标变换</span></span><br><span class="line"><span class="comment"> --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">file</span>=<span class="string">&quot;$(find mycar_start)/launch/start_mycar.launch&quot;</span> /&gt;</span>    </span><br><span class="line">    <span class="comment">&lt;!-- &lt;node name=&quot;camera2basefootprint&quot; pkg=&quot;tf2_ros&quot; type=&quot;static_transform_publisher&quot; args=&quot;0.08 0 0.1 0 0 0 /base_footprint /camera_link&quot;/&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">name</span>=<span class="string">&quot;rplidar2basefootprint&quot;</span> <span class="attr">pkg</span>=<span class="string">&quot;tf2_ros&quot;</span> <span class="attr">type</span>=<span class="string">&quot;static_transform_publisher&quot;</span> <span class="attr">args</span>=<span class="string">&quot;0 0 0.1 0 0 0 /base_link /laser&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>由于没有相机，所以没有添加相机的坐标变换。后续可以增加。</p>
-<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p><strong>首先必须测试can通信！！！</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ip <span class="built_in">link</span> <span class="built_in">set</span> can0 up <span class="built_in">type</span> can bitrate 500000</span><br></pre></td></tr></table></figure>
-
-<p>如果显示busy那就重新插拔一下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ./devel/setup.bash</span><br><span class="line">roslaunch mycar_start start_tf.launch </span><br></pre></td></tr></table></figure>
-
-<p>记得调节小车速度。</p>
-<p>打开rviz</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rviz</span><br></pre></td></tr></table></figure>
-
-<h4 id="结果显示"><a href="#结果显示" class="headerlink" title="结果显示"></a>结果显示</h4><p>在rviz中添加tf、pointcloud2插件，并通过键盘控制机器人运动，查看rviz中的显示结果:</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E9%9B%86%E6%88%90%E7%BB%84%E5%BB%BA.png"></p>
-<p>可以看到小车雷达可以随着小车的移动来扫描</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/rviz%E8%A7%86%E5%9B%BE.png"></p>
-<p>至此，小车的集成大致完成。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/06/11/9.1%20%E6%9E%84%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/11/9.1%20%E6%9E%84%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">9.1构造机器人模型</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-06-11 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-11T00:00:00+08:00">2025-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-23 19:41:37" itemprop="dateModified" datetime="2025-07-23T19:41:37+08:00">2025-07-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="9-1-构建机器人模型"><a href="#9-1-构建机器人模型" class="headerlink" title="9.1 构建机器人模型"></a>9.1 构建机器人模型</h1><h2 id="分析scout-ros功能包构成"><a href="#分析scout-ros功能包构成" class="headerlink" title="分析scout_ros功能包构成"></a>分析scout_ros功能包构成</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">├── launch</span><br><span class="line">│   ├── display_scout_mini.launch</span><br><span class="line">│   ├── display_scout_v2.launch</span><br><span class="line">│   ├── gazebo.launch</span><br><span class="line">│   ├── scout_mini_stock.launch</span><br><span class="line">│   └── scout_v2_stock.launch</span><br><span class="line">├── meshes</span><br><span class="line">│   ├── 1_Link.STL</span><br><span class="line">│   ├── 2_Link.STL</span><br><span class="line">│   ├── 3_Link.STL</span><br><span class="line">│   ├── 4_Link.STL</span><br><span class="line">│   ├── base_link.dae</span><br><span class="line">│   ├── scout_mini_base_link.dae</span><br><span class="line">│   ├── scout_mini_base_link.STL</span><br><span class="line">│   ├── wheel.dae</span><br><span class="line">│   ├── wheel_type1.dae</span><br><span class="line">│   └── wheel_type2.dae</span><br><span class="line">├── package.xml</span><br><span class="line">├── rviz</span><br><span class="line">│   ├── model_display.rviz</span><br><span class="line">│   ├── navigation.rviz</span><br><span class="line">│   └── scout_mini_model_display.rviz</span><br><span class="line">└── urdf</span><br><span class="line">    ├── empty.urdf</span><br><span class="line">    ├── scout_mini.gazebo</span><br><span class="line">    ├── scout_mini_laser.urdf.xacro</span><br><span class="line">    ├── scout_mini.urdf.xacro</span><br><span class="line">    ├── scout_mini_wheel.gazebo</span><br><span class="line">    ├── scout_mini_wheel.xacro</span><br><span class="line">    ├── scout_v2.gazebo</span><br><span class="line">    ├── scout_v2.xacro</span><br><span class="line">    ├── scout_wheel.gazebo</span><br><span class="line">    ├── scout_wheel_type1.xacro</span><br><span class="line">    └── scout_wheel_type2.xacro</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>可以看到，主要需要使用的是laucn文件夹，其中display_scout_mini.launch用于启动带有机器人模型的rviz.如果需要增加传感器之类的模型，那么就需要在urdf文件中新建xacro文件。例如，我新建了一个名为scout_mini_laser.urdf.xacro文件。用于增加雷达组件。</p>
-<p>所以说，想要增加一个雷达也很简单。</p>
-<p>新建scout_mini_laser.urdf.xacro文件</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">robot</span> <span class="attr">name</span>=<span class="string">&quot;mycar&quot;</span> <span class="attr">xmlns:xacro</span>=<span class="string">&quot;http://wiki.ros.org/xacro&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.01&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;support_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.15&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_radius&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.03&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;laser_length&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0.05&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wheel_vertical_offset + base_z_size / 2 + support_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_laser_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;support_length / 2 + laser_length / 2&#125;&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;support&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;support_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;support_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;yellow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0.8 0.5 0.0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;support2base&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;base_link&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_support_x&#125; $&#123;joint_support_y&#125; $&#123;joint_support_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">name</span>=<span class="string">&quot;laser&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">visual</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">geometry</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">cylinder</span> <span class="attr">radius</span>=<span class="string">&quot;$&#123;laser_radius&#125;&quot;</span> <span class="attr">length</span>=<span class="string">&quot;$&#123;laser_length&#125;&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">geometry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">material</span> <span class="attr">name</span>=<span class="string">&quot;black&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">color</span> <span class="attr">rgba</span>=<span class="string">&quot;0 0 0 0.5&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">material</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">visual</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">joint</span> <span class="attr">name</span>=<span class="string">&quot;laser2support&quot;</span> <span class="attr">type</span>=<span class="string">&quot;fixed&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span> <span class="attr">link</span>=<span class="string">&quot;support&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span> <span class="attr">link</span>=<span class="string">&quot;laser&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">origin</span> <span class="attr">xyz</span>=<span class="string">&quot;$&#123;joint_laser_x&#125; $&#123;joint_laser_y&#125; $&#123;joint_laser_z&#125;&quot;</span> <span class="attr">rpy</span>=<span class="string">&quot;0 0 0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">joint</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">robot</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这是赵虚左老师的文件，没有太多修改，主要改动是：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_x&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_y&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:property</span> <span class="attr">name</span>=<span class="string">&quot;joint_support_z&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wheel_vertical_offset + base_z_size / 2 + support_length / 2&#125;&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>由于没有设计base_footprint 所以scout_mini底盘设了一个wheel_vertical_offset，弥补地面相对底盘的高度差，所以在写支柱对于底盘的高度差的时候，不仅要加上底盘的高度，还要加上这个补偿。</p>
-<p>至此写完了雷达的xacro文件。</p>
-<p>再修改一下 scout_mini_laser.urdf.xacro，找到最后面，增加一个：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Additional definitions --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:include</span> <span class="attr">filename</span>=<span class="string">&quot;$(arg urdf_extras)&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">xacro:include</span> <span class="attr">filename</span>=<span class="string">&quot;scout_mini_laser.urdf.xacro&quot;</span> /&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>大功告成。</p>
-<p>在终端运行一下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch scout_description display_scout_mini.launch</span><br></pre></td></tr></table></figure>
-
-<p>结果如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/%E5%A2%9E%E5%8A%A0%E9%9B%B7%E8%BE%BE.png"></p>
 
       
     </div>

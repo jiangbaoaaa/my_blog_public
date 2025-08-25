@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="视觉SLAM十四讲（第五讲）–相机与图像计算机中，一张照片由很多像素组成，每个像素记录色彩或亮度的信息。 相机模型相机将三维坐标点映射到二位图像平面可以由一个几何模型描述。例如针孔模型。同时，由于相机镜头有透镜，使得光线投影到成像平面的过程中会产生畸变，因此需要针孔和畸变模型描述投影过程。两个模型可以将外部的三维点投影到相机内部成像平面，构成内参数。 针孔相机模型 $$\frac{Z}{f} &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第五讲-相机与图像">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/08/25/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%94%E8%AE%B2%EF%BC%89--%E7%9B%B8%E6%9C%BA%E4%B8%8E%E5%9B%BE%E5%83%8F/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="视觉SLAM十四讲（第五讲）–相机与图像计算机中，一张照片由很多像素组成，每个像素记录色彩或亮度的信息。 相机模型相机将三维坐标点映射到二位图像平面可以由一个几何模型描述。例如针孔模型。同时，由于相机镜头有透镜，使得光线投影到成像平面的过程中会产生畸变，因此需要针孔和畸变模型描述投影过程。两个模型可以将外部的三维点投影到相机内部成像平面，构成内参数。 针孔相机模型 $$\frac{Z}{f} &amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20190102115709713.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20181113171148585.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/f15758757d381093fa8e45670bfc09d4.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822194654199.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822201917962.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/stereo.PNG">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/cae3ffa05c1d4dd7a52cd9cc25b860c9.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822214528123.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250825101854724.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825102058073.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825104800880.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825110158793.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825110214053.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825112657741.png">
+<meta property="article:published_time" content="2025-08-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-25T03:31:01.882Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20190102115709713.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/08/25/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%94%E8%AE%B2%EF%BC%89--%E7%9B%B8%E6%9C%BA%E4%B8%8E%E5%9B%BE%E5%83%8F/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/08/25/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%94%E8%AE%B2%EF%BC%89--%E7%9B%B8%E6%9C%BA%E4%B8%8E%E5%9B%BE%E5%83%8F/","path":"2025/08/25/视觉SLAM十四讲（第五讲）--相机与图像/","title":"第五讲-相机与图像"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第五讲-相机与图像 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%94%E8%AE%B2%EF%BC%89%E2%80%93%E7%9B%B8%E6%9C%BA%E4%B8%8E%E5%9B%BE%E5%83%8F"><span class="nav-number">1.</span> <span class="nav-text">视觉SLAM十四讲（第五讲）–相机与图像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">相机模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%92%88%E5%AD%94%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">针孔相机模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%95%B8%E5%8F%98%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">畸变模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E7%9B%AE%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.3.</span> <span class="nav-text">双目相机模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RGB-D%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.4.</span> <span class="nav-text">RGB-D相机模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F"><span class="nav-number">1.2.</span> <span class="nav-text">图像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%9B%BE%E5%83%8F"><span class="nav-number">1.3.</span> <span class="nav-text">实践：计算机中的图像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenCV%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.3.1.</span> <span class="nav-text">OpenCV基本使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%8E%BB%E7%95%B8%E5%8F%98"><span class="nav-number">1.3.2.</span> <span class="nav-text">图像去畸变</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9A3D%E8%A7%86%E8%A7%89"><span class="nav-number">1.4.</span> <span class="nav-text">实践：3D视觉</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89"><span class="nav-number">1.4.1.</span> <span class="nav-text">双目视觉</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RGB-D%E8%A7%86%E8%A7%89"><span class="nav-number">1.4.2.</span> <span class="nav-text">RGB-D视觉</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/08/25/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%BA%94%E8%AE%B2%EF%BC%89--%E7%9B%B8%E6%9C%BA%E4%B8%8E%E5%9B%BE%E5%83%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="第五讲-相机与图像 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第五讲-相机与图像
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-08-25 00:00:00 / 修改时间：11:31:01" itemprop="dateCreated datePublished" datetime="2025-08-25T00:00:00+08:00">2025-08-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/" itemprop="url" rel="index"><span itemprop="name">视觉SLAM十四讲</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="视觉SLAM十四讲（第五讲）–相机与图像"><a href="#视觉SLAM十四讲（第五讲）–相机与图像" class="headerlink" title="视觉SLAM十四讲（第五讲）–相机与图像"></a>视觉SLAM十四讲（第五讲）–相机与图像</h1><p>计算机中，一张照片由很多像素组成，每个像素记录色彩或亮度的信息。</p>
+<h2 id="相机模型"><a href="#相机模型" class="headerlink" title="相机模型"></a>相机模型</h2><p>相机将三维坐标点映射到二位图像平面可以由一个几何模型描述。例如针孔模型。同时，由于相机镜头有透镜，使得光线投影到成像平面的过程中会产生畸变，因此需要针孔和畸变模型描述投影过程。两个模型可以将外部的三维点投影到相机内部成像平面，构成<code>内参数</code>。</p>
+<h3 id="针孔相机模型"><a href="#针孔相机模型" class="headerlink" title="针孔相机模型"></a>针孔相机模型</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20190102115709713.png" alt="Overview of each camera model (pinhole + fisheye) - Programmer Sought"></p>
+<p>$$<br>\frac{Z}{f} &#x3D; -\frac{X}{X’} &#x3D; -\frac{Y}{Y’}<br>$$<br>由图可以知道如上式关系，其中负号表示成像是倒立的。为了更符合实际，等价将成像平面对称地放到相机前方，和三维空间点放到摄像机坐标系同一侧，如下图所示，所得等式也稍作调整：<br>$$<br>\frac{Z}{f} &#x3D; \frac{X}{X’} &#x3D; \frac{Y}{Y’}<br>$$<br><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20181113171148585.png" alt="几何光学 | 1-1 几何光学基本定律与成像基本概念 - 知乎"></p>
+<p>整理一下上述公式：<br>$$<br>X’ &#x3D; f\frac{X}{Z}<br>\<br>Y’ &#x3D; f\frac{Y}{Z}<br>$$<br>进行处理后的正像被称为针孔模型。在相机中，我们最终获得的是一个个像素，需要在成像平面上对像进行采样和量化，为了描述将光线转换成图像像素的过程，在物理平面上固定一个**像素平面$o-u-v$。**在像素平面得到$P^{‘}$的像素坐标：$[u, v]^T$​​。</p>
+<p>下图是不同坐标系的表示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/f15758757d381093fa8e45670bfc09d4.png"></p>
+<blockquote>
+<p>像素坐标系</p>
+</blockquote>
+<p>表示三维空间物体在图像平面的投影，像素是离散化的。坐标原点在CCD图像平面的左上角，u轴平行于CCD平面水平向右，v轴垂直与u轴向下，坐标使用(u, v)表示。像素坐标系与成像平面之间相差一个<code>缩放</code>和一个<code>远点的平移</code>。设像素坐标在u轴上缩放了α倍，在v轴上缩放了β倍。同时原点平移了$[c_x,c_y]^T$。那么，$P^{‘}$的坐标与像素坐标$[u, v]^ T$的关系是：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822194654199.png" alt="image-20250822194654199"></p>
+<p>其中，中间的两组成的矩阵$K$称为相机的内参数矩阵，通常不会发生改变。如果需要自己确定相机内参的话，就需要所谓的标定技术例如张正友标定法。至于外参，我们使用的是$P$在相机坐标系（就是实际的相机的坐标系）下的坐标，但是实际上由于相机在运动，所以$P$的相机坐标应该是他的世界坐标系，即根据相机当前的位姿变换到相机坐标系的结果$P_w$。相机的位姿由它的旋转矩阵R和平移向量t描述：<br>$$<br>ZP_{uv} &#x3D; Z \begin{bmatrix} u \ v \ 1 \end{bmatrix} &#x3D; \mathbf{K}(\mathbf{R}P_{w} + \mathbf{t}) &#x3D; \mathbf{K}\mathbf{T}P_{w}<br>$$<br>其中，相机的位姿R，t又称为<code>相机的外参数</code>。</p>
+<p>投影相当于在由世界坐标系到相机坐标系的转化过程中，再除掉最后一维的数值（深度）。相当于进行一个归一化处理，得到点$P$在相机<strong>归一化平面</strong>上的投影：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822201917962.png" alt="image-20250822201917962"></p>
+<p><strong>归一化坐标</strong>可以理解为相机前方z &#x3D; 1处的平面上的点，这个平面也称为归一化平面，归一化坐标左乘内参就是像素坐标，如果对于相机坐标系同时乘以任意非零常数，得到的归一化坐标都是一样的，这就是<strong>点的深度在投影过程中丢失了</strong>，所以单目视觉得不到像素点的深度值。</p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/MengYa_Dream/article/details/120233806">图像处理——4个坐标系及相关转换图像像素坐标系 图像物理坐标系 相机坐标系 世界坐标系_图像坐标系-CSDN博客</a></p>
+<hr>
+<h3 id="畸变模型"><a href="#畸变模型" class="headerlink" title="畸变模型"></a>畸变模型</h3><p>为了获得好的成像效果，会在相机前方加上透镜，会影响光线传播，由透镜形状引起的畸变称为径向畸变，主要分为：桶形畸变和枕形畸变。除了透镜的形状会引入畸变，由于相机的组装过程中不能使透镜与成像面严格平行，所以会引入切向畸变。所以要进行畸变校正，具体参考书本101页。</p>
+<p>主要是理解四个坐标系之间的变换关系。</p>
+<hr>
+<h3 id="双目相机模型"><a href="#双目相机模型" class="headerlink" title="双目相机模型"></a>双目相机模型</h3><p>由于根据单个相机无法确定空间点的具体位置，只有当P的深度确定时，才能确切知道空间位置。可以通过同步采集左右相机的图像，计算图像间的视差，估计每一个像素的深度。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/stereo.PNG" alt="stereo"></p>
+<p>双目相机一般由左眼和右眼两个<strong>水平放置</strong>的相机组成。上图中左右两个相机都是使用针孔相机模型，两个相机的成像平面在同一个水平面上，同时两个相机光心是水平放置的，因此对于一个P点，其在两个图像上的投影点的行坐标是相同的，我们通过对其纵坐标的处理便可以得到视差了。</p>
+<p>图中两个相机光心之间的距离b被成为双目相机的<strong>基线</strong>，是与焦距f一样重要的参数。</p>
+<p>根据上图，假设一个空间点P，在左右目各成一像$P_L$与$P_R$，分别以两个光心垂直的位置为二维坐标原点，则$P_L$的横坐标为$u_L$，$P_R$的横坐标为$u_R$，可以发现$u_R$是一个负数。根据上图中右侧三角形相似的原理，可以得到下面公式<br>$$<br>\frac{z-f}{z}&#x3D;\frac{b-u_{L}+u_{R}}{b}<br>$$<br>得到：<br>$$<br>z &#x3D; \frac{fb}{d}, d&#x3D; u_L -u_R<br>$$<br>d称为视差。</p>
+<hr>
+<h3 id="RGB-D相机模型"><a href="#RGB-D相机模型" class="headerlink" title="RGB-D相机模型"></a>RGB-D相机模型</h3><p>相较于双目相机通过视差计算深度，RGB-D相机能够主动测量每个像素的深度，主要分为两类RGB-D相机：</p>
+<ol>
+<li>通过红外结构光原理测量像素距离</li>
+<li>通过飞行实践原理测量像素距离</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/cae3ffa05c1d4dd7a52cd9cc25b860c9.png" alt="img"></p>
+<p>无论哪种，都要向探测目标发射一束光线（通常为红外光）。在红外结构光原理中，相机根据返回的结构光图案，计算物体与自身的距离。在TOF原理中，先发射脉冲光，根据发送到返回之间的光束飞行时间计算物体与自身的距离。这里只做简单介绍</p>
+<hr>
+<h2 id="图像"><a href="#图像" class="headerlink" title="图像"></a>图像</h2><p>数学中，图像可以用一个矩阵描述，计算机中，可以用二维数组表示。我们使用OpenCV来进行图像处理，在一张灰度图中，每个像素位置$(x, y)$对应一个灰度值$I$，所以一张宽度为$w$、高度为$h$的图像，在数学上记为一个函数：<br>$$<br>I(x, y) : \mathbb{R}^{2} \mapsto \mathbb{R}<br>$$<br>$(x, y)$是像素坐标。用0~255的整数表达图像的灰度读数。那么一张宽度为640像素、高度为480像素分辨率的灰度图可以表示为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">char</span> image[<span class="number">480</span>][<span class="number">640</span>]</span><br></pre></td></tr></table></figure>
+
+<p>因为在图像中，数组的行数对应图像的高度，列数对应图像的宽度。图像以二维数组形式存储，当访问某一个像素时，需要指明所处的坐标。</p>
+<p>我们讨论一个位于x,y处的像素，访问方式是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">char</span> pixel = image[y][x]</span><br></pre></td></tr></table></figure>
+
+<p>至于像素数据的记录，只做一个简单介绍，如下图展示的，例如一般灰度值用8位整数记录0~255d的值，彩色图则使用三通道，24位记录。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250822214528123.png" alt="image-20250822214528123"></p>
+<hr>
+<h2 id="实践：计算机中的图像"><a href="#实践：计算机中的图像" class="headerlink" title="实践：计算机中的图像"></a>实践：计算机中的图像</h2><h3 id="OpenCV基本使用方法"><a href="#OpenCV基本使用方法" class="headerlink" title="OpenCV基本使用方法"></a>OpenCV基本使用方法</h3><blockquote>
+<p>安装opencv</p>
+</blockquote>
+<p>环境：ubuntu20.04 vm17</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt upgrate -y</span><br><span class="line"><span class="built_in">sudo</span> apt install libopencv-dev python3-opencv -y</span><br></pre></td></tr></table></figure>
+
+
+
+<p>新建文件夹及文件：<code>slambook/ch5/imageBasics/imageBasics.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 读取argv[1]指定的图像</span></span><br><span class="line">  cv::Mat image;</span><br><span class="line">  image = cv::<span class="built_in">imread</span>(argv[<span class="number">1</span>]); <span class="comment">//cv::imread函数读取指定路径下的图像</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断图像文件是否正确读取</span></span><br><span class="line">  <span class="keyword">if</span> (image.data == <span class="literal">nullptr</span>) &#123; <span class="comment">//数据不存在,可能是文件不存在</span></span><br><span class="line">    cerr &lt;&lt; <span class="string">&quot;文件&quot;</span> &lt;&lt; argv[<span class="number">1</span>] &lt;&lt; <span class="string">&quot;不存在.&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 文件顺利读取, 首先输出一些基本信息</span></span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;图像宽为&quot;</span> &lt;&lt; image.cols &lt;&lt; <span class="string">&quot;,高为&quot;</span> &lt;&lt; image.rows &lt;&lt; <span class="string">&quot;,通道数为&quot;</span> &lt;&lt; image.<span class="built_in">channels</span>() &lt;&lt; endl;</span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;image&quot;</span>, image);      <span class="comment">// 用cv::imshow显示图像</span></span><br><span class="line">  cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);                  <span class="comment">// 暂停程序,等待一个按键输入</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断image的类型</span></span><br><span class="line">  <span class="keyword">if</span> (image.<span class="built_in">type</span>() != CV_8UC1 &amp;&amp; image.<span class="built_in">type</span>() != CV_8UC3) &#123;</span><br><span class="line">    <span class="comment">// 图像类型不符合要求</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;请输入一张彩色图或灰度图.&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 遍历图像, 请注意以下遍历方式亦可使用于随机像素访问</span></span><br><span class="line">  <span class="comment">// 使用 std::chrono 来给算法计时</span></span><br><span class="line">  chrono::steady_clock::time_point t1 = chrono::steady_clock::<span class="built_in">now</span>();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">size_t</span> y = <span class="number">0</span>; y &lt; image.rows; y++) &#123;</span><br><span class="line">    <span class="comment">// 用cv::Mat::ptr获得图像的行指针</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> *row_ptr = image.<span class="built_in">ptr</span>&lt;<span class="type">unsigned</span> <span class="type">char</span>&gt;(y);  <span class="comment">// row_ptr是第y行的头指针</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">size_t</span> x = <span class="number">0</span>; x &lt; image.cols; x++) &#123;</span><br><span class="line">      <span class="comment">// 访问位于 x,y 处的像素</span></span><br><span class="line">      <span class="type">unsigned</span> <span class="type">char</span> *data_ptr = &amp;row_ptr[x * image.<span class="built_in">channels</span>()]; <span class="comment">// data_ptr 指向待访问的像素数据</span></span><br><span class="line">      <span class="comment">// 输出该像素的每个通道,如果是灰度图就只有一个通道</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> c = <span class="number">0</span>; c != image.<span class="built_in">channels</span>(); c++) &#123;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">char</span> data = data_ptr[c]; <span class="comment">// data为I(x,y)第c个通道的值</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  chrono::steady_clock::time_point t2 = chrono::steady_clock::<span class="built_in">now</span>();</span><br><span class="line">  chrono::duration&lt;<span class="type">double</span>&gt; time_used = chrono::duration_cast &lt; chrono::duration &lt; <span class="type">double</span> &gt;&gt; (t2 - t1);</span><br><span class="line">  cout &lt;&lt; <span class="string">&quot;遍历图像用时：&quot;</span> &lt;&lt; time_used.<span class="built_in">count</span>() &lt;&lt; <span class="string">&quot; 秒。&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 关于 cv::Mat 的拷贝</span></span><br><span class="line">  <span class="comment">// 直接赋值并不会拷贝数据</span></span><br><span class="line">  cv::Mat image_another = image;</span><br><span class="line">  <span class="comment">// 修改 image_another 会导致 image 发生变化</span></span><br><span class="line">  <span class="built_in">image_another</span>(cv::<span class="built_in">Rect</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>)).<span class="built_in">setTo</span>(<span class="number">0</span>); <span class="comment">// 将左上角100*100的块置零</span></span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;image&quot;</span>, image);</span><br><span class="line">  cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 使用clone函数来拷贝数据</span></span><br><span class="line">  cv::Mat image_clone = image.<span class="built_in">clone</span>();</span><br><span class="line">  <span class="built_in">image_clone</span>(cv::<span class="built_in">Rect</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>)).<span class="built_in">setTo</span>(<span class="number">255</span>);</span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;image&quot;</span>, image);</span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;image_clone&quot;</span>, image_clone);</span><br><span class="line">  cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 对于图像还有很多基本的操作,如剪切,旋转,缩放等,限于篇幅就不一一介绍了,请参看OpenCV官方文档查询每个函数的调用方法.</span></span><br><span class="line">  cv::<span class="built_in">destroyAllWindows</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line"></span><br><span class="line">project(imageBasics)</span><br><span class="line"></span><br><span class="line">set( CMAKE_CXX_FLAGS <span class="string">&quot;-std=c++14&quot;</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找OpenCV</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果找到OpenCV，则执行以下操作</span></span><br><span class="line">if(OpenCV_FOUND)</span><br><span class="line">  <span class="comment"># 包含OpenCV的头文件目录</span></span><br><span class="line">  include_directories($&#123;OpenCV_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 添加可执行文件</span></span><br><span class="line">  add_executable(imageBasics imageBasics.cpp)</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 链接OpenCV库</span></span><br><span class="line">  target_link_libraries(imageBasics $&#123;OpenCV_LIBRARIES&#125;)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+
+<p>把源代码中的图片复制到同一文件夹下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20250825101854724.png"></p>
+<p>在终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch5/imageBasics/build</span><br><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ make</span><br><span class="line">[100%] Built target imageBasics</span><br><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ ./imageBasics ../ubuntu.png </span><br><span class="line">图像宽为1200,高为674,通道数为3</span><br><span class="line">遍历图像用时：0.00393242 秒。</span><br></pre></td></tr></table></figure>
+
+<p>结果为：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825102058073.png" alt="image-20250825102058073"></p>
+<hr>
+<h3 id="图像去畸变"><a href="#图像去畸变" class="headerlink" title="图像去畸变"></a>图像去畸变</h3><p>新建文件 <code>slambook/ch5/imageBasics/undistrotImage.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">string image_file = <span class="string">&quot;../distorted.png&quot;</span>;   <span class="comment">// 请确保路径正确</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 本程序实现去畸变部分的代码。尽管我们可以调用OpenCV的去畸变，但自己实现一遍有助于理解。</span></span><br><span class="line">  <span class="comment">// 畸变参数</span></span><br><span class="line">  <span class="type">double</span> k1 = <span class="number">-0.28340811</span>, k2 = <span class="number">0.07395907</span>, p1 = <span class="number">0.00019359</span>, p2 = <span class="number">1.76187114e-05</span>;</span><br><span class="line">  <span class="comment">// 内参</span></span><br><span class="line">  <span class="type">double</span> fx = <span class="number">458.654</span>, fy = <span class="number">457.296</span>, cx = <span class="number">367.215</span>, cy = <span class="number">248.375</span>;</span><br><span class="line"></span><br><span class="line">  cv::Mat image = cv::<span class="built_in">imread</span>(image_file, <span class="number">0</span>);   <span class="comment">// 图像是灰度图，CV_8UC1</span></span><br><span class="line">  <span class="type">int</span> rows = image.rows, cols = image.cols;</span><br><span class="line">  cv::Mat image_undistort = cv::<span class="built_in">Mat</span>(rows, cols, CV_8UC1);   <span class="comment">// 去畸变以后的图</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算去畸变后图像的内容</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> v = <span class="number">0</span>; v &lt; rows; v++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> u = <span class="number">0</span>; u &lt; cols; u++) &#123;</span><br><span class="line">      <span class="comment">// 按照公式，计算点(u,v)对应到畸变图像中的坐标(u_distorted, v_distorted)</span></span><br><span class="line">      <span class="type">double</span> x = (u - cx) / fx, y = (v - cy) / fy;</span><br><span class="line">      <span class="type">double</span> r = <span class="built_in">sqrt</span>(x * x + y * y);</span><br><span class="line">      <span class="type">double</span> x_distorted = x * (<span class="number">1</span> + k1 * r * r + k2 * r * r * r * r) + <span class="number">2</span> * p1 * x * y + p2 * (r * r + <span class="number">2</span> * x * x);</span><br><span class="line">      <span class="type">double</span> y_distorted = y * (<span class="number">1</span> + k1 * r * r + k2 * r * r * r * r) + p1 * (r * r + <span class="number">2</span> * y * y) + <span class="number">2</span> * p2 * x * y;</span><br><span class="line">      <span class="type">double</span> u_distorted = fx * x_distorted + cx;</span><br><span class="line">      <span class="type">double</span> v_distorted = fy * y_distorted + cy;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 赋值 (最近邻插值)</span></span><br><span class="line">      <span class="keyword">if</span> (u_distorted &gt;= <span class="number">0</span> &amp;&amp; v_distorted &gt;= <span class="number">0</span> &amp;&amp; u_distorted &lt; cols &amp;&amp; v_distorted &lt; rows) &#123;</span><br><span class="line">        image_undistort.<span class="built_in">at</span>&lt;uchar&gt;(v, u) = image.<span class="built_in">at</span>&lt;uchar&gt;((<span class="type">int</span>) v_distorted, (<span class="type">int</span>) u_distorted);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        image_undistort.<span class="built_in">at</span>&lt;uchar&gt;(v, u) = <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 画图去畸变后图像</span></span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;distorted&quot;</span>, image);</span><br><span class="line">  cv::<span class="built_in">imshow</span>(<span class="string">&quot;undistorted&quot;</span>, image_undistort);</span><br><span class="line">  cv::<span class="built_in">waitKey</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>修改CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line"></span><br><span class="line">project(imageBasics)</span><br><span class="line"></span><br><span class="line">set( CMAKE_CXX_FLAGS <span class="string">&quot;-std=c++14&quot;</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找OpenCV</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果找到OpenCV，则执行以下操作</span></span><br><span class="line">if(OpenCV_FOUND)</span><br><span class="line">  <span class="comment"># 包含OpenCV的头文件目录</span></span><br><span class="line">  include_directories($&#123;OpenCV_INCLUDE_DIRS&#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 添加可执行文件</span></span><br><span class="line">  add_executable(imageBasics imageBasics.cpp)</span><br><span class="line">  add_executable(undistortImage undistortImage.cpp)</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 链接OpenCV库</span></span><br><span class="line">  target_link_libraries(imageBasics $&#123;OpenCV_LIBRARIES&#125;)</span><br><span class="line">  target_link_libraries(undistortImage $&#123;OpenCV_LIBRARIES&#125;)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+
+<p>终端输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ cmake ..</span><br><span class="line">-- Configuring <span class="keyword">done</span></span><br><span class="line">-- Generating <span class="keyword">done</span></span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch5/imageBasics/build</span><br><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ make</span><br><span class="line">Scanning dependencies of target undistortImage</span><br><span class="line">[ 25%] Building CXX object CMakeFiles/undistortImage.<span class="built_in">dir</span>/undistortImage.cpp.o</span><br><span class="line">[ 50%] Linking CXX executable undistortImage</span><br><span class="line">[ 50%] Built target undistortImage</span><br><span class="line">[100%] Built target imageBasics</span><br><span class="line">hita@hita-vm:~/slambook/ch5/imageBasics/build$ ./undistortImage </span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825104800880.png" alt="image-20250825104800880"></p>
+<h2 id="实践：3D视觉"><a href="#实践：3D视觉" class="headerlink" title="实践：3D视觉"></a>实践：3D视觉</h2><h3 id="双目视觉"><a href="#双目视觉" class="headerlink" title="双目视觉"></a>双目视觉</h3><p>可以从双目视觉的左右图像出发，计算图像对应的视差图，计算各像素在相机坐标系下的坐标，生成点云。</p>
+<p>新建文件夹及文件：<code>slambook/ch5/stereoVision/stereoVision.cpp</code></p>
+<p>首先讲源代码中两个图像放置在该文件夹下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pangolin/pangolin.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Eigen;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 文件路径</span></span><br><span class="line">string left_file = <span class="string">&quot;../left.png&quot;</span>;</span><br><span class="line">string right_file = <span class="string">&quot;../right.png&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在pangolin中画图，已写好，无需调整</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">showPointCloud</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> vector&lt;Vector4d, Eigen::aligned_allocator&lt;Vector4d&gt;&gt; &amp;pointcloud)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 内参</span></span><br><span class="line">    <span class="type">double</span> fx = <span class="number">718.856</span>, fy = <span class="number">718.856</span>, cx = <span class="number">607.1928</span>, cy = <span class="number">185.2157</span>;</span><br><span class="line">    <span class="comment">// 基线</span></span><br><span class="line">    <span class="type">double</span> b = <span class="number">0.573</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 读取图像</span></span><br><span class="line">    cv::Mat left = cv::<span class="built_in">imread</span>(left_file, <span class="number">0</span>);</span><br><span class="line">    cv::Mat right = cv::<span class="built_in">imread</span>(right_file, <span class="number">0</span>);</span><br><span class="line">    cv::Ptr&lt;cv::StereoSGBM&gt; sgbm = cv::StereoSGBM::<span class="built_in">create</span>(</span><br><span class="line">        <span class="number">0</span>, <span class="number">96</span>, <span class="number">9</span>, <span class="number">8</span> * <span class="number">9</span> * <span class="number">9</span>, <span class="number">32</span> * <span class="number">9</span> * <span class="number">9</span>, <span class="number">1</span>, <span class="number">63</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">32</span>);    <span class="comment">// 神奇的参数</span></span><br><span class="line">    cv::Mat disparity_sgbm, disparity;</span><br><span class="line">    sgbm-&gt;<span class="built_in">compute</span>(left, right, disparity_sgbm);</span><br><span class="line">    disparity_sgbm.<span class="built_in">convertTo</span>(disparity, CV_32F, <span class="number">1.0</span> / <span class="number">16.0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 生成点云</span></span><br><span class="line">    vector&lt;Vector4d, Eigen::aligned_allocator&lt;Vector4d&gt;&gt; pointcloud;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果你的机器慢，请把后面的v++和u++改成v+=2, u+=2</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> v = <span class="number">0</span>; v &lt; left.rows; v++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> u = <span class="number">0</span>; u &lt; left.cols; u++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (disparity.<span class="built_in">at</span>&lt;<span class="type">float</span>&gt;(v, u) &lt;= <span class="number">0.0</span> || disparity.<span class="built_in">at</span>&lt;<span class="type">float</span>&gt;(v, u) &gt;= <span class="number">96.0</span>) <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">            <span class="function">Vector4d <span class="title">point</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, left.at&lt;uchar&gt;(v, u) / <span class="number">255.0</span>)</span></span>; <span class="comment">// 前三维为xyz,第四维为颜色</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 根据双目模型计算 point 的位置</span></span><br><span class="line">            <span class="type">double</span> x = (u - cx) / fx;</span><br><span class="line">            <span class="type">double</span> y = (v - cy) / fy;</span><br><span class="line">            <span class="type">double</span> depth = fx * b / (disparity.<span class="built_in">at</span>&lt;<span class="type">float</span>&gt;(v, u));</span><br><span class="line">            point[<span class="number">0</span>] = x * depth;</span><br><span class="line">            point[<span class="number">1</span>] = y * depth;</span><br><span class="line">            point[<span class="number">2</span>] = depth;</span><br><span class="line"></span><br><span class="line">            pointcloud.<span class="built_in">push_back</span>(point);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    cv::<span class="built_in">imshow</span>(<span class="string">&quot;disparity&quot;</span>, disparity / <span class="number">96.0</span>);</span><br><span class="line">    cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="comment">// 画出点云</span></span><br><span class="line">    <span class="built_in">showPointCloud</span>(pointcloud);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">showPointCloud</span><span class="params">(<span class="type">const</span> vector&lt;Vector4d, Eigen::aligned_allocator&lt;Vector4d&gt;&gt; &amp;pointcloud)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pointcloud.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">        cerr &lt;&lt; <span class="string">&quot;Point cloud is empty!&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    pangolin::<span class="built_in">CreateWindowAndBind</span>(<span class="string">&quot;Point Cloud Viewer&quot;</span>, <span class="number">1024</span>, <span class="number">768</span>);</span><br><span class="line">    <span class="built_in">glEnable</span>(GL_DEPTH_TEST);</span><br><span class="line">    <span class="built_in">glEnable</span>(GL_BLEND);</span><br><span class="line">    <span class="built_in">glBlendFunc</span>(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);</span><br><span class="line"></span><br><span class="line">    <span class="function">pangolin::OpenGlRenderState <span class="title">s_cam</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        pangolin::ProjectionMatrix(<span class="number">1024</span>, <span class="number">768</span>, <span class="number">500</span>, <span class="number">500</span>, <span class="number">512</span>, <span class="number">389</span>, <span class="number">0.1</span>, <span class="number">1000</span>),</span></span></span><br><span class="line"><span class="params"><span class="function">        pangolin::ModelViewLookAt(<span class="number">0</span>, <span class="number">-0.1</span>, <span class="number">-1.8</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>, <span class="number">0.0</span>)</span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span>;</span><br><span class="line"></span><br><span class="line">    pangolin::View &amp;d_cam = pangolin::<span class="built_in">CreateDisplay</span>()</span><br><span class="line">        .<span class="built_in">SetBounds</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, pangolin::Attach::<span class="built_in">Pix</span>(<span class="number">175</span>), <span class="number">1.0</span>, <span class="number">-1024.0f</span> / <span class="number">768.0f</span>)</span><br><span class="line">        .<span class="built_in">SetHandler</span>(<span class="keyword">new</span> pangolin::<span class="built_in">Handler3D</span>(s_cam));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (pangolin::<span class="built_in">ShouldQuit</span>() == <span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="built_in">glClear</span>(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">        d_cam.<span class="built_in">Activate</span>(s_cam);</span><br><span class="line">        <span class="built_in">glClearColor</span>(<span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">glPointSize</span>(<span class="number">2</span>);</span><br><span class="line">        <span class="built_in">glBegin</span>(GL_POINTS);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;p: pointcloud) &#123;</span><br><span class="line">            <span class="built_in">glColor3f</span>(p[<span class="number">3</span>], p[<span class="number">3</span>], p[<span class="number">3</span>]);</span><br><span class="line">            <span class="built_in">glVertex3d</span>(p[<span class="number">0</span>], p[<span class="number">1</span>], p[<span class="number">2</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">glEnd</span>();</span><br><span class="line">        pangolin::<span class="built_in">FinishFrame</span>();</span><br><span class="line">        <span class="built_in">usleep</span>(<span class="number">5000</span>);   <span class="comment">// sleep 5 ms</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line">project(stereoVision)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 C++ 标准</span></span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line">set(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找所有依赖库</span></span><br><span class="line"><span class="comment"># 这会设置相应的变量，如 *_INCLUDE_DIRS 和 *_LIBRARIES</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line">find_package(Eigen3 REQUIRED)</span><br><span class="line">find_package(Pangolin REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加头文件搜索目录</span></span><br><span class="line"><span class="comment"># 编译器需要知道去哪里找 .hpp 文件</span></span><br><span class="line">include_directories(</span><br><span class="line">    $&#123;OpenCV_INCLUDE_DIRS&#125;</span><br><span class="line">    $&#123;EIGEN3_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;Pangolin_INCLUDE_DIRS&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加可执行文件</span></span><br><span class="line">add_executable(stereoVision stereoVision.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接库文件</span></span><br><span class="line"><span class="comment"># 链接器需要知道去哪里找库的实现文件</span></span><br><span class="line">target_link_libraries(stereoVision</span><br><span class="line">    $&#123;OpenCV_LIBRARIES&#125;</span><br><span class="line">    $&#123;Pangolin_LIBRARIES&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>在终端输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch5/steroVision/build$ cmake ..</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch5/steroVision/build</span><br><span class="line">hita@hita-vm:~/slambook/ch5/steroVision/build$ make </span><br><span class="line">[100%] Built target stereoVision</span><br><span class="line">hita@hita-vm:~/slambook/ch5/steroVision/build$ ./stereoVision </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825110158793.png" alt="image-20250825110158793"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825110214053.png" alt="image-20250825110214053"></p>
+<h3 id="RGB-D视觉"><a href="#RGB-D视觉" class="headerlink" title="RGB-D视觉"></a>RGB-D视觉</h3><p>RGB-D相机可以通过物理的方法获取像素深度信息，如果已知相机内外参，就可以计算任何一个像素在世界坐标系下的位置，从而建立一个点云地图。将相关文件放置到<code>slambook/ch5/rgbd/</code>文件夹下，有类似结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── CMakeLists.txt</span><br><span class="line">├── color</span><br><span class="line">│   ├── 1.png</span><br><span class="line">│   ├── 2.png</span><br><span class="line">│   ├── 3.png</span><br><span class="line">│   ├── 4.png</span><br><span class="line">│   └── 5.png</span><br><span class="line">├── depth</span><br><span class="line">│   ├── 1.pgm</span><br><span class="line">│   ├── 2.pgm</span><br><span class="line">│   ├── 3.pgm</span><br><span class="line">│   ├── 4.pgm</span><br><span class="line">│   └── 5.pgm</span><br><span class="line">├── joinMap.cpp</span><br><span class="line">└── pose.txt</span><br></pre></td></tr></table></figure>
+
+<p>分别对应RGB图，深度图和五张图像的相机外参位姿（以$T_{wc}$形式）。为平移向量+旋转四元数。</p>
+<p>新建文件<code>slambook/ch5/rgbd/jointMap.cpp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;fstream&gt;</span><br><span class="line">#include &lt;opencv2/opencv.hpp&gt;</span><br><span class="line">#include &lt;boost/format.hpp&gt;  // for formating strings</span><br><span class="line">#include &lt;pangolin/pangolin.h&gt;</span><br><span class="line">#include &lt;sophus/se3.hpp&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">typedef vector&lt;Sophus::SE3d, Eigen::aligned_allocator&lt;Sophus::SE3d&gt;&gt; TrajectoryType;</span><br><span class="line">typedef Eigen::Matrix&lt;double, 6, 1&gt; Vector6d;</span><br><span class="line"></span><br><span class="line">// 在pangolin中画图，已写好，无需调整</span><br><span class="line">void showPointCloud(</span><br><span class="line">    const vector&lt;Vector6d, Eigen::aligned_allocator&lt;Vector6d&gt;&gt; &amp;pointcloud);</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line">    vector&lt;cv::Mat&gt; colorImgs, depthImgs;    // 彩色图和深度图</span><br><span class="line">    TrajectoryType poses;         // 相机位姿</span><br><span class="line"></span><br><span class="line">    ifstream fin(&quot;../pose.txt&quot;);</span><br><span class="line">    if (!fin) &#123;</span><br><span class="line">        cerr &lt;&lt; &quot;请在有pose.txt的目录下运行此程序&quot; &lt;&lt; endl;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; 5; i++) &#123;</span><br><span class="line">        boost::format fmt(&quot;../%s/%d.%s&quot;); //图像文件格式</span><br><span class="line">        colorImgs.push_back(cv::imread((fmt % &quot;color&quot; % (i + 1) % &quot;png&quot;).str()));</span><br><span class="line">        depthImgs.push_back(cv::imread((fmt % &quot;depth&quot; % (i + 1) % &quot;pgm&quot;).str(), -1)); // 使用-1读取原始图像</span><br><span class="line"></span><br><span class="line">        double data[7] = &#123;0&#125;;</span><br><span class="line">        for (auto &amp;d:data)</span><br><span class="line">            fin &gt;&gt; d;</span><br><span class="line">        Sophus::SE3d pose(Eigen::Quaterniond(data[6], data[3], data[4], data[5]),</span><br><span class="line">                          Eigen::Vector3d(data[0], data[1], data[2]));</span><br><span class="line">        poses.push_back(pose);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 计算点云并拼接</span><br><span class="line">    // 相机内参 </span><br><span class="line">    double cx = 325.5;</span><br><span class="line">    double cy = 253.5;</span><br><span class="line">    double fx = 518.0;</span><br><span class="line">    double fy = 519.0;</span><br><span class="line">    double depthScale = 1000.0;</span><br><span class="line">    vector&lt;Vector6d, Eigen::aligned_allocator&lt;Vector6d&gt;&gt; pointcloud;</span><br><span class="line">    pointcloud.reserve(1000000);</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; 5; i++) &#123;</span><br><span class="line">        cout &lt;&lt; &quot;转换图像中: &quot; &lt;&lt; i + 1 &lt;&lt; endl;</span><br><span class="line">        cv::Mat color = colorImgs[i];</span><br><span class="line">        cv::Mat depth = depthImgs[i];</span><br><span class="line">        Sophus::SE3d T = poses[i];</span><br><span class="line">        for (int v = 0; v &lt; color.rows; v++)</span><br><span class="line">            for (int u = 0; u &lt; color.cols; u++) &#123;</span><br><span class="line">                unsigned int d = depth.ptr&lt;unsigned short&gt;(v)[u]; // 深度值</span><br><span class="line">                if (d == 0) continue; // 为0表示没有测量到</span><br><span class="line">                Eigen::Vector3d point;</span><br><span class="line">                point[2] = double(d) / depthScale;</span><br><span class="line">                point[0] = (u - cx) * point[2] / fx;</span><br><span class="line">                point[1] = (v - cy) * point[2] / fy;</span><br><span class="line">                Eigen::Vector3d pointWorld = T * point;</span><br><span class="line"></span><br><span class="line">                Vector6d p;</span><br><span class="line">                p.head&lt;3&gt;() = pointWorld;</span><br><span class="line">                p[5] = color.data[v * color.step + u * color.channels()];   // blue</span><br><span class="line">                p[4] = color.data[v * color.step + u * color.channels() + 1]; // green</span><br><span class="line">                p[3] = color.data[v * color.step + u * color.channels() + 2]; // red</span><br><span class="line">                pointcloud.push_back(p);</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; &quot;点云共有&quot; &lt;&lt; pointcloud.size() &lt;&lt; &quot;个点.&quot; &lt;&lt; endl;</span><br><span class="line">    showPointCloud(pointcloud);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void showPointCloud(const vector&lt;Vector6d, Eigen::aligned_allocator&lt;Vector6d&gt;&gt; &amp;pointcloud) &#123;</span><br><span class="line"></span><br><span class="line">    if (pointcloud.empty()) &#123;</span><br><span class="line">        cerr &lt;&lt; &quot;Point cloud is empty!&quot; &lt;&lt; endl;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    pangolin::CreateWindowAndBind(&quot;Point Cloud Viewer&quot;, 1024, 768);</span><br><span class="line">    glEnable(GL_DEPTH_TEST);</span><br><span class="line">    glEnable(GL_BLEND);</span><br><span class="line">    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);</span><br><span class="line"></span><br><span class="line">    pangolin::OpenGlRenderState s_cam(</span><br><span class="line">        pangolin::ProjectionMatrix(1024, 768, 500, 500, 512, 389, 0.1, 1000),</span><br><span class="line">        pangolin::ModelViewLookAt(0, -0.1, -1.8, 0, 0, 0, 0.0, -1.0, 0.0)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    pangolin::View &amp;d_cam = pangolin::CreateDisplay()</span><br><span class="line">        .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -1024.0f / 768.0f)</span><br><span class="line">        .SetHandler(new pangolin::Handler3D(s_cam));</span><br><span class="line"></span><br><span class="line">    while (pangolin::ShouldQuit() == false) &#123;</span><br><span class="line">        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">        d_cam.Activate(s_cam);</span><br><span class="line">        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);</span><br><span class="line"></span><br><span class="line">        glPointSize(2);</span><br><span class="line">        glBegin(GL_POINTS);</span><br><span class="line">        for (auto &amp;p: pointcloud) &#123;</span><br><span class="line">            glColor3d(p[3] / 255.0, p[4] / 255.0, p[5] / 255.0);</span><br><span class="line">            glVertex3d(p[0], p[1], p[2]);</span><br><span class="line">        &#125;</span><br><span class="line">        glEnd();</span><br><span class="line">        pangolin::FinishFrame();</span><br><span class="line">        usleep(5000);   // sleep 5 ms</span><br><span class="line">    &#125;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0)</span><br><span class="line">project(joinMap)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 C++ 标准</span></span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line">set(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找所有依赖库</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line">find_package(Eigen3 REQUIRED)</span><br><span class="line">find_package(Pangolin REQUIRED)</span><br><span class="line">find_package(Sophus REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加头文件搜索目录</span></span><br><span class="line">include_directories(</span><br><span class="line">    $&#123;OpenCV_INCLUDE_DIRS&#125;</span><br><span class="line">    $&#123;EIGEN3_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;Pangolin_INCLUDE_DIRS&#125;</span><br><span class="line">    $&#123;Sophus_INCLUDE_DIRS&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加可执行文件</span></span><br><span class="line">add_executable(joinMap joinMap.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接库文件</span></span><br><span class="line">target_link_libraries(joinMap</span><br><span class="line">    $&#123;OpenCV_LIBRARIES&#125;</span><br><span class="line">    $&#123;Pangolin_LIBRARIES&#125;</span><br><span class="line">    $&#123;Sophus_LIBRARIES&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch5/rgbd/build$ cmake ..</span><br><span class="line">-- Configuring <span class="keyword">done</span></span><br><span class="line">-- Generating <span class="keyword">done</span></span><br><span class="line">-- Build files have been written to: /home/hita/slambook/ch5/rgbd/build</span><br><span class="line">hita@hita-vm:~/slambook/ch5/rgbd/build$ make</span><br><span class="line">[100%] Built target joinMap</span><br><span class="line">hita@hita-vm:~/slambook/ch5/rgbd/build$ ./joinMap </span><br><span class="line">转换图像中: 1</span><br><span class="line">转换图像中: 2</span><br><span class="line">转换图像中: 3</span><br><span class="line">转换图像中: 4</span><br><span class="line">转换图像中: 5</span><br><span class="line">点云共有1081843个点.</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250825112657741.png" alt="image-20250825112657741"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/08/20/2025-08-20-%E7%AC%AC%E5%9B%9B%E8%AE%B2-%E6%9D%8E%E7%BE%A4%E6%9D%8E%E4%BB%A3%E6%95%B0/" rel="prev" title="第四讲-李群李代数">
+                  <i class="fa fa-angle-left"></i> 第四讲-李群李代数
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
