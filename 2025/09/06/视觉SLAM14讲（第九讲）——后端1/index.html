@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="视觉SLAM14讲（第九讲）——后端1概述前端后端的数据流向交互 前端处理连续的图像帧，并且当前端积累一定数据，并认为某个时刻的图像帧（关键帧）具有代表性时，会将这个关键帧的位姿，在该帧下观测的地图点（路标点），以及它们之间的几何约束关系，发送给后端，这些数据带有噪声和漂移。 后端在进行全局优化后，会得到一个更加准确的相机轨迹和地图。这个优化结果可以反馈给前端。它的核心任务是处理前端传入的带有累计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第九讲-后端1">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/09/06/%E8%A7%86%E8%A7%89SLAM14%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%B9%9D%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%90%8E%E7%AB%AF1/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="视觉SLAM14讲（第九讲）——后端1概述前端后端的数据流向交互 前端处理连续的图像帧，并且当前端积累一定数据，并认为某个时刻的图像帧（关键帧）具有代表性时，会将这个关键帧的位姿，在该帧下观测的地图点（路标点），以及它们之间的几何约束关系，发送给后端，这些数据带有噪声和漂移。 后端在进行全局优化后，会得到一个更加准确的相机轨迹和地图。这个优化结果可以反馈给前端。它的核心任务是处理前端传入的带有累计">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829100005426.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829100601642.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829155910052.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829192311140.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829192349967.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829194707571.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829195134145.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829195329841.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829202351654.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829204447094.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829205420386.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829205548784.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829210224209.png">
+<meta property="og:image" content="c:/Users/Hita/AppData/Roaming/Typora/typora-user-images/image-20250830101304467.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830101346447.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830101412206.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830101512835.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830102256634.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830102356151.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830104223116.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830104812542.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830105351541.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830105422965.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830110627175.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250901154902241.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250901154950597.png">
+<meta property="article:published_time" content="2025-09-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-06T03:29:44.809Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829100005426.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/09/06/%E8%A7%86%E8%A7%89SLAM14%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%B9%9D%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%90%8E%E7%AB%AF1/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/09/06/%E8%A7%86%E8%A7%89SLAM14%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%B9%9D%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%90%8E%E7%AB%AF1/","path":"2025/09/06/视觉SLAM14讲（第九讲）——后端1/","title":"第九讲-后端1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第九讲-后端1 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E8%A7%89SLAM14%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%B9%9D%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%90%8E%E7%AB%AF1"><span class="nav-number">1.</span> <span class="nav-text">视觉SLAM14讲（第九讲）——后端1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E4%BC%B0%E8%AE%A1%E7%9A%84%E6%A6%82%E7%8E%87%E8%A7%A3%E9%87%8A"><span class="nav-number">1.1.1.</span> <span class="nav-text">状态估计的概率解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E5%92%8CKF"><span class="nav-number">1.1.2.</span> <span class="nav-text">线性系统和KF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%89%A9%E5%B1%95%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%EF%BC%88Extended-Kalman-Filter-EKF%EF%BC%89"><span class="nav-number">1.1.3.</span> <span class="nav-text">非线性系统和扩展卡尔曼滤波（Extended Kalman Filter, EKF）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EKF%E7%9A%84%E8%AE%A8%E8%AE%BA"><span class="nav-number">1.1.4.</span> <span class="nav-text">EKF的讨论</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%86%E7%BB%91%E8%B0%83%E6%95%B4%E4%B8%8E%E5%9B%BE%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">捆绑调整与图优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%95%E5%BD%B1%E6%A8%A1%E5%9E%8B%E5%92%8CBA%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">投影模型和BA代价函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E6%8A%95%E5%BD%B1%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">相机投影模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BA%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">BA代价函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BA%E7%9A%84%E6%B1%82%E8%A7%A3"><span class="nav-number">1.2.2.</span> <span class="nav-text">BA的求解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%A2%9E%E9%87%8F%E6%96%B9%E7%A8%8B"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">构建增量方程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%80%E7%96%8F%E6%80%A7%E5%92%8C%E8%BE%B9%E7%BC%98%E5%8C%96"><span class="nav-number">1.2.3.</span> <span class="nav-text">稀疏性和边缘化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%B2%81%E6%A3%92%E6%A0%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.4.</span> <span class="nav-text">鲁棒核函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9ACeres-BA"><span class="nav-number">1.3.</span> <span class="nav-text">实践：Ceres BA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BAL%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">BAL数据集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ceres-BA-%E7%9A%84%E4%B9%A6%E5%86%99"><span class="nav-number">1.3.2.</span> <span class="nav-text">Ceres BA 的书写</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9Ag2o%E6%B1%82%E8%A7%A3BA"><span class="nav-number">1.4.</span> <span class="nav-text">实践：g2o求解BA</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/09/06/%E8%A7%86%E8%A7%89SLAM14%E8%AE%B2%EF%BC%88%E7%AC%AC%E4%B9%9D%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%90%8E%E7%AB%AF1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="第九讲-后端1 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第九讲-后端1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-09-06 00:00:00 / 修改时间：11:29:44" itemprop="dateCreated datePublished" datetime="2025-09-06T00:00:00+08:00">2025-09-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/" itemprop="url" rel="index"><span itemprop="name">视觉SLAM十四讲</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="视觉SLAM14讲（第九讲）——后端1"><a href="#视觉SLAM14讲（第九讲）——后端1" class="headerlink" title="视觉SLAM14讲（第九讲）——后端1"></a>视觉SLAM14讲（第九讲）——后端1</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>前端后端的数据流向交互</strong></p>
+<p>前端处理连续的图像帧，并且当前端积累一定数据，并认为某个时刻的图像帧（关键帧）具有代表性时，会将这个关键帧的位姿，在该帧下观测的地图点（路标点），以及它们之间的几何约束关系，发送给后端，这些数据带有噪声和漂移。</p>
+<p>后端在进行全局优化后，会得到一个更加准确的<strong>相机轨迹和地图</strong>。这个优化结果可以反馈给前端。它的核心任务是处理前端传入的带有累计误差的数据，通过复杂数学优化方法，得到一个最优的相机轨迹和地图结构。主要包括两大核心技术：<strong>非线性优化和回环检测</strong>。</p>
+<h3 id="状态估计的概率解释"><a href="#状态估计的概率解释" class="headerlink" title="状态估计的概率解释"></a>状态估计的概率解释</h3><p>$$<br>\begin{cases} \mathbf{x}<em>{k} &#x3D; f(\mathbf{x}</em>{k-1}, \mathbf{u}<em>{k}) + \mathbf{w}</em>{k} \ \mathbf{z}<em>{k,j} &#x3D; h(\mathbf{y}</em>{j}, \mathbf{x}<em>{k}) + \mathbf{v}</em>{k,j} \end{cases}<br>$$</p>
+<p>上述两个方程共同描述了机器人如何在环境中运动以及如何观测环境的问题。</p>
+<p>第一个方程也就是描述了：<strong>相机现在的位置是在上一秒位置的基础上，执行一个动作($u_k$)之后到达的但是执行动作可能不是很准确，所以存在一个误差（$w_{k,j}$​）</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829100005426.png" alt="image-20250829100005426"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829100601642.png" alt="image-20250829100601642"></p>
+<p>我们要<strong>把位姿$x$和路标$y$看成服从某种概率分布的随机变量</strong>。要做的就是当我们拥有运动数据$u$和观测数据$z$时，如何确定状态量$x$和$y$的分布？通常假设两个噪声服从零均值高斯分布，在这些噪声的影响下，我们希望带噪声的数据$u,z$推断$x,y$，这就构成了一个状态估计问题。分为两种处理方式：批量式（Batch）和增量&#x2F;渐进式（Incremental），也称为<strong>滤波器</strong>。</p>
+<p>如果我们考虑$k$时刻状态以及之前所有的状态关系，此时将得到<strong>非线性优化</strong>为主体的优化框架。这是之前第六章的知识。现在这章主要介绍第二种思路：从某时刻的状态估计，推导到下一个时刻。假设马尔可夫性，就会得到**扩展卡尔曼滤波（EKF）**为代表的滤波器方法。</p>
+<hr>
+<h3 id="线性系统和KF"><a href="#线性系统和KF" class="headerlink" title="线性系统和KF"></a>线性系统和KF</h3><p>核心目标：在一个充满不确定（噪声）的动态系统中，根据一系列不完美的测量数据，推断出系统内部最可能真实的状态。</p>
+<p>当我们假设马尔可夫性，那么就认为当前时刻状态只和上一个时刻有关，即未来只与现在有关，与过去无关。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829155910052.png" alt="image-20250829155910052"></p>
+<p>第二个公式说明未来的输入与过去的状态无关。左边部分表明在知道了直到$k$时刻的控制输入和$k-1$时刻的观测信息的条件下，$k-1$时刻的状态的概率分布，而右边部分是在知道了直到$k-1$时刻的控制输入和观测等信息 ，$k-1$​时刻状态的概率分布。</p>
+<p>为什么等式成立，是因为$k$时刻的控制输入$u <em>k$是在$k-1$时刻之后才发生的事件。一个未来的动作，不可能影响一个已经过去的、在$k-1$时刻就已经确定了的状态。因此，在推断$x</em>{k-1}$的概率时，条件中是否包含$u_ k$是无关紧要的。所以可以把$u _k$​从条件中移除，等式成立。</p>
+<p>第一个式子将复杂的状态转移模型简化为只依赖前一时刻状态的运动模型，第二个等式说了在推断过去状态是，可以忽略未来的控制输入。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829192311140.png" alt="image-20250829192311140"></p>
+<p>首先统一一下符号含义</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829192349967.png" alt="image-20250829192349967"></p>
+<p>假设已经知道了$k-1$时刻的后验状态估计以及协方差，现在需要根据$k$时刻的输入和观测数据，确定$x_k$​后验分布。先验是指基于历史经验或者背景对某件事的初始判断，而后验是指在观测之后的结论。</p>
+<blockquote>
+<p>卡尔曼滤波完整过程</p>
+</blockquote>
+<ol>
+<li>预测</li>
+</ol>
+<p>根据对系统规律的理解，推测无人机现在应该所处的位置，完全基于内部模型，不依赖任何外部测量。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829194707571.png" alt="image-20250829194707571"></p>
+<ol start="2">
+<li>更新</li>
+</ol>
+<p>这一步我们拿出雷达，对无人机进行一次实际的测量，然后用真实测量数据修正刚才的预测。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829195134145.png" alt="image-20250829195134145"></p>
+<p><strong>更新估计值和不确定性</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829195329841.png" alt="image-20250829195329841"></p>
+<p><strong>循环</strong></p>
+<p>接下来，输出又会作为新一轮的输入带入到下一步的预测公式中，开始新一轮的循环。</p>
+<hr>
+<h3 id="非线性系统和扩展卡尔曼滤波（Extended-Kalman-Filter-EKF）"><a href="#非线性系统和扩展卡尔曼滤波（Extended-Kalman-Filter-EKF）" class="headerlink" title="非线性系统和扩展卡尔曼滤波（Extended Kalman Filter, EKF）"></a>非线性系统和扩展卡尔曼滤波（Extended Kalman Filter, EKF）</h3><p>在标准的卡尔曼滤波处理的线性系统中，状态转移和观测都是线性变换的，意味着我们可以直接对服从高斯分布的随机变量进行线性运算，得到的结果依然是高斯分布。但是在现实世界中绝大多数系统都是非线性的。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829202351654.png" alt="image-20250829202351654"></p>
+<p><strong>EKF核心思想</strong>：<strong>局部线性化</strong></p>
+<p>在当前最可信的点附近，用一个线性函数去近似这个非线性函数。这个过程叫做线性化，通过一阶泰勒展开实现</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829204447094.png" alt="image-20250829204447094"></p>
+<p>EKF的完整过程与KF结构几乎一样，只是把线性运算换成了非线性函数，并且把固定的变换矩阵（$A,C$）换成动态计算的雅可比矩阵（$F,H$）</p>
+<ol>
+<li>预测</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829205420386.png" alt="image-20250829205420386"></p>
+<ol start="2">
+<li>更新</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829205548784.png" alt="image-20250829205548784"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250829210224209.png" alt="image-20250829210224209"></p>
+<p>EKF的本质就是<strong>计算一点，展开一片</strong>：在当前估计值这个点上，假装系统是线性的，然后用标准KF流程走一步，移动到下一个估计点后，在重新假装是线性的，依次循环。</p>
+<hr>
+<h3 id="EKF的讨论"><a href="#EKF的讨论" class="headerlink" title="EKF的讨论"></a>EKF的讨论</h3><p>EKF<strong>局限性</strong></p>
+<ol>
+<li>与非线性优化相比，滤波器会很难处理当前帧与很久之前的数据（在回环检测的时候）</li>
+<li>线性化误差</li>
+</ol>
+<p>EKF通过一阶泰勒展开（使用雅可比矩阵）来将非线性函数近似为线性函数。这个近似只在展开点（即当前的状态估计值）的<strong>一个很小的邻域内</strong>是准确的。</p>
+<ol start="3">
+<li>EKF需要存储状态量的均值和方差，并对它们进行维护更新，所以并不适用于大型场景</li>
+<li>EKF没有异常检测机制，导致系统存在异常值的时候容易发散。</li>
+</ol>
+<p>由于EKF存在明显缺点，所以在同等计算量的情况下，非线性优化能取得更好效果。</p>
+<hr>
+<h2 id="捆绑调整与图优化"><a href="#捆绑调整与图优化" class="headerlink" title="捆绑调整与图优化"></a>捆绑调整与图优化</h2><p>所谓 **捆绑调整（Bundle Adjustment, BA）**其实是一种联合优化方法，其目标是同时优化所有相机位姿和所有有三维地图点的坐标，以最小化重投影误差。</p>
+<ul>
+<li>Bundle(一捆)：指的是从每个相机位置射向空间中的一系列三维点的光线</li>
+<li>Adjustment（调整）：指的是通过同时调整相机位姿和三维点坐标，使得这些光线最终能够最好地汇集到对应的三维点上。</li>
+</ul>
+<h3 id="投影模型和BA代价函数"><a href="#投影模型和BA代价函数" class="headerlink" title="投影模型和BA代价函数"></a>投影模型和BA代价函数</h3><h4 id="相机投影模型"><a href="#相机投影模型" class="headerlink" title="相机投影模型"></a>相机投影模型</h4><p>先回顾一下相机投影模型</p>
+<ol>
+<li>从世界坐标系到相机坐标系</li>
+</ol>
+<p><img src="C:/Users/Hita/AppData/Roaming/Typora/typora-user-images/image-20250830101304467.png" alt="image-20250830101304467"></p>
+<ol start="2">
+<li>从相机坐标系到归一化成像平台</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830101346447.png"></p>
+<ol start="3">
+<li>畸变矫正</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830101412206.png" alt="image-20250830101412206"></p>
+<ol start="4">
+<li>从归一化成像平面到像素坐标系</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830101512835.png" alt="image-20250830101512835"></p>
+<h4 id="BA代价函数"><a href="#BA代价函数" class="headerlink" title="BA代价函数"></a>BA代价函数</h4><p>捆绑调整的代价函数是建立在上述投影模型之上的，目标是找到最优的相机位姿和三维点坐标，使得所有观测的<strong>重投影误差之和</strong>最小。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830102256634.png" alt="image-20250830102256634"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830102356151.png" alt="image-20250830102356151"></p>
+<h3 id="BA的求解"><a href="#BA的求解" class="headerlink" title="BA的求解"></a>BA的求解</h3><p>求解问题实际上是一个非线性最小二乘问题，需要依赖迭代优化的方法，主流思路是采用高斯牛顿法或者列文伯格-马夸尔特方法。</p>
+<h4 id="构建增量方程"><a href="#构建增量方程" class="headerlink" title="构建增量方程"></a>构建增量方程</h4><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830104223116.png" alt="image-20250830104223116"></p>
+<h3 id="稀疏性和边缘化"><a href="#稀疏性和边缘化" class="headerlink" title="稀疏性和边缘化"></a>稀疏性和边缘化</h3><p>BA问题中的雅可比矩阵与海森矩阵具有稀疏结构。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830104812542.png" alt="image-20250830104812542"></p>
+<p><strong>利用舒尔补进行降维求解</strong></p>
+<p>舒尔补提供了一种巧妙地方法：<strong>边缘化</strong>数量庞大的路标点变量，从而减少求解的规模。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830105351541.png" alt="image-20250830105351541"></p>
+<p>完整步骤：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830105422965.png" alt="image-20250830105422965"></p>
+<h3 id="鲁棒核函数"><a href="#鲁棒核函数" class="headerlink" title="鲁棒核函数"></a>鲁棒核函数</h3><p>在最小二乘问题中，我们的目标是最小化所有误差的平方和，这种方法有一个巨大缺陷：<strong>对于离群点极其敏感</strong></p>
+<p><strong>鲁棒核函数作用</strong></p>
+<p>目标：</p>
+<ul>
+<li>对于误差较小的数据点：其作用基本等同于平方和，保留最小二乘优良性</li>
+<li>对于误差较大的数据点：<strong>减小</strong>其在总代价函数中的权重，使其代价增长比平方慢，从而抑制对于整体优化结果的破坏性影响。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250830110627175.png" alt="image-20250830110627175"></p>
+<p>这样做的好处是：</p>
+<p>视觉SLAM中存在一定比例的误匹配，会产生巨大的重投影误差，<strong>使用鲁棒核函数可以降低离群点在计算BA代价函数的时候的影响权重</strong>。</p>
+<hr>
+<h2 id="实践：Ceres-BA"><a href="#实践：Ceres-BA" class="headerlink" title="实践：Ceres BA"></a>实践：Ceres BA</h2><h3 id="BAL数据集"><a href="#BAL数据集" class="headerlink" title="BAL数据集"></a>BAL数据集</h3><p>使用BAL数据集进行BA演示实验。</p>
+<h3 id="Ceres-BA-的书写"><a href="#Ceres-BA-的书写" class="headerlink" title="Ceres BA 的书写"></a>Ceres BA 的书写</h3><p>新建文件夹及文件<code>slambook/ch9/bundle_adjustment_ceres.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ceres/ceres.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;common.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;SnavelyReprojectionError.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SolveBA</span><span class="params">(BALProblem &amp;bal_problem)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;usage: bundle_adjustment_ceres bal_data.txt&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">BALProblem <span class="title">bal_problem</span><span class="params">(argv[<span class="number">1</span>])</span></span>;</span><br><span class="line">    bal_problem.<span class="built_in">Normalize</span>();</span><br><span class="line">    bal_problem.<span class="built_in">Perturb</span>(<span class="number">0.1</span>, <span class="number">0.5</span>, <span class="number">0.5</span>);</span><br><span class="line">    bal_problem.<span class="built_in">WriteToPLYFile</span>(<span class="string">&quot;initial.ply&quot;</span>);</span><br><span class="line">    <span class="built_in">SolveBA</span>(bal_problem);</span><br><span class="line">    bal_problem.<span class="built_in">WriteToPLYFile</span>(<span class="string">&quot;final.ply&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SolveBA</span><span class="params">(BALProblem &amp;bal_problem)</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> point_block_size = bal_problem.<span class="built_in">point_block_size</span>();</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> camera_block_size = bal_problem.<span class="built_in">camera_block_size</span>();</span><br><span class="line">    <span class="type">double</span> *points = bal_problem.<span class="built_in">mutable_points</span>();</span><br><span class="line">    <span class="type">double</span> *cameras = bal_problem.<span class="built_in">mutable_cameras</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Observations is 2 * num_observations long array observations</span></span><br><span class="line">    <span class="comment">// [u_1, u_2, ... u_n], where each u_i is two dimensional, the x</span></span><br><span class="line">    <span class="comment">// and y position of the observation.</span></span><br><span class="line">    <span class="type">const</span> <span class="type">double</span> *observations = bal_problem.<span class="built_in">observations</span>();</span><br><span class="line">    ceres::Problem problem;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; bal_problem.<span class="built_in">num_observations</span>(); ++i) &#123;</span><br><span class="line">        ceres::CostFunction *cost_function;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Each Residual block takes a point and a camera as input</span></span><br><span class="line">        <span class="comment">// and outputs a 2 dimensional Residual</span></span><br><span class="line">        cost_function = SnavelyReprojectionError::<span class="built_in">Create</span>(observations[<span class="number">2</span> * i + <span class="number">0</span>], observations[<span class="number">2</span> * i + <span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// If enabled use Huber&#x27;s loss function.</span></span><br><span class="line">        ceres::LossFunction *loss_function = <span class="keyword">new</span> ceres::<span class="built_in">HuberLoss</span>(<span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Each observation corresponds to a pair of a camera and a point</span></span><br><span class="line">        <span class="comment">// which are identified by camera_index()[i] and point_index()[i]</span></span><br><span class="line">        <span class="comment">// respectively.</span></span><br><span class="line">        <span class="type">double</span> *camera = cameras + camera_block_size * bal_problem.<span class="built_in">camera_index</span>()[i];</span><br><span class="line">        <span class="type">double</span> *point = points + point_block_size * bal_problem.<span class="built_in">point_index</span>()[i];</span><br><span class="line"></span><br><span class="line">        problem.<span class="built_in">AddResidualBlock</span>(cost_function, loss_function, camera, point);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// show some information here ...</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;bal problem file loaded...&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;bal problem have &quot;</span> &lt;&lt; bal_problem.<span class="built_in">num_cameras</span>() &lt;&lt; <span class="string">&quot; cameras and &quot;</span></span><br><span class="line">              &lt;&lt; bal_problem.<span class="built_in">num_points</span>() &lt;&lt; <span class="string">&quot; points. &quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Forming &quot;</span> &lt;&lt; bal_problem.<span class="built_in">num_observations</span>() &lt;&lt; <span class="string">&quot; observations. &quot;</span> &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Solving ceres BA ... &quot;</span> &lt;&lt; endl;</span><br><span class="line">    ceres::Solver::Options options;</span><br><span class="line">    options.linear_solver_type = ceres::LinearSolverType::SPARSE_SCHUR;</span><br><span class="line">    options.minimizer_progress_to_stdout = <span class="literal">true</span>;</span><br><span class="line">    ceres::Solver::Summary summary;</span><br><span class="line">    ceres::<span class="built_in">Solve</span>(options, &amp;problem, &amp;summary);</span><br><span class="line">    std::cout &lt;&lt; summary.<span class="built_in">FullReport</span>() &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时新建文件CMakeLists.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.1)</span><br><span class="line">project(bundle_adjustment)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 使用现代 CMake 方式设置 C++17 标准</span></span><br><span class="line">set(CMAKE_CXX_STANDARD 17)</span><br><span class="line">set(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line">set(CMAKE_BUILD_TYPE <span class="string">&quot;Release&quot;</span>)</span><br><span class="line"></span><br><span class="line">list(APPEND CMAKE_MODULE_PATH $&#123;PROJECT_SOURCE_DIR&#125;/cmake)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找所有必需的包</span></span><br><span class="line">find_package(Eigen3 REQUIRED)</span><br><span class="line">find_package(Ceres REQUIRED)</span><br><span class="line"><span class="comment"># 2. 使用小写的 &#x27;g2o&#x27;</span></span><br><span class="line">find_package(g2o REQUIRED)</span><br><span class="line">find_package(Sophus REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置包含目录</span></span><br><span class="line"><span class="comment"># find_package 会自动处理大部分包含目录，但我们也可以手动添加</span></span><br><span class="line">include_directories(</span><br><span class="line">    $&#123;PROJECT_SOURCE_DIR&#125;</span><br><span class="line">    $&#123;EIGEN3_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;CERES_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;g2o_INCLUDE_DIRS&#125;</span><br><span class="line">    <span class="comment"># Sophus 通常也是 find_package 自动处理</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建通用库</span></span><br><span class="line">add_library(bal_common common.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建 Ceres 可执行文件</span></span><br><span class="line">add_executable(bundle_adjustment_ceres bundle_adjustment_ceres.cpp)</span><br><span class="line">target_link_libraries(bundle_adjustment_ceres</span><br><span class="line">    PRIVATE</span><br><span class="line">    Ceres::ceres  <span class="comment"># 使用 Ceres 提供的现代化 CMake target</span></span><br><span class="line">    bal_common</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 构建 G2O 可执行文件</span></span><br><span class="line"><span class="comment"># add_executable(bundle_adjustment_g2o bundle_adjustment_g2o.cpp)</span></span><br><span class="line"><span class="comment"># # 3. 使用 find_package 提供的 $&#123;g2o_LIBRARIES&#125; 变量，而不是手动列表</span></span><br><span class="line"><span class="comment"># target_link_libraries(bundle_adjustment_g2o</span></span><br><span class="line"><span class="comment">#     PRIVATE</span></span><br><span class="line"><span class="comment">#     $&#123;g2o_LIBRARIES&#125;</span></span><br><span class="line"><span class="comment">#     bal_common</span></span><br><span class="line"><span class="comment"># )</span></span><br></pre></td></tr></table></figure>
+
+<p>同时把源文件的其他文件复制到该文件夹下</p>
+<p>终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch9/build$ ./bundle_adjustment_ceres ../problem-16-22106-pre.txt </span><br><span class="line">Header: 16 22106 83718bal problem file loaded...</span><br><span class="line">bal problem have 16 cameras and 22106 points. </span><br><span class="line">Forming 83718 observations. </span><br><span class="line">Solving ceres BA ... </span><br><span class="line">iter      cost      cost_change  |gradient|   |step|    tr_ratio  tr_radius  ls_iter  iter_time  total_time</span><br><span class="line">   0  1.842900e+07    0.00e+00    2.04e+06   0.00e+00   0.00e+00  1.00e+04        0    3.43e-02    1.09e-01</span><br><span class="line">   1  1.449093e+06    1.70e+07    1.75e+06   0.00e+00   1.84e+00  3.00e+04        1    8.84e-02    1.97e-01</span><br></pre></td></tr></table></figure>
+
+<p>最后会在build文件夹下输出两个点云文件：initial.ply和final.ply.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250901154902241.png" alt="image-20250901154902241"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250901154950597.png" alt="image-20250901154950597"></p>
+<hr>
+<h2 id="实践：g2o求解BA"><a href="#实践：g2o求解BA" class="headerlink" title="实践：g2o求解BA"></a>实践：g2o求解BA</h2><p>新建文件：<code>slambook/ch9/bundle_adjustment_g2o.cpp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;g2o/core/base_vertex.h&gt;</span><br><span class="line">#include &lt;g2o/core/base_binary_edge.h&gt;</span><br><span class="line">#include &lt;g2o/core/block_solver.h&gt;</span><br><span class="line">#include &lt;g2o/core/optimization_algorithm_levenberg.h&gt;</span><br><span class="line">#include &lt;g2o/solvers/csparse/linear_solver_csparse.h&gt;</span><br><span class="line">#include &lt;g2o/core/robust_kernel_impl.h&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;memory&gt; // 已添加：为了使用 std::make_unique</span><br><span class="line"></span><br><span class="line">#include &quot;common.h&quot;</span><br><span class="line">#include &quot;sophus/se3.hpp&quot;</span><br><span class="line"></span><br><span class="line">using namespace Sophus;</span><br><span class="line">using namespace Eigen;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">/// 姿态和内参的结构</span><br><span class="line">struct PoseAndIntrinsics &#123;</span><br><span class="line">    PoseAndIntrinsics() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    /// set from given data address</span><br><span class="line">    explicit PoseAndIntrinsics(double *data_addr) &#123;</span><br><span class="line">        rotation = SO3d::exp(Vector3d(data_addr[0], data_addr[1], data_addr[2]));</span><br><span class="line">        translation = Vector3d(data_addr[3], data_addr[4], data_addr[5]);</span><br><span class="line">        focal = data_addr[6];</span><br><span class="line">        k1 = data_addr[7];</span><br><span class="line">        k2 = data_addr[8];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// 将估计值放入内存</span><br><span class="line">    void set_to(double *data_addr) &#123;</span><br><span class="line">        auto r = rotation.log();</span><br><span class="line">        for (int i = 0; i &lt; 3; ++i) data_addr[i] = r[i];</span><br><span class="line">        for (int i = 0; i &lt; 3; ++i) data_addr[i + 3] = translation[i];</span><br><span class="line">        data_addr[6] = focal;</span><br><span class="line">        data_addr[7] = k1;</span><br><span class="line">        data_addr[8] = k2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    SO3d rotation;</span><br><span class="line">    Vector3d translation = Vector3d::Zero();</span><br><span class="line">    double focal = 0;</span><br><span class="line">    double k1 = 0, k2 = 0;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/// 位姿加相机内参的顶点，9维，前三维为so3，接下去为t, f, k1, k2</span><br><span class="line">class VertexPoseAndIntrinsics : public g2o::BaseVertex&lt;9, PoseAndIntrinsics&gt; &#123;</span><br><span class="line">public:</span><br><span class="line">    EIGEN_MAKE_ALIGNED_OPERATOR_NEW;</span><br><span class="line"></span><br><span class="line">    VertexPoseAndIntrinsics() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    virtual void setToOriginImpl() override &#123;</span><br><span class="line">        _estimate = PoseAndIntrinsics();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    virtual void oplusImpl(const double *update) override &#123;</span><br><span class="line">        _estimate.rotation = SO3d::exp(Vector3d(update[0], update[1], update[2])) * _estimate.rotation;</span><br><span class="line">        _estimate.translation += Vector3d(update[3], update[4], update[5]);</span><br><span class="line">        _estimate.focal += update[6];</span><br><span class="line">        _estimate.k1 += update[7];</span><br><span class="line">        _estimate.k2 += update[8];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// 根据估计值投影一个点</span><br><span class="line">    Vector2d project(const Vector3d &amp;point) const &#123; // 已修正：添加 const</span><br><span class="line">        Vector3d pc = _estimate.rotation * point + _estimate.translation;</span><br><span class="line">        pc = -pc / pc[2];</span><br><span class="line">        double r2 = pc.squaredNorm();</span><br><span class="line">        double distortion = 1.0 + r2 * (_estimate.k1 + _estimate.k2 * r2);</span><br><span class="line">        return Vector2d(_estimate.focal * distortion * pc[0],</span><br><span class="line">                        _estimate.focal * distortion * pc[1]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 已修正：添加返回值</span><br><span class="line">    virtual bool read(istream &amp;in) override &#123; return true; &#125;</span><br><span class="line"></span><br><span class="line">    virtual bool write(ostream &amp;out) const override &#123; return true; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class VertexPoint : public g2o::BaseVertex&lt;3, Vector3d&gt; &#123;</span><br><span class="line">public:</span><br><span class="line">    EIGEN_MAKE_ALIGNED_OPERATOR_NEW;</span><br><span class="line"></span><br><span class="line">    VertexPoint() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    virtual void setToOriginImpl() override &#123;</span><br><span class="line">        _estimate = Vector3d(0, 0, 0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    virtual void oplusImpl(const double *update) override &#123;</span><br><span class="line">        _estimate += Vector3d(update[0], update[1], update[2]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 已修正：添加返回值</span><br><span class="line">    virtual bool read(istream &amp;in) override &#123; return true; &#125;</span><br><span class="line"></span><br><span class="line">    virtual bool write(ostream &amp;out) const override &#123; return true; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class EdgeProjection :</span><br><span class="line">    public g2o::BaseBinaryEdge&lt;2, Vector2d, VertexPoseAndIntrinsics, VertexPoint&gt; &#123;</span><br><span class="line">public:</span><br><span class="line">    EIGEN_MAKE_ALIGNED_OPERATOR_NEW;</span><br><span class="line"></span><br><span class="line">    virtual void computeError() override &#123;</span><br><span class="line">        // 已修正：使用 static_cast</span><br><span class="line">        auto v0 = static_cast&lt;const VertexPoseAndIntrinsics *&gt;(_vertices[0]);</span><br><span class="line">        auto v1 = static_cast&lt;const VertexPoint *&gt;(_vertices[1]);</span><br><span class="line">        auto proj = v0-&gt;project(v1-&gt;estimate());</span><br><span class="line">        _error = proj - _measurement;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // use numeric derivatives</span><br><span class="line">    // 已修正：添加返回值</span><br><span class="line">    virtual bool read(istream &amp;in) override &#123; return true; &#125;</span><br><span class="line"></span><br><span class="line">    virtual bool write(ostream &amp;out) const override &#123; return true; &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void SolveBA(BALProblem &amp;bal_problem);</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line"></span><br><span class="line">    if (argc != 2) &#123;</span><br><span class="line">        cout &lt;&lt; &quot;usage: bundle_adjustment_g2o bal_data.txt&quot; &lt;&lt; endl;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    BALProblem bal_problem(argv[1]);</span><br><span class="line">    bal_problem.Normalize();</span><br><span class="line">    bal_problem.Perturb(0.1, 0.5, 0.5);</span><br><span class="line">    bal_problem.WriteToPLYFile(&quot;initial.ply&quot;);</span><br><span class="line">    SolveBA(bal_problem);</span><br><span class="line">    bal_problem.WriteToPLYFile(&quot;final.ply&quot;);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void SolveBA(BALProblem &amp;bal_problem) &#123;</span><br><span class="line">    const int point_block_size = bal_problem.point_block_size();</span><br><span class="line">    const int camera_block_size = bal_problem.camera_block_size();</span><br><span class="line">    double *points = bal_problem.mutable_points();</span><br><span class="line">    double *cameras = bal_problem.mutable_cameras();</span><br><span class="line"></span><br><span class="line">    // pose dimension 9, landmark is 3</span><br><span class="line">    typedef g2o::BlockSolver&lt;g2o::BlockSolverTraits&lt;9, 3&gt;&gt; BlockSolverType;</span><br><span class="line">    typedef g2o::LinearSolverCSparse&lt;BlockSolverType::PoseMatrixType&gt; LinearSolverType;</span><br><span class="line">    // use LM</span><br><span class="line">    // 已修正：使用 std::make_unique</span><br><span class="line">    auto solver = new g2o::OptimizationAlgorithmLevenberg(</span><br><span class="line">        std::make_unique&lt;BlockSolverType&gt;(std::make_unique&lt;LinearSolverType&gt;()));</span><br><span class="line">    g2o::SparseOptimizer optimizer;</span><br><span class="line">    optimizer.setAlgorithm(solver);</span><br><span class="line">    optimizer.setVerbose(true);</span><br><span class="line"></span><br><span class="line">    /// build g2o problem</span><br><span class="line">    const double *observations = bal_problem.observations();</span><br><span class="line">    // vertex</span><br><span class="line">    vector&lt;VertexPoseAndIntrinsics *&gt; vertex_pose_intrinsics;</span><br><span class="line">    vector&lt;VertexPoint *&gt; vertex_points;</span><br><span class="line">    for (int i = 0; i &lt; bal_problem.num_cameras(); ++i) &#123;</span><br><span class="line">        VertexPoseAndIntrinsics *v = new VertexPoseAndIntrinsics();</span><br><span class="line">        double *camera = cameras + camera_block_size * i;</span><br><span class="line">        v-&gt;setId(i);</span><br><span class="line">        v-&gt;setEstimate(PoseAndIntrinsics(camera));</span><br><span class="line">        optimizer.addVertex(v);</span><br><span class="line">        vertex_pose_intrinsics.push_back(v);</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; bal_problem.num_points(); ++i) &#123;</span><br><span class="line">        VertexPoint *v = new VertexPoint();</span><br><span class="line">        double *point = points + point_block_size * i;</span><br><span class="line">        v-&gt;setId(i + bal_problem.num_cameras());</span><br><span class="line">        v-&gt;setEstimate(Vector3d(point[0], point[1], point[2]));</span><br><span class="line">        // g2o在BA中需要手动设置待Marg的顶点</span><br><span class="line">        v-&gt;setMarginalized(true);</span><br><span class="line">        optimizer.addVertex(v);</span><br><span class="line">        vertex_points.push_back(v);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // edge</span><br><span class="line">    for (int i = 0; i &lt; bal_problem.num_observations(); ++i) &#123;</span><br><span class="line">        EdgeProjection *edge = new EdgeProjection;</span><br><span class="line">        edge-&gt;setVertex(0, vertex_pose_intrinsics[bal_problem.camera_index()[i]]);</span><br><span class="line">        edge-&gt;setVertex(1, vertex_points[bal_problem.point_index()[i]]);</span><br><span class="line">        edge-&gt;setMeasurement(Vector2d(observations[2 * i + 0], observations[2 * i + 1]));</span><br><span class="line">        edge-&gt;setInformation(Matrix2d::Identity());</span><br><span class="line">        edge-&gt;setRobustKernel(new g2o::RobustKernelHuber());</span><br><span class="line">        optimizer.addEdge(edge);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    optimizer.initializeOptimization();</span><br><span class="line">    optimizer.optimize(40);</span><br><span class="line"></span><br><span class="line">    // set to bal problem</span><br><span class="line">    for (int i = 0; i &lt; bal_problem.num_cameras(); ++i) &#123;</span><br><span class="line">        double *camera = cameras + camera_block_size * i;</span><br><span class="line">        auto vertex = vertex_pose_intrinsics[i];</span><br><span class="line">        auto estimate = vertex-&gt;estimate();</span><br><span class="line">        estimate.set_to(camera);</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; bal_problem.num_points(); ++i) &#123;</span><br><span class="line">        double *point = points + point_block_size * i;</span><br><span class="line">        auto vertex = vertex_points[i];</span><br><span class="line">        for (int k = 0; k &lt; 3; ++k) point[k] = vertex-&gt;estimate()[k];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改CMakeLists.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.1)</span><br><span class="line">project(bundle_adjustment)</span><br><span class="line"></span><br><span class="line">link_directories(/usr/lib/x86_64-linux-gnu)</span><br><span class="line"></span><br><span class="line">set(CMAKE_CXX_STANDARD 17)</span><br><span class="line">set(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line">set(CMAKE_BUILD_TYPE &quot;Release&quot;)</span><br><span class="line"></span><br><span class="line">list(APPEND CMAKE_MODULE_PATH $&#123;PROJECT_SOURCE_DIR&#125;/cmake)</span><br><span class="line"></span><br><span class="line"># 查找所有必需的包</span><br><span class="line">find_package(Eigen3 REQUIRED)</span><br><span class="line">find_package(Ceres REQUIRED)</span><br><span class="line">find_package(g2o REQUIRED)</span><br><span class="line">find_package(Sophus REQUIRED)</span><br><span class="line"></span><br><span class="line"># 设置包含目录</span><br><span class="line"># SuiteSparse 的头文件 (包含 csparse.h) 位于 /usr/include/suitesparse</span><br><span class="line">include_directories(</span><br><span class="line">    $&#123;PROJECT_SOURCE_DIR&#125;</span><br><span class="line">    $&#123;EIGEN3_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;CERES_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;g2o_INCLUDE_DIRS&#125;</span><br><span class="line">    /usr/include/suitesparse</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># 构建通用库</span><br><span class="line">add_library(bal_common common.cpp)</span><br><span class="line"></span><br><span class="line"># 构建 Ceres 可执行文件</span><br><span class="line">add_executable(bundle_adjustment_ceres bundle_adjustment_ceres.cpp)</span><br><span class="line">target_link_libraries(bundle_adjustment_ceres</span><br><span class="line">    PRIVATE</span><br><span class="line">    Ceres::ceres</span><br><span class="line">    bal_common</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># 构建 G2O 可执行文件</span><br><span class="line">add_executable(bundle_adjustment_g2o bundle_adjustment_g2o.cpp)</span><br><span class="line"># 直接链接 g2o 和 csparse 库</span><br><span class="line">target_link_libraries(bundle_adjustment_g2o</span><br><span class="line">    PRIVATE</span><br><span class="line">    g2o::core</span><br><span class="line">    g2o::stuff</span><br><span class="line">    g2o::solver_csparse # 这是与 csparse 求解器直接相关的目标</span><br><span class="line">    g2o::csparse_extension</span><br><span class="line">    bal_common</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>同样也会输出两个优化前后点云数据，这里不过多介绍。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/09/06/%E8%A7%86%E8%A7%89SLAM14%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%90%8E%E7%AB%AF2/" rel="prev" title="第十讲-后端2">
+                  <i class="fa fa-angle-left"></i> 第十讲-后端2
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

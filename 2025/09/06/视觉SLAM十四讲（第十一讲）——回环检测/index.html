@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="视觉SLAM十四讲（第十一讲）——回环检测概述回环检测的意义前端提供特征点的提取和轨迹、地图的初值，后端负责对所有这些数据进行优化。但是会存在累计误差，长期估计的结果会变得不可靠，导致无法构建一个全局一致的轨迹和地图。回环检测能够给出相邻帧的一些时隔更加久远的约束，这是因为我们察觉到相机经过同一个地方，采集到相似的数据，回环检测的关键就是检测出相机经过同一个地方这件事。 当系统成功检测到一个回环时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第十一讲-回环检测">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/09/06/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E4%B8%80%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="视觉SLAM十四讲（第十一讲）——回环检测概述回环检测的意义前端提供特征点的提取和轨迹、地图的初值，后端负责对所有这些数据进行优化。但是会存在累计误差，长期估计的结果会变得不可靠，导致无法构建一个全局一致的轨迹和地图。回环检测能够给出相邻帧的一些时隔更加久远的约束，这是因为我们察觉到相机经过同一个地方，采集到相似的数据，回环检测的关键就是检测出相机经过同一个地方这件事。 当系统成功检测到一个回环时">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902095519640.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902101337010.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902102410657.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/c26d7e08790cefa6ca49658fa6aa60aa.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902102935196.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902104140501.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902104234298.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902112507945.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902145045033.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902145102666.png">
+<meta property="article:published_time" content="2025-09-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-06T03:30:37.963Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902095519640.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/09/06/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E4%B8%80%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/09/06/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E4%B8%80%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/","path":"2025/09/06/视觉SLAM十四讲（第十一讲）——回环检测/","title":"第十一讲-回环检测"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第十一讲-回环检测 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E4%B8%80%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B"><span class="nav-number">1.</span> <span class="nav-text">视觉SLAM十四讲（第十一讲）——回环检测</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">回环检测的意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.2.</span> <span class="nav-text">回环检测的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E7%A1%AE%E7%8E%87%E5%92%8C%E5%8F%AC%E5%9B%9E%E7%8E%87"><span class="nav-number">1.1.3.</span> <span class="nav-text">准确率和召回率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">词袋模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.1.</span> <span class="nav-text">字典的结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%AD%97%E5%85%B8"><span class="nav-number">1.2.2.</span> <span class="nav-text">实践：创建字典</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-number">1.3.</span> <span class="nav-text">相似度计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%AE%BA%E9%83%A8%E5%88%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">理论部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9A%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-number">1.3.2.</span> <span class="nav-text">实践：相似度计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%88%86%E6%9E%90%E4%B8%8E%E8%AF%84%E8%BF%B0"><span class="nav-number">1.4.</span> <span class="nav-text">实验分析与评述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E5%AD%97%E5%85%B8%E8%A7%84%E6%A8%A1"><span class="nav-number">1.4.1.</span> <span class="nav-text">增加字典规模</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E4%BC%BC%E6%80%A7%E8%AF%84%E5%88%86%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">1.4.2.</span> <span class="nav-text">相似性评分的处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%B8%A7%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">1.4.3.</span> <span class="nav-text">关键帧的处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E4%B9%8B%E5%90%8E%E7%9A%84%E9%AA%8C%E8%AF%81"><span class="nav-number">1.4.4.</span> <span class="nav-text">检测之后的验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.4.5.</span> <span class="nav-text">与机器学习的关系</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/09/06/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E4%B8%80%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="第十一讲-回环检测 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第十一讲-回环检测
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-09-06 00:00:00 / 修改时间：11:30:37" itemprop="dateCreated datePublished" datetime="2025-09-06T00:00:00+08:00">2025-09-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/" itemprop="url" rel="index"><span itemprop="name">视觉SLAM十四讲</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="视觉SLAM十四讲（第十一讲）——回环检测"><a href="#视觉SLAM十四讲（第十一讲）——回环检测" class="headerlink" title="视觉SLAM十四讲（第十一讲）——回环检测"></a>视觉SLAM十四讲（第十一讲）——回环检测</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="回环检测的意义"><a href="#回环检测的意义" class="headerlink" title="回环检测的意义"></a>回环检测的意义</h3><p>前端提供特征点的提取和轨迹、地图的初值，后端负责对所有这些数据进行优化。但是会存在累计误差，长期估计的结果会变得不可靠，导致无法构建一个全局一致的轨迹和地图。回环检测能够给出相邻帧的一些时隔更加久远的约束，这是因为我们察觉到相机经过同一个地方，采集到相似的数据，回环检测的关键就是检测出<strong>相机经过同一个地方这件事</strong>。</p>
+<p>当系统成功检测到一个回环时，就会获得一个全局的、跨越长时间的约束信息，可以校正回环内累积的所有漂移，将整个地图和轨迹拉回正轨。</p>
+<h3 id="回环检测的方法"><a href="#回环检测的方法" class="headerlink" title="回环检测的方法"></a>回环检测的方法</h3><p>至于回环如何实现的问题，可以做一个 <strong>哪里可能出现回环</strong>的预计，大致有两种思路：</p>
+<ol>
+<li>基于里程计的几何关系</li>
+<li>基于外观的几何关系</li>
+</ol>
+<p>第一种无法在累积误差较大的时候工作，对于第二种，仅仅根据两幅图像的相似性确定回环检测关系，这种做法脱离累积误差，使得回环检测模块成为一个相对独立的模块。是视觉SLAM中主流的做法。除此之外，室外的无人车通常会配备GPS，提供全局的位置信息，可以利用GPS信息判断汽车是否回到某个经过的点，在室内就行不通了。</p>
+<p>基于外观的回环检测算法中，核心问题就是<strong>如何计算图像间的相似性</strong>。</p>
+<h3 id="准确率和召回率"><a href="#准确率和召回率" class="headerlink" title="准确率和召回率"></a>准确率和召回率</h3><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902095519640.png" alt="image-20250902095519640" style="zoom:50%;" />
+
+<p>根据表格中的四种情况，<strong>假阳性(FP False Positive)又被称为感知偏差</strong>，<strong>假阴性(FN False Negative)称为感知变异</strong>。使用TP(True Positive)和TN(True Negative)分别表示真阳性和真阴性。对于特定算法，需要计算两个统计量：<strong>准确率和召回率</strong><br>$$<br>\text{Precision} &#x3D; \mathrm{TP} &#x2F; (\mathrm{TP} + \mathrm{FP}), \quad \text{Recall} &#x3D; \mathrm{TP} &#x2F; (\mathrm{TP} + \mathrm{FN})<br>$$<br>准确率描述的是所预测的回环中是真的回环的概率，召回率即在所有实际上是回环的事实上，被正确检测出来的概率。这两个指标通常是矛盾的，提高准确率，会降低召回率，反之亦然。为了评价算法的好坏，通常会测试在各种配置下的P和R值，做$P-R$曲线，在SLAM中，对于准确率要求更高，对于召回率则相对宽容。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902101337010.png" alt="image-20250902101337010"></p>
+<hr>
+<h2 id="词袋模型"><a href="#词袋模型" class="headerlink" title="词袋模型"></a>词袋模型</h2><p>词袋模型（Bag-of-Words Model, BoW），目的是用“图像上有哪几种特征”来描述一幅图像。核心思想就是将一个复杂的图像简化为一个不考虑顺序的、由词语频率构成的向量。视觉词袋模型分为两个阶段：离线构建词典、在线图像表示。</p>
+<h3 id="字典的结构"><a href="#字典的结构" class="headerlink" title="字典的结构"></a>字典的结构</h3><p>字典由很多单词组成，一个单词与一个单独的特征点不同，不是从单幅图像上提取出来的，而是某一类特征的组合，所以是一个<strong>特征聚类</strong>问题。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902102410657.png" alt="image-20250902102410657"></p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/c26d7e08790cefa6ca49658fa6aa60aa.png" alt="img" style="zoom:67%;" />
+
+<p>至于K-means聚类实际很简单，下面是一个直观的例子</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902102935196.png" alt="image-20250902102935196"></p>
+<p>但是即使构建好了字典，如果单词数量很少一一对比还是简单的，一旦单词多起来，再一一对比效率就会低得多，所以需要使用一种K叉树来表达字典。类似于层次聚类</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902104140501.png" alt="image-20250902104140501"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902104234298.png" alt="image-20250902104234298"></p>
+<p>树结构中的中间节点仅在快速查找的时候使用，可以保证查找效率。</p>
+<h3 id="实践：创建字典"><a href="#实践：创建字典" class="headerlink" title="实践：创建字典"></a>实践：创建字典</h3><p>选用TUM数据集中的10幅图像，在源代码中的<code>ch11/data</code>，来自于一组实际的相机运动轨迹，实际的字典往往需要更大的数据集上训练，并且数据应该来自与目标环境类似的地方，下面开始训练字典。首先安装<strong>BoW库</strong></p>
+<blockquote>
+<p>安装BoW</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 在3rdparty文件夹下打开终端</span><br><span class="line">git clone https://github.com/rmsalinas/DBow3.git</span><br><span class="line">mkdir build </span><br><span class="line">cd build</span><br><span class="line">cmake ..</span><br><span class="line">make </span><br><span class="line">sudo make install</span><br><span class="line">ldconfig</span><br></pre></td></tr></table></figure>
+
+<p>安装完成之后，新建文件夹及文件<code>slambook/ch11/feature_training.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;DBoW3/DBoW3.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/features2d/features2d.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/***************************************************</span></span><br><span class="line"><span class="comment"> * 本节演示了如何根据data/目录下的十张图训练字典</span></span><br><span class="line"><span class="comment"> * ************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">( <span class="type">int</span> argc, <span class="type">char</span>** argv )</span> </span>&#123;</span><br><span class="line">    <span class="comment">// read the image </span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;reading images... &quot;</span>&lt;&lt;endl;</span><br><span class="line">    vector&lt;Mat&gt; images; </span><br><span class="line">    <span class="keyword">for</span> ( <span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        string path = <span class="string">&quot;../data/&quot;</span>+<span class="built_in">to_string</span>(i<span class="number">+1</span>)+<span class="string">&quot;.png&quot;</span>;</span><br><span class="line">        images.<span class="built_in">push_back</span>( <span class="built_in">imread</span>(path) );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// detect ORB features</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;detecting ORB features ... &quot;</span>&lt;&lt;endl;</span><br><span class="line">    Ptr&lt; Feature2D &gt; detector = ORB::<span class="built_in">create</span>();</span><br><span class="line">    vector&lt;Mat&gt; descriptors;</span><br><span class="line">    <span class="keyword">for</span> ( Mat&amp; image:images )</span><br><span class="line">    &#123;</span><br><span class="line">        vector&lt;KeyPoint&gt; keypoints; </span><br><span class="line">        Mat descriptor;</span><br><span class="line">        detector-&gt;<span class="built_in">detectAndCompute</span>( image, <span class="built_in">Mat</span>(), keypoints, descriptor );</span><br><span class="line">        descriptors.<span class="built_in">push_back</span>( descriptor );</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// create vocabulary </span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;creating vocabulary ... &quot;</span>&lt;&lt;endl;</span><br><span class="line">    DBoW3::Vocabulary vocab;</span><br><span class="line">    vocab.<span class="built_in">create</span>( descriptors );</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;vocabulary info: &quot;</span>&lt;&lt;vocab&lt;&lt;endl;</span><br><span class="line">    vocab.<span class="built_in">save</span>( <span class="string">&quot;vocabulary.yml.gz&quot;</span> );</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;done&quot;</span>&lt;&lt;endl;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建CMakeLists.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"># 设置一个现代的CMake最低版本，并启用新特性</span><br><span class="line">cmake_minimum_required(VERSION 3.10)</span><br><span class="line">project(loop_closure)</span><br><span class="line"></span><br><span class="line"># 设置C++标准，而不是直接修改 CMAKE_CXX_FLAGS</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line">set(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line"></span><br><span class="line"># 设置编译类型，Release模式会自动启用-O3优化</span><br><span class="line">set(CMAKE_BUILD_TYPE &quot;Release&quot;)</span><br><span class="line"></span><br><span class="line"># --- 查找依赖包 ---</span><br><span class="line"># 1. 查找OpenCV</span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line"></span><br><span class="line"># 2. 查找DBoW3</span><br><span class="line">find_package(DBoW3 REQUIRED)</span><br><span class="line"></span><br><span class="line"># --- 定义可执行文件目标 ---</span><br><span class="line"></span><br><span class="line"># 目标1: feature_training</span><br><span class="line">add_executable(feature_training feature_training.cpp)</span><br><span class="line"># 【修改点】: 添加 target_include_directories 以手动包含头文件</span><br><span class="line">target_include_directories(feature_training PRIVATE $&#123;DBoW3_INCLUDE_DIRS&#125;)</span><br><span class="line"># 【修改点】: 链接旧模式提供的库变量 $&#123;DBoW3_LIBRARIES&#125;</span><br><span class="line">target_link_libraries(feature_training PRIVATE</span><br><span class="line">    $&#123;OpenCV_LIBS&#125;</span><br><span class="line">    $&#123;DBoW3_LIBRARIES&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># # 目标2: loop_closure</span><br><span class="line"># add_executable(loop_closure loop_closure.cpp)</span><br><span class="line"># target_include_directories(loop_closure PRIVATE $&#123;DBoW3_INCLUDE_DIRS&#125;)</span><br><span class="line"># target_link_libraries(loop_closure PRIVATE</span><br><span class="line">#     $&#123;OpenCV_LIBS&#125;</span><br><span class="line">#     $&#123;DBoW3_LIBRARIES&#125;</span><br><span class="line"># )</span><br><span class="line"></span><br><span class="line"># # 目标3: gen_vocab</span><br><span class="line"># add_executable(gen_vocab gen_vocab_large.cpp)</span><br><span class="line"># target_include_directories(gen_vocab PRIVATE $&#123;DBoW3_INCLUDE_DIRS&#125;)</span><br><span class="line"># target_link_libraries(gen_vocab PRIVATE</span><br><span class="line">#     $&#123;OpenCV_LIBS&#125;</span><br><span class="line">#     $&#123;DBoW3_LIBRARIES&#125;</span><br><span class="line"># )</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这样就会生成一个字典压缩文件。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902112507945.png" alt="image-20250902112507945"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch11/build$ ./feature_training </span><br><span class="line">reading images... </span><br><span class="line">detecting ORB features ... </span><br><span class="line">creating vocabulary ... </span><br><span class="line">vocabulary info: Vocabulary: k = 10, L = 5, Weighting = tf-idf, Scoring = L1-norm, Number of words = 4972</span><br></pre></td></tr></table></figure>
+
+<p>分支数量为10，深度为5，单词数量是4972，还有权重和评分。</p>
+<hr>
+<h2 id="相似度计算"><a href="#相似度计算" class="headerlink" title="相似度计算"></a>相似度计算</h2><h3 id="理论部分"><a href="#理论部分" class="headerlink" title="理论部分"></a>理论部分</h3><p>我们希望对单词的区分性或重要性加以评估，给它们不同的权值以起到更好的效果。<strong>TF-IDF</strong>，是文本检索的一种加权方式，TF部分的思想是，某单词在一幅图像经常出现，它的评分就高。另外，IDF的思想是：某单词在字典中出现的频率低，分类图像时区分度就高。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902145045033.png" alt="image-20250902145045033"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250902145102666.png" alt="image-20250902145102666"></p>
+<h3 id="实践：相似度计算"><a href="#实践：相似度计算" class="headerlink" title="实践：相似度计算"></a>实践：相似度计算</h3><p>上一节已经通过10幅图像生成了字典，下面使用字典来生成词袋比较差异。</p>
+<p>新建文件<code>slambook/ch11/loop_closure.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;DBoW3/DBoW3.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/features2d/features2d.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/***************************************************</span></span><br><span class="line"><span class="comment"> * 本节演示了如何根据data/目录下的十张图训练字典</span></span><br><span class="line"><span class="comment"> * ************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">( <span class="type">int</span> argc, <span class="type">char</span>** argv )</span> </span>&#123;</span><br><span class="line">    <span class="comment">// read the image </span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;reading images... &quot;</span>&lt;&lt;endl;</span><br><span class="line">    vector&lt;Mat&gt; images; </span><br><span class="line">    <span class="keyword">for</span> ( <span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        string path = <span class="string">&quot;../data/&quot;</span>+<span class="built_in">to_string</span>(i<span class="number">+1</span>)+<span class="string">&quot;.png&quot;</span>;</span><br><span class="line">        images.<span class="built_in">push_back</span>( <span class="built_in">imread</span>(path) );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// detect ORB features</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;detecting ORB features ... &quot;</span>&lt;&lt;endl;</span><br><span class="line">    Ptr&lt; Feature2D &gt; detector = ORB::<span class="built_in">create</span>();</span><br><span class="line">    vector&lt;Mat&gt; descriptors;</span><br><span class="line">    <span class="keyword">for</span> ( Mat&amp; image:images )</span><br><span class="line">    &#123;</span><br><span class="line">        vector&lt;KeyPoint&gt; keypoints; </span><br><span class="line">        Mat descriptor;</span><br><span class="line">        detector-&gt;<span class="built_in">detectAndCompute</span>( image, <span class="built_in">Mat</span>(), keypoints, descriptor );</span><br><span class="line">        descriptors.<span class="built_in">push_back</span>( descriptor );</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// create vocabulary </span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;creating vocabulary ... &quot;</span>&lt;&lt;endl;</span><br><span class="line">    DBoW3::Vocabulary vocab;</span><br><span class="line">    vocab.<span class="built_in">create</span>( descriptors );</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;vocabulary info: &quot;</span>&lt;&lt;vocab&lt;&lt;endl;</span><br><span class="line">    vocab.<span class="built_in">save</span>( <span class="string">&quot;vocabulary.yml.gz&quot;</span> );</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;done&quot;</span>&lt;&lt;endl;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改CMakeLists.txt</p>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch11/build$ ./loop_closure </span><br><span class="line">reading database</span><br><span class="line">reading images... </span><br><span class="line">detecting ORB features ... </span><br><span class="line">comparing images with images </span><br><span class="line">image 0 vs image 0 : 1</span><br><span class="line">image 0 vs image 1 : 0.0305829</span><br><span class="line">image 0 vs image 2 : 0.0221928</span><br><span class="line">image 0 vs image 3 : 0.0308756</span><br><span class="line">image 0 vs image 4 : 0.0231492</span><br><span class="line">image 0 vs image 5 : 0.0240249</span><br><span class="line">image 0 vs image 6 : 0.0240589</span><br><span class="line">image 0 vs image 7 : 0.0246117</span><br><span class="line">image 0 vs image 8 : 0.0287788</span><br><span class="line">image 0 vs image 9 : 0.0542239</span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">image 9 vs image 9 : 1</span><br><span class="line"></span><br><span class="line">comparing images with database </span><br><span class="line">database info: Database: Entries = 10, Using direct index = no. Vocabulary: k = 10, L = 5, Weighting = tf-idf, Scoring = L1-norm, Number of words = 4972</span><br><span class="line">searching for image 0 returns 4 results:</span><br><span class="line">&lt;EntryId: 0, Score: 1&gt;</span><br><span class="line">&lt;EntryId: 9, Score: 0.0542239&gt;</span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">searching for image 4 returns 4 results:</span><br><span class="line">&lt;EntryId: 4, Score: 1&gt;</span><br><span class="line">&lt;EntryId: 5, Score: 0.0388892&gt;</span><br><span class="line">&lt;EntryId: 3, Score: 0.0379569&gt;</span><br></pre></td></tr></table></figure>
+
+<p>首先可以看到不同图像与相似图像的评分，明显相似的是0与9（第一张与第十张）相似度约为0.0525；其他的约为0.02。似然相似图像的评分明显高于其他图像，但是从数值上来看，并没有特别明显，其实无关的图像相似度为2%，相似图像的相似度约为5%。没有想象的那么明显。</p>
+<hr>
+<h2 id="实验分析与评述"><a href="#实验分析与评述" class="headerlink" title="实验分析与评述"></a>实验分析与评述</h2><h3 id="增加字典规模"><a href="#增加字典规模" class="headerlink" title="增加字典规模"></a>增加字典规模</h3><p>当增加字典规模时，无关图像的相似性明显会减少，相似的图像相对于其他图像变得更为显著，这说明增加字典训练样本是有益的。</p>
+<h3 id="相似性评分的处理"><a href="#相似性评分的处理" class="headerlink" title="相似性评分的处理"></a>相似性评分的处理</h3><p>对任意两幅图像，都可以给出一个相似性评分，但是不能只利用绝对大小，所以可以考虑先取一个先验相似度，表示某时刻关键帧图像与上一时刻的关键帧的相似性，然后其他的分值都参照这个值进行归一化处理。如果说：当前帧与之前某关键帧的相似度超过当前帧与上一关键帧相似度的3倍，就认为可能存在回环。这个步骤避免了引入绝对的相似性阈值，使得算法可以适应更多环境。</p>
+<h3 id="关键帧的处理"><a href="#关键帧的处理" class="headerlink" title="关键帧的处理"></a>关键帧的处理</h3><p>用于回环检测的关键帧最好稀疏一点，另外如果确认第一帧与第n帧之间存在回环对轨迹优化是有帮助的，接下来的几帧帮助就没有那么大了，所以我们会把相近的回环聚成一类，使得算法不要反复检测同一类回环。</p>
+<h3 id="检测之后的验证"><a href="#检测之后的验证" class="headerlink" title="检测之后的验证"></a>检测之后的验证</h3><p>词袋的回环检测算法完全依赖外观不利用任何几何信息，所以会导致外观相似的图像容易被当成回环。所以在回环检测之后，通常还会有一个验证步骤，一个方法是设立回环的缓存机制，另一个方法是空间上的一致性检测，对回环检测的两帧进行特征匹配，估计相机运动。</p>
+<h3 id="与机器学习的关系"><a href="#与机器学习的关系" class="headerlink" title="与机器学习的关系"></a>与机器学习的关系</h3><p>……</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/09/06/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%85%AD%E8%AE%B2%EF%BC%89--%E9%9D%9E%E7%BA%BF%E6%80%A7%E4%BC%98%E5%8C%96/" rel="prev" title="第六讲-非线性优化">
+                  <i class="fa fa-angle-left"></i> 第六讲-非线性优化
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/09/06/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E4%BA%8C%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%BB%BA%E5%9B%BE/" rel="next" title="第十二讲-建图">
+                  第十二讲-建图 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
