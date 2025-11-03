@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="第四章:预积分学IMU状态的预积分学为什么需要预积分?  IMU采样频率极高:通常在100-200HZ之间，IMU提供关于运动的瞬时信息 其他传感器频率低:通常在10HZ到30HZ之间，而GPS在1HZ到10HZ之间，这些传感器提供关于绝对姿态或者位置的修正信息  如果直接在卡尔曼滤波器中处理IMU数据，每次IMU测量会进行一次预测，这样会带来致命问题:  巨大计算负担 状态耦合与重复传播  但是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第四章:预积分学">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="第四章:预积分学IMU状态的预积分学为什么需要预积分?  IMU采样频率极高:通常在100-200HZ之间，IMU提供关于运动的瞬时信息 其他传感器频率低:通常在10HZ到30HZ之间，而GPS在1HZ到10HZ之间，这些传感器提供关于绝对姿态或者位置的修正信息  如果直接在卡尔曼滤波器中处理IMU数据，每次IMU测量会进行一次预测，这样会带来致命问题:  巨大计算负担 状态耦合与重复传播  但是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194137833.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194456232.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194623171.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194910851.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016195218687.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016203459918.png">
+<meta property="article:published_time" content="2025-11-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-03T02:54:44.881Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194137833.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/","path":"2025/11/03/第四章预积分学/","title":"第四章:预积分学"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第四章:预积分学 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6"><span class="nav-number">1.</span> <span class="nav-text">第四章:预积分学</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IMU%E7%8A%B6%E6%80%81%E7%9A%84%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6"><span class="nav-number">1.1.</span> <span class="nav-text">IMU状态的预积分学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9A%E9%A2%84%E7%A7%AF%E5%88%86%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">实践：预积分的程序实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%9F%BA%E4%BA%8E%E9%A2%84%E7%A7%AF%E5%88%86%E5%92%8C%E5%9B%BE%E4%BC%98%E5%8C%96%E7%9A%84GINS"><span class="nav-number">1.2.1.</span> <span class="nav-text">实现基于预积分和图优化的GINS</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="第四章:预积分学 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第四章:预积分学
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-11-03 00:00:00 / 修改时间：10:54:44" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="第四章-预积分学"><a href="#第四章-预积分学" class="headerlink" title="第四章:预积分学"></a>第四章:预积分学</h1><h2 id="IMU状态的预积分学"><a href="#IMU状态的预积分学" class="headerlink" title="IMU状态的预积分学"></a>IMU状态的预积分学</h2><p>为什么需要预积分?</p>
+<ol>
+<li>IMU采样频率极高:通常在100-200HZ之间，IMU提供关于运动的瞬时信息</li>
+<li>其他传感器频率低:通常在10HZ到30HZ之间，而GPS在1HZ到10HZ之间，这些传感器提供关于绝对姿态或者位置的修正信息</li>
+</ol>
+<p>如果直接在卡尔曼滤波器中处理IMU数据，每次IMU测量会进行一次预测，这样会带来致命问题:</p>
+<ol>
+<li>巨大计算负担</li>
+<li>状态耦合与重复传播</li>
+</ol>
+<p>但是IMU测量频率太高，并不希望优化过程随着IMU数据进行调用，那样太浪费计算资源。更希望将这些IMU测量值组合在一起处理。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194137833.png" alt="image-20251016194137833"></p>
+<p>但是这种直接积分方法在图优化框架中存在一个巨大问题：<strong>图优化会不断调整所有关键帧的位姿</strong></p>
+<p>**核心矛盾：**IMU积分与图优化中的状态变量紧密耦合，导致优化效率低下。</p>
+<p><strong>核心思想：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194456232.png" alt="image-20251016194456232"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194623171.png" alt="image-20251016194623171"></p>
+<p>经过推导，得到两帧之间的运动约束方程，由预积分量构成：</p>
+<p>image-20251016195218687<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194910851.png" alt="image-20251016194910851"></p>
+<p><strong>偏置的处理</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016195218687.png" alt="image-20251016195218687"></p>
+<h2 id="实践：预积分的程序实现"><a href="#实践：预积分的程序实现" class="headerlink" title="实践：预积分的程序实现"></a>实践：预积分的程序实现</h2><p>图优化是一个后端优化框架，用于融合多传感器信息，消除累积误差，获得全局一致的机器人轨迹和地图。</p>
+<p><strong>原理</strong></p>
+<ol>
+<li>将SLAM问题建模成一个图，其中顶点是待优化的状态变量，边是来自传感器的测量约束</li>
+<li>为每一条边定义一个误差函数，衡量当前估计与测量的符合程度</li>
+<li>构建一个总代价函数（所有误差的平方和）</li>
+<li>使用非线性最小二乘的迭代算法（例如高斯-牛顿法）求解，找到使总代价函数最小化的状态变量</li>
+</ol>
+<h3 id="实现基于预积分和图优化的GINS"><a href="#实现基于预积分和图优化的GINS" class="headerlink" title="实现基于预积分和图优化的GINS"></a>实现基于预积分和图优化的GINS</h3><p>终端输入： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# python3 scripts/plot_ch3_state.py ./data/ch4/gins_preintg.txt </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016203459918.png" alt="image-20251016203459918"></p>
+<p>基于预积分和图优化的GINS的状态图与上一章相比，速度状态在预期之内，但是缺少GNSS时候，单纯的IMU预测依然会局部发散。</p>
+<table>
+<thead>
+<tr>
+<th><strong>特性维度</strong></th>
+<th><strong>基于ESKF的惯性导航</strong></th>
+<th><strong>基于图优化的GINS</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>数据处理范式</strong></td>
+<td><strong>滤波（Filtering）</strong></td>
+<td><strong>批量优化（Batch Optimization）</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>顺序、递归处理</strong>：一次只处理一个时刻的测量数据，更新当前状态。过去的状态被“<strong>边缘化</strong>”掉，信息被压缩到当前状态的均值和协方差中。</td>
+<td><strong>批次、迭代处理</strong>：同时处理一个时间窗口内（甚至所有历史）的状态和测量。保留了所有状态节点和它们之间的约束关系。</td>
+</tr>
+<tr>
+<td><strong>最优性</strong></td>
+<td><strong>局部最优</strong></td>
+<td><strong>全局最优（在窗口内）</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>在线性高斯假设下，KF是当前时刻的最优估计。但在非线性系统中，它只是一个近似，无法保证全局最优。</td>
+<td>通过反复迭代和重线性化，可以找到整个时间窗口内所有状态的<strong>最大后验估计</strong>，结果更接近全局最优解，轨迹的平滑性和一致性更好。</td>
+</tr>
+<tr>
+<td><strong>计算成本与延迟</strong></td>
+<td><strong>低且固定</strong></td>
+<td><strong>高且可变</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>每个更新步骤的计算量相对固定且较小。非常适合<strong>实时性要求高、计算资源受限</strong>的系统。延迟极低。</td>
+<td>计算成本随着图中顶点和边的数量（即窗口大小）增加而增加。求解大型非线性最小二乘问题开销大。<strong>延迟较高</strong>，因为需要等待数据累积成批次。</td>
+</tr>
+<tr>
+<td><strong>处理异常值</strong></td>
+<td><strong>脆弱</strong></td>
+<td><strong>鲁棒</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>一个错误的测量（Outlier）一旦被融合，其负面影响会永久性地污染后续的状态估计，很难恢复。</td>
+<td>更加鲁棒。异常值在图中会表现为一个具有巨大误差的边，可以通过<strong>鲁棒核函数（Robust Kernels）</strong>（如Huber Loss）来降低其在总代价函数中的权重，从而抵抗其影响。</td>
+</tr>
+<tr>
+<td><strong>处理延迟&#x2F;乱序数据</strong></td>
+<td><strong>困难</strong></td>
+<td><strong>简单、自然</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>标准的卡尔曼滤波框架假定测量是按时序到达的。处理延迟的测量（如GNSS）需要复杂的额外机制（如固定滞后平滑）。</td>
+<td><strong>天然支持</strong>。一个延迟到达的测量只是在图中增加了一条连接过去两个节点的边而已。在下一次优化时，这个信息会被自然地考虑进去，并修正相关的历史轨迹。</td>
+</tr>
+<tr>
+<td><strong>全局一致性&#x2F;回环</strong></td>
+<td><strong>不支持</strong></td>
+<td><strong>核心优势</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>无法处理回环检测（Loop Closure）。当系统回到原点时，滤波方法无法利用该信息来修正整个历史轨迹的累积误差。</td>
+<td>这是图优化的<strong>王牌优势</strong>。一个回环检测可以在图中两个相距很远的节点间建立一条强约束边。优化器会调整<strong>整条轨迹</strong>来满足这个约束，从而显著消除全局漂移，获得全局一致的地图和轨迹。</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/11/03/%E7%AC%AC%E5%85%AB%E7%AB%A0%EF%BC%9A%E7%B4%A7%E8%80%A6%E5%90%88LIO%E7%B3%BB%E7%BB%9F/" rel="prev" title="第八章：紧耦合LIO系统">
+                  <i class="fa fa-angle-left"></i> 第八章：紧耦合LIO系统
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/11/03/%E7%AC%AC%E5%85%AD%E7%AB%A0%EF%BC%9A2D%20SLAM/" rel="next" title="第六章：2D SLAM">
+                  第六章：2D SLAM <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

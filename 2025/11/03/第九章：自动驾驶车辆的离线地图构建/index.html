@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="第九章：自动驾驶车辆的离线地图构建点云建图的流程 上图是整个建图流程：  从给定的ROS数据包中解出IMU、RTK和激光雷达数据。使用IMU与激光雷达数据组成LIO系统。 大部分自动驾驶车辆会携带RTK设备或者组合导航设备。按照RTK或者组合导航的位姿给每个关键帧赋一个RTK位姿，作为观测。 使用LIO作为相邻帧运动观测，使用RTK位姿作为绝对坐标观测，优化整条轨迹并且判定各关键帧的RTK有效性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第九章：自动驾驶车辆的离线地图构建">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="第九章：自动驾驶车辆的离线地图构建点云建图的流程 上图是整个建图流程：  从给定的ROS数据包中解出IMU、RTK和激光雷达数据。使用IMU与激光雷达数据组成LIO系统。 大部分自动驾驶车辆会携带RTK设备或者组合导航设备。按照RTK或者组合导航的位姿给每个关键帧赋一个RTK位姿，作为观测。 使用LIO作为相邻帧运动观测，使用RTK位姿作为绝对坐标观测，优化整条轨迹并且判定各关键帧的RTK有效性。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030103644153.png">
+<meta property="article:published_time" content="2025-11-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-03T02:57:22.971Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030103644153.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/","path":"2025/11/03/第九章：自动驾驶车辆的离线地图构建/","title":"第九章：自动驾驶车辆的离线地图构建"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第九章：自动驾驶车辆的离线地图构建 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA"><span class="nav-number">1.</span> <span class="nav-text">第九章：自动驾驶车辆的离线地图构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E4%BA%91%E5%BB%BA%E5%9B%BE%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">点云建图的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">前端实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF%E4%BD%8D%E5%A7%BF%E5%9B%BE%E4%BC%98%E5%8C%96%E5%92%8C%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E9%AA%8C"><span class="nav-number">1.3.</span> <span class="nav-text">后端位姿图优化和异常值检验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B"><span class="nav-number">1.4.</span> <span class="nav-text">回环检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%B0%E5%9B%BE%E7%9A%84%E5%AF%BC%E5%87%BA"><span class="nav-number">1.5.</span> <span class="nav-text">地图的导出</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="第九章：自动驾驶车辆的离线地图构建 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第九章：自动驾驶车辆的离线地图构建
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-11-03 00:00:00 / 修改时间：10:57:22" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="第九章：自动驾驶车辆的离线地图构建"><a href="#第九章：自动驾驶车辆的离线地图构建" class="headerlink" title="第九章：自动驾驶车辆的离线地图构建"></a>第九章：自动驾驶车辆的离线地图构建</h1><h2 id="点云建图的流程"><a href="#点云建图的流程" class="headerlink" title="点云建图的流程"></a>点云建图的流程</h2><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030103644153.png" alt="image-20251030103644153"></p>
+<p>上图是整个建图流程：</p>
+<ol>
+<li>从给定的ROS数据包中解出IMU、RTK和激光雷达数据。使用IMU与激光雷达数据组成LIO系统。</li>
+<li>大部分自动驾驶车辆会携带RTK设备或者组合导航设备。按照RTK或者组合导航的位姿给每个关键帧赋一个RTK位姿，作为观测。</li>
+<li>使用LIO作为相邻帧运动观测，使用RTK位姿作为绝对坐标观测，优化整条轨迹并且判定各关键帧的RTK有效性。这是<strong>第一轮优化</strong>。</li>
+<li>在上一步的基础上对地图进行回环检测，可以使用简单的基于欧氏距离的检测，使用NDT或者常见的配准算法计算相对位姿。</li>
+<li>再把信息放到统一的位姿图中进行优化，消除累计误差带来的重影，同时移除失效区域。这是<strong>第二轮优化</strong>。确定位姿之后，可以按照这些位姿到处点云地图。为了方便地图加载和查看，可以对点云进行切片处理。处理之后的点云可以用来进行高精度定位或者地图标注。</li>
+</ol>
+<h2 id="前端实现"><a href="#前端实现" class="headerlink" title="前端实现"></a>前端实现</h2><ol>
+<li>将ROS数据包中的RTK数据提取出来，放在RTK消息队列中，按照采集时间排序</li>
+<li>用第一个有效的RTK数据作为地图原点，用其他的RTK读书减去原点，作为RTK位置观测</li>
+<li>用IMU和激光雷达输出数据运行LIO，按照距离和角度阈值抽取关键帧，再保存关键帧结果。抽取关键帧时，也会从LIO中获取它的位姿和点云</li>
+</ol>
+<p>后续的建图流程可以从前端的结果出发，不必解析ROS数据包。先使用RTK位姿和LIO位姿进行联合优化，在此基础上进行回环检测，消除累计误差。</p>
+<h2 id="后端位姿图优化和异常值检验"><a href="#后端位姿图优化和异常值检验" class="headerlink" title="后端位姿图优化和异常值检验"></a>后端位姿图优化和异常值检验</h2><p>我们希望最终优化的轨迹能够考虑到各种传感器的输入，因此后端图优化需要包含以下因子：</p>
+<ol>
+<li>RTK因子。这是一种绝对的位姿观测数据。</li>
+<li>雷达里程计信息，使用前面介绍的激光雷达里程计或者LIO作为局部连续性约束</li>
+<li>回环因子，执行回环检测就加载回环检测的相关信息，把它们放入图优化中。</li>
+</ol>
+<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>点云地图的质量很大程度上取决于回环检测是，设计回环检测的步骤如下：</p>
+<ol>
+<li>遍历第一轮优化轨迹中的关键帧。对每两个在空间上相隔较近，但是在时间上存在一定距离的关键帧进行一次回环检测。</li>
+<li>对于每个关键帧对，使用Scan to Map 的配准方法，在关键帧附近抽取一定数量的点云作为子地图，然后对扫描和子地图进行配准。</li>
+<li>由于每个检查点的计算都是独立的，使用并发编程让第二步能够在机器上并发执行，加快速度</li>
+<li>配准的实际执行由NDT完成，使用NDT的分值作为回环有效性的判断依据。</li>
+<li>记录所有成功的回环，并且在下次调用优化算法时读取回环检测的结果。</li>
+</ol>
+<h2 id="地图的导出"><a href="#地图的导出" class="headerlink" title="地图的导出"></a>地图的导出</h2><p>多数应用中，希望控制实时点云的载入规模，只加载自身周围200米范围内的点云，其他范围的点云视情况卸载，重新组织本章建立的点云，按照100米的边长进行分块，设计分块加载和卸载的接口。点云的切分实际上是根据每个点的坐标计算其所在的网格，然后将它投到对应的网格中。切分完地图之后，没快递图会独立到处一个PCD文件，程序可以快速读取到地图区块的位置。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/11/03/%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%83%AF%E6%80%A7%E5%AF%BC%E8%88%AA%E4%B8%8E%E7%BB%84%E5%90%88%E5%AF%BC%E8%88%AA/" rel="prev" title="第三章：惯性导航与组合导航">
+                  <i class="fa fa-angle-left"></i> 第三章：惯性导航与组合导航
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/" rel="next" title="第七章：3D SLAM">
+                  第七章：3D SLAM <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

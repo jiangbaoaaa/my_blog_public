@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="利用lio-sam结合move_base路径规划准备工作12sudo apt install ros-noetic-map-serversudo apt install ros-noetic-navigation  新建导航功能包 12# 在src目录下新建功能包catkin_create_pkg nav map_server move_base roscpp rospy std_msgs  在c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用lio-sam结合move_base路径规划">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/10/31/%E5%88%A9%E7%94%A8lio-sam%E5%BB%BA%E5%9B%BE%E8%BF%9B%E8%A1%8C%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="利用lio-sam结合move_base路径规划准备工作12sudo apt install ros-noetic-map-serversudo apt install ros-noetic-navigation  新建导航功能包 12# 在src目录下新建功能包catkin_create_pkg nav map_server move_base roscpp rospy std_msgs  在c">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929202919569.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929203420280.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929205122943.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929211646524.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929212236068.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929212342442.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250930145327918.png">
+<meta property="article:published_time" content="2025-10-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-03T02:48:40.609Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929202919569.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/10/31/%E5%88%A9%E7%94%A8lio-sam%E5%BB%BA%E5%9B%BE%E8%BF%9B%E8%A1%8C%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/10/31/%E5%88%A9%E7%94%A8lio-sam%E5%BB%BA%E5%9B%BE%E8%BF%9B%E8%A1%8C%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/","path":"2025/10/31/利用lio-sam建图进行路径规划/","title":"利用lio-sam结合move_base路径规划"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>利用lio-sam结合move_base路径规划 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A9%E7%94%A8lio-sam%E7%BB%93%E5%90%88move-base%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92"><span class="nav-number">1.</span> <span class="nav-text">利用lio-sam结合move_base路径规划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF3d%E7%82%B9%E4%BA%91%E5%9C%B0%E5%9B%BE%E8%BD%AC%E6%8D%A2%E4%B8%BA2d%E6%A0%85%E6%A0%BC%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.2.</span> <span class="nav-text">在线3d点云地图转换为2d栅格地图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%B9%B6%E8%BF%90%E8%A1%8Cmove-base%E5%AF%BC%E8%88%AA"><span class="nav-number">1.3.</span> <span class="nav-text">配置并运行move_base导航</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/10/31/%E5%88%A9%E7%94%A8lio-sam%E5%BB%BA%E5%9B%BE%E8%BF%9B%E8%A1%8C%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="利用lio-sam结合move_base路径规划 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用lio-sam结合move_base路径规划
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-10-31 00:00:00" itemprop="dateCreated datePublished" datetime="2025-10-31T00:00:00+08:00">2025-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-11-03 10:48:40" itemprop="dateModified" datetime="2025-11-03T10:48:40+08:00">2025-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="利用lio-sam结合move-base路径规划"><a href="#利用lio-sam结合move-base路径规划" class="headerlink" title="利用lio-sam结合move_base路径规划"></a>利用lio-sam结合move_base路径规划</h1><h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ros-noetic-map-server</span><br><span class="line">sudo apt install ros-noetic-navigation</span><br></pre></td></tr></table></figure>
+
+<p>新建导航功能包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 在src目录下新建功能包</span><br><span class="line">catkin_create_pkg nav map_server move_base roscpp rospy std_msgs</span><br></pre></td></tr></table></figure>
+
+<p>在catkin_src&#x2F;src&#x2F;目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https://ghproxy.com/https://github.com/Hinson-A/pcd2pgm_package.git</span><br><span class="line">catkin_make</span><br><span class="line">修改run.launch文件相应的文件路径及名称</span><br><span class="line">roslaunch pcd2pgm run.launch</span><br><span class="line">rosrun map_server map_saver</span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929202919569.png" alt="image-20250929202919569" style="zoom:50%;" />
+
+<ul>
+<li>查看保存的栅格地图</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 在第一个终端输入</span><br><span class="line">roscore</span><br><span class="line"># 在第二个终端</span><br><span class="line">rosrun map_server map_server /root/catkin_ws/map.yaml </span><br><span class="line"># 第三个终端</span><br><span class="line">rosrun rviz rviz</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929203420280.png" alt="image-20250929203420280"></p>
+<p>这样就可以把点云地图转换为2d栅格地图查看。</p>
+<p>还有一种方法：使用octomap来将3D点云地图投影成3D的Octomap，并且从中投影出2D栅格地图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 安装octomap_server</span><br><span class="line">sudo apt-get install ros-noetic-octomap*</span><br><span class="line">catkin_make</span><br><span class="line"># 编译没有报错的话，可以测试一下,出现这些话题表示成功了。</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929205122943.png" alt="image-20250929205122943"></p>
+<h2 id="在线3d点云地图转换为2d栅格地图"><a href="#在线3d点云地图转换为2d栅格地图" class="headerlink" title="在线3d点云地图转换为2d栅格地图"></a>在线3d点云地图转换为2d栅格地图</h2><p>新建launch文件：<code>catkin_ws/src/nav/launch/octomap_server.launch</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;node pkg=&quot;octomap_server&quot; type=&quot;octomap_server_node&quot; name=&quot;octomap_server&quot;&gt;</span><br><span class="line">    &lt;!-- 地图分辨率 --&gt;</span><br><span class="line">	&lt;param name=&quot;resolution&quot; value=&quot;0.50&quot; /&gt;</span><br><span class="line">		</span><br><span class="line">	&lt;!-- fixed map frame (set to &#x27;map&#x27; if SLAM or localization running!)  --&gt;</span><br><span class="line">    &lt;!-- 静态全局地图的 frame_id，但在增量式构建地图时，需要提供输入的点云帧和静态全局帧之间的 TF 变换 --&gt;</span><br><span class="line">	&lt;param name=&quot;frame_id&quot; type=&quot;string&quot; value=&quot;map&quot; /&gt;</span><br><span class="line">		rosrun teleop_twist_keyboard teleop_twist_keyboard.py </span><br><span class="line">	&lt;!-- maximum range to integrate (speedup!) --&gt;</span><br><span class="line">    &lt;!-- 传感器最大感知范围 --&gt;</span><br><span class="line">	&lt;param name=&quot;sensor_model/max_range&quot; value=&quot;50.0&quot; /&gt;</span><br><span class="line">    &lt;param name=&quot;latch&quot; value=&quot;true&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">     &lt;!--max/min height for occupancy map, should be in meters--&gt;</span><br><span class="line">     &lt;!-- 保留的z轴范围内的点 --&gt;</span><br><span class="line">    &lt;param name=&quot;pointcloud_max_z&quot; value=&quot;5&quot; /&gt;</span><br><span class="line">    &lt;param name=&quot;pointcloud_min_z&quot; value=&quot;-1.5&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 机器人坐标系 base_link，滤除地面需要该 frame --&gt;</span><br><span class="line">    &lt;param name = &quot;base_frame_id&quot; type = &quot;string&quot; value = &quot;base_link&quot; /&gt; </span><br><span class="line">      &lt;!-- filter ground plane, distance value should be big!  --&gt;</span><br><span class="line">	&lt;param name = &quot;filter_ground&quot; type = &quot;bool&quot; value = &quot;true&quot; /&gt; </span><br><span class="line"></span><br><span class="line">     </span><br><span class="line">    &lt;!-- 要检测为平面的 Z 轴阈值 value 值 通常大于分割值  --&gt;</span><br><span class="line">	&lt;param name = &quot;ground_filter/plane_distance&quot; type = &quot;double&quot; value = &quot;0.4&quot; /&gt; </span><br><span class="line"></span><br><span class="line">    &lt;!-- 分割地面的 Z 轴阈值 value 值 ，小于该阈值被认为是平面 --&gt;</span><br><span class="line">    &lt;param name = &quot;ground_filter/distance&quot; type = &quot;double&quot; value = &quot;0.3&quot; /&gt; </span><br><span class="line">    &lt;!-- 分割地面的角度阈值 value 值，小于该阈值的平面被认为是地面--&gt;</span><br><span class="line">    &lt;param name=&quot;ground_filter/angle&quot; value=&quot;0.10&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		&lt;!-- data source to integrate (PointCloud2) --&gt;</span><br><span class="line">	&lt;remap from=&quot;cloud_in&quot; to=&quot;/lio_sam/deskew/cloud_deskewed&quot; /&gt;</span><br><span class="line">		&lt;!-- &lt;remap from=&quot;cloud_in&quot; to=&quot;voxel_grid/output&quot; /&gt; --&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;/node&gt;</span><br><span class="line">&lt;/launch&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行建图和转换</li>
+</ul>
+<p>新建一个launch文件来集成运行仿真环境与liosam</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># src/nav/launch/start_gazebo_liosam.launch</span><br><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;arg name=&quot;world_name&quot; default=&quot;$(find scout_gazebo_sim)/worlds/clearpath_playpen.world&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;include file=&quot;$(find gazebo_ros)/launch/empty_world.launch&quot;&gt;</span><br><span class="line">        &lt;arg name=&quot;world_name&quot; value=&quot;$(arg world_name)&quot;/&gt;</span><br><span class="line">        &lt;arg name=&quot;paused&quot; value=&quot;false&quot;/&gt;</span><br><span class="line">        &lt;arg name=&quot;use_sim_time&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;arg name=&quot;gui&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;arg name=&quot;headless&quot; value=&quot;false&quot;/&gt;</span><br><span class="line">        &lt;arg name=&quot;debug&quot; value=&quot;false&quot;/&gt;</span><br><span class="line">    &lt;/include&gt;</span><br><span class="line"></span><br><span class="line">    &lt;include file=&quot;$(find scout_gazebo_sim)/launch/spawn_scout_mini.launch&quot;&gt;&lt;/include&gt;</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;rosparam file=&quot;$(find lio_sam)/config/params.yaml&quot; command=&quot;load&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;include file=&quot;$(find lio_sam)/launch/include/module_loam.launch&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;include file=&quot;$(find lio_sam)/launch/include/module_navsat.launch&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;node pkg=&quot;rviz&quot; type=&quot;rviz&quot; name=&quot;rviz&quot; args=&quot;-d $(find nav)/rviz/navigation.rviz&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch nav start_gazebo_liosam.launch </span><br></pre></td></tr></table></figure>
+
+<p>启动创建的转换launch文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch nav octomap_server.launch</span><br></pre></td></tr></table></figure>
+
+<p>打开键盘控制，操纵机器人模型运动。在rviz中添加map类型，将话题设置为&#x2F;projected_map</p>
+<p>保存地图</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun map_server map_saver -f ~/catkin_ws/src/nav/map/my_map map:=/projected_map</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@hita-JIGUANG-Series:~/catkin_ws# rosrun map_server map_saver -f /root/catkin_ws/src/nav/map/my_map map:=/projected_map</span><br><span class="line">[INFO] [1759151767.822461398]: Waiting for the map</span><br><span class="line">[INFO] [1759151768.047622163]: Received a 216 X 217 map @ 0.500 m/pix</span><br><span class="line">[INFO] [1759151768.047642394]: Writing map occupancy data to /root/catkin_ws/src/nav/map/my_map.pgm</span><br><span class="line">[INFO] [1759151768.048355615, 1642.000000000]: Writing map occupancy data to /root/catkin_ws/src/nav/map/my_map.yaml</span><br><span class="line">[INFO] [1759151768.048394136, 1642.000000000]: Done</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929211646524.png" alt="image-20250929211646524"></p>
+<p>输出结果如上所示。</p>
+<blockquote>
+<p>查看保存好的地图</p>
+</blockquote>
+<ol>
+<li>启动roscore</li>
+<li>启动map server</li>
+<li>启动rviz</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. roscore</span><br><span class="line">2. rosrun map_server map_server ~/catkin_ws/src/nav/map/my_map.yaml</span><br><span class="line">3. rosrun rviz rviz</span><br></pre></td></tr></table></figure>
+
+<p>如果报错</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929212236068.png" alt="image-20250929212236068"></p>
+<p>修改my_map.yaml文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">image: /root/catkin_ws/src/nav/map/my_map.pgm</span><br><span class="line">resolution: 0.500000</span><br><span class="line">origin: [-50.000000, -50.000000, 0.0]</span><br><span class="line">negate: 0</span><br><span class="line">occupied_thresh: 0.65</span><br><span class="line">free_thresh: 0.196</span><br></pre></td></tr></table></figure>
+
+<p>这样就没有问题了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250929212342442.png" alt="image-20250929212342442"></p>
+<p>之前的地图就能看到了。</p>
+<hr>
+<h2 id="配置并运行move-base导航"><a href="#配置并运行move-base导航" class="headerlink" title="配置并运行move_base导航"></a>配置并运行move_base导航</h2><ol>
+<li>配置参数文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 新建文件夹nav/param/</span><br><span class="line"># 新建四个配置文件</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># costmap_common_params.yaml</span><br><span class="line">footprint: [[0.5, 0.325], [-0.5, 0.325], [-0.5, -0.325], [0.5, -0.325]]</span><br><span class="line"></span><br><span class="line">obstacle_layer:</span><br><span class="line">  enabled: true</span><br><span class="line">  obstacle_range: 3.0</span><br><span class="line">  raytrace_range: 3.5</span><br><span class="line">  inflation_radius: 0.55</span><br><span class="line">  track_unknown_space: true</span><br><span class="line">  combination_method: 1</span><br><span class="line">  observation_sources: pointcloud_source</span><br><span class="line"></span><br><span class="line">  pointcloud_source:</span><br><span class="line">    sensor_frame: velodyne</span><br><span class="line">    data_type: LaserScan</span><br><span class="line">    topic: /scan</span><br><span class="line">    marking: true</span><br><span class="line">    clearing: true</span><br><span class="line">    min_obstacle_height: 0.05</span><br><span class="line">    max_obstacle_height: 2.0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># global_costmap_params.yaml</span><br><span class="line">global_costmap:</span><br><span class="line">  global_frame: map</span><br><span class="line">  robot_base_frame: base_link</span><br><span class="line">  update_frequency: 3.0</span><br><span class="line">  publish_frequency: 3.0</span><br><span class="line">  transform_tolerance: 0.5</span><br><span class="line">  static_map: true</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># local_costmap_params.yaml</span><br><span class="line">local_costmap:</span><br><span class="line">  global_frame: odom</span><br><span class="line">  robot_base_frame: base_link</span><br><span class="line">  update_frequency: 5.0</span><br><span class="line">  publish_frequency: 5.0</span><br><span class="line">  transform_tolerance: 0.5</span><br><span class="line">  static_map: false</span><br><span class="line">  rolling_window: true</span><br><span class="line">  width: 3.0</span><br><span class="line">  height: 3.0</span><br><span class="line">  resolution: 0.05</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># base_local_planner_params.yaml</span><br><span class="line">TrajectoryPlannerROS:</span><br><span class="line">  max_vel_x: 0.2</span><br><span class="line">  min_vel_x: 0.1</span><br><span class="line">  max_vel_theta: 1.0</span><br><span class="line">  min_vel_theta: -1.0</span><br><span class="line">  min_in_place_vel_theta: 0.2</span><br><span class="line">  acc_lim_x: 1.0</span><br><span class="line">  acc_lim_y: 0.0</span><br><span class="line">  acc_lim_theta: 0.6</span><br><span class="line">  xy_goal_tolerance: 0.10</span><br><span class="line">  yaw_goal_tolerance: 0.05</span><br><span class="line">  holonomic_robot: false</span><br><span class="line">  sim_time: 1.7</span><br><span class="line">  vx_samples: 18</span><br><span class="line">  vtheta_samples: 30</span><br><span class="line">  sim_granularity: 0.02</span><br></pre></td></tr></table></figure>
+
+<p>由于我的机器人底座配置了一个2d激光雷达，所以不需要安装pointcloud_to_laserscan</p>
+<p>如果机器人模型没有的话，可以参考这个博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lixushi/article/details/127021593">https://blog.csdn.net/lixushi/article/details/127021593</a></p>
+<p>这里不再赘述。</p>
+<ol start="2">
+<li>新建配置文件的launch文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># nav/launch/move_base.launch</span><br><span class="line">&lt;launch&gt;</span><br><span class="line"></span><br><span class="line">    &lt;node pkg=&quot;move_base&quot; type=&quot;move_base&quot; respawn=&quot;false&quot; name=&quot;move_base&quot; output=&quot;screen&quot; clear_params=&quot;true&quot;&gt;</span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/costmap_common_params.yaml&quot; command=&quot;load&quot; ns=&quot;global_costmap&quot; /&gt;</span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/costmap_common_params.yaml&quot; command=&quot;load&quot; ns=&quot;local_costmap&quot; /&gt;</span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/local_costmap_params.yaml&quot; command=&quot;load&quot; /&gt;</span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/global_costmap_params.yaml&quot; command=&quot;load&quot; /&gt;</span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/base_local_planner_params.yaml&quot; command=&quot;load&quot; /&gt;</span><br><span class="line">    &lt;/node&gt;</span><br><span class="line"></span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>新建一个用于启动整个导航栈的launch文件。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># nav/nav.launch</span><br><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;!-- 设置地图的配置文件 --&gt;</span><br><span class="line">    &lt;arg name=&quot;map&quot; default=&quot;my_map.yaml&quot; /&gt;</span><br><span class="line">    &lt;!-- 运行地图服务器，并且加载设置的地图--&gt;</span><br><span class="line">    &lt;node name=&quot;map_server&quot; pkg=&quot;map_server&quot; type=&quot;map_server&quot; args=&quot;$(find nav)/map/$(arg map)&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 运行move_base节点 --&gt;</span><br><span class="line">    &lt;include file=&quot;$(find nav)/launch/move_base.launch&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>整合运行rosrun teleop_twist_keyboard teleop_twist_keyboard.py</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. roslaunch nav start_gazebo_liosam.launch </span><br><span class="line">2. roslaunch nav nav.launch </span><br><span class="line">3. rosrun teleop_twist_keyboard teleop_twist_keyboard.py </span><br></pre></td></tr></table></figure>
+
+<p>可以使用2d nav来进行路径规划和移动了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250930145327918.png" alt="image-20250930145327918"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/09/24/Docker%E9%83%A8%E7%BD%B2Fast_Lio/" rel="prev" title="Docker部署Fast_Lio">
+                  <i class="fa fa-angle-left"></i> Docker部署Fast_Lio
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/11/03/%E9%83%A8%E7%BD%B2%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF%E7%8E%AF%E5%A2%83/" rel="next" title="部署自动驾驶与机器人中的SLAM技术环境">
+                  部署自动驾驶与机器人中的SLAM技术环境 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
