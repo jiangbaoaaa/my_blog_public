@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="在docker中部署LIO_SAM主机环境配置 操作系统：ubuntu 20.04 Nvidia显卡驱动：成功安装显卡驱动（可以通过nvidia-smi）验证 Docker Engine:已经正确安装 Nvidia Container Toolkit:已经正确安装  项目文件准备 创建工作目录并且下载所有源码  12345678910111213141516# 1. 创建并进入工作目录cd ~mk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在docker中部署LIO_SAM">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/09/24/%E5%9C%A8docker%E4%B8%AD%E9%83%A8%E7%BD%B2LIO_SAM/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="在docker中部署LIO_SAM主机环境配置 操作系统：ubuntu 20.04 Nvidia显卡驱动：成功安装显卡驱动（可以通过nvidia-smi）验证 Docker Engine:已经正确安装 Nvidia Container Toolkit:已经正确安装  项目文件准备 创建工作目录并且下载所有源码  12345678910111213141516# 1. 创建并进入工作目录cd ~mk">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918160107196.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918160158514.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918155805871.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918161636209.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918162038388.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/f3f59ebf1cb94a12a4af002e0fec194d.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918162204331.png">
+<meta property="article:published_time" content="2025-09-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-03T01:49:44.346Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918160107196.png">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/09/24/%E5%9C%A8docker%E4%B8%AD%E9%83%A8%E7%BD%B2LIO_SAM/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/09/24/%E5%9C%A8docker%E4%B8%AD%E9%83%A8%E7%BD%B2LIO_SAM/","path":"2025/09/24/在docker中部署LIO_SAM/","title":"在docker中部署LIO_SAM"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在docker中部署LIO_SAM | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8docker%E4%B8%AD%E9%83%A8%E7%BD%B2LIO-SAM"><span class="nav-number">1.</span> <span class="nav-text">在docker中部署LIO_SAM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%9C%BA%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">主机环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6%E5%87%86%E5%A4%87"><span class="nav-number">1.2.</span> <span class="nav-text">项目文件准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E4%B8%8E%E8%BF%90%E8%A1%8C"><span class="nav-number">1.3.</span> <span class="nav-text">构建与运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">1.4.</span> <span class="nav-text">下载数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.5.</span> <span class="nav-text">运行程序</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/09/24/%E5%9C%A8docker%E4%B8%AD%E9%83%A8%E7%BD%B2LIO_SAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在docker中部署LIO_SAM | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在docker中部署LIO_SAM
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-09-24 00:00:00" itemprop="dateCreated datePublished" datetime="2025-09-24T00:00:00+08:00">2025-09-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-11-03 09:49:44" itemprop="dateModified" datetime="2025-11-03T09:49:44+08:00">2025-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="在docker中部署LIO-SAM"><a href="#在docker中部署LIO-SAM" class="headerlink" title="在docker中部署LIO_SAM"></a>在docker中部署LIO_SAM</h1><h2 id="主机环境配置"><a href="#主机环境配置" class="headerlink" title="主机环境配置"></a>主机环境配置</h2><ul>
+<li>操作系统：ubuntu 20.04</li>
+<li>Nvidia显卡驱动：成功安装显卡驱动（可以通过nvidia-smi）验证</li>
+<li>Docker Engine:已经正确安装</li>
+<li>Nvidia Container Toolkit:已经正确安装</li>
+</ul>
+<h2 id="项目文件准备"><a href="#项目文件准备" class="headerlink" title="项目文件准备"></a>项目文件准备</h2><ol>
+<li>创建工作目录并且下载所有源码</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 1. 创建并进入工作目录</span><br><span class="line">cd ~</span><br><span class="line">mkdir -p lio_sam_docker</span><br><span class="line">cd lio_sam_docker</span><br><span class="line"></span><br><span class="line"># 2. (重要) 如果存在旧文件，先彻底删除</span><br><span class="line">rm -rf gtsam LIO-SAM rosdistro</span><br><span class="line"></span><br><span class="line"># 3. 从官方GitHub仓库下载指定版本的GTSAM (解决C++编译兼容问题)</span><br><span class="line">git clone --branch 4.2a1 https://github.com/borglab/gtsam.git gtsam</span><br><span class="line"></span><br><span class="line"># 4. 从官方GitHub仓库下载最新的LIO-SAM</span><br><span class="line">git clone https://github.com/TixiaoShan/LIO-SAM.git LIO-SAM</span><br><span class="line"></span><br><span class="line"># 5. 下载rosdep数据库 (用于离线安装依赖)</span><br><span class="line">git clone https://gitee.com/ros-tooling/rosdistro.git rosdistro</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建一个Dockerfile</li>
+</ol>
+<p>在 <code>~/lio_sam_docker</code>目录下，创建Dockerfile文件</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用NVIDIA官方的CUDA 11.4.3 + CUDNN8 + Ubuntu 20.04 开发镜像作为基础</span></span><br><span class="line"><span class="keyword">FROM</span> nvidia/cuda:<span class="number">11.4</span>.<span class="number">3</span>-cudnn8-devel-ubuntu20.<span class="number">04</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置环境变量，避免apt-get安装时出现交互式提示</span></span><br><span class="line"><span class="keyword">ENV</span> DEBIAN_FRONTEND=noninteractive</span><br><span class="line"><span class="keyword">ENV</span> TZ=Asia/Shanghai</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更换APT软件源为国内镜像，解决apt-get下载缓慢问题</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> sed -i <span class="string">&#x27;s/archive.ubuntu.com/mirrors.aliyun.com/g&#x27;</span> /etc/apt/sources.list &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    sed -i <span class="string">&#x27;s/security.ubuntu.com/mirrors.aliyun.com/g&#x27;</span> /etc/apt/sources.list</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 安装基础系统依赖</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y \</span></span><br><span class="line"><span class="language-bash">    git \</span></span><br><span class="line"><span class="language-bash">    wget \</span></span><br><span class="line"><span class="language-bash">    build-essential \</span></span><br><span class="line"><span class="language-bash">    cmake \</span></span><br><span class="line"><span class="language-bash">    python3-pip \</span></span><br><span class="line"><span class="language-bash">    lsb-release \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; <span class="built_in">rm</span> -rf /var/lib/apt/lists/*</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 安装ROS Noetic及其依赖</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> sh -c <span class="string">&#x27;echo &quot;deb https://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu $(lsb_release -sc) main&quot; &gt; /etc/apt/sources.list.d/ros-latest.list&#x27;</span></span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-key adv --keyserver <span class="string">&#x27;hkp://keyserver.ubuntu.com:80&#x27;</span> --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update</span></span><br><span class="line"><span class="comment">#  在依赖列表中加入 robot_localization 包</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get install -y \</span></span><br><span class="line"><span class="language-bash">    python3-rosdep \</span></span><br><span class="line"><span class="language-bash">    python3-rosinstall \</span></span><br><span class="line"><span class="language-bash">    python3-rosinstall-generator \</span></span><br><span class="line"><span class="language-bash">    python3-wstool \</span></span><br><span class="line"><span class="language-bash">    python3-catkin-pkg \</span></span><br><span class="line"><span class="language-bash">    python3-catkin-pkg-modules \</span></span><br><span class="line"><span class="language-bash">    python3-rospkg \</span></span><br><span class="line"><span class="language-bash">    python3-rospkg-modules \</span></span><br><span class="line"><span class="language-bash">    ros-noetic-desktop-full \</span></span><br><span class="line"><span class="language-bash">    libopencv-dev \</span></span><br><span class="line"><span class="language-bash">    libpcl-dev \</span></span><br><span class="line"><span class="language-bash">    libboost-all-dev \</span></span><br><span class="line"><span class="language-bash">    ros-noetic-robot-localization \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; <span class="built_in">rm</span> -rf /var/lib/apt/lists/*</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">echo</span> <span class="string">&quot;source /opt/ros/noetic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span></span><br><span class="line"><span class="keyword">SHELL</span><span class="language-bash"> [<span class="string">&quot;/bin/bash&quot;</span>, <span class="string">&quot;-c&quot;</span>]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 安装GTSAM (使用本地副本)</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /root</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> gtsam /root/gtsam</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /root/gtsam</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> build &amp;&amp; <span class="built_in">cd</span> build &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    cmake -DGTSAM_USE_SYSTEM_EIGEN=ON -DGTSAM_INSTALL_MATLAB_TOOLBOX=OFF -DGTSAM_WITH_TBB=OFF .. &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    make -j$(<span class="built_in">nproc</span>) install &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">cd</span> /root &amp;&amp; <span class="built_in">rm</span> -rf gtsam</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 创建Catkin工作空间并复制LIO-SAM源码 (使用本地副本)</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> -p /root/catkin_ws/src</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /root/catkin_ws/src</span></span><br><span class="line"><span class="comment"># COPY LIO-SAM /root/catkin_ws/src/LIO-SAM</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装SCOUT_MINI、VELODYNE仿真包</span></span><br><span class="line"><span class="comment"># COPY scout /root/catkin_ws/src/scout</span></span><br><span class="line"><span class="comment"># COPY velodyne_simulator /root/catkin_ws/src/velodyne_simulator</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y \</span></span><br><span class="line"><span class="language-bash">    ros-noetic-ros-control \</span></span><br><span class="line"><span class="language-bash">    ros-noetic-ros-controllers \</span></span><br><span class="line"><span class="language-bash">    ros-noetic-gazebo-ros \</span></span><br><span class="line"><span class="language-bash">    ros-noetic-gazebo-ros-control \</span></span><br><span class="line"><span class="language-bash">    ros-noetic-teleop-twist-keyboard \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; <span class="built_in">rm</span> -rf /var/lib/apt/lists/*</span></span><br><span class="line"><span class="comment"># 5. 使用本地rosdep数据库副本安装依赖</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /root</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> rosdistro /root/rosdistro</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /root/catkin_ws</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">source</span> /opt/ros/noetic/setup.bash &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mkdir</span> -p /etc/ros/rosdep/sources.list.d &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">echo</span> <span class="string">&quot;yaml file:///root/rosdistro/rosdep/osx-homebrew.yaml osx&quot;</span> &gt; /etc/ros/rosdep/sources.list.d/00-osx.list &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">echo</span> <span class="string">&quot;yaml file:///root/rosdistro/rosdep/base.yaml&quot;</span> &gt;&gt; /etc/ros/rosdep/sources.list.d/00-osx.list &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">echo</span> <span class="string">&quot;yaml file:///root/rosdistro/rosdep/python.yaml&quot;</span> &gt;&gt; /etc/ros/rosdep/sources.list.d/00-osx.list &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">echo</span> <span class="string">&quot;yaml file:///root/rosdistro/rosdep/ruby.yaml&quot;</span> &gt;&gt; /etc/ros/rosdep/sources.list.d/00-osx.list &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">echo</span> <span class="string">&quot;gbpdistro file:///root/rosdistro/releases/focal.yaml focal&quot;</span> &gt; /etc/ros/rosdep/sources.list.d/20-default.list &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    rosdep update &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    rosdep install --from-paths src --ignore-src -r -y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 修复源码中旧的OpenCV头文件引用</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /root/catkin_ws</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">source</span> /opt/ros/noetic/setup.bash &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    (catkin_make -DCMAKE_CXX_STANDARD=14 || <span class="literal">true</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 8. 配置容器的启动环境</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">echo</span> <span class="string">&quot;source /root/catkin_ws/devel/setup.bash&quot;</span> &gt;&gt; ~/.bashrc</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">echo</span> <span class="string">&quot;export ROS_PACKAGE_PATH=\$&#123;ROS_PACKAGE_PATH&#125;:/root/catkin_ws&quot;</span> &gt;&gt; ~/.bashrc</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /root/catkin_ws</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;bash&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建 <code>build+docker.sh</code>文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line"># ==============================================================================</span><br><span class="line"># LIO-SAM Docker 镜像构建脚本 (build.sh) - 最终修正版</span><br><span class="line"># ==============================================================================</span><br><span class="line"></span><br><span class="line"># 设置镜像名称和标签</span><br><span class="line">IMAGE_NAME=&quot;lio_sam&quot;</span><br><span class="line">IMAGE_TAG=&quot;gpu-ubuntu20.04-final&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;======================================================&quot;</span><br><span class="line">echo &quot;开始构建 Docker 镜像: $&#123;IMAGE_NAME&#125;:$&#123;IMAGE_TAG&#125;&quot;</span><br><span class="line">echo &quot;======================================================&quot;</span><br><span class="line"></span><br><span class="line"># 使用 docker build 命令构建镜像。</span><br><span class="line"># --network=host 参数可以在构建过程中加速网络访问。</span><br><span class="line"># --add-host 参数用于解决 rosdep update 访问 github 的网络超时问题。</span><br><span class="line"># -t 指定了镜像的名称和标签。</span><br><span class="line"># . 表示 Dockerfile 在当前目录下。</span><br><span class="line">docker build \</span><br><span class="line">    --network=host \</span><br><span class="line">    --add-host raw.githubusercontent.com:185.199.108.133 \</span><br><span class="line">    -t $&#123;IMAGE_NAME&#125;:$&#123;IMAGE_TAG&#125; .</span><br><span class="line"></span><br><span class="line"># 检查上一个命令的退出码，判断是否构建成功</span><br><span class="line">if [ $? -eq 0 ]; then</span><br><span class="line">    echo &quot;======================================================&quot;</span><br><span class="line">    echo &quot;镜像 $&#123;IMAGE_NAME&#125;:$&#123;IMAGE_TAG&#125; 构建成功!&quot;</span><br><span class="line">    echo &quot;恭喜！所有问题都已解决。&quot;</span><br><span class="line">    echo &quot;======================================================&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;======================================================&quot;</span><br><span class="line">    echo &quot;镜像构建失败。&quot;</span><br><span class="line">    echo &quot;请检查 Dockerfile 或构建过程中的错误信息。&quot;</span><br><span class="line">    echo &quot;======================================================&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>创建 <code>run_docker.sh</code>文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line"># ==============================================================================</span><br><span class="line"># LIO-SAM Docker 容器启动脚本 </span><br><span class="line"># ==============================================================================</span><br><span class="line"></span><br><span class="line"># --- 用户配置 ---</span><br><span class="line"># 请将此路径修改为你存放 .bag 文件的实际主机路径</span><br><span class="line"># 例如: ROSBAG_PATH=&quot;/home/your_username/data/rosbags&quot;</span><br><span class="line">ROSBAG_PATH=&quot;/home/hita/lio_sam_docker/data&quot; </span><br><span class="line"></span><br><span class="line"># 镜像和容器名称</span><br><span class="line">IMAGE_NAME=&quot;lio_sam&quot;</span><br><span class="line">IMAGE_TAG=&quot;gpu-ubuntu20.04-final&quot;</span><br><span class="line">CONTAINER_NAME=&quot;lio_sam_container&quot;</span><br><span class="line"># --- 用户配置结束 ---</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 检查ROSBAG_PATH是否被修改</span><br><span class="line">if [ &quot;$ROSBAG_PATH&quot; == &quot;/path/to/your/rosbags&quot; ]; then</span><br><span class="line">    echo &quot;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&quot;</span><br><span class="line">    echo &quot;!!! 警告: 请修改脚本中的 ROSBAG_PATH 变量     !!!&quot;</span><br><span class="line">    echo &quot;!!! 将其指向你主机上存放rosbag文件的目录。    !!!&quot;</span><br><span class="line">    echo &quot;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&quot;</span><br><span class="line">    exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"># 检查数据路径是否存在</span><br><span class="line">if [ ! -d &quot;$ROSBAG_PATH&quot; ]; then</span><br><span class="line">    echo &quot;错误: 数据路径 &#x27;$ROSBAG_PATH&#x27; 不存在。请检查路径是否正确。&quot;</span><br><span class="line">    exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &quot;======================================================&quot;</span><br><span class="line">echo &quot;正在启动 LIO-SAM 容器...&quot;</span><br><span class="line">echo &quot;主机数据路径: $&#123;ROSBAG_PATH&#125;&quot;</span><br><span class="line">echo &quot;将映射到容器内: /root/rosbags&quot;</span><br><span class="line">echo &quot;======================================================&quot;</span><br><span class="line"></span><br><span class="line"># 1. 允许容器访问主机的X Server，用于显示GUI（如RViz）</span><br><span class="line">xhost +local:docker</span><br><span class="line"></span><br><span class="line"># 2. 运行Docker容器</span><br><span class="line"># [修正] 添加 --privileged 和 --ipc=host 参数以确保GUI和硬件访问正常</span><br><span class="line">docker run -it \</span><br><span class="line">    --name $&#123;CONTAINER_NAME&#125; \</span><br><span class="line">    --gpus all \</span><br><span class="line">    --net=host \</span><br><span class="line">    --privileged \</span><br><span class="line">    --ipc=host \</span><br><span class="line">    -e NVIDIA_DRIVER_CAPABILITIES=all \</span><br><span class="line">    -e DISPLAY=$DISPLAY \</span><br><span class="line">    -e QT_X11_NO_MITSHM=1 \</span><br><span class="line">    -v /tmp/.X11-unix:/tmp/.X11-unix \</span><br><span class="line">    -v /etc/localtime:/etc/localtime:ro \</span><br><span class="line">    -v $&#123;ROSBAG_PATH&#125;:/root/rosbags \</span><br><span class="line">    -v $(pwd)/LIO-SAM:/root/catkin_ws/src/LIO-SAM \</span><br><span class="line">    -v $(pwd)/scout:/root/catkin_ws/src/scout \</span><br><span class="line">    -v $(pwd)/velodyne_simulator:/root/catkin_ws/src/velodyne_simulator \</span><br><span class="line">    $&#123;IMAGE_NAME&#125;:$&#123;IMAGE_TAG&#125;</span><br><span class="line"></span><br><span class="line"># 脚本执行结束后，关闭对docker的显示访问权限</span><br><span class="line">echo &quot;======================================================&quot;</span><br><span class="line">echo &quot;容器已退出。正在关闭显示访问权限...&quot;</span><br><span class="line">echo &quot;======================================================&quot;</span><br><span class="line">xhost -local:docker</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>修改LIO_SAM源码</li>
+</ol>
+<p>对应修改如下部分，不修改的话可能会出错。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918160107196.png" alt="image-20250918160107196"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918160158514.png" alt="image-20250918160158514"></p>
+<p>最终整个文件夹内容如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918155805871.png" alt="image-20250918155805871"></p>
+<h2 id="构建与运行"><a href="#构建与运行" class="headerlink" title="构建与运行"></a>构建与运行</h2><ol>
+<li>修改run_docker.sh文件中ROSBAG_PATH路径，修改为自己存放文件的真实路径</li>
+<li>赋予脚本可执行权限：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/lio_sam_docker</span><br><span class="line">chmod +x build_docker.sh run_docker.sh</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>执行</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build_docker.sh</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>执行运行容器</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./run_docker.sh</span><br></pre></td></tr></table></figure>
+
+
+
+<p>至此，适合运行LIO_SAM的容器就这样构建好了。下面来运行一下建图算法。</p>
+<h2 id="下载数据集"><a href="#下载数据集" class="headerlink" title="下载数据集"></a>下载数据集</h2><p>这里提供一些LIO-SAM可直接跑的数据集，大家可自行下载：</p>
+<p><a target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/1gJHwfdHCRdjP7vuT556pv8atqrCJPbUq">https://drive.google.com/drive/folders/1gJHwfdHCRdjP7vuT556pv8atqrCJPbUq</a></p>
+<p>我选的是campus_small_dataset.bag</p>
+<p>下载完成之后，把数据及放入主机对应的存放数据的文件夹中，这样就能在容器中同步看到对应文件。</p>
+<p>在容器内查看.bag文件的属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosbag info campus.....</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@hita-JIGUANG-Series:~/rosbags# rosbag info campus_small_dataset.bag </span><br><span class="line">path:        campus_small_dataset.bag</span><br><span class="line">version:     2.0</span><br><span class="line">duration:    6:47s (407s)</span><br><span class="line">start:       Nov 12 2019 22:00:36.64 (1573567236.64)</span><br><span class="line">end:         Nov 12 2019 22:07:24.42 (1573567644.42)</span><br><span class="line">size:        1.6 GB</span><br><span class="line">messages:    209994</span><br><span class="line">compression: none [1877/1877 chunks]</span><br><span class="line">types:       sensor_msgs/Imu         [6a62c6daae103f4ff57a132d6f95cec2]</span><br><span class="line">             sensor_msgs/NavSatFix   [2d3a8cd499b9b4a0249fb98fd05cfa48]</span><br><span class="line">             sensor_msgs/PointCloud2 [1158d486dd51d683ce2f1be655c3c181]</span><br><span class="line">topics:      /gps/fix         2039 msgs    : sensor_msgs/NavSatFix  </span><br><span class="line">             /imu_correct   203912 msgs    : sensor_msgs/Imu        </span><br><span class="line">             /points_raw      4043 msgs    : sensor_msgs/PointCloud2</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这个数据包含gps数据，同时应该注意对应的话题名称，否则跑数据的时候容易看不到点云。</p>
+<h2 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h2><ol>
+<li>新打开一个容器终端（这里推荐使用vscvode来管理容器）</li>
+</ol>
+<p>找到容器内文件：<code>catkin_ws/src/config/params.yaml</code>,修改相应的话题名称，如下图所示</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918161636209.png" alt="image-20250918161636209"></p>
+<p>同时打开另外一个终端：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@hita-JIGUANG-Series:~/catkin_ws# roslaunch lio_sam run.launch </span><br><span class="line">... logging to /root/.ros/log/f3de565c-9467-11f0-a4d2-30e3a43fbf01/roslaunch-hita-JIGUANG-Series-203556.log</span><br><span class="line">Checking log directory for disk usage. This may take a while.</span><br><span class="line">......</span><br><span class="line">QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to &#x27;/tmp/runtime-root&#x27;</span><br><span class="line">[INFO] [1758183464.768135943]: ----&gt; Image Projection Started.</span><br><span class="line">[INFO] [1758183464.772692100]: ----&gt; Feature Extraction Started.</span><br><span class="line">[INFO] [1758183464.787230276]: ----&gt; Map Optimization Started.</span><br><span class="line">[INFO] [1758183464.797248216]: ----&gt; IMU Preintegration Started.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行建图文件</p>
+<p>再打开一个终端：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@hita-JIGUANG-Series:~/catkin_ws# cd ..</span><br><span class="line">root@hita-JIGUANG-Series:~# cd rosbags/</span><br><span class="line">root@hita-JIGUANG-Series:~/rosbags# rosbag play campus_small_dataset.bag </span><br><span class="line">[INFO] [1758183518.241132944]: Opening campus_small_dataset.bag</span><br><span class="line"></span><br><span class="line">Waiting 0.2 seconds after advertising topics... done.</span><br><span class="line"></span><br><span class="line">Hit space to toggle paused, or &#x27;s&#x27; to step.</span><br><span class="line"> [RUNNING]  Bag Time: 1573567236.641553   Duration: 0.000000 / 407.779318          [RUNNING]  Bag Time: 1573567236.641689   Duration: 0.000136 / 407.779318  </span><br></pre></td></tr></table></figure>
+
+<p>这样就能看到数据已经开始在rviz中显示了。</p>
+<p>结果如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918162038388.png" alt="image-20250918162038388"></p>
+<p>如果出现效果漂移：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/f3f59ebf1cb94a12a4af002e0fec194d.png" alt="img"></p>
+<p>只需要调整params.yaml的雷达还有liu对应的外参数即可：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250918162204331.png" alt="image-20250918162204331"></p>
+<p>这就是复现LIO_SAM的全过程。主要是搭建镜像花费了不少功夫，同时为后续操作省下不少时间。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/09/24/%E9%85%8D%E7%BD%AEgazebo%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83/" rel="prev" title="配置gazebo仿真环境">
+                  <i class="fa fa-angle-left"></i> 配置gazebo仿真环境
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/09/24/%E5%88%A9%E7%94%A8rosbag%E5%BD%95%E5%88%B6%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8CLIO_SAM%E5%BB%BA%E5%9B%BE/" rel="next" title="利用rosbag录制数据进行LIO_SAM建图">
+                  利用rosbag录制数据进行LIO_SAM建图 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

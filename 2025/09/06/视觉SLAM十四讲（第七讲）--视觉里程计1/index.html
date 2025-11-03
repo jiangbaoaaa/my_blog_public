@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250827205426113.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250827205748538.png">
 <meta property="article:published_time" content="2025-09-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-06T03:28:57.847Z">
+<meta property="article:modified_time" content="2025-09-09T09:08:43.999Z">
 <meta property="article:author" content="Hita">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/v2-217cfcb3eb1a1e1f8a7660b769ab2d64_r.jpg">
@@ -155,13 +155,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -228,9 +228,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-09-06 00:00:00 / 修改时间：11:28:57" itemprop="dateCreated datePublished" datetime="2025-09-06T00:00:00+08:00">2025-09-06</time>
+      <time title="创建时间：2025-09-06 00:00:00" itemprop="dateCreated datePublished" datetime="2025-09-06T00:00:00+08:00">2025-09-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-09-09 17:08:43" itemprop="dateModified" datetime="2025-09-09T17:08:43+08:00">2025-09-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -269,7 +275,7 @@
 </ul>
 <p>BRIEF (Binary Robust Independent Elementary Features) 是一种二进制特征描述子。它<strong>通过在特征点周围的图像块内选取若干个点对，比较它们的灰度值大小，并将比较结果（0或1）串联起来形成一个二进制字符串，作为该特征点的描述符</strong>。由于描述子是二进制的，因此在存储和匹配时都极为高效，通常使用汉明距离进行度量。ORB会在生成BRIEF之前，利用上一步计算出的<strong>特征点主方向</strong>，将BRIEF采用时所使用的点对模型旋转到与主方向一致，实现了旋转不变性，同时优化了选取的BRIEF点对的方法，从而能够提供更具区分度和鲁棒性的特征描述。</p>
 <hr>
-<h3 id="特征匹配"><a href="#特征匹配" class="headerlink" title="特征匹配"></a>特征匹配</h3><p>描述子与特征匹配并非两个独立的步骤，而这时因果相连、密不可分的。类似于描述子是生成嫌疑人的特征档案，而特征匹配就是按照档案去寻找嫌疑人。至于为什么不去找完全相同的，是因为同一个三维空间点在两张不同照片上提取的描述子，几乎不可能完全相同。特征匹配其实本质上是寻找最近邻而非寻找等同者的问题。因此后续需要一些筛选策略来剔除虽然相近但是不够确信的模糊匹配。（RANSAC等）</p>
+<h3 id="特征匹配"><a href="#特征匹配" class="headerlink" title="特征匹配"></a>特征匹配</h3><p>描述子与特征匹配并非两个独立的步骤，而这时因果相连、密不可分的。类似于描述子是生成嫌疑人的特征档案，而特征匹配就是按照档案去寻找嫌疑人。至于为什么不去找完全相同的，是因为同一个三维空间点在两张不同照片上提取的描述子，几乎不可能完全相同。&#x3D;&#x3D;特征匹配其实本质上是寻找最近邻而非寻找等同者的问题&#x3D;&#x3D;。因此后续需要一些筛选策略来剔除虽然相近但是不够确信的模糊匹配。（RANSAC等）</p>
 <p>特征匹配解决了SLAM中数据关联问题，即确定当前看到的路标与之前的对应关系，如果在两个图像中提取到了特征点，如何去寻找这两个集合元素的对应关系呢？最简单的时暴力匹配，<strong>测量每一个特征点到所有另外一组特征点的描述子的距离，取最近的为匹配点</strong>。对于浮点型的描述子，选择欧氏距离进行度量，对于二进制的描述子，选择汉明距离作为度量——不同位数的个数。但是，当特征点数量很大时，就需要很大的运算量，所以**快速近似最近邻（FLANN）**算法更适合匹配点数量多的情况。已经集成到OpenCV中了。</p>
 <hr>
 <h2 id="实践：特征提取和匹配"><a href="#实践：特征提取和匹配" class="headerlink" title="实践：特征提取和匹配"></a>实践：特征提取和匹配</h2><h3 id="OpenCV的ORB特征"><a href="#OpenCV的ORB特征" class="headerlink" title="OpenCV的ORB特征"></a>OpenCV的ORB特征</h3><p>第一个实验通过两张带有微小移动的图片来演示如何通过ORB来得到匹配结果估算相机的运动。</p>
@@ -343,7 +349,7 @@
 <p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250827194058967.png" alt="image-20250827194058967"></p>
 <p>当平移很小时，像素上的不确定性将导致较大的深度的不确定性，即平移越大，同样的相机分辨率下，三角化测量将更为精确。在单目视觉中，由于三角化存在视差，需要等待特征点被追踪几帧之后，产生足够的视角，再利用三角化来确定新增的特征点的深度值，这被称为：<strong>延迟三角化</strong>，但是最好相机不要发生原地旋转的情况。往往会导致追踪失败、尺度不正确等问题。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250827194814134.png" alt="image-20250827194814134"></p>
-<h2 id="3D-2D-PnP"><a href="#3D-2D-PnP" class="headerlink" title="3D-2D: PnP"></a>3D-2D: PnP</h2><p>PnP（Perspective-n-Point）是求解3D到2D点对运动的方法，描述当知道n个3D空间点及其投影位置时，如何估计相机的位姿。如果两张图像中的一张特征点的3D位置一直，那么最少需要3个点对就可以估计相机运动。特征点的3D位置可以由三角化或者RGB-D相机的深度图获取。所以可以直接在双目或者RGB-D的视觉里程计中使用PnP估计相机运动，但是在单目视觉里程计中，需要先进行初始化，才能使用PnP。</p>
+<h2 id="3D-2D-PnP"><a href="#3D-2D-PnP" class="headerlink" title="3D-2D: PnP"></a>3D-2D: PnP</h2><p>PnP（Perspective-n-Point）是求解3D到2D点对运动的方法，描述当知道n个3D空间点及其投影位置时，如何估计相机的位姿。如果两张图像中的一张特征点的3D位置已知，那么最少需要3个点对就可以估计相机运动。特征点的3D位置可以由三角化或者RGB-D相机的深度图获取。所以可以直接在双目或者RGB-D的视觉里程计中使用PnP估计相机运动，但是在单目视觉里程计中，需要先进行初始化，才能使用PnP。</p>
 <p>PnP有多种求解方法，P3P、直接线性变换(DLT)、EPnP、UPnP等等。还有光束法平差BA。</p>
 <h3 id="直接线性变换"><a href="#直接线性变换" class="headerlink" title="直接线性变换"></a>直接线性变换</h3><h3 id="P3P"><a href="#P3P" class="headerlink" title="P3P"></a>P3P</h3><h3 id="最小化重投影误差求解PnP"><a href="#最小化重投影误差求解PnP" class="headerlink" title="最小化重投影误差求解PnP"></a>最小化重投影误差求解PnP</h3><hr>
 <h2 id="实践：求解PnP"><a href="#实践：求解PnP" class="headerlink" title="实践：求解PnP"></a>实践：求解PnP</h2><p>新建文件<code>slambook/ch7/pose_estimation_3d2d.cpp</code></p>
@@ -393,13 +399,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2025/09/06/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%85%AB%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E8%A7%86%E8%A7%89%E9%87%8C%E7%A8%8B%E8%AE%A12/" rel="prev" title="第八讲-视觉里程计2">
-                  <i class="fa fa-angle-left"></i> 第八讲-视觉里程计2
+                <a href="/2025/09/06/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%85%AD%E8%AE%B2%EF%BC%89--%E9%9D%9E%E7%BA%BF%E6%80%A7%E4%BC%98%E5%8C%96/" rel="prev" title="第六讲-非线性优化">
+                  <i class="fa fa-angle-left"></i> 第六讲-非线性优化
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2025/09/06/%E8%A7%86%E8%A7%89SLAM14%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%90%8E%E7%AB%AF2/" rel="next" title="第十讲-后端2">
-                  第十讲-后端2 <i class="fa fa-angle-right"></i>
+                <a href="/2025/09/06/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%85%AB%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E8%A7%86%E8%A7%89%E9%87%8C%E7%A8%8B%E8%AE%A12/" rel="next" title="第八讲-视觉里程计2">
+                  第八讲-视觉里程计2 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Docker部署Fast_Lio准备主机环境 授予Docker非root用户权限  12sudo groupadd dockersudo usermod -aG docker $USER  需要退出重新登陆系统，使得用户组更改生效 创建并运行FAST_LIO的Docker容器 创建执行脚本  主目录下新建文件 1234touch run_fastlio.sh# 使用文本编辑器打开文件sudo ge">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker部署Fast_Lio">
+<meta property="og:url" content="http://gen2710.netlify.app/2025/09/24/Docker%E9%83%A8%E7%BD%B2Fast_Lio/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="Docker部署Fast_Lio准备主机环境 授予Docker非root用户权限  12sudo groupadd dockersudo usermod -aG docker $USER  需要退出重新登陆系统，使得用户组更改生效 创建并运行FAST_LIO的Docker容器 创建执行脚本  主目录下新建文件 1234touch run_fastlio.sh# 使用文本编辑器打开文件sudo ge">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-24T10:00:55.643Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://gen2710.netlify.app/2025/09/24/Docker%E9%83%A8%E7%BD%B2Fast_Lio/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/09/24/Docker%E9%83%A8%E7%BD%B2Fast_Lio/","path":"2025/09/24/Docker部署Fast_Lio/","title":"Docker部署Fast_Lio"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Docker部署Fast_Lio | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker%E9%83%A8%E7%BD%B2Fast-Lio"><span class="nav-number">1.</span> <span class="nav-text">Docker部署Fast_Lio</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E4%B8%BB%E6%9C%BA%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">准备主机环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E8%BF%90%E8%A1%8CFAST-LIO%E7%9A%84Docker%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">创建并运行FAST_LIO的Docker容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDRosbag"><span class="nav-number">1.3.</span> <span class="nav-text">下载Rosbag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.4.</span> <span class="nav-text">运行示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2FAST-LIO%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4"><span class="nav-number">1.5.</span> <span class="nav-text">部署FAST_LIO工作空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8CSCOUT-MINI%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83"><span class="nav-number">1.6.</span> <span class="nav-text">运行SCOUT_MINI仿真环境</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/09/24/Docker%E9%83%A8%E7%BD%B2Fast_Lio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/jiangbaoaaa/my_blog_img/main/myself.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Docker部署Fast_Lio | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker部署Fast_Lio
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-09-24 00:00:00 / 修改时间：18:00:55" itemprop="dateCreated datePublished" datetime="2025-09-24T00:00:00+08:00">2025-09-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Docker部署Fast-Lio"><a href="#Docker部署Fast-Lio" class="headerlink" title="Docker部署Fast_Lio"></a>Docker部署Fast_Lio</h1><h2 id="准备主机环境"><a href="#准备主机环境" class="headerlink" title="准备主机环境"></a>准备主机环境</h2><ol>
+<li>授予Docker非root用户权限</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> groupadd docker</span><br><span class="line"><span class="built_in">sudo</span> usermod -aG docker <span class="variable">$USER</span></span><br></pre></td></tr></table></figure>
+
+<p>需要退出重新登陆系统，使得用户组更改生效</p>
+<h2 id="创建并运行FAST-LIO的Docker容器"><a href="#创建并运行FAST-LIO的Docker容器" class="headerlink" title="创建并运行FAST_LIO的Docker容器"></a>创建并运行FAST_LIO的Docker容器</h2><ol>
+<li>创建执行脚本</li>
+</ol>
+<p>主目录下新建文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">touch run_fastlio.sh</span><br><span class="line"></span><br><span class="line"># 使用文本编辑器打开文件</span><br><span class="line">sudo gedit run_fastlio.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">mkdir docker_ws</span><br><span class="line"># Script to run ROS Kinetic with GUI support in Docker</span><br><span class="line"></span><br><span class="line"># Allow X server to be accessed from the local machine</span><br><span class="line">xhost +local:</span><br><span class="line"></span><br><span class="line"># Container name</span><br><span class="line">CONTAINER_NAME=&quot;fastlio2&quot;</span><br><span class="line"></span><br><span class="line"># Run the Docker container</span><br><span class="line">docker run -itd \</span><br><span class="line">  --name=$CONTAINER_NAME \</span><br><span class="line">  --user mars_ugv \</span><br><span class="line">  --network host \</span><br><span class="line">  --ipc=host \</span><br><span class="line">  -v /home/$USER/docker_ws:/home/mars_ugv/docker_ws \</span><br><span class="line">  --privileged \</span><br><span class="line">  --env=&quot;QT_X11_NO_MITSHM=1&quot; \</span><br><span class="line">  --volume=&quot;/etc/localtime:/etc/localtime:ro&quot; \</span><br><span class="line">  -v /dev/bus/usb:/dev/bus/usb \</span><br><span class="line">  --device=/dev/dri \</span><br><span class="line">  --group-add video \</span><br><span class="line">  -v /tmp/.X11-unix:/tmp/.X11-unix \</span><br><span class="line">  --env=&quot;DISPLAY=$DISPLAY&quot; \</span><br><span class="line">  kenny0407/marslab_fastlio2:latest \</span><br><span class="line">  /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>脚本内容理解</p>
+<ul>
+<li><p>mkdir docker_ws: 这会在当前目录下创建一个名为 docker_ws 的文件夹。这个文件夹将作为您的主机和Docker容器之间的共享文件夹。之后下载的数据集就要放在这里。</p>
+</li>
+<li><p>xhost +local:: 这条命令允许容器内的图形界面程序（比如RViz可视化工具）显示在您的主机桌面上。</p>
+</li>
+<li><p>docker run -itd …: 这是核心命令。</p>
+</li>
+<li><p>它会从Docker Hub上下载 kenny0407&#x2F;marslab_fastlio2:latest 这个镜像文件。这个镜像已经包含了Ubuntu, ROS, FAST-LIO以及所有必需的库。下载速度取决于您的网络情况，请耐心等待。</p>
+</li>
+<li><p>–name&#x3D;”fastlio2”: 给创建的容器命名为 fastlio2。</p>
+</li>
+<li><p>-v &#x2F;home&#x2F;$USER&#x2F;docker_ws:&#x2F;home&#x2F;mars_ugv&#x2F;docker_ws: 这是最关键的一步，它将您主机上的 docker_ws 文件夹映射到容器内的 &#x2F;home&#x2F;mars_ugv&#x2F;docker_ws 文件夹。这意味着，您在主机 docker_ws 文件夹里放任何文件，容器里会同步出现，反之亦然。</p>
+</li>
+</ul>
+<hr>
+<ol start="2">
+<li>执行脚本</li>
+</ol>
+<p>给可执行权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x run_fastlio.sh</span><br></pre></td></tr></table></figure>
+
+<p>执行脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./run_fastlio.sh</span><br><span class="line"></span><br><span class="line"># 输出：</span><br><span class="line">Digest: sha256:a95402bb9e9a8ec579399506966dd6641d668a1e6caf85f1b49738157df37a01</span><br><span class="line">Status: Downloaded newer image for kenny0407/marslab_fastlio2:latest</span><br><span class="line">203235d887ce2f662b1245ae237a26ebb1179b8a63d58bf92be97500fc0f8ce9</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果执行之后没有报错，可以通过 <code>docker ps</code>看到一个名为 <code>fastlio2</code>的容器在后台运行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-JIGUANG-Series:~$ docker ps</span><br><span class="line">CONTAINER ID   IMAGE                               COMMAND                   CREATED          STATUS          PORTS     NAMES</span><br><span class="line">203235d887ce   kenny0407/marslab_fastlio2:latest   &quot;/bin/bash /entrypoi…&quot;   51 seconds ago   Up 50 seconds             fastlio2</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="下载Rosbag"><a href="#下载Rosbag" class="headerlink" title="下载Rosbag"></a>下载Rosbag</h2><p>网址：<a target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/1CGYEJ9-wWjr8INyan6q1BZz_5VtGB-fP?usp=sharing">https://drive.google.com/drive/folders/1CGYEJ9-wWjr8INyan6q1BZz_5VtGB-fP?usp=sharing</a></p>
+<p>下载其中的一个.bag文件，把这个文件移动到创建的docker_ws文件夹中。</p>
+<h2 id="运行示例"><a href="#运行示例" class="headerlink" title="运行示例"></a>运行示例</h2><ol>
+<li>在主机终端输入以下命令，进入正在后台运行的fastlio2容器</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it fastlio2 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>运行FAST_LIO节点</li>
+</ol>
+<p>在第一个容器终端中，启动fast_lio的mapping节点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roslaunch fast_lio mapping_avia.launch</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>播放rosbag数据</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/docker_ws</span><br><span class="line">ls  # 确认能看到 .bag 文件</span><br><span class="line">rosbag play hku_lg_indoors.bag</span><br></pre></td></tr></table></figure>
+
+<p>此时应该已经可以在rviz中看到建图过程了。</p>
+<hr>
+<h2 id="部署FAST-LIO工作空间"><a href="#部署FAST-LIO工作空间" class="headerlink" title="部署FAST_LIO工作空间"></a>部署FAST_LIO工作空间</h2><p>由于已经新建了一个共享文件夹：docker_ws</p>
+<p>可以实现容器内与主机之间的文件传输，所以后续的开发都是基于这个文件夹下操作（在容器内可能Git不太方便）。</p>
+<p>首先把catkin_ws中的FAST_LIO文件夹复制docker_ws&#x2F;src中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ mkdir -p ~/docker_ws/src</span><br><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ cd src</span><br><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws/src$ catkin_init_workspace</span><br><span class="line">Creating symlink &quot;/home/mars_ugv/docker_ws/src/CMakeLists.txt&quot; pointing to &quot;/opt/ros/noetic/share/catkin/cmake/toplevel.cmake&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后在主目录下下载scout仿真模型，并且放在同样的src目录下</p>
+<p>首先解决在容器内使用软件源安全密钥过期问题，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install curl</span><br><span class="line">curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+
+<p>再添加必要的依赖项：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install ros-noetic-ros-control ros-noetic-ros-controllers</span><br><span class="line">sudo apt-get install ros-noetic-gazebo-ros ros-noetic-gazebo-ros-control</span><br><span class="line">sudo apt-get install ros-noetic-teleop-twist-keyboard</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mars_ugv@hita-JIGUANG-Series:~$ cd ~/docker_ws/</span><br><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ catkin_make</span><br></pre></td></tr></table></figure>
+
+<p>编译成功就没问题了。</p>
+<p>测试一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ export LIBGL_ALWAYS_SOFTWARE=1</span><br><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ roslaunch fast_lio mapping_avia.launch</span><br><span class="line"># 新建一个终端</span><br><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ rosbag play ./rosbag_data/outdoor_run_100Hz_2020-12-27-17-12-19.bag </span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="运行SCOUT-MINI仿真环境"><a href="#运行SCOUT-MINI仿真环境" class="headerlink" title="运行SCOUT_MINI仿真环境"></a>运行SCOUT_MINI仿真环境</h2><p>前面已经编译好了程序，在终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ source devel/setup.bash</span><br><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ roslaunch scout_gazebo_sim scout_empty_world.launch</span><br><span class="line"># 新建终端</span><br><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ source devel/setup.bash</span><br><span class="line">mars_ugv@hita-JIGUANG-Series:~/docker_ws$ rosrun teleop_twist_keyboard teleop_twist_keyboard.py </span><br></pre></td></tr></table></figure>
+
+<p>在键盘操作，可以使得小车在模型中移动。至此整个环境安装部署完毕。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/09/24/%E5%88%A9%E7%94%A8rosbag%E5%BD%95%E5%88%B6%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8CLIO_SAM%E5%BB%BA%E5%9B%BE/" rel="prev" title="利用rosbag录制数据进行LIO_SAM建图">
+                  <i class="fa fa-angle-left"></i> 利用rosbag录制数据进行LIO_SAM建图
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
