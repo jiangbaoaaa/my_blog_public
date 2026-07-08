@@ -14,15 +14,15 @@
 
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="第七章：3D SLAM三维激光雷达的信息比二维激光雷达的信息更丰富，不容易被遮挡，能够更好地重建场地的三维结构，既可以对三维点云直接进行匹配，也可以提取一些几何特征之后再配准。 多线激光雷达的工作原理机械旋转激光雷达多线激光雷达的工作原理可以概括为： 在垂直方向上同时发射多数不同角度的激光，通过整体的水平旋转，将这些线扫描成为面，最终利用ToF测距原理，实时绘制出周围环境的三维点云地图。  固态激">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第七章：3D SLAM">
-<meta property="og:url" content="http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/index.html">
+<meta property="og:url" content="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/index.html">
 <meta property="og:site_name" content="U.N.O">
 <meta property="og:description" content="第七章：3D SLAM三维激光雷达的信息比二维激光雷达的信息更丰富，不容易被遮挡，能够更好地重建场地的三维结构，既可以对三维点云直接进行匹配，也可以提取一些几何特征之后再配准。 多线激光雷达的工作原理机械旋转激光雷达多线激光雷达的工作原理可以概括为： 在垂直方向上同时发射多数不同角度的激光，通过整体的水平旋转，将这些线扫描成为面，最终利用ToF测距原理，实时绘制出周围环境的三维点云地图。  固态激">
 <meta property="og:locale" content="zh_CN">
@@ -47,16 +47,16 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028104757650.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028105346791.png">
 <meta property="article:published_time" content="2025-11-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-03T02:56:24.032Z">
+<meta property="article:modified_time" content="2026-07-08T03:08:51.918Z">
 <meta property="article:author" content="Hita">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://th.bing.com/th/id/R.e1d76dadbb311a3597eb73f8e4a89ce0?rik=sRlyuHN3R9XJvg&riu=http://i1.kknews.cc/_XWGNGVBB_5H2gKMUxYdfwZXWkAlvyU/0.jpg&ehk=b8dr7KH6Qs9Z43OuvjvdTA2WIH6/Wyr3l87Rc+DWENU=&risl=&pid=ImgRaw&r=0">
 
 
-<link rel="canonical" href="http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/">
+<link rel="canonical" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/","path":"2025/11/03/第七章：3D SLAM/","title":"第七章：3D SLAM"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/","path":"2025/11/03/第七章：3D SLAM/","title":"第七章：3D SLAM"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>第七章：3D SLAM | U.N.O</title>
@@ -208,7 +208,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
@@ -236,9 +236,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-11-03 00:00:00 / 修改时间：10:56:24" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
+      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
