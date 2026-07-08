@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="W2 Day2 · Reeds-Shepp 曲线生成逻辑本文按报告第 2 章结构（2.1–2.6）组织，内容 + 行号都来自源码核实。报告里 Day2 负责”RS 曲线生成逻辑“这一交付物，同时贡献”关键类 &#x2F; 关键函数”的算法层部分：   关键类 → 2.2 ReedsSheppStateSpace 关键函数 → 2.3（reedsShepp 取最短 + 5 个分组生成函数 + dis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reeds-Shepp 曲线生成逻辑">
+<meta property="og:url" content="https://gen2710.netlify.app/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="W2 Day2 · Reeds-Shepp 曲线生成逻辑本文按报告第 2 章结构（2.1–2.6）组织，内容 + 行号都来自源码核实。报告里 Day2 负责”RS 曲线生成逻辑“这一交付物，同时贡献”关键类 &#x2F; 关键函数”的算法层部分：   关键类 → 2.2 ReedsSheppStateSpace 关键函数 → 2.3（reedsShepp 取最短 + 5 个分组生成函数 + dis">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-08T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-08T06:07:50.829Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://gen2710.netlify.app/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gen2710.netlify.app/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/","path":"2026/07/08/W2_Day2_RS曲线生成_标注走读/","title":"Reeds-Shepp 曲线生成逻辑"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Reeds-Shepp 曲线生成逻辑 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#W2-Day2-%C2%B7-Reeds-Shepp-%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90%E9%80%BB%E8%BE%91"><span class="nav-number">1.</span> <span class="nav-text">W2 Day2 · Reeds-Shepp 曲线生成逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RS-%E6%9B%B2%E7%BA%BF%E5%9C%A8%E8%A7%84%E5%88%92%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E5%AE%9A%E4%BD%8D%E4%B8%8E%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.</span> <span class="nav-text">RS 曲线在规划框架中的定位与功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E7%B1%BB%EF%BC%9AReedsSheppStateSpace%EF%BC%88%E6%88%90%E5%91%98%E8%A1%A8%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">关键类：ReedsSheppStateSpace（成员表）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">关键函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A0-reedsShepp-%E5%8F%96%E6%9C%80%E7%9F%AD%E5%85%A5%E5%8F%A3%EF%BC%88cpp-L608%EF%BC%89%E2%80%94%E2%80%94%E6%95%B4%E4%B8%AA-RS-%E7%94%9F%E6%88%90%E7%9A%84%E6%80%BB%E8%B0%83%E5%BA%A6"><span class="nav-number">1.3.1.</span> <span class="nav-text">① reedsShepp 取最短入口（cpp L608）——整个 RS 生成的总调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A1-CSC-%E5%88%86%E7%BB%84%E7%94%9F%E6%88%90%E5%99%A8%EF%BC%88cpp-L158%EF%BC%89%E2%80%94%E2%80%94%E5%AF%B9%E7%A7%B0%E5%8F%98%E6%8D%A2%E7%BF%BB%E5%80%8D%E7%9A%84%E6%A0%B7%E6%9D%BF"><span class="nav-number">1.3.2.</span> <span class="nav-text">② CSC 分组生成器（cpp L158）——对称变换翻倍的样板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A2-distance%EF%BC%88cpp-L656%EF%BC%89%E2%80%94%E2%80%94A-%E5%90%AF%E5%8F%91%E5%87%BD%E6%95%B0%E6%9C%80%E7%BB%88%E8%B0%83%E7%9A%84%E5%B0%B1%E6%98%AF%E5%AE%83"><span class="nav-number">1.3.3.</span> <span class="nav-text">③ distance（cpp L656）——A* 启发函数最终调的就是它</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RS-%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90%E9%80%BB%E8%BE%91"><span class="nav-number">1.4.</span> <span class="nav-text">RS 曲线生成逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E7%A7%8D%E5%BD%A2%E7%8A%B6-%C3%97-%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%90%91-6-%E5%9F%BA%E5%85%83"><span class="nav-number">1.4.1.</span> <span class="nav-text">三种形状 × 两种方向 &#x3D; 6 基元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%AF%E5%BE%84%E7%B1%BB%E5%9E%8B%E8%A1%A8%EF%BC%9A18-%E7%B1%BB%EF%BC%88cpp-L623%E2%80%93642%EF%BC%89"><span class="nav-number">1.4.2.</span> <span class="nav-text">路径类型表：18 类（cpp L623–642）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90-%E5%8F%96%E6%9C%80%E7%9F%AD%E6%B5%81%E7%A8%8B"><span class="nav-number">1.4.3.</span> <span class="nav-text">生成 + 取最短流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AE%A4%E7%9F%A5%EF%BC%9A%E5%88%86%E6%AE%B5%E5%B8%B8%E6%9B%B2%E7%8E%87%EF%BC%8CG1-%E8%BF%9E%E7%BB%AD%E4%BD%86%E6%9B%B2%E7%8E%87%E4%B8%8D%E8%BF%9E%E7%BB%AD"><span class="nav-number">1.4.4.</span> <span class="nav-text">关键认知：分段常曲率，G1 连续但曲率不连续</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">关键参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RS-%E5%9C%A8%E6%95%B4%E6%9D%A1%E9%93%BE%E8%B7%AF%E9%87%8C%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.6.</span> <span class="nav-text">RS 在整条链路里的位置</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Reeds-Shepp 曲线生成逻辑 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Reeds-Shepp 曲线生成逻辑
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:07:50" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="W2-Day2-·-Reeds-Shepp-曲线生成逻辑"><a href="#W2-Day2-·-Reeds-Shepp-曲线生成逻辑" class="headerlink" title="W2 Day2 · Reeds-Shepp 曲线生成逻辑"></a>W2 Day2 · Reeds-Shepp 曲线生成逻辑</h1><p>本文按<strong>报告第 2 章结构</strong>（2.1–2.6）组织，内容 + 行号都来自源码核实。报告里 Day2 负责”<strong>RS 曲线生成逻辑</strong>“这一交付物，同时贡献”关键类 &#x2F; 关键函数”的<strong>算法层</strong>部分：</p>
+<blockquote>
+<ul>
+<li><strong>关键类</strong> → 2.2 <code>ReedsSheppStateSpace</code></li>
+<li><strong>关键函数</strong> → 2.3（<code>reedsShepp</code> 取最短 + 5 个分组生成函数 + <code>distance</code>&#x2F;<code>interpolate</code>）</li>
+<li><strong>RS 曲线生成逻辑</strong> → 2.4（核心）</li>
+</ul>
+<p>源码：<a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/src/reeds_shepp.cpp">reeds_shepp.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/include/freespace_planning_algorithms/reeds_shepp.hpp">reeds_shepp.hpp</a></p>
+<p>上游衔接：Day1 的 <code>makePlan</code>(L487) → A* → <code>estimateCost</code> → 本节 RS。下游：Day3 Hybrid A* 深读。</p>
+</blockquote>
+<hr>
+<h2 id="RS-曲线在规划框架中的定位与功能"><a href="#RS-曲线在规划框架中的定位与功能" class="headerlink" title="RS 曲线在规划框架中的定位与功能"></a>RS 曲线在规划框架中的定位与功能</h2><p>汽车不能像机器人那样原地旋转，必须遵守非完整运动学约束，即受限于最小转弯半径。</p>
+<ul>
+<li><strong>RS功能：在</strong>最小转弯半径约束<strong>下、<strong>允许前进 + 倒车</strong>，连接两个位姿 <code>(x, y, θ)</code> 的</strong>最短路径**。是 Dubins 曲线推广。</li>
+<li><strong>为什么泊车要用它</strong>：侧方&#x2F;倒车入库必须倒车，普通几何曲线（只前进）做不到；RS 给出”前进段 + 倒车段”拼接的最短解。</li>
+<li><strong>在这个模块的作用</strong>：RS 是 <code>freespace_planning_algorithms</code> 算法库里的<strong>几何工具</strong>，RS曲线并非直接求解从起点到终点的最终路径，而是作为图搜索算法（A* RRT*）的节点拓展工具。主要负责两个功能：<ol>
+<li><strong>启发函数</strong>（heuristic）：估”从当前点到终点还多远”，引导 A* 往终点搜（<code>astar_search.cpp:227</code>）。</li>
+<li><strong>shoot &#x2F; 终结</strong>：搜到某点时用 RS 直奔终点，命中即接上**（Day3 详读）**。</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. FreespacePlannerNode&lt;br&gt;(处理ROS消息与状态机)&quot;] --&gt; Astar[&quot;2. AstarSearch 或 RRT*&lt;br&gt;(基于Costmap进行全局避障寻路)&quot;]</span><br><span class="line">    Astar -- &quot;A*尝试直达终点 / RRT*尝试向外生长&quot; --&gt; RS[&quot;3. ReedsSheppStateSpace&lt;br&gt;(输入 s0 和 s1 计算两点间最短曲线)&quot;]</span><br><span class="line">    RS -- &quot;返回离散点集与代价&quot; --&gt; Astar</span><br></pre></td></tr></table></figure>
+
+<p>在 <strong>Hybrid A</strong>* 中，RS 曲线常被用作 <strong>Shot Heuristic (解析解剪枝)</strong>：当算法探索到一个靠近终点的节点时，如果不考虑障碍物，直接用 RS 曲线连向终点。如果这条 RS 曲线在 Costmap 上不碰撞，搜索就直接宣告成功，极大地加速了计算。</p>
+<hr>
+<h2 id="关键类：ReedsSheppStateSpace（成员表）"><a href="#关键类：ReedsSheppStateSpace（成员表）" class="headerlink" title="关键类：ReedsSheppStateSpace（成员表）"></a>关键类：<code>ReedsSheppStateSpace</code>（成员表）</h2><blockquote>
+<p>类声明：<code>class ReedsSheppStateSpace</code>（hpp L93）。它<strong>不是 ROS 节点</strong>，是纯几何工具类（无订阅&#x2F;发布&#x2F;定时器）。读它看”持有什么状态 + 提供哪些几何方法”。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型 &#x2F; 签名</th>
+<th>行号</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rho_</code></td>
+<td><code>double</code></td>
+<td>hpp L138</td>
+<td><strong>转弯半径</strong>（唯一状态），所有弧的半径</td>
+</tr>
+<tr>
+<td>枚举 <code>ReedsSheppPathSegmentType</code></td>
+<td><code>{RS_NOP, RS_LEFT, RS_STRAIGHT, RS_RIGHT}</code></td>
+<td>hpp L97</td>
+<td><strong>段形状</strong>（4 种，注意：方向不在这里）</td>
+</tr>
+<tr>
+<td><code>reedsSheppPathType[18][5]</code></td>
+<td><code>static const</code> 表</td>
+<td>hpp L100 &#x2F; cpp L623</td>
+<td><strong>18 种路径类型</strong>（每类是一组段形状序列）</td>
+</tr>
+<tr>
+<td>内部类 <code>ReedsSheppPath</code></td>
+<td>—</td>
+<td>hpp L103</td>
+<td>一条路径的完整描述：<code>type_</code> + <code>length_[5]</code> + <code>totalLength_</code></td>
+</tr>
+<tr>
+<td><code>struct StateXYT</code></td>
+<td><code>{x, y, yaw}</code></td>
+<td>hpp L121</td>
+<td>输入位姿（位置 + 航向）</td>
+</tr>
+<tr>
+<td><code>distance(s0, s1)</code></td>
+<td>方法</td>
+<td>hpp L130 &#x2F; cpp L656</td>
+<td>返回两位姿的<strong>RS 最短距离</strong>（米）</td>
+</tr>
+<tr>
+<td><code>reedsShepp(s0, s1)</code></td>
+<td>方法</td>
+<td>hpp L133 &#x2F; cpp L661</td>
+<td>返回<strong>最短路径对象</strong></td>
+</tr>
+<tr>
+<td><code>interpolate(s0, path, seg)</code></td>
+<td>方法</td>
+<td>hpp L135 &#x2F; cpp L670</td>
+<td>沿路径<strong>采样</strong>一个点（给定弧长）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<ul>
+<li><strong>方向（前进&#x2F;倒车）不在枚举里</strong>，而在 <code>length_[i]</code> 的<strong>正负号</strong>：正&#x3D;前进，负&#x3D;倒车。枚举只编码”直&#x2F;左&#x2F;右”三种<strong>形状</strong>。</li>
+<li><strong>路径类型是 18 类</strong>（不是网上常说的 48）。<code>reedsSheppPathType[18][5]</code>（cpp L623），48 是对称展开的理论数，代码用 18 规范行 + 对称变换实现。数组大小是[18,5]因为一个RS曲线最多由5个运动段组成。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="关键函数"><a href="#关键函数" class="headerlink" title="关键函数"></a>关键函数</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>行号</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>reedsShepp(x,y,phi)</code>（匿名命名空间）</td>
+<td>cpp L608</td>
+<td><strong>★取最短入口</strong>：依次调 5 个分组生成器，全程保留最短路径</td>
+</tr>
+<tr>
+<td><code>CSC</code> &#x2F; <code>CCC</code> &#x2F; <code>CCCC</code> &#x2F; <code>CCSC</code> &#x2F; <code>CCSCC</code></td>
+<td>cpp L158 &#x2F; L235 &#x2F; L332 &#x2F; L430 &#x2F; L575</td>
+<td><strong>5 个分组生成器</strong>：各算一类候选路径，用对称变换翻倍后留最短</td>
+</tr>
+<tr>
+<td><code>distance(s0, s1)</code></td>
+<td>cpp L656</td>
+<td><code>rho_ * path.length()</code> —— 归一化长度 × 半径 &#x3D; 实际米数</td>
+</tr>
+<tr>
+<td><code>reedsShepp(s0, s1)</code>（类方法）</td>
+<td>cpp L661</td>
+<td>坐标转到起点系 + 除以 <code>rho_</code> 归一化 → 调匿名 <code>reedsShepp</code></td>
+</tr>
+<tr>
+<td><code>interpolate(s0, path, seg)</code></td>
+<td>cpp L670</td>
+<td>沿路径走 <code>seg</code> 弧长，逐段积分出目标点（见证曲率跳变）</td>
+</tr>
+<tr>
+<td>8 个公式函数 <code>LpSpLp</code> 等</td>
+<td>cpp L125–L555</td>
+<td>各对应 RS 论文一个 formula（8.1–8.11），算单一几何解</td>
+</tr>
+</tbody></table>
+<p>**核心数学结算：**CSC等生成器，内部会调用LpSpLp等函数，然后再接着被核心函数reedsShepp()依次调用，每次调用都会比较当前算出的路径长度与已有最短长度比较，保留最短的一条。</p>
+<p>**对外计算接口：**ReedsShepp,外界获取最短路径的方法，首相将起点与终点之间的相对差值，进行平移旋转，转化为相对于原点的目标点。除以最小转弯半径，把问题归一化到单位园的集合问题上，调用匿名函数reedsShepp结算最短路径。. </p>
+<p>**轨迹离散化：*<em>interpolate，会给定一条RS path 和一个长度 seg (通常是离散步长，如0.1米)，通过积分计算出在0.1米处，车辆实际坐标。这样，可以使得外层A</em>等全局算法，每隔0.1米采样一个点，然后去Costmap上确认是否撞墙。</p>
+<p>下面贴<strong>最关键的两个</strong>（<code>reedsShepp</code> 取最短 + <code>CSC</code> 分组生成器）带标注代码。</p>
+<h3 id="①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度"><a href="#①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度" class="headerlink" title="① reedsShepp 取最短入口（cpp L608）——整个 RS 生成的总调度"></a>① <code>reedsShepp</code> 取最短入口（cpp L608）——整个 RS 生成的总调度</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ReedsSheppStateSpace::ReedsSheppPath <span class="title">reedsShepp</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ReedsSheppStateSpace::ReedsSheppPath path;   <span class="comment">// 默认 length = max（“目前最短”初值设无穷大）</span></span><br><span class="line">  <span class="built_in">CSC</span>(x, y, phi, path);     <span class="comment">// L611  圆弧-直线-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCC</span>(x, y, phi, path);     <span class="comment">// L612  三圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCCC</span>(x, y, phi, path);    <span class="comment">// L613  四圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSC</span>(x, y, phi, path);    <span class="comment">// L614  圆弧-圆弧-直-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSCC</span>(x, y, phi, path);   <span class="comment">// L615  圆弧-圆弧-直-圆弧-圆弧类候选</span></span><br><span class="line">  <span class="keyword">return</span> path;              <span class="comment">// 全程只留最短，返回的就是最短路径</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p><code>path</code> 是<strong>引用传入</strong>每个分组函数，初值 <code>length=max</code>。每个分组里每算出一个候选 <code>L</code>，只要 <code>L &lt; path.length()</code> 就覆盖 <code>path</code>。<br>所以”取最短”不是最后比一次，而是<strong>边算边贪心更新</strong>——5 个分组跑完，<code>path</code> 自然就是全局最短。</p>
+</blockquote>
+<h3 id="②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板"><a href="#②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板" class="headerlink" title="② CSC 分组生成器（cpp L158）——对称变换翻倍的样板"></a>② <code>CSC</code> 分组生成器（cpp L158）——对称变换翻倍的样板</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CSC</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi, ReedsSheppStateSpace::ReedsSheppPath &amp; path)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">double</span> t, u, v, L_min = path.<span class="built_in">length</span>(), L;</span><br><span class="line">  <span class="comment">// 基本形 LpSpLp（左-直-左，全前进）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, y, phi, t, u, v) &amp;&amp; L_min &gt; (L = std::<span class="built_in">abs</span>(t)+std::<span class="built_in">abs</span>(u)+std::<span class="built_in">abs</span>(v))) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], t, u, v);   <span class="comment">// 类型行 14</span></span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip：坐标/符号取反 → 得到“全倒车”版本（同一条形状，方向全反）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], -t, -u, -v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// reflect：y、phi 取反 → 左右镜像（左转变右转）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, -y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], t, u, v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip + reflect：两者叠加</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, -y, phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], -t, -u, -v);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// …后面还有 LpSpRp（左-直-右）的同样 4 种对称，共 8 个候选</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="③-distance（cpp-L656）——A-启发函数最终调的就是它"><a href="#③-distance（cpp-L656）——A-启发函数最终调的就是它" class="headerlink" title="③ distance（cpp L656）——A* 启发函数最终调的就是它"></a>③ <code>distance</code>（cpp L656）——A* 启发函数最终调的就是它</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">ReedsSheppStateSpace::distance</span><span class="params">(<span class="type">const</span> StateXYT &amp; s0, <span class="type">const</span> StateXYT &amp; s1)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> rho_ * <span class="built_in">reedsShepp</span>(s0, s1).<span class="built_in">length</span>();   <span class="comment">// 归一化长度 × 半径 = 实际米数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这就是 Day1→Day2 的接口：A* 的 <code>estimateCost</code>(astar_search.cpp:227) → <code>calcReedsSheppDistance</code>(L31) → 本函数 → 给 A* 当”到终点还多远”的启发值。</p>
+</blockquote>
+<hr>
+<h2 id="RS-曲线生成逻辑"><a href="#RS-曲线生成逻辑" class="headerlink" title="RS 曲线生成逻辑"></a>RS 曲线生成逻辑</h2><h3 id="三种形状-×-两种方向-6-基元"><a href="#三种形状-×-两种方向-6-基元" class="headerlink" title="三种形状 × 两种方向 &#x3D; 6 基元"></a>三种形状 × 两种方向 &#x3D; 6 基元</h3><p>RS 把任意路径切成”段”，每段是下面 3 种<strong>形状</strong>之一，方向由长度正负决定：</p>
+<table>
+<thead>
+<tr>
+<th>形状</th>
+<th>枚举（hpp L97）</th>
+<th>曲率</th>
+<th>弧长正</th>
+<th>弧长负</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>直行</td>
+<td><code>RS_STRAIGHT</code></td>
+<td><code>0</code></td>
+<td>前进直行</td>
+<td>倒车直行</td>
+</tr>
+<tr>
+<td>左转弧</td>
+<td><code>RS_LEFT</code></td>
+<td><code>+1/rho_</code></td>
+<td>前进左转</td>
+<td>倒车左转</td>
+</tr>
+<tr>
+<td>右转弧</td>
+<td><code>RS_RIGHT</code></td>
+<td><code>−1/rho_</code></td>
+<td>前进右转</td>
+<td>倒车右转</td>
+</tr>
+<tr>
+<td>（占位）</td>
+<td><code>RS_NOP</code></td>
+<td>—</td>
+<td>未用段填这个</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p>→ <strong>3 形状 × 2 方向 &#x3D; 6 基元</strong>（S+&#x2F;S−&#x2F;L+&#x2F;L−&#x2F;R+&#x2F;R−）。<code>RS_NOP</code> 仅用于把不足 5 段的路径补齐。</p>
+<blockquote>
+<p>公式函数命名就是这个意思：<code>LpSpLp</code> &#x3D; Left-plus、Straight-plus、Left-plus（全前进的”左-直-左”）；<code>m</code>&#x3D;minus&#x3D;倒车，如 <code>LpRmL</code>&#x3D;左前-右倒-左前。</p>
+</blockquote>
+<h3 id="路径类型表：18-类（cpp-L623–642）"><a href="#路径类型表：18-类（cpp-L623–642）" class="headerlink" title="路径类型表：18 类（cpp L623–642）"></a>路径类型表：18 类（cpp L623–642）</h3><p>每类是一组”段形状序列”（最多 5 段，多的位填 <code>RS_NOP</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>类型行</th>
+<th>段形状序列</th>
+<th>举例含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CCC</td>
+<td>0 &#x2F; 1</td>
+<td>L-R-L &#x2F; R-L-R</td>
+<td>三圆弧（如 LRL）</td>
+</tr>
+<tr>
+<td>CCCC</td>
+<td>2 &#x2F; 3</td>
+<td>L-R-L-R &#x2F; R-L-R-S&#x2F;…</td>
+<td>四圆弧</td>
+</tr>
+<tr>
+<td>CCSC</td>
+<td>4–11</td>
+<td>含一段直线的 4 段组合</td>
+<td>圆-圆-直-圆 等</td>
+</tr>
+<tr>
+<td>CSC</td>
+<td>12–15</td>
+<td>L-S-R &#x2F; R-S-L &#x2F; L-S-L &#x2F; R-S-R</td>
+<td><strong>圆-直-圆</strong>（最常见，如 LSL&#x2F;LSR）</td>
+</tr>
+<tr>
+<td>CCSCC</td>
+<td>16 &#x2F; 17</td>
+<td>L-R-S-L-R &#x2F; R-L-S-R-L</td>
+<td>五段组合</td>
+</tr>
+</tbody></table>
+<h3 id="生成-取最短流程"><a href="#生成-取最短流程" class="headerlink" title="生成 + 取最短流程"></a>生成 + 取最短流程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Input[&quot;输入：两位姿 s0(x,y,yaw), s1(x,y,yaw)&quot;] --&gt; ClassMethod[&quot;外部类方法 reedsShepp(s0, s1)&quot;]</span><br><span class="line">    </span><br><span class="line">    ClassMethod --&gt; Trans1[&quot;① 坐标系转换：&lt;br&gt;将 s1 平移旋转到 s0 局部坐标系&quot;]</span><br><span class="line">    Trans1 --&gt; Trans2[&quot;② 空间归一化：&lt;br&gt;将 x, y 除以 rho_&lt;br&gt;(转入单位半径圆的数学空间计算)&quot;]</span><br><span class="line">    </span><br><span class="line">    Trans2 --&gt; AnonMethod[&quot;匿名核心函数 ::reedsShepp(x, y, phi)&lt;br&gt;初始化 path 容器 (length = MAX)&quot;]</span><br><span class="line">    </span><br><span class="line">    AnonMethod --&gt; CSC[&quot;1. CSC() (曲线-直线-曲线)&quot;]</span><br><span class="line">    CSC --&gt; CCC[&quot;2. CCC() (纯曲线)&quot;]</span><br><span class="line">    CCC --&gt; CCCC[&quot;3. CCCC()&quot;]</span><br><span class="line">    CCCC --&gt; CCSC[&quot;4. CCSC()&quot;]</span><br><span class="line">    CCSC --&gt; CCSCC[&quot;5. CCSCC()&quot;]</span><br><span class="line">    </span><br><span class="line">    subgraph GroupCalc [&quot;各组核心函数内的计算与穷举机制&quot;]</span><br><span class="line">        Step1[&quot;调用基础数学公式 (如 LpSpLp)&lt;br&gt;计算一个基准解&quot;] --&gt; Step2[&quot;应用几何对称性生成 4~8 个候选组合：&lt;br&gt;1. Time flip (时间翻转)&lt;br&gt;2. Reflect (镜像反射)&lt;br&gt;3. Backwards (反向倒车)&quot;]</span><br><span class="line">        Step2 --&gt; Step3&#123;&quot;计算组合总弧长 L = |t|+|u|+|v|...&lt;br&gt;L &lt; L_min ?&quot;&#125;</span><br><span class="line">        Step3 -- Yes --&gt; Step4[&quot;覆盖当前最优 path&lt;br&gt;更新最小长度 L_min&quot;]</span><br><span class="line">        Step3 -- No --&gt; Step1</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CSC -.-&gt; GroupCalc</span><br><span class="line">    </span><br><span class="line">    CCSCC --&gt; Return[&quot;返回 path (全局最优最短)：&lt;br&gt;type_ 指向 18 种曲线分类之一&lt;br&gt;length_[5] 记录各段弧长 (正负表示前进/倒车)&quot;]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="关键认知：分段常曲率，G1-连续但曲率不连续"><a href="#关键认知：分段常曲率，G1-连续但曲率不连续" class="headerlink" title="关键认知：分段常曲率，G1 连续但曲率不连续"></a>关键认知：分段常曲率，G1 连续但<strong>曲率不连续</strong></h3><p>看 <code>interpolate</code>（cpp L670）就懂——它<strong>逐段</strong>走，每段是<strong>恒定曲率</strong>的运动：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (path.type_[i]) &#123;</span><br><span class="line">  <span class="keyword">case</span> RS_LEFT:     ... yaw += v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 +1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_RIGHT:    ... yaw -= v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 -1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_STRAIGHT: ... 直线        <span class="keyword">break</span>;   <span class="comment">// 曲率 0</span></span><br><span class="line">  <span class="keyword">case</span> RS_NOP:      <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>含义：</p>
+<ul>
+<li><strong>每段内部曲率恒定</strong>（直&#x3D;0，弧&#x3D;±1&#x2F;rho_）。</li>
+<li><strong>段与段交界处曲率跳变</strong>（如 0 → 1&#x2F;rho_，或 +1&#x2F;rho_ → −1&#x2F;rho_）。</li>
+<li>所以 RS 路径是 <strong>G1 连续</strong>（位置 + 切向连续，车能不”瞬移”地跟），但<strong>不是 C² 曲率连续</strong>。</li>
+</ul>
+<blockquote>
+<p>若 W3&#x2F;W4 验收口径要求”<strong>曲率连续</strong>“，RS 单独<strong>不满足</strong>（段间曲率阶跃）——需要后接样条&#x2F;回旋曲线（clothoid）平滑，或由控制器做限幅。</p>
+</blockquote>
+<hr>
+<h2 id="关键参数"><a href="#关键参数" class="headerlink" title="关键参数"></a>关键参数</h2><p>RS 工具类本身只有 <strong>1 个参数</strong>：<code>rho_</code>（转弯半径，hpp L138）。它<strong>不是节点参数</strong>，而是由 A* 传进来的：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>来源</th>
+<th>Day1 默认值</th>
+<th>对 RS 的影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rho_</code>（turning radius）</td>
+<td>A* 的 <code>minimum_turning_radius</code> 传入（astar_search.cpp:227 的 <code>radius</code>）</td>
+<td><code>0.5</code> m</td>
+<td>半径越小，车能转的弯越急，RS 弧段越短</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><code>minimum_turning_radius</code> 是 Day1 参数表（cpp L295）里的算法参数，Day3 读 A* 时会看到它怎么传给 <code>ReedsSheppStateSpace</code>。Day2 只需知道：<strong><code>rho_</code> 决定 RS 所有弧的半径</strong>。</p>
+</blockquote>
+<h2 id="RS-在整条链路里的位置"><a href="#RS-在整条链路里的位置" class="headerlink" title="RS 在整条链路里的位置"></a>RS 在整条链路里的位置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. freespace_planner 节点&lt;br&gt;algo_-&gt;makePlan(current, goal)&quot;]</span><br><span class="line">    </span><br><span class="line">    Astar[&quot;2. AstarSearch::search()&lt;br&gt;A* 全局图搜索主循环&quot;]</span><br><span class="line">    </span><br><span class="line">    Node --&gt; Astar</span><br><span class="line">    </span><br><span class="line">    subgraph Astar_Internal [&quot;A* 内部调用逻辑&quot;]</span><br><span class="line">        EstCost[&quot;扩展节点时：&lt;br&gt;estimateCost(每个节点)&quot;]</span><br><span class="line">        Shoot[&quot;搜到终点附近时：&lt;br&gt;RS Shoot 直奔终点&quot;]</span><br><span class="line">        </span><br><span class="line">        CalcRS[&quot;calcReedsSheppDistance()&quot;]</span><br><span class="line">        </span><br><span class="line">        EstCost --&gt; CalcRS</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    Astar --&gt; EstCost</span><br><span class="line">    Astar -.-&gt;|&quot;条件触发&quot;| Shoot</span><br><span class="line">    </span><br><span class="line">    subgraph RS_Library [&quot;ReedsShepp 核心数学库&quot;]</span><br><span class="line">        RSDist[&quot;ReedsSheppStateSpace::distance()&quot;]</span><br><span class="line">        RSCore[&quot;ReedsSheppStateSpace::reedsShepp()&lt;br&gt;★ 获取最短 RS 曲线 ★&quot;]</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CalcRS --&gt; RSDist</span><br><span class="line">    Shoot --&gt; RSCore</span><br><span class="line">    RSDist --&gt; RSCore</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<ol>
+<li><strong>启发式代价计算</strong>：<code>estimateCost</code> 用 RS 快速估算当前点到终点的RS最短距离</li>
+<li><strong>解析展开</strong>（RS Shoot）：A* 搜到终点附近时，直接用 RS 接上终点</li>
+</ol>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/08/W2_Day3_Hybrid_A%E6%98%9F%E6%90%9C%E7%B4%A2_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/" rel="prev" title="Hybrid A* 搜索">
+                  <i class="fa fa-angle-left"></i> Hybrid A* 搜索
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/08/W2_Day1_%E8%8A%82%E7%82%B9%E8%B0%83%E7%94%A8%E9%93%BE_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/" rel="next" title="freespace_planner 节点调用链">
+                  freespace_planner 节点调用链 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

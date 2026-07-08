@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="自由空间规划算法栈调研报告   项目 内容    报告名称 自由空间规划算法栈调研（Reeds-Shepp 曲线 &#x2F; Hybrid A* &#x2F; Autoware 自由空间模块现状对比）   姓名 陈国庆   模块 规划   模块负责人 &#x2F; 带教 邬学维（邬学维 &#x2F; 陈宇秋）   对应任务 跟踪表 第一月 W1（6&#x2F;23–6&#x2F;27，权重 15">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自由空间规划算法栈调研报告">
+<meta property="og:url" content="https://gen2710.netlify.app/2026/07/08/%E3%80%8A%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95%E6%A0%88%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A%E3%80%8B_%E9%99%88%E5%9B%BD%E5%BA%86_W1_v2/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="自由空间规划算法栈调研报告   项目 内容    报告名称 自由空间规划算法栈调研（Reeds-Shepp 曲线 &#x2F; Hybrid A* &#x2F; Autoware 自由空间模块现状对比）   姓名 陈国庆   模块 规划   模块负责人 &#x2F; 带教 邬学维（邬学维 &#x2F; 陈宇秋）   对应任务 跟踪表 第一月 W1（6&#x2F;23–6&#x2F;27，权重 15">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626164124771.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626170359411.png">
+<meta property="og:image" content="https://oss.guyuehome.com/Uploads/Editor/202109/20210928_21642.gif">
+<meta property="og:image" content="https://oss.guyuehome.com/Uploads/Editor/202109/20210928_67283.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190319153445231.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI0NzA2NjU5,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://picx.zhimg.com/v2-781228ae4397e2208937124cf8f71ae3_1440w.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626164550561.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626123046545.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626170126087.png">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Dubins3.svg/1920px-Dubins3.svg.png">
+<meta property="og:image" content="https://gen2710.netlify.app/images/site_loop_schematic_3.png">
+<meta property="article:published_time" content="2026-07-08T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-08T06:05:37.973Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626164124771.jpg">
+
+
+<link rel="canonical" href="https://gen2710.netlify.app/2026/07/08/%E3%80%8A%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95%E6%A0%88%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A%E3%80%8B_%E9%99%88%E5%9B%BD%E5%BA%86_W1_v2/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gen2710.netlify.app/2026/07/08/%E3%80%8A%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95%E6%A0%88%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A%E3%80%8B_%E9%99%88%E5%9B%BD%E5%BA%86_W1_v2/","path":"2026/07/08/《自由空间规划算法栈调研报告》_陈国庆_W1_v2/","title":"自由空间规划算法栈调研报告"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>自由空间规划算法栈调研报告 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95%E6%A0%88%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A"><span class="nav-number">1.</span> <span class="nav-text">自由空间规划算法栈调研报告</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E8%AE%A2%E8%AE%B0%E5%BD%95"><span class="nav-number">1.1.</span> <span class="nav-text">修订记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.2.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E4%B8%8E%E9%9C%80%E6%B1%82"><span class="nav-number">1.3.</span> <span class="nav-text">背景与需求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF"><span class="nav-number">1.3.1.</span> <span class="nav-text">项目背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E7%A0%94%E7%9B%AE%E6%A0%87"><span class="nav-number">1.3.2.</span> <span class="nav-text">调研目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E-W1-%E5%89%8D%E5%BA%8F%E4%BA%A4%E4%BB%98%E7%89%A9%E7%9A%84%E8%A1%94%E6%8E%A5"><span class="nav-number">1.3.3.</span> <span class="nav-text">与 W1 前序交付物的衔接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%AE%9A%E4%B9%89%EF%BC%9A%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92"><span class="nav-number">1.4.</span> <span class="nav-text">问题定义：自由空间规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BF%E5%85%8B%E6%9B%BC%E5%BA%95%E7%9B%98%E8%BF%90%E5%8A%A8%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.4.1.</span> <span class="nav-text">阿克曼底盘运动学模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#begin-bmatrix-V-x-V-y-psi-end-bmatrix"><span class="nav-number">2.</span> <span class="nav-text">$$\begin{bmatrix}V_x \V_y \\psi\end{bmatrix}</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#begin-bmatrix-V-x-V-y-psi-end-bmatrix-1"><span class="nav-number">3.</span> <span class="nav-text">$$\begin{bmatrix}V_x \V_y \\psi\end{bmatrix}</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#begin-bmatrix-cos-psi-sin-psi-tan-delta-f-l-end-bmatrix-V"><span class="nav-number">4.</span> <span class="nav-text">\begin{bmatrix}\cos\psi \\sin\psi \\tan\delta_f&#x2F;l\end{bmatrix}V</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Simple-Car-Model"><span class="nav-number">4.1.</span> <span class="nav-text">Simple Car Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%B0%E5%9B%BE%E8%A6%81%E6%B1%82%E4%B8%8E%E6%9E%84%E5%BB%BA"><span class="nav-number">4.2.</span> <span class="nav-text">地图要求与构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%AF%E5%90%A6%E5%8F%AA%E9%9C%80-freespace%EF%BC%9F%E2%80%94%E2%80%94%E9%9C%80%E8%A6%81%E4%B8%A4%E7%B1%BB%E5%9C%B0%E5%9B%BE%EF%BC%8C%E8%81%8C%E8%B4%A3%E4%B8%8D%E5%90%8C"><span class="nav-number">4.2.1.</span> <span class="nav-text">是否只需 freespace？——需要两类地图，职责不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E-Lanelet2-%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%9A%E7%9B%B8%E9%82%BB%E8%A1%94%E6%8E%A5-%E5%B0%91%E9%87%8F%E9%87%8D%E5%8F%A0"><span class="nav-number">4.2.2.</span> <span class="nav-text">与 Lanelet2 的关系：相邻衔接 + 少量重叠</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E7%8A%B6%E4%B8%8E%E8%8C%83%E5%9B%B4%E8%A6%81%E6%B1%82"><span class="nav-number">4.2.3.</span> <span class="nav-text">形状与范围要求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reeds-Shepp-%E6%9B%B2%E7%BA%BF"><span class="nav-number">4.3.</span> <span class="nav-text">Reeds-Shepp 曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">4.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E8%A6%81%E7%82%B9"><span class="nav-number">4.3.2.</span> <span class="nav-text">数学模型要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reeds-Shepp-%E6%9B%B2%E7%BA%BF-1"><span class="nav-number">4.3.3.</span> <span class="nav-text">Reeds-Shepp 曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">4.3.4.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%99%90"><span class="nav-number">4.3.5.</span> <span class="nav-text">局限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.3.6.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dubins-%E6%9B%B2%E7%BA%BF%EF%BC%88%E5%89%8D%E8%BF%9B%E5%90%91%E7%89%B9%E4%BE%8B%EF%BC%89"><span class="nav-number">4.4.</span> <span class="nav-text">Dubins 曲线（前进向特例）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">4.4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E8%A6%81%E7%82%B9-1"><span class="nav-number">4.4.2.</span> <span class="nav-text">数学模型要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-1"><span class="nav-number">4.4.3.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%99%90-1"><span class="nav-number">4.4.4.</span> <span class="nav-text">局限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">4.4.5.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hybrid-A"><span class="nav-number">4.5.</span> <span class="nav-text">Hybrid A*</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-2"><span class="nav-number">4.5.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E6%89%A9%E5%B1%95%E4%B8%8E%E8%BF%90%E5%8A%A8%E5%8E%9F%E8%AF%AD"><span class="nav-number">4.5.2.</span> <span class="nav-text">状态扩展与运动原语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="nav-number">4.5.3.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E5%90%AF%E5%8F%91%E5%BC%8F%EF%BC%88%E5%85%B3%E9%94%AE%E8%AE%BE%E8%AE%A1%EF%BC%89"><span class="nav-number">4.5.4.</span> <span class="nav-text">双启发式（关键设计）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reed-Shepp-%E8%A7%A3%E6%9E%90%E6%89%A9%E5%B1%95%EF%BC%88RS-Shot%EF%BC%89"><span class="nav-number">4.5.5.</span> <span class="nav-text">Reed-Shepp 解析扩展（RS Shot）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-2"><span class="nav-number">4.5.6.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%99%90-2"><span class="nav-number">4.5.7.</span> <span class="nav-text">局限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Autoware-%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E6%A8%A1%E5%9D%97%E7%8E%B0%E7%8A%B6"><span class="nav-number">4.6.</span> <span class="nav-text">Autoware 自由空间模块现状</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E7%BB%93%E6%9E%84"><span class="nav-number">4.6.1.</span> <span class="nav-text">模块结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5-%E8%BE%93%E5%87%BA"><span class="nav-number">4.6.2.</span> <span class="nav-text">输入 &#x2F; 输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%A1%8C%E4%B8%BA%EF%BC%9A%E5%8D%95%E5%90%91%E5%88%86%E6%AE%B5%E8%BE%93%E5%87%BA%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="nav-number">4.6.3.</span> <span class="nav-text">关键行为：单向分段输出（重要）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0%EF%BC%88%E5%AE%98%E6%96%B9%E9%BB%98%E8%AE%A4%E5%80%BC%EF%BC%8C%E8%8A%82%E9%80%89%EF%BC%89"><span class="nav-number">4.6.4.</span> <span class="nav-text">关键参数（官方默认值，节选）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5%E9%97%AE%E9%A2%98%E4%B8%8E%E5%B1%80%E9%99%90"><span class="nav-number">4.6.5.</span> <span class="nav-text">已知问题与局限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E9%81%BF%E9%9A%9C%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.7.</span> <span class="nav-text">自由空间规划中的避障设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%9C%E7%A2%8D%E5%88%86%E7%B1%BB%EF%BC%88%E7%BB%93%E5%90%88%E4%B8%9C%E8%90%A5%E5%8E%82%E5%8C%BA%EF%BC%89"><span class="nav-number">4.7.1.</span> <span class="nav-text">障碍分类（结合东营厂区）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E9%9A%9C%E6%9C%BA%E5%88%B6%EF%BC%88Autoware-%E9%93%BE%E8%B7%AF%EF%BC%89"><span class="nav-number">4.7.2.</span> <span class="nav-text">避障机制（Autoware 链路）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B1%82%E9%81%BF%E9%9A%9C%E8%81%8C%E8%B4%A3%EF%BC%88%E5%85%B3%E9%94%AE%EF%BC%89"><span class="nav-number">4.7.3.</span> <span class="nav-text">分层避障职责（关键）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%82%A8%E5%AD%98%E5%BA%93%EF%BC%88%E4%B8%8B%E6%96%99%E5%8C%BA%EF%BC%89%E7%89%B9%E5%AE%9A%E9%81%BF%E9%9A%9C%E8%A6%81%E7%82%B9"><span class="nav-number">4.7.4.</span> <span class="nav-text">储存库（下料区）特定避障要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E4%B8%8E%E5%B1%80%E9%99%90"><span class="nav-number">4.7.5.</span> <span class="nav-text">风险与局限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E8%80%85%E5%AF%B9%E6%AF%94"><span class="nav-number">4.8.</span> <span class="nav-text">四者对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9C%E8%90%A5%E9%A1%B9%E7%9B%AE%E9%80%89%E5%9E%8B%E4%B8%8E%E8%90%BD%E5%9C%B0%E5%BB%BA%E8%AE%AE"><span class="nav-number">4.9.</span> <span class="nav-text">东营项目选型与落地建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E7%AD%96%E7%95%A5%EF%BC%9A%E5%85%88%E5%9F%BA%E7%BA%BF%E3%80%81%E5%86%8D%E8%AF%84%E4%BC%B0%E3%80%81%E5%BF%85%E8%A6%81%E6%97%B6%E8%87%AA%E7%A0%94%E5%A2%9E%E5%BC%BA"><span class="nav-number">4.9.1.</span> <span class="nav-text">总体策略：先基线、再评估、必要时自研增强</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%89%E5%9C%BA%E6%99%AF%E5%B7%AE%E5%BC%82%E5%8C%96%E9%85%8D%E7%BD%AE%EF%BC%88%E6%A0%B8%E5%BF%83%EF%BC%89"><span class="nav-number">4.9.2.</span> <span class="nav-text">按场景差异化配置（核心）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%B0%E5%9B%BE%E7%AD%96%E7%95%A5"><span class="nav-number">4.9.3.</span> <span class="nav-text">地图策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E9%9A%9C%E7%AD%96%E7%95%A5"><span class="nav-number">4.9.4.</span> <span class="nav-text">避障策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#W1-W2-%E5%9F%BA%E7%BA%BF%E8%90%BD%E5%9C%B0%E8%A6%81%E7%82%B9"><span class="nav-number">4.9.5.</span> <span class="nav-text">W1&#x2F;W2 基线落地要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98%E6%96%B9%E5%90%91%EF%BC%88%E4%B8%9C%E8%90%A5%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="nav-number">4.9.6.</span> <span class="nav-text">参数调优方向（东营场景）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%95%E6%97%B6%E8%BD%AC%E5%90%91%E8%87%AA%E7%A0%94-RS-Dubins-%E6%8B%BC%E6%8E%A5-%E5%B9%B3%E6%BB%91-%E5%90%8E%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96"><span class="nav-number">4.9.7.</span> <span class="nav-text">何时转向自研 RS&#x2F;Dubins 拼接 + 平滑 &#x2F; 后处理优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">4.10.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E4%B8%80%E6%AD%A5%EF%BC%88%E8%A1%94%E6%8E%A5-W2%EF%BC%89"><span class="nav-number">4.11.</span> <span class="nav-text">下一步（衔接 W2）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.12.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E3%80%8A%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95%E6%A0%88%E8%B0%83%E7%A0%94%E6%8A%A5%E5%91%8A%E3%80%8B_%E9%99%88%E5%9B%BD%E5%BA%86_W1_v2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="自由空间规划算法栈调研报告 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          自由空间规划算法栈调研报告
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:05:37" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="自由空间规划算法栈调研报告"><a href="#自由空间规划算法栈调研报告" class="headerlink" title="自由空间规划算法栈调研报告"></a>自由空间规划算法栈调研报告</h1><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>报告名称</td>
+<td>自由空间规划算法栈调研（Reeds-Shepp 曲线 &#x2F; Hybrid A* &#x2F; Autoware 自由空间模块现状对比）</td>
+</tr>
+<tr>
+<td>姓名</td>
+<td>陈国庆</td>
+</tr>
+<tr>
+<td>模块</td>
+<td>规划</td>
+</tr>
+<tr>
+<td>模块负责人 &#x2F; 带教</td>
+<td>邬学维（邬学维 &#x2F; 陈宇秋）</td>
+</tr>
+<tr>
+<td>对应任务</td>
+<td>跟踪表 第一月 W1（6&#x2F;23–6&#x2F;27，权重 15%）交付物③</td>
+</tr>
+<tr>
+<td>日期</td>
+<td>2026&#x2F;06&#x2F;26</td>
+</tr>
+<tr>
+<td>版本</td>
+<td>v2.0（反馈补充 Dubins 曲线 &#x2F; 地图要求 &#x2F; 避障设计，并对齐东营实际场地）</td>
+</tr>
+</tbody></table>
+<h2 id="修订记录"><a href="#修订记录" class="headerlink" title="修订记录"></a>修订记录</h2><table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>修订内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v1.0</td>
+<td>2026&#x2F;06&#x2F;25</td>
+<td>初版：RS 曲线 &#x2F; Hybrid A* &#x2F; Autoware 自由空间模块三对象调研。</td>
+</tr>
+<tr>
+<td>v2.0</td>
+<td>2026&#x2F;06&#x2F;26</td>
+<td>① 新增 <strong>Dubins 曲线</strong>（前向特例），论证下料区开阔场地”一个 U 型直接掉头、不用倒车”的选型依据；② 新增 <strong>地图要求与构建</strong>章节，回答”是否只需 freespace、与 lanelet2 的相邻&#x2F;重合关系、形状与范围要求”；③ 新增 <strong>自由空间规划中的避障设计</strong>章节，明确静态&#x2F;动态避障与 Autoware 分层执行链；④ 算法对比升级为四对象（含 Dubins）；⑤ 校正并写明东营实际场地模型：<strong>高架库&#x3D;上料区（南面上料）→ 转运线路 → 储存库&#x3D;下料区（北面人工下料）</strong>，U 型掉头区位于储存库；⑥ 嵌入厂区实际场地图。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>本报告围绕东营项目（石大胜华厂区无人车低速自主物流，覆盖**高架库（上料区）→ 转运线路 → 储存库 1–6 号（下料区）**的完整运输链路，及其上料&#x2F;下料对接、掉头与泊位机动）对自由空间规划算法栈进行调研。覆盖四类核心对象：<strong>Dubins 曲线</strong>（仅前进向的解析最短路径，适合开阔场地前向 U 型掉头）、<strong>Reeds-Shepp（RS）曲线</strong>（允许倒车的解析最短路径）、<strong>Hybrid A*</strong>（兼顾运动学与障碍的图搜索）、<strong>Autoware 自由空间模块</strong>（<code>autoware_freespace_planner</code> + <code>freespace_planning_algorithms</code>，项目拟采用的工程基线）。</p>
+<p>报告给出四者的原理、数学模型、优劣势与对比表，并针对带教反馈重点补充三项内容：</p>
+<p><strong>(1) 地图要求</strong>——明确结构化车道（Lanelet2）与自由空间（costmap）的分工、衔接（相邻 + 少量重合）与形状&#x2F;范围约束；</p>
+<p><strong>(2) Dubins 曲线</strong>——论证下料区场地开阔、可”一个 U 型直接掉头、不倒车”，前向规划即可，无需引入倒车；</p>
+<p><strong>(3) 避障设计</strong>——给出静态&#x2F;动态障碍分类、costmap 膨胀与代价、以及”全局 freespace 规划 + 局部实时避障”的分层职责。核心结论：<strong>W1&#x2F;W2 阶段以 Autoware <code>freespace_planner</code>（Hybrid A* + RS 解析扩展）作为基线</strong>，按场景差异化配置——<strong>下料区 U 型掉头设 <code>use_back=false</code>（前向 &#x2F; Dubins 思路）、泊位与倒车对接设 <code>use_back=true</code>（RS 思路）</strong>；同时识别其在曲率连续性、贴近障碍规划成功率、单向分段输出等方面的局限，作为 W3&#x2F;W4 是否自研增强的决策依据。</p>
+<hr>
+<h2 id="背景与需求"><a href="#背景与需求" class="headerlink" title="背景与需求"></a>背景与需求</h2><h3 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h3><p>东营项目（石大胜华厂区）为<strong>无人物流车自动运输</strong>场景。依据厂区实际场地（见附图），核心作业链路为：</p>
+<ul>
+<li><strong>高架库（上料区）</strong>：位于厂区南部，<strong>南面上料</strong>——车辆在此接收货物（上料&#x2F;取货），是运输的起点；设东&#x2F;西出口供车辆驶入驶出；</li>
+<li><strong>转运线路</strong>：以结构化车道（附图中蓝色路径）连接高架库（上料区）与储存库（下料区），是车辆往返的主行驶通道；</li>
+<li><strong>储存库 1–6 号（下料区）</strong>：位于厂区北部，<strong>北面人工下料</strong>——车辆把货运到此处，由人工在北面完成下料；分两排布置；</li>
+<li><strong>U 型掉头 &#x2F; 机动区</strong>：<strong>位于储存库（下料区）前</strong>，存在成片<strong>开阔自由空间</strong>，车辆下料后可在此完成 U 型掉头换向返回、泊位入位、对接下料等机动。</li>
+</ul>
+<blockquote>
+<p>完整运输链路：<strong>高架库（上料区，南面上料）→ 转运线路 → 储存库（下料区，北面人工下料）→ 储存库前 U 型掉头 → 返回</strong>。其中<strong>掉头机动发生在储存库（下料区）的开阔场地</strong>，场地足够大，可一次前向 U 型掉头、不倒车——这是本版引入 Dubins 曲线讨论的直接依据。</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626164124771.jpg" alt="东营厂区无人物流运输总图（高架库上料 → 转运线路 → 储存库下料）"></p>
+<p><em>图：东营厂区无人物流运输总图（储存库 1–6 号 &#x2F; 高架库东·西出口 &#x2F; 转运线路）</em></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626170359411.png" alt="osm图"></p>
+<p><em>图：东营厂区无人物流运输矢量图（储存库 1–6 号 &#x2F; 高架库东·西出口 &#x2F; 转运线路）</em></p>
+<p>车辆需在该厂区低速场景下完成<strong>侧方位停车、倒车入库、U 型掉头、库位对接</strong>等典型自由空间机动。其共同特征：</p>
+<ul>
+<li><strong>低速、大曲率、可能需倒车</strong>：超出常规车道保持 &#x2F; 路径跟踪规划器的运动学适用范围；</li>
+<li><strong>非完整约束（non-holonomic）</strong>：受最小转弯半径限制，不能原地侧向平移；</li>
+<li><strong>稠密障碍、几何约束紧</strong>：储存库、高架库、储罐、管道、阀门、设备基座、护栏等要求路径不穿越；</li>
+<li><strong>场地分场景差异大</strong>：转运线路为窄而长的结构化通道，而下料区&#x2F;机动区为开阔自由空间——前者需车道跟踪&#x2F;路由，后者需自由空间规划；</li>
+<li><strong>下料区开阔可前向掉头</strong>：附图显示下料区机动空间足够大，<strong>一个前向 U 型掉头即可换向，无需倒车</strong>——这是本版引入 Dubins 曲线讨论的直接依据。</li>
+</ul>
+<h3 id="调研目标"><a href="#调研目标" class="headerlink" title="调研目标"></a>调研目标</h3><ul>
+<li>搞清 <strong>Dubins</strong> 与 <strong>Reeds-Shepp</strong> 曲线的原理、适用边界与代价模型，明确”何时前向即可、何时必须倒车”；</li>
+<li>摸清 Autoware 自由空间模块的节点 &#x2F; 包结构、输入输出、关键参数与已知问题；</li>
+<li>厘清<strong>地图要求</strong>：结构化（Lanelet2）与自由空间（costmap）各自职责、衔接关系与形状&#x2F;范围约束；</li>
+<li>厘清<strong>避障要求</strong>：静态&#x2F;动态障碍如何表达与规避、全局规划与局部执行如何分工；</li>
+<li>给出四者对比，并为东营场景给出<strong>选型与落地建议</strong>，衔接 W2 源码走读与 W3&#x2F;W4 算法实现。</li>
+</ul>
+<h3 id="与-W1-前序交付物的衔接"><a href="#与-W1-前序交付物的衔接" class="headerlink" title="与 W1 前序交付物的衔接"></a>与 W1 前序交付物的衔接</h3><p>本报告为 W1 交付物③。前两项已完成：① Autoware.universe 源码编译、Planning 仿真跑通；② 东营项目高精地图（<code>东营_lanelet2_15.osm</code>，Lanelet2 格式）加载到 Planning Simulator 并验证可用。两者为本次调研提供了可运行环境，后续对比结论均可直接在该环境中复现。</p>
+<hr>
+<h2 id="问题定义：自由空间规划"><a href="#问题定义：自由空间规划" class="headerlink" title="问题定义：自由空间规划"></a>问题定义：自由空间规划</h2><p>自由空间规划（freespace &#x2F; parking planning）要解决：<strong>给定起点位姿 $(x_s, y_s, \theta_s)$、目标位姿 $(x_g, y_g, \theta_g)$ 与代价地图（costmap），在满足车辆运动学、且不与障碍碰撞的前提下，生成可行轨迹。</strong></p>
+<p>它与结构化道路规划的关键区别：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>结构化道路规划</th>
+<th>自由空间规划</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>参考线</td>
+<td>有车道中心线 &#x2F; 路网路由</td>
+<td>无明确参考线，近乎”白板”</td>
+</tr>
+<tr>
+<td>状态空间</td>
+<td>通常 $(s, d)$（纵向、横向）</td>
+<td>完整 $(x, y, \theta)$，且常含正反向</td>
+</tr>
+<tr>
+<td>运动学</td>
+<td>小横向偏移，前向为主</td>
+<td>大曲率、可能含倒车，非完整约束主导</td>
+</tr>
+<tr>
+<td>避障</td>
+<td>沿车道做横向避让</td>
+<td>在开阔空间中绕开任意形状障碍</td>
+</tr>
+<tr>
+<td>典型算法</td>
+<td>Frenet 采样的 Lattice &#x2F; EM planner</td>
+<td>Hybrid A*、RS &#x2F; Dubins 曲线、RRT*</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>避障是自由空间规划的内在要求</strong>：与结构化道路”沿车道微调横向”不同，自由空间规划要在无参考线的开阔区域中<strong>主动绕开任意分布的障碍</strong>，因此”运动学可行 + 不碰障碍 + 路径合理”三者必须同时满足（详见后文<a href="#%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E9%81%BF%E9%9A%9C%E8%AE%BE%E8%AE%A1">避障设计</a>）。</p>
+</blockquote>
+<p>车辆采用<strong>阿克曼 &#x2F; 自行车模型</strong>，最小转弯半径为硬约束：</p>
+<p>$$<br>\dot x &#x3D; v\cos\theta,\quad \dot y &#x3D; v\sin\theta,\quad \dot\theta &#x3D; \frac{v}{L}\tan\delta,\quad R_{\min} &#x3D; \frac{L}{\tan\delta_{\max}}<br>$$</p>
+<p>其中 $L$ 为轴距，$\delta_{\max}$ 为最大前轮转向角。RS 曲线、Dubins 曲线与 Hybrid A* 均建立在该模型之上，差异在于<strong>是否允许倒车（$v$ 是否可取负）</strong>——这正是 Dubins（仅前进）与 RS（前进+后退）的分水岭。</p>
+<h3 id="阿克曼底盘运动学模型"><a href="#阿克曼底盘运动学模型" class="headerlink" title="阿克曼底盘运动学模型"></a>阿克曼底盘运动学模型</h3><p>阿克曼转向结构是现代汽车的转向方式，可以解决汽车在转向时，由于左右转向轮转向半径不同所造成的左、右转向轮转角不同的问题。</p>
+<p><img src="https://oss.guyuehome.com/Uploads/Editor/202109/20210928_21642.gif" alt="img"></p>
+<p>先观察阿克曼运动模态简化之后的模型图。与差速运动相同，如果我们给四个车轮相同的速度（大小+方向），即可实现机器人的前进和后退。不同之处在于转弯，需要根据前端两个车轮的偏转方向，利用阿克曼转向几何来计算转弯半径。</p>
+<p>如下图所示，点 CENTER 为机器人几何中心，点 BASE 为后杆的中点。此时，机器人将绕 ICR 做圆周运动，此转弯半径即为最小转弯半径。由图可知，前段两个车轮的偏角并不一致，两个车轮偏角的差值（θA−θB）为阿克曼角。</p>
+<p><img src="https://oss.guyuehome.com/Uploads/Editor/202109/20210928_67283.png" alt="img"></p>
+<img src="https://img-blog.csdnimg.cn/20190319153445231.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI0NzA2NjU5,size_16,color_FFFFFF,t_70" alt="img" style="zoom:67%;" />
+
+<p><strong>阿克曼底盘的运动学模型</strong></p>
+<p>阿克曼底盘的汽车可以简化为两轮执行车模型：</p>
+<p><img src="https://picx.zhimg.com/v2-781228ae4397e2208937124cf8f71ae3_1440w.jpg" alt="img"></p>
+<p>其中：</p>
+<blockquote>
+<p>C：车辆质心<br>B：车辆左右后轮合并为一个点<br>A：同理，前轮左右轮合并<br>$\psi$：航向角<br>$\beta$：滑移角，车辆质心速度跟车身朝向的角度<br>$V$：车辆质心速度<br>$\delta_r$：后轮转向角<br>$\delta_f$：前轮转向角</p>
+</blockquote>
+<p>已知车辆速度 $V$、前轮转向角 $\delta_f$、后轮转向角 $\delta_r$，车辆的运动学模型是：</p>
+<p>$$<br>\begin{align*}<br>V_x &amp;&#x3D; V \cos(\psi + \beta) \<br>V_y &amp;&#x3D; V \sin(\psi + \beta) \<br>\psi &amp;&#x3D; \frac{V \cos\beta}{\ell_f + \ell_r} (\tan\delta_f - \tan\delta_r) \<br>\beta &amp;&#x3D; \tan^{-1} \left( \frac{\ell_f \tan\delta_r + \ell_r \tan\delta_f}{\ell_f + \ell_r} \right)<br>\end{align*}<br>$$</p>
+<p>在后轮驱动、前轮转向的阿克曼底盘中，可认为滑移角 $\beta$ 为 0、后轮不转向 $\delta_r$ 为 0，最终得到运动学模型：</p>
+<p>$$<br>\begin{align*}<br>V_x &amp;&#x3D; V \cos(\psi) \<br>V_y &amp;&#x3D; V \sin(\psi) \<br>\dot{\psi} &amp;&#x3D; \frac{V}{\ell_f + \ell_r} \tan\delta_f &#x3D; \frac{V}{l} \tan\delta_f<br>\end{align*}<br>$$</p>
+<p>矩阵形式：</p>
+<h1 id="begin-bmatrix-V-x-V-y-psi-end-bmatrix"><a href="#begin-bmatrix-V-x-V-y-psi-end-bmatrix" class="headerlink" title="$$\begin{bmatrix}V_x \V_y \\psi\end{bmatrix}"></a>$$<br>\begin{bmatrix}<br>V_x \<br>V_y \<br>\psi<br>\end{bmatrix}</h1><p>\begin{bmatrix}<br>\cos\psi \<br>\sin\psi \<br>\frac{\tan\delta_f}{l}<br>\end{bmatrix}<br>V<br>$$</p>
+<p>车辆控制会将速度与角度控制分开，进一步改写矩阵：</p>
+<h1 id="begin-bmatrix-V-x-V-y-psi-end-bmatrix-1"><a href="#begin-bmatrix-V-x-V-y-psi-end-bmatrix-1" class="headerlink" title="$$\begin{bmatrix}V_x \V_y \\psi\end{bmatrix}"></a>$$<br>\begin{bmatrix}<br>V_x \<br>V_y \<br>\psi<br>\end{bmatrix}</h1><h1 id="begin-bmatrix-cos-psi-sin-psi-tan-delta-f-l-end-bmatrix-V"><a href="#begin-bmatrix-cos-psi-sin-psi-tan-delta-f-l-end-bmatrix-V" class="headerlink" title="\begin{bmatrix}\cos\psi \\sin\psi \\tan\delta_f&#x2F;l\end{bmatrix}V"></a>\begin{bmatrix}<br>\cos\psi \<br>\sin\psi \<br>\tan\delta_f&#x2F;l<br>\end{bmatrix}<br>V</h1><p>\begin{bmatrix}<br>\cos\psi \<br>\sin\psi \<br>0<br>\end{bmatrix}<br>V<br>+<br>\begin{bmatrix}<br>0 \<br>0 \<br>1<br>\end{bmatrix}<br>w<br>$$</p>
+<p>其中 $V$ 为车辆速度，由油门 throttle、挡位 gear、刹车 brake 三个因素控制；$w$ 为车辆航向角速度 heading，由转向 steering 控制。</p>
+<h3 id="Simple-Car-Model"><a href="#Simple-Car-Model" class="headerlink" title="Simple Car Model"></a>Simple Car Model</h3><p>Simple Car Model 是指一种用于描述车辆运动的简化模型。具体来说，Simple Car Model 将车辆视为一个二维平面上的刚体，其原点位于车辆后轮的中心，x 轴沿着车辆主轴方向，与车辆运动方向一致。车辆的状态由位置坐标 $(x, y)$ 和姿态角 $\theta$ 表示。在 Simple Car Model 中，车辆的速度为 $s$，方向盘的转角为 $\alpha$，前轮和后轮中心的距离为 $L$。如果方向盘转角固定，车辆会在原地转圈，转圈的半径为 $L&#x2F;\sin(\alpha)$。在非常短的时间内，车辆可以近似视为沿着后轮指向的方向前进；当方向盘转角趋于 0 时，车辆的运动方向与 x 轴一致。Simple Car Model 通过引入 Action 变量，假设车辆的运动速度和方向盘转角由这些变量控制，从而得到车辆的运动模型。这个模型适用于自动驾驶运动规划中的运动方程，可以描述车辆的向前或向后运动。</p>
+<p>运动学方程如下：</p>
+<p>$$<br>\begin{align*}<br>\dot{x} &amp;&#x3D; u_1 \cos\theta \<br>\dot{y} &amp;&#x3D; u_1 \sin\theta \<br>\dot{\theta} &amp;&#x3D; u_1 u_2<br>\end{align*}<br>$$</p>
+<p>其中，$u_1 \in [-1, 1]$，$u_2 \in [-\tan\phi_{max}, \tan\phi_{max}]$。当 $u_1 &#x3D; 1$ 时表示车辆向前运动；$u_1 &#x3D; -1$ 时表示车辆向后运动。$\phi_{max}$ 代表车辆允许的最大转向角。</p>
+<blockquote>
+<p><strong>关键观察</strong>：$u_1$ 的取值范围决定规划性质——</p>
+<ul>
+<li><strong>Dubins 曲线</strong>：限定 $u_1 &#x3D; +1$（仅前进），只在前向中求最短；</li>
+<li><strong>Reeds-Shepp 曲线</strong>：允许 $u_1 \in {-1, +1}$（前进+后退），在双向中求最短。</li>
+</ul>
+<p>对东营下料区这种<strong>开阔、可一次前向 U 型掉头</strong>的场景，$u_1 \equiv +1$ 已足够，Dubins 即可胜任，无需承担倒车带来的换向与控制复杂度。</p>
+</blockquote>
+<hr>
+<h2 id="地图要求与构建"><a href="#地图要求与构建" class="headerlink" title="地图要求与构建"></a>地图要求与构建</h2><blockquote>
+<p>本节回答带教提出的问题：<strong>是否只需要一个 freespace 地图？freespace 与 lanelet2 是相邻还是重合？形状与范围有无要求？</strong></p>
+</blockquote>
+<h3 id="是否只需-freespace？——需要两类地图，职责不同"><a href="#是否只需-freespace？——需要两类地图，职责不同" class="headerlink" title="是否只需 freespace？——需要两类地图，职责不同"></a>是否只需 freespace？——需要两类地图，职责不同</h3><p><strong>结论：需要两类地图，二者协同，不能互相替代。</strong></p>
+<table>
+<thead>
+<tr>
+<th>地图类型</th>
+<th>表达内容</th>
+<th>在东营场景的作用</th>
+<th align="center">在 Autoware 中的角色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Lanelet2（结构化）</strong></td>
+<td>车道中心线、路网拓扑、可行驶车道边界、交通要素</td>
+<td><strong>转运线路</strong>（高架库 ↔ 储存库 1–6 号）作为可路由车道，提供”怎么从 A 到 B”的全局路由与参考线</td>
+<td align="center">路由（mission planning）、车道级规划、参考线生成</td>
+</tr>
+<tr>
+<td><strong>Freespace &#x2F; costmap（occupancy_grid）</strong></td>
+<td>障碍栅格、可行驶区边界、代价值</td>
+<td><strong>高架库（上料区）出口、储存库（下料区）泊位、U 型掉头区</strong>等开阔机动区域，提供”在这片区域里如何绕障机动入位”的规划依据</td>
+<td align="center"><code>freespace_planner</code> 的输入 <code>~input/occupancy_grid</code></td>
+</tr>
+</tbody></table>
+<h3 id="与-Lanelet2-的关系：相邻衔接-少量重叠"><a href="#与-Lanelet2-的关系：相邻衔接-少量重叠" class="headerlink" title="与 Lanelet2 的关系：相邻衔接 + 少量重叠"></a>与 Lanelet2 的关系：相邻衔接 + 少量重叠</h3><ul>
+<li><strong>相邻 + 衔接（handover）</strong>：freespace 区域是 Lanelet2 车道末端的**”端点扩展”<strong>。在</strong>高架库东&#x2F;西出口、储存库入口、泊位**等节点，车道末端与 freespace 区域入口衔接于一个共享的 <strong>transition pose（交接位姿）</strong>：车辆沿结构化车道驶到该位姿后，切换为自由空间规划完成机动，再驶回车道。</li>
+<li><strong>少量重叠</strong>：过渡区保留<strong>少量重叠</strong>以保证规划连续，避免从”结构化车道”切到”自由空间”时出现规划真空&#x2F;位姿跳变。</li>
+<li><strong>坐标系统一（必要条件）</strong>：两类地图必须在<strong>同一全局坐标系</strong>（Autoware 中即 <code>map</code> frame，与点云&#x2F;地图原点一致），否则 handover 位姿无法对齐，规划会断裂。东营已有的 <code>东营_lanelet2_15.osm</code> 与点云应已统一在 map frame，构建 freespace costmap 时需沿用同一原点与分辨率。</li>
+</ul>
+<h3 id="形状与范围要求"><a href="#形状与范围要求" class="headerlink" title="形状与范围要求"></a>形状与范围要求</h3><p>freespace 区域不是”越大越好”，而是要<strong>精确覆盖完整机动包络</strong>，并避开不可行驶区：</p>
+<ul>
+<li><strong>形状</strong>：通常为<strong>多边形</strong>（矩形或不规则），需包含车辆转弯<strong>扫掠包络</strong> + 安全裕度（对应参数 <code>vehicle_shape_margin_m</code>）。</li>
+<li><strong>范围（必须覆盖的机动包络）</strong>：从车道末端入口 → 掉头&#x2F;转向轨迹 → 对接位姿（泊位&#x2F;下料点）的整段机动空间。<ul>
+<li><strong>U 型掉头区</strong>：开口宽度&#x2F;直径需 ≥ $2R_{\min}$ + 车辆尺寸 + 安全裕度，以容纳<strong>前向 U 型掉头</strong>。附图显示下料区机动空间开阔，满足该条件——这也是前向（Dubins）掉头可行的几何前提。</li>
+<li><strong>对接&#x2F;泊位</strong>：泊位需容纳车辆本体 + 入位扫掠 + 裕度。</li>
+</ul>
+</li>
+<li><strong>边界</strong>：贴合实际可行驶区边界（厂区道路、设施外墙、储罐、管道），<strong>不穿越固定障碍</strong>；厂区外的区域应在 costmap 上标记为占用&#x2F;未知。</li>
+<li><strong>costmap 分辨率</strong>：典型 0.1–0.5 m，需权衡运动学精度与搜索规模（与 <code>theta_size</code>、<code>turning_steps</code> 联动）。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626164550561.png" alt="开阔机动区机动&#x2F;掉头路径示意"></p>
+<p><em>图：储存库（下料区）开阔机动区的掉头、入位路径示意，可作为圈定 freespace 区域的几何参考</em></p>
+<blockquote>
+<p><strong>构建方式（待 W2 源码确认）</strong>：Autoware 中 freespace 规划所用的 <code>occupancy_grid</code> 一般由 <code>costmap_generator</code> 基于<strong>点云（静态）+ 动态物体</strong>生成，可行驶区可借助 Lanelet2 中的 parking&#x2F;freespace 多边形圈定。具体生成链路需在 W2 走读 <code>costmap_generator</code> &#x2F; freespace 节点时确认，并据此把东营厂区的”下料区—机动区—泊位”多边形在地图中显式标注。</p>
+</blockquote>
+<hr>
+<h2 id="Reeds-Shepp-曲线"><a href="#Reeds-Shepp-曲线" class="headerlink" title="Reeds-Shepp 曲线"></a>Reeds-Shepp 曲线</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>Reeds &amp; Shepp（1990）证明：<strong>在最小转弯半径 $R_{\min}$ 约束、允许前进与后退的汽车，从任一起点位姿到任一目标位姿的最短路径，必然属于一个有限的路径类型集合</strong>，每种类型均可由”圆弧段（左转 L &#x2F; 右转 R）+ 直线段（S）+ 方向符号（前进 + &#x2F; 后退 −）”解析拼接得到。因此 RS 曲线<strong>不需要迭代搜索</strong>：归一化目标到原点参考系，枚举有限类候选、计算各段长度、取最短且无符号矛盾者即可。</p>
+<h3 id="数学模型要点"><a href="#数学模型要点" class="headerlink" title="数学模型要点"></a>数学模型要点</h3><ul>
+<li>路径由最多 3 段组成，每段为圆弧或直线，带前进 &#x2F; 后退方向；</li>
+<li>48 种组合经对称性归并为 <strong>12 类等价路径族</strong>（如 <code>LRL</code>、<code>LSL</code>、<code>LRSL</code> 等）；</li>
+<li>全程曲率取值集合为 ${0,\ \pm 1&#x2F;R_{\min}}$（bang-bang 控制）；</li>
+<li>路径长度可由起止位姿差解析求出，时间复杂度 $O(1)$。</li>
+</ul>
+<h3 id="Reeds-Shepp-曲线-1"><a href="#Reeds-Shepp-曲线-1" class="headerlink" title="Reeds-Shepp 曲线"></a>Reeds-Shepp 曲线</h3><p>Reeds-Shepp 曲线是从 46 条曲线中选出最短的那条，这 46 条曲线如下图所示。（最开始的论文认为最短的曲线一定在 48 条曲线中，后人研究发现有两条曲线不会是最短的，所以搜索范围减小到 46 条。）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626123046545.gif" alt="reeds_shepp_all"></p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li><strong>解析最优</strong>：无搜索、无调参，毫秒级；</li>
+<li><strong>运动学严格可行</strong>：天然满足最小转弯半径；</li>
+<li><strong>可作”精确命中”工具</strong>：常用于 Hybrid A* 的解析扩展（RS shot）与控制层末段对齐；</li>
+<li><strong>天然支持倒车</strong>：适用于必须倒车的紧凑对接（如倒车入库）。</li>
+</ul>
+<h3 id="局限"><a href="#局限" class="headerlink" title="局限"></a>局限</h3><ul>
+<li><strong>不考虑障碍</strong>：只保证起止位姿间运动学最短，中间可能穿越障碍 &#x2F; 车位边界，必须外挂碰撞检测；</li>
+<li><strong>曲率不连续</strong>：段间曲率阶跃，实际跟踪转向急变，通常需后接平滑（样条 &#x2F; 共轭梯度优化）；</li>
+<li><strong>单一目标位姿</strong>：对目标朝向容差不友好；</li>
+<li><strong>倒车带来换向</strong>：前进↔后退切换需停车换挡，控制与执行更复杂。</li>
+</ul>
+<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>起止位姿接近、中间开阔时的短距精确对接；作为更大规划框架（Hybrid A*、采样规划器）内部的局部衔接段；车位内”最后一米”精确入位；<strong>需要倒车的紧凑对接</strong>（东营储存库倒车入库类场景）。</p>
+<hr>
+<h2 id="Dubins-曲线（前进向特例）"><a href="#Dubins-曲线（前进向特例）" class="headerlink" title="Dubins 曲线（前进向特例）"></a>Dubins 曲线（前进向特例）</h2><blockquote>
+<p>**引入动机：<strong>储存库（下料区）<strong>场地足够开阔，车辆可”一个 U 型直接掉头、不用倒车”。此时路径只需在</strong>前进向</strong>中求最短即可，Dubins 曲线正是该问题的解析最优解，无需引入倒车及其带来的换向停车、单向分段输出等复杂度。</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260626170126087.png" alt="image-20260626170125948" style="zoom:50%;" />
+
+<p>上图为初步预想图</p>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>Dubins（1957）证明：<strong>仅允许前进、最小转弯半径为 $R_{\min}$ 的汽车，在任一起止位姿间的最短路径，必然属于 6 种路径类型之一</strong>。它是 RS 曲线的<strong>前向特例</strong>——将 Simple Car Model 中的速度变量<strong>限定为 $u_1 \equiv +1$（仅前进）</strong>：</p>
+<p>$$<br>\dot{x} &#x3D; \cos\theta,\quad \dot{y} &#x3D; \sin\theta,\quad \dot{\theta} &#x3D; u_2,\qquad u_1 &#x3D; 1,\ \ u_2 \in [-\tan\phi_{max},\ \tan\phi_{max}]<br>$$</p>
+<p>全程曲率取值集合同为 ${0,\ \pm 1&#x2F;R_{\min}}$，但<strong>所有段均为前进方向</strong>。</p>
+<h3 id="数学模型要点-1"><a href="#数学模型要点-1" class="headerlink" title="数学模型要点"></a>数学模型要点</h3><ul>
+<li>6 种候选类型，分两组：<ul>
+<li><strong>CSC 型</strong>（圆弧-直线-圆弧）：<code>LSL</code>、<code>LSR</code>、<code>RSL</code>、<code>RSR</code>；</li>
+<li><strong>CCC 型</strong>（三段圆弧）：<code>RLR</code>、<code>LRL</code>；</li>
+</ul>
+</li>
+<li>从 6 种中取长度最短者，时间复杂度 $O(1)$；</li>
+<li>与 RS 的关系：RS &#x3D; Dubins 的”双向推广”（允许 $u_1&#x3D;\pm1$​，候选由 6 类扩展到 48&#x2F;46 类）。</li>
+</ul>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Dubins3.svg/1920px-Dubins3.svg.png" alt="An LRL Dubins path" style="zoom:25%;" />
+
+<p><em>图：LRL示意图</em></p>
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ul>
+<li><strong>解析最优</strong>：无搜索、无调参，毫秒级；</li>
+<li><strong>运动学严格可行</strong>：天然满足最小转弯半径；</li>
+<li><strong>纯前向、无换向</strong>：全程不倒车 → 速度方向连续、无需停车换挡、跟踪更平滑，也<strong>规避了 Autoware 单向分段输出</strong>在换向点的执行复杂度；</li>
+<li><strong>最简单</strong>：6 类候选，计算与实现都比 RS 更轻。</li>
+</ul>
+<h3 id="局限-1"><a href="#局限-1" class="headerlink" title="局限"></a>局限</h3><ul>
+<li><strong>不考虑障碍</strong>：同 RS，需外挂碰撞检测；</li>
+<li><strong>曲率不连续</strong>：段间阶跃，常需后处理平滑；</li>
+<li><strong>不能倒车</strong>：无法完成必须倒车的紧凑机动（如贴墙倒车入库、三点式掉头、狭窄泊位入位）——这正是它在储存库（下料区）**开阔掉头”够用”、但泊位入位需倒车时”不够用”**的原因。</li>
+</ul>
+<h3 id="适用场景-1"><a href="#适用场景-1" class="headerlink" title="适用场景"></a>适用场景</h3><p><strong>开阔场地、仅靠前进即可完成换向&#x2F;对接</strong>的机动。典型即<strong>东营储存库（下料区）的 U 型掉头</strong>：场地足够大，一个半径 ≥ $R_{\min}$ 的前向半圆（或 LRL&#x2F;RLR 三弧）即可 180° 换向，根本不需要倒车。此外也适合作为前向规划器（如 <code>use_back=false</code> 的 Hybrid A*）的解析扩展（Dubins shot）。</p>
+<p><img src="/images/site_loop_schematic_3.png" alt="储存库下料区开阔机动&#x2F;泊位示意"></p>
+<p><em>图：储存库（下料区）开阔机动与泊位空间示意，U 型掉头可在前向完成</em></p>
+<blockquote>
+<p><strong>下料区 U 型掉头的选型含义</strong>：在该子任务上，”前向最优”的 Dubins 思路比”双向最优”的 RS 思路更合适——少一类复杂度（不倒车）、执行更顺滑。在 Autoware 中对应将 <code>astar.use_back</code> 置为 <code>false</code>（并&#x2F;或提高 <code>reverse_weight</code>），使规划器退化为前向 Hybrid A*（Dubins 启发式 + 前向 shot）。</p>
+</blockquote>
+<hr>
+<h2 id="Hybrid-A"><a href="#Hybrid-A" class="headerlink" title="Hybrid A*"></a>Hybrid A*</h2><h3 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h3><p>Hybrid A*（Dolgov, Thrun, Montemerlo, Diebel, 2008，源自 DARPA Urban Challenge “Junior”）是在<strong>连续三维状态空间 $(x, y, \theta)$</strong> 上的 A* 搜索。区别于经典网格 A*：节点状态是连续位姿，但用网格单元 + 航向离散桶判重（closed set），既保证运动学可行性，又控制搜索规模。</p>
+<h3 id="状态扩展与运动原语"><a href="#状态扩展与运动原语" class="headerlink" title="状态扩展与运动原语"></a>状态扩展与运动原语</h3><ul>
+<li><strong>状态</strong>：$(x, y, \theta)$，部分实现再加转向角 $\phi$ 成为 4D；</li>
+<li><strong>运动原语</strong>：若干离散转向角（最大左、最大右、中间档）× 前进 &#x2F; 后退，按固定步长积分自行车模型生成后继节点；</li>
+<li><strong>碰撞检测</strong>：沿新扩展段用车辆足印（数个圆 &#x2F; 矩形 + 安全裕度）在 costmap 上检查——<strong>这是 Hybrid A* 区别于 RS&#x2F;Dubins 的核心：原生考虑障碍</strong>。</li>
+</ul>
+<h3 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h3><p>$$<br>g(n) &#x3D; \sum \bigl(\text{长度}\cdot w_{\text{len}} + \text{转向变化}\cdot w_{\text{smooth}} + \text{倒车}\cdot w_{\text{rev}} + \text{换向}\cdot w_{\text{dir}} + \text{贴近障碍}\cdot w_{\text{obs}}\bigr)<br>$$</p>
+<p>通过权重在”少倒车 &#x2F; 少换向 &#x2F; 远离障碍 &#x2F; 平滑”之间取舍。其中”贴近障碍”项直接驱动路径<strong>主动远离障碍</strong>。</p>
+<h3 id="双启发式（关键设计）"><a href="#双启发式（关键设计）" class="headerlink" title="双启发式（关键设计）"></a>双启发式（关键设计）</h3><p>同时维护两个启发函数并<strong>取较大者</strong>，保证 admissible 又足够有引导力：</p>
+<ol>
+<li><strong>非完整约束、无障碍启发</strong>：到目标的 RS（或 Dubins）距离，对若干候选目标航向取最小 —— 引导搜索沿运动学可行方向收敛；</li>
+<li><strong>完整约束、含障碍启发</strong>：在 2D costmap 上用 Dijkstra 预计算的带障碍最短距离 —— 在遇墙 &#x2F; 死胡同处推高 h 值，避免盲目撞向障碍。</li>
+</ol>
+<blockquote>
+<p>启发式里”RS 或 Dubins 距离”的选择可与场景方向策略对齐：前向场景用 Dubins 距离，需倒车场景用 RS 距离。</p>
+</blockquote>
+<h3 id="Reed-Shepp-解析扩展（RS-Shot）"><a href="#Reed-Shepp-解析扩展（RS-Shot）" class="headerlink" title="Reed-Shepp 解析扩展（RS Shot）"></a>Reed-Shepp 解析扩展（RS Shot）</h3><p>当节点进入目标邻域时，<strong>直接向目标射一条 RS（或 Dubins）曲线</strong>，若碰撞空闲即作为解析解接上。此步大幅加速收敛并保证终点精确命中，是 Hybrid A* 工程有效性的核心来源。</p>
+<h3 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h3><p>运动学可行 + <strong>考虑障碍</strong>；终点靠解析 shot 精确命中；代价可调，适配不同诉求（含显式的避障&#x2F;平滑&#x2F;少倒车偏好）。</p>
+<h3 id="局限-2"><a href="#局限-2" class="headerlink" title="局限"></a>局限</h3><p>曲率仍非完全连续（段间阶跃，常需后处理平滑）；分辨率与参数敏感；贴近障碍时易失败 &#x2F; 耗时长；默认只给路径，速度需下游补全；<strong>对快速动态障碍的响应依赖重规划与局部层</strong>（见<a href="#%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92%E4%B8%AD%E7%9A%84%E9%81%BF%E9%9A%9C%E8%AE%BE%E8%AE%A1">避障设计</a>）。</p>
+<hr>
+<h2 id="Autoware-自由空间模块现状"><a href="#Autoware-自由空间模块现状" class="headerlink" title="Autoware 自由空间模块现状"></a>Autoware 自由空间模块现状</h2><blockquote>
+<p>数据来源：Autoware Universe 官方文档（<code>autoware_freespace_planner</code> &#x2F; <code>autoware_freespace_planning_algorithms</code>），版本对齐 <code>main</code> 分支。</p>
+</blockquote>
+<h3 id="模块结构"><a href="#模块结构" class="headerlink" title="模块结构"></a>模块结构</h3><ul>
+<li><strong>节点</strong>：<code>freespace_planner_node</code> —— 全局自由空间路径规划节点，在含静 &#x2F; 动态障碍的空间中规划轨迹；</li>
+<li><strong>算法包</strong>：<code>freespace_planning_algorithms</code>（位于 <code>autoware.universe/planning/freespace_planning_algorithms/</code>）—— 算法实现库；</li>
+<li><strong>当前算法</strong>：<strong>Hybrid A*</strong>（<code>hybrid_a_star.cpp</code>），底层 RS 曲线在 <code>reeds_shepp</code> 相关头文件实现；<strong>RRT*</strong>（<code>rrtstar.cpp</code>）已部分实现、可参数选择，官方标注未来仍会完善；</li>
+<li><strong>血缘</strong>：该 Hybrid A* 沿自经典开源工程 <code>karlkurzer/path_planner</code>（学位论文实现），理论根源即 Dolgov 等人的工作。</li>
+</ul>
+<h3 id="输入-输出"><a href="#输入-输出" class="headerlink" title="输入 &#x2F; 输出"></a>输入 &#x2F; 输出</h3><p><strong>输入：</strong></p>
+<table>
+<thead>
+<tr>
+<th>话题</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>~input/route</code></td>
+<td><code>autoware_planning_msgs::Route</code></td>
+<td>路由与目标位姿（来自 Lanelet2 路由层）</td>
+</tr>
+<tr>
+<td><code>~input/occupancy_grid</code></td>
+<td><code>nav_msgs::OccupancyGrid</code></td>
+<td><strong>代价地图（freespace 地图）</strong>，界定可行驶区与障碍</td>
+</tr>
+<tr>
+<td><code>~input/odometry</code></td>
+<td><code>nav_msgs::Odometry</code></td>
+<td>车速，判断是否停车</td>
+</tr>
+<tr>
+<td><code>~input/scenario</code></td>
+<td><code>tier4_planning_msgs::Scenario</code></td>
+<td>场景，用于节点激活</td>
+</tr>
+</tbody></table>
+<p><strong>输出：</strong></p>
+<table>
+<thead>
+<tr>
+<th>话题</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>~output/trajectory</code></td>
+<td><code>autoware_planning_msgs::Trajectory</code></td>
+<td>待跟踪轨迹</td>
+</tr>
+<tr>
+<td><code>is_completed</code></td>
+<td><code>bool</code>（rosparam）</td>
+<td>是否所有分段轨迹均已发布完毕</td>
+</tr>
+</tbody></table>
+<h3 id="关键行为：单向分段输出（重要）"><a href="#关键行为：单向分段输出（重要）" class="headerlink" title="关键行为：单向分段输出（重要）"></a>关键行为：单向分段输出（重要）</h3><p>官方文档明确：</p>
+<blockquote>
+<p><em>Due to the constraint of trajectory following, the output trajectory will be split to include only the single direction path. In other words, the output trajectory doesn’t include both forward and backward trajectories at once.</em></p>
+</blockquote>
+<p>即<strong>输出轨迹按方向拆分，每次只发布单一方向（纯前进或纯后退）的一段</strong>，由 <code>is_completed</code> 标记是否还有后续分段。这对东营的泊位 &#x2F; 倒车对接 &#x2F; U 型掉头意义重大——“前进 + 倒车”多段切换由该机制分段下发，需在<strong>局部执行 &#x2F; 控制层</strong>配合处理换向停车与重规划触发。</p>
+<blockquote>
+<p><strong>与 Dubins&#x2F;前向策略的衔接</strong>：若某子任务（如下料区 U 型掉头）采用前向规划（<code>use_back=false</code>），则整段为单一前进向、<strong>不触发分段</strong>，<code>is_completed</code> 一次置位即可，执行链最简。这也印证了”能不倒车就不倒车”的工程收益。</p>
+</blockquote>
+<h3 id="关键参数（官方默认值，节选）"><a href="#关键参数（官方默认值，节选）" class="headerlink" title="关键参数（官方默认值，节选）"></a>关键参数（官方默认值，节选）</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认</th>
+<th>含义 &#x2F; 工程含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>planning_algorithm</code></td>
+<td><code>astar</code></td>
+<td>可选 <code>astar</code> &#x2F; <code>rrtstar</code></td>
+</tr>
+<tr>
+<td><code>waypoints_velocity</code></td>
+<td>5.0</td>
+<td>输出速度，<strong>当前仅支持恒速</strong></td>
+</tr>
+<tr>
+<td><code>vehicle_shape_margin_m</code></td>
+<td>1.0</td>
+<td>车辆足印碰撞安全裕度（<strong>避障关键参数</strong>）</td>
+</tr>
+<tr>
+<td><code>time_limit</code></td>
+<td>30000</td>
+<td>单次规划时限（ms）</td>
+</tr>
+<tr>
+<td><code>max_turning_ratio</code></td>
+<td>0.5</td>
+<td>搜索时只使用<strong>实际最大转向范围的一半</strong>（偏保守，东营窄车位需关注）</td>
+</tr>
+<tr>
+<td><code>turning_steps</code></td>
+<td>1</td>
+<td>转向范围内离散档位数</td>
+</tr>
+<tr>
+<td><code>theta_size</code></td>
+<td>144</td>
+<td>航向离散数（约 2.5°&#x2F;桶，决定运动学精度与搜索规模）</td>
+</tr>
+<tr>
+<td><code>lateral / longitudinal / angle_goal_range</code></td>
+<td>0.5 &#x2F; 2.0 &#x2F; 6.0</td>
+<td>目标位姿容差（横向 &#x2F; 纵向 &#x2F; 朝向）</td>
+</tr>
+<tr>
+<td><code>curve_weight</code></td>
+<td>0.5</td>
+<td>转弯代价权重</td>
+</tr>
+<tr>
+<td><code>reverse_weight</code></td>
+<td>1.0</td>
+<td>倒车代价权重（<strong>调高可逼向前向&#x2F;Dubins 行为</strong>）</td>
+</tr>
+<tr>
+<td><code>direction_change_weight</code></td>
+<td>1.5</td>
+<td>换向代价权重（默认最重 → 倾向少换向）</td>
+</tr>
+<tr>
+<td><code>obstacle_threshold</code></td>
+<td>100</td>
+<td>costmap 上视为障碍的阈值（<strong>避障关键参数</strong>）</td>
+</tr>
+<tr>
+<td><code>astar.use_back</code></td>
+<td>True</td>
+<td><strong>允许倒车</strong>；下料区前向掉头可置 false 退化为 Dubins 思路</td>
+</tr>
+<tr>
+<td><code>astar.adapt_expansion_distance</code></td>
+<td>True</td>
+<td>据空间开阔程度自适应扩展步长</td>
+</tr>
+<tr>
+<td><code>astar.expansion_distance</code></td>
+<td>0.5</td>
+<td>节点扩展步长</td>
+</tr>
+<tr>
+<td><code>astar.near_goal_distance</code></td>
+<td>4.0</td>
+<td>进入”近目标”区、触发解析 shot 的距离阈值</td>
+</tr>
+<tr>
+<td><code>astar.smoothness_weight</code></td>
+<td>0.5</td>
+<td>曲率变化（平滑）代价权重</td>
+</tr>
+<tr>
+<td><code>astar.obstacle_distance_weight</code></td>
+<td>0.5</td>
+<td><strong>贴近障碍代价权重（避障关键参数）</strong></td>
+</tr>
+<tr>
+<td><code>replan_when_obstacle_found</code> &#x2F; <code>replan_when_course_out</code></td>
+<td>True &#x2F; True</td>
+<td><strong>轨迹遇障 &#x2F; 跑偏时触发重规划（动态避障入口）</strong></td>
+</tr>
+</tbody></table>
+<h3 id="已知问题与局限"><a href="#已知问题与局限" class="headerlink" title="已知问题与局限"></a>已知问题与局限</h3><ul>
+<li><strong>贴近障碍规划失败</strong>：目标车位紧邻 NPC 车辆时可能无法生成泊车轨迹（autowarefoundation <code>autoware_universe#8699</code>）；</li>
+<li><strong>朝向精度</strong>：当前泊车算法可将末点航向约束在约 <strong>3°</strong> 以内（discussion #6320），更严苛容差仍需打磨；</li>
+<li><strong>曲率连续性</strong>：本质为离散转向 Hybrid A*，段间曲率阶跃；</li>
+<li><strong><code>max_turning_ratio = 0.5</code></strong>：搜索只用半转向范围，是窄空间规划失败或路径偏长的隐性原因；</li>
+<li><strong>仅恒速输出</strong>：速度剖面需下游模块补全；</li>
+<li><strong>动态避障依赖下游</strong>：freespace_planner 面向静态&#x2F;半静态规划，快速动态障碍需局部执行层处理。</li>
+</ul>
+<hr>
+<h2 id="自由空间规划中的避障设计"><a href="#自由空间规划中的避障设计" class="headerlink" title="自由空间规划中的避障设计"></a>自由空间规划中的避障设计</h2><blockquote>
+<p>本节回答带教提出的问题：<strong>自由规划情况下如何考虑避障。</strong></p>
+</blockquote>
+<h3 id="障碍分类（结合东营厂区）"><a href="#障碍分类（结合东营厂区）" class="headerlink" title="障碍分类（结合东营厂区）"></a>障碍分类（结合东营厂区）</h3><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>东营厂区具体对象</th>
+<th>特征</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>静态</strong></td>
+<td>储存库 1–6 号、高架库结构、储罐（附图椭圆体）、管道、阀门、设备基座、护栏&#x2F;路缘、建筑外墙</td>
+<td>位置固定，可固化进静态 costmap</td>
+</tr>
+<tr>
+<td><strong>半静态</strong></td>
+<td>临时堆放物料、托盘、停靠的其他车辆</td>
+<td>缓慢变化，靠点云&#x2F;感知更新</td>
+</tr>
+<tr>
+<td><strong>动态</strong></td>
+<td>其他无人物流车、巡检&#x2F;作业人员、叉车</td>
+<td>实时运动，需短周期感知与响应</td>
+</tr>
+</tbody></table>
+<h3 id="避障机制（Autoware-链路）"><a href="#避障机制（Autoware-链路）" class="headerlink" title="避障机制（Autoware 链路）"></a>避障机制（Autoware 链路）</h3><ol>
+<li><strong>costmap 表示</strong>：<code>obstacle_threshold</code> 区分占用&#x2F;空闲；<strong>inflation（膨胀）层</strong>在障碍周围绕出代价梯度（离障碍越近代价越高），形成”软边界”。</li>
+<li><strong>车辆足印碰撞检测 + 安全裕度</strong>：沿候选扩展段用车辆足印（多圆&#x2F;矩形）+ <code>vehicle_shape_margin_m</code> 外扩后在 costmap 上检查，保证整条扫掠包络不碰障碍。</li>
+<li><strong>远离障碍代价</strong>：<code>astar.obstacle_distance_weight</code> 把”贴近障碍”计入代价，主动把路径推向远离障碍的走廊。</li>
+<li><strong>遇障重规划</strong>：<code>replan_when_obstacle_found</code> 在发现新障碍、或 <code>replan_when_course_out</code> 在跑偏时触发重新规划——这是 freespace 规划应对环境变化的主要入口。</li>
+</ol>
+<h3 id="分层避障职责（关键）"><a href="#分层避障职责（关键）" class="headerlink" title="分层避障职责（关键）"></a>分层避障职责（关键）</h3><p>自由空间场景下，避障是<strong>分层</strong>完成的，需明确分工，避免职责真空：</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>模块</th>
+<th>职责</th>
+<th>响应对象</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>全局机动规划</strong></td>
+<td><code>freespace_planner</code>（Hybrid A*）</td>
+<td>输出可行且不碰<strong>静态&#x2F;半静态</strong>障碍的机动轨迹；带重规划</td>
+<td>静态&#x2F;半静态障碍、环境变化</td>
+</tr>
+<tr>
+<td><strong>局部实时执行</strong></td>
+<td><code>surround_obstacle_checker</code> &#x2F; <code>obstacle_stop_planner</code> &#x2F; <code>obstacle_avoidance_planner</code> &#x2F; <code>obstacle_cruise_planner</code></td>
+<td>实时<strong>动态避障</strong>：减速、停车、局部绕行</td>
+<td>动态障碍、突发入侵</td>
+</tr>
+<tr>
+<td><strong>换向点协同</strong></td>
+<td>单向分段输出 + 局部执行链</td>
+<td>在前进↔后退换向停车点做避障检查与下一段触发</td>
+<td>多段机动的衔接</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>即：<strong>freespace_planner 保证”规划出来的路本身不撞静态障碍”，但”行驶途中突然出现的动态障碍”由局部执行层实时处理</strong>。规划与控制必须衔接好（对应 W2 的局部执行链走读）。</p>
+</blockquote>
+<h3 id="储存库（下料区）特定避障要点"><a href="#储存库（下料区）特定避障要点" class="headerlink" title="储存库（下料区）特定避障要点"></a>储存库（下料区）特定避障要点</h3><ul>
+<li><strong>对接设施即障碍</strong>：高架库（上料区，南面上料）与储存库（下料区）泊位均需精确对接，周边的对接设备&#x2F;月台&#x2F;管道等应标记为高代价&#x2F;禁入区——<strong>对接点为 goal，周边设施规划绕开后精确对位</strong>；</li>
+<li><strong>人工下料区的人员安全</strong>：储存库<strong>北面为人工下料</strong>，有人员活动，该侧需<strong>更高安全裕度</strong>与低速限制，并在 costmap 中对人工作业区做膨胀&#x2F;禁入处理；</li>
+<li><strong>多车协同</strong>：储存库（下料区）与转运线路可能存在多台物流车并行作业，需考虑区域互斥&#x2F;时序（驶入下料区前确认空闲），属 W3&#x2F;W4 议题；</li>
+<li><strong>适度增大裕度</strong>：厂区设施密集，建议在该区域适度上调 <code>vehicle_shape_margin_m</code> 与 <code>astar.obstacle_distance_weight</code>，换取安全性（代价是窄处的规划成功率，需平衡）；</li>
+<li><strong>开阔区可前向绕行</strong>：储存库（下料区）开阔，遇障时前向绕行（Dubins&#x2F;Hybrid A* 前向）通常可行，无需倒车脱困。</li>
+</ul>
+<h3 id="风险与局限"><a href="#风险与局限" class="headerlink" title="风险与局限"></a>风险与局限</h3><ul>
+<li>freespace_planner 为静态&#x2F;半静态规划，对<strong>快速动态障碍</strong>响应不足，强依赖局部层；</li>
+<li>贴近障碍时规划成功率下降（autoware #8699），下料区设备旁对接需重点验证；</li>
+<li>costmap 质量（点云完整性、动态物体滤除）直接决定避障可靠性，需在 W2 确认感知→costmap 链路。</li>
+</ul>
+<hr>
+<h2 id="四者对比"><a href="#四者对比" class="headerlink" title="四者对比"></a>四者对比</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Dubins 曲线</th>
+<th>Reeds-Shepp 曲线</th>
+<th>Hybrid A*</th>
+<th>Autoware <code>freespace_planner</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>算法类别</td>
+<td>解析几何（前向）</td>
+<td>解析几何（双向）</td>
+<td>连续状态 A* 图搜索</td>
+<td>Hybrid A*（+ 解析 shot）的工程封装</td>
+</tr>
+<tr>
+<td>行进方向</td>
+<td><strong>仅前进</strong></td>
+<td>前进 + 后退</td>
+<td>前进 + 后退</td>
+<td>前进 + 后退（<code>use_back</code> 可配）</td>
+</tr>
+<tr>
+<td>是否考虑障碍</td>
+<td>否（需外挂检测）</td>
+<td>否（需外挂检测）</td>
+<td>是</td>
+<td>是（基于 costmap）</td>
+</tr>
+<tr>
+<td>运动学可行性</td>
+<td>严格满足 $R_{\min}$</td>
+<td>严格满足 $R_{\min}$</td>
+<td>满足（离散近似）</td>
+<td>满足（<code>max_turning_ratio</code> 下偏保守）</td>
+</tr>
+<tr>
+<td>路径最优性</td>
+<td>前向解析最短</td>
+<td>双向解析最短</td>
+<td>启发式次优</td>
+<td>启发式次优</td>
+</tr>
+<tr>
+<td>曲率连续性</td>
+<td>不连续（bang-bang）</td>
+<td>不连续（bang-bang）</td>
+<td>段内连续、段间阶跃</td>
+<td>同 Hybrid A*，需后处理</td>
+</tr>
+<tr>
+<td>倒车 &#x2F; 多段换向</td>
+<td><strong>不支持（纯前向）</strong></td>
+<td>天然支持</td>
+<td>支持（代价项控制）</td>
+<td>支持，且<strong>按方向分段输出</strong></td>
+</tr>
+<tr>
+<td>计算量</td>
+<td>极小（$O(1)$）</td>
+<td>极小（$O(1)$）</td>
+<td>中（依赖分辨率）</td>
+<td>中，含 replan</td>
+</tr>
+<tr>
+<td>调参复杂度</td>
+<td>几乎无</td>
+<td>几乎无</td>
+<td>中</td>
+<td>中高（参数面广）</td>
+</tr>
+<tr>
+<td>终点精度</td>
+<td>精确命中</td>
+<td>精确命中</td>
+<td>靠解析 shot 精确命中</td>
+<td>靠解析 shot，朝向 ~3°</td>
+</tr>
+<tr>
+<td>工程集成</td>
+<td>需自研框架</td>
+<td>需自研框架</td>
+<td>需自研框架</td>
+<td><strong>现成节点 + 仿真 &#x2F; 上车链路</strong></td>
+</tr>
+<tr>
+<td>东营场景适配</td>
+<td><strong>储存库（下料区）U 型掉头（开阔、纯前向）</strong></td>
+<td>泊位入位 &#x2F; 倒车对接（需倒车）</td>
+<td>适合做主规划器</td>
+<td><strong>W1&#x2F;W2 基线首选</strong></td>
+</tr>
+</tbody></table>
+<p><strong>一句话总结</strong>：Dubins 是”前向最短、不避障、不能倒车”的解析工具，适合开阔场地的纯前向机动（下料区 U 型掉头）；RS 是其”允许倒车”的推广，适合必须倒车的紧凑对接；Hybrid A* 是”运动学可行 + 避障”的搜索框架；Autoware 模块把 Hybrid A*（含解析 shot）工程化、接入完整 Planning 链路。四者<strong>可叠加使用</strong>——Autoware 模块内部本身同时用到 Hybrid A* 与 RS&#x2F;Dubins 曲线，并通过 <code>use_back</code> 在”前向（Dubins 思路）”与”双向（RS 思路）”间切换。</p>
+<hr>
+<h2 id="东营项目选型与落地建议"><a href="#东营项目选型与落地建议" class="headerlink" title="东营项目选型与落地建议"></a>东营项目选型与落地建议</h2><h3 id="总体策略：先基线、再评估、必要时自研增强"><a href="#总体策略：先基线、再评估、必要时自研增强" class="headerlink" title="总体策略：先基线、再评估、必要时自研增强"></a>总体策略：先基线、再评估、必要时自研增强</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">W1/W2: Autoware freespace_planner (Hybrid A* + 解析 shot) 跑通主流程（基线）</span><br><span class="line">        │</span><br><span class="line">        ├─ 达标 → 直接用于上车预研</span><br><span class="line">        │</span><br><span class="line">        └─ 不达标（曲率跳变 / 贴近失败 / 换向不稳 / 动态避障不足）</span><br><span class="line">                │</span><br><span class="line">                ├─ 路线A: 自研 RS/Dubins 曲线拼接 + 平滑（样条/CG优化）替换/增强 shot</span><br><span class="line">                ├─ 路线B: Hybrid A* 后处理平滑（保留搜索、优化输出）</span><br><span class="line">                └─ 路线C: 强化局部执行链动态避障（surround_obstacle_checker 等）</span><br></pre></td></tr></table></figure>
+
+<h3 id="按场景差异化配置（核心）"><a href="#按场景差异化配置（核心）" class="headerlink" title="按场景差异化配置（核心）"></a>按场景差异化配置（核心）</h3><table>
+<thead>
+<tr>
+<th>子场景</th>
+<th>场地特征</th>
+<th>方向策略</th>
+<th>Autoware 配置</th>
+<th>对应曲线思路</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>储存库（下料区）U 型掉头</strong></td>
+<td>开阔、可一次前向换向</td>
+<td><strong>纯前向</strong></td>
+<td><code>astar.use_back=false</code>，可调高 <code>reverse_weight</code></td>
+<td><strong>Dubins</strong>（前向最短，不触发分段）</td>
+</tr>
+<tr>
+<td><strong>库位泊位入位 &#x2F; 倒车对接</strong>（高架库上料或储存库下料泊位）</td>
+<td>受限、需倒车</td>
+<td>双向</td>
+<td><code>astar.use_back=true</code></td>
+<td><strong>Reeds-Shepp</strong>（双向最短，依赖分段输出）</td>
+</tr>
+<tr>
+<td><strong>跨库区主干机动</strong></td>
+<td>沿转运线路</td>
+<td>前向为主</td>
+<td>Hybrid A* 默认</td>
+<td>Hybrid A* 主规划</td>
+</tr>
+</tbody></table>
+<h3 id="地图策略"><a href="#地图策略" class="headerlink" title="地图策略"></a>地图策略</h3><ul>
+<li><strong>双地图协同</strong>：Lanelet2（转运线路路由）+ freespace costmap（机动区规划），二者在 map frame 统一坐标系；</li>
+<li><strong>handover 衔接</strong>：在高架库东&#x2F;西出口、储存库入口、泊位等节点设置 transition pose，结构化车道与自由空间在此交接，过渡区少量重叠；</li>
+<li><strong>显式圈定 freespace 区域</strong>：把”下料区—机动区—泊位”多边形在地图中标注，确保覆盖完整机动包络（含 U 型掉头扫掠 + 安全裕度），不穿越储罐&#x2F;管道&#x2F;设备。</li>
+</ul>
+<h3 id="避障策略"><a href="#避障策略" class="headerlink" title="避障策略"></a>避障策略</h3><ul>
+<li><strong>静态</strong>：<code>vehicle_shape_margin_m</code> + <code>obstacle_threshold</code> + inflation，把厂区设施固化进静态 costmap；下料区对接设备标禁入区；</li>
+<li><strong>动态</strong>：依赖局部执行层（<code>surround_obstacle_checker</code> &#x2F; <code>obstacle_stop_planner</code> &#x2F; <code>obstacle_avoidance_planner</code>）实时减速&#x2F;停车&#x2F;绕行；</li>
+<li><strong>重规划</strong>：开启 <code>replan_when_obstacle_found</code> &#x2F; <code>replan_when_course_out</code>；</li>
+<li><strong>裕度权衡</strong>：厂区密集区适度增裕度换安全，窄处注意与规划成功率平衡。</li>
+</ul>
+<h3 id="W1-W2-基线落地要点"><a href="#W1-W2-基线落地要点" class="headerlink" title="W1&#x2F;W2 基线落地要点"></a>W1&#x2F;W2 基线落地要点</h3><ol>
+<li><strong>直接复用 <code>freespace_planner_node</code></strong>：以东营 costmap + Lanelet2 地图为输入，先在 Planning Simulator 跑通下料区 U 型掉头（前向）与储存库泊位入位（倒车）两条主流程，作为对比基线；</li>
+<li><strong>重视单向分段输出</strong>：倒车场景的”前进—倒车—前进”由 <code>is_completed</code> + 分段轨迹驱动，需确认 <code>simple_planning_simulator</code> 与后续局部执行模块正确处理换向停车与下一段触发；前向掉头场景则不触发分段，最简；</li>
+<li><strong>恒速限制</strong>：模块当前仅输出恒速（<code>waypoints_velocity</code>），东营低速场景可接受，速度剖面由下游补全。</li>
+</ol>
+<h3 id="参数调优方向（东营场景）"><a href="#参数调优方向（东营场景）" class="headerlink" title="参数调优方向（东营场景）"></a>参数调优方向（东营场景）</h3><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>建议调整</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>下料区掉头出现不必要的倒车&#x2F;换向</td>
+<td>置 <code>astar.use_back=false</code>，调高 <code>reverse_weight</code>&#x2F;<code>direction_change_weight</code>（逼向前向&#x2F;Dubins）</td>
+</tr>
+<tr>
+<td>窄车位规划失败 &#x2F; 路径偏长</td>
+<td>评估放开 <code>max_turning_ratio</code>（0.5→更高）、增大 <code>theta_size</code> 提升航向分辨率</td>
+</tr>
+<tr>
+<td>频繁倒车 &#x2F; 换向过多（泊位场景）</td>
+<td>适度调高 <code>reverse_weight</code> &#x2F; <code>direction_change_weight</code>（注意仍需允许倒车）</td>
+</tr>
+<tr>
+<td>路径贴障碍过近</td>
+<td>增大 <code>vehicle_shape_margin_m</code>、<code>astar.obstacle_distance_weight</code></td>
+</tr>
+<tr>
+<td>解析 shot 不触发 &#x2F; 命中差</td>
+<td>调整 <code>astar.near_goal_distance</code>、目标三向容差</td>
+</tr>
+<tr>
+<td>规划超时</td>
+<td>放宽 <code>time_limit</code> 或降低搜索分辨率</td>
+</tr>
+<tr>
+<td>末点朝向超差</td>
+<td>收紧 <code>angle_goal_range</code>（注意与成功率权衡）</td>
+</tr>
+</tbody></table>
+<h3 id="何时转向自研-RS-Dubins-拼接-平滑-后处理优化"><a href="#何时转向自研-RS-Dubins-拼接-平滑-后处理优化" class="headerlink" title="何时转向自研 RS&#x2F;Dubins 拼接 + 平滑 &#x2F; 后处理优化"></a>何时转向自研 RS&#x2F;Dubins 拼接 + 平滑 &#x2F; 后处理优化</h3><p>出现以下任一情况，建议在 W3&#x2F;W4 引入自研增强：</p>
+<ul>
+<li>基线在东营标准车位 &#x2F; 下料区掉头场景下验收不达标（轨迹穿越边界、曲率不连续致跟踪误差超标、末点停位误差超标）；</li>
+<li>贴近障碍（下料区设备旁对接）规划成功率不稳；</li>
+<li>U 型掉头多段衔接在局部执行层切换抖动 &#x2F; 失败；</li>
+<li>局部动态避障对厂区多车场景响应不足。</li>
+</ul>
+<p>增强路线（与 W3&#x2F;W4 任务对齐）：<strong>RS&#x2F;Dubins 拼接 + 平滑</strong>（曲线生成运动学骨架，样条 &#x2F; 共轭梯度优化做曲率连续化）或 <strong>Hybrid A* 后处理</strong>（保留搜索、平滑输出，改动量更小、风险更低）。</p>
+<hr>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li>自由空间规划的核心矛盾是”<strong>运动学可行性 ↔ 避障 ↔ 计算效率</strong>“三角。Dubins 与 RS 曲线在运动学最优与效率上极致，但不避障、曲率不连续，差异在”是否允许倒车”；Hybrid A* 用连续状态搜索 + 双启发式 + 解析 shot 取得平衡并原生考虑障碍；Autoware 模块把后者工程化并接入完整 Planning 链路。</li>
+<li><strong>对东营项目</strong>，应<strong>按场景差异化</strong>：储存库（下料区）开阔场地”一个 U 型直接掉头、不用倒车”→ 前向 Dubins 思路（<code>use_back=false</code>）；库位倒车对接 → RS 思路（<code>use_back=true</code>）。W1&#x2F;W2 以 Autoware <code>freespace_planner</code> 为基线跑通两条主流程是性价比最高的路径。</li>
+<li><strong>地图</strong>需 Lanelet2（转运线路路由）+ freespace costmap（机动区规划）双图协同，在出口&#x2F;入口&#x2F;泊位 handover 衔接、统一 map frame、覆盖完整机动包络。</li>
+<li><strong>避障</strong>采用”全局 freespace 规划（静态&#x2F;半静态 + 重规划）+ 局部执行层（动态实时）”分层，下料区对接设备标禁入区并适度增裕度。</li>
+<li>重点关注单向分段输出、<code>max_turning_ratio=0.5</code>、曲率连续性、贴近障碍成功率等特性，作为 W3&#x2F;W4 是否自研增强的决策依据。</li>
+</ul>
+<h2 id="下一步（衔接-W2）"><a href="#下一步（衔接-W2）" class="headerlink" title="下一步（衔接 W2）"></a>下一步（衔接 W2）</h2><ul>
+<li>通读 <code>freespace_planning_algorithms</code> 中 <code>hybrid_a_star.cpp</code> 的节点扩展、双启发式与解析 shot（RS&#x2F;Dubins）调用链，确认 <code>use_back</code> 开关的作用范围；</li>
+<li>梳理 RS &#x2F; Dubins 曲线生成逻辑（<code>reeds_shepp</code> 头文件）的路径类型选择与段长计算；</li>
+<li>走查局部执行链 <code>surround_obstacle_checker</code> &#x2F; <code>obstacle_stop_planner</code> &#x2F; <code>obstacle_cruise_planner</code> 的避障触发与换向处理机制，验证其与”单向分段输出”的配合；</li>
+<li>确认 <code>costmap_generator</code> → <code>occupancy_grid</code> 的生成链路，明确 freespace 区域如何由 Lanelet2 多边形&#x2F;点云圈定，形成《自由空间规划与局部执行模块源码走读报告》。</li>
+</ul>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li>Reeds, J. A., &amp; Shepp, L. A. (1990). <em>Optimal paths for a car that goes both forwards and backwards.</em> Pacific Journal of Mathematics, 145(2), 367–393. —— RS 曲线原始论文。</li>
+<li>Dubins, L. E. (1957). <em>On Curves of Minimal Length with a Constraint on Average Curvature and with Prescribed Initial and Terminal Positions and Tangents.</em> American Journal of Mathematics, 79(3), 497–516. —— <strong>Dubins 曲线原始论文（前向最短路径，RS 的前向特例）</strong>。</li>
+<li>Dolgov, D., Thrun, S., Montemerlo, M., &amp; Diebel, J. (2008). <em>Practical Search Techniques in Path Planning for Autonomous Driving.</em> —— Hybrid A*（双启发式 + 解析 shot）原始论文。</li>
+<li>Autoware Universe Documentation — <em>The autoware_freespace_planner</em>. <a target="_blank" rel="noopener" href="https://autowarefoundation.github.io/autoware_universe/main/planning/autoware_freespace_planner/">https://autowarefoundation.github.io/autoware_universe/main/planning/autoware_freespace_planner/</a></li>
+<li>Autoware Universe Documentation — <em>autoware_freespace_planning_algorithms</em>. <a target="_blank" rel="noopener" href="https://autowarefoundation.github.io/autoware_universe/main/planning/autoware_freespace_planning_algorithms/">https://autowarefoundation.github.io/autoware_universe/main/planning/autoware_freespace_planning_algorithms/</a></li>
+<li>阿克曼底盘模型分析：<a target="_blank" rel="noopener" href="https://www.guyuehome.com/wap/detail?id=1825482620696100866">https://www.guyuehome.com/wap/detail?id=1825482620696100866</a></li>
+<li>Reeds-Shepp 曲线：<a target="_blank" rel="noopener" href="https://www.zywvvd.com/notes/study/algorithm/graph/reeds-shepp/reeds-shepp/">https://www.zywvvd.com/notes/study/algorithm/graph/reeds-shepp/reeds-shepp/</a></li>
+<li>Hybrid A* 路径规划：<a target="_blank" rel="noopener" href="https://www.zywvvd.com/notes/study/algorithm/graph/hybrid-a-start/hybrid-a-start/">https://www.zywvvd.com/notes/study/algorithm/graph/hybrid-a-start/hybrid-a-start/</a></li>
+<li>Dubins 曲线：<a target="_blank" rel="noopener" href="https://www.zywvvd.com/notes/study/algorithm/graph/dubins/dubins/">https://www.zywvvd.com/notes/study/algorithm/graph/dubins/dubins/</a></li>
+<li>karlkurzer&#x2F;path_planner（Hybrid A* 经典参考实现，Autoware 该模块的血缘来源）。</li>
+<li>autowarefoundation&#x2F;autoware_universe Issue #8699 &#x2F; Discussion #6320（贴近障碍规划失败、泊车朝向精度等已知问题）。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/08/%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="全局路径规划算法学习笔记">
+                  <i class="fa fa-angle-left"></i> 全局路径规划算法学习笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/08/chap2_0_%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1/" rel="next" title="话题通信">
+                  话题通信 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
