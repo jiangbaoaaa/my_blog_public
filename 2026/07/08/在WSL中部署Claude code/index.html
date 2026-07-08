@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="在WSL中部署Claude code以下操作均在WSL中完成 下载Node.js使用NPM安装，需要先安装Node.js Linux 123# Ubuntu &#x2F; Debiancurl -fsSL https:&#x2F;&#x2F;deb.nodesource.com&#x2F;setup_lts.x | sudo -E bash -sudo apt-get install -y nodejs  完成安装后验证 12node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在WSL中部署Claude code">
+<meta property="og:url" content="https://gen2710.netlify.app/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="在WSL中部署Claude code以下操作均在WSL中完成 下载Node.js使用NPM安装，需要先安装Node.js Linux 123# Ubuntu &#x2F; Debiancurl -fsSL https:&#x2F;&#x2F;deb.nodesource.com&#x2F;setup_lts.x | sudo -E bash -sudo apt-get install -y nodejs  完成安装后验证 12node">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-08T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-08T05:38:21.029Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://gen2710.netlify.app/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gen2710.netlify.app/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/","path":"2026/07/08/在WSL中部署Claude code/","title":"在WSL中部署Claude code"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在WSL中部署Claude code | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude-code"><span class="nav-number">1.</span> <span class="nav-text">在WSL中部署Claude code</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDNode-js"><span class="nav-number">1.1.</span> <span class="nav-text">下载Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Claude-code"><span class="nav-number">1.2.</span> <span class="nav-text">安装Claude code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5CCH%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.3.</span> <span class="nav-text">链接CCH服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E5%B9%B6%E6%B5%8B%E8%AF%95"><span class="nav-number">1.4.</span> <span class="nav-text">保存并测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VS-Code%E6%8B%93%E5%B1%95"><span class="nav-number">1.5.</span> <span class="nav-text">VS Code拓展</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在WSL中部署Claude code | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在WSL中部署Claude code
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：13:38:21" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="在WSL中部署Claude-code"><a href="#在WSL中部署Claude-code" class="headerlink" title="在WSL中部署Claude code"></a>在WSL中部署Claude code</h1><p>以下操作均在WSL中完成</p>
+<h2 id="下载Node-js"><a href="#下载Node-js" class="headerlink" title="下载Node.js"></a>下载Node.js</h2><p>使用NPM安装，需要先安装<strong>Node.js</strong></p>
+<p>Linux</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu / Debian</span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+
+<p>完成安装后验证</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node --version</span><br><span class="line">npm --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Claude-code"><a href="#安装Claude-code" class="headerlink" title="安装Claude code"></a>安装Claude code</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g @anthropic-ai/claude-code</span><br></pre></td></tr></table></figure>
+
+<h2 id="链接CCH服务"><a href="#链接CCH服务" class="headerlink" title="链接CCH服务"></a>链接CCH服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 创建隐藏的配置文件夹</span><br><span class="line">mkdir -p ~/.claude</span><br><span class="line"># 使用vscode打开并创建文件</span><br><span class="line">code ~/.claude/settings.json</span><br></pre></td></tr></table></figure>
+
+<p>复制并粘贴配置内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;env&quot;: &#123;</span><br><span class="line">    &quot;ANTHROPIC_AUTH_TOKEN&quot;: &quot;dbecc3b78be84362becef5772a73c591.jizfjQfxMIXG2nxv&quot;,</span><br><span class="line">    &quot;ANTHROPIC_BASE_URL&quot;: &quot;https://open.bigmodel.cn/api/anthropic&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;CLAUDE_CODE_EFFORT_LEVEL&quot;: &quot;max&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;includeCoAuthoredBy&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="保存并测试"><a href="#保存并测试" class="headerlink" title="保存并测试"></a>保存并测试</h2><p>在vscode中保存文件，打开终端测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Claude</span><br></pre></td></tr></table></figure>
+
+<h2 id="VS-Code拓展"><a href="#VS-Code拓展" class="headerlink" title="VS Code拓展"></a>VS Code拓展</h2><ul>
+<li>在VS Code 拓展市场搜索并按章Claude Code</li>
+<li>确认 settings.json或者环境变量已经配置完成</li>
+<li>如果接的是cch，保持自定义地址即可</li>
+</ul>
+<p>启动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/08/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%88%9D%E4%BD%93%E9%AA%8C/" rel="prev" title="自动驾驶开发环境配置">
+                  <i class="fa fa-angle-left"></i> 自动驾驶开发环境配置
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/08/%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="全局路径规划算法学习笔记">
+                  全局路径规划算法学习笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="全局路径规划算法学习笔记（A* &#x2F; Hybrid A* &#x2F; RRT &#x2F; RRT*） 本文聚焦四个最经典的全局路径规划算法：A*、Hybrid A*（混合 A*）、RRT、RRT*。   先把全局图景搭起来（思维导图）1234567891011121314151617181920212223242526272829303132mindmap  root((全局路径规划)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="全局路径规划算法学习笔记">
+<meta property="og:url" content="https://gen2710.netlify.app/2026/07/08/%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="全局路径规划算法学习笔记（A* &#x2F; Hybrid A* &#x2F; RRT &#x2F; RRT*） 本文聚焦四个最经典的全局路径规划算法：A*、Hybrid A*（混合 A*）、RRT、RRT*。   先把全局图景搭起来（思维导图）1234567891011121314151617181920212223242526272829303132mindmap  root((全局路径规划)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/5/5d/Astar_progress_animation.gif">
+<meta property="article:published_time" content="2026-07-08T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-08T05:37:39.387Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/5/5d/Astar_progress_animation.gif">
+
+
+<link rel="canonical" href="https://gen2710.netlify.app/2026/07/08/%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gen2710.netlify.app/2026/07/08/%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/","path":"2026/07/08/全局路径规划学习笔记/","title":"全局路径规划算法学习笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>全局路径规划算法学习笔记 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88A-Hybrid-A-RRT-RRT-%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">全局路径规划算法学习笔记（A* &#x2F; Hybrid A* &#x2F; RRT &#x2F; RRT*）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E6%8A%8A%E5%85%A8%E5%B1%80%E5%9B%BE%E6%99%AF%E6%90%AD%E8%B5%B7%E6%9D%A5%EF%BC%88%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">先把全局图景搭起来（思维导图）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E8%B4%AF%E7%A9%BF%E5%85%A8%E6%96%87%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.</span> <span class="nav-text">一些贯穿全文的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">A* 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dijkstra-%E5%92%8C%E8%B4%AA%E5%BF%83%E6%9C%80%E5%A5%BD%E4%BC%98%E5%85%88%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">1.3.1.</span> <span class="nav-text">Dijkstra 和贪心最好优先的结合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E6%A0%B8%E5%BF%83%E9%87%8F"><span class="nav-number">1.3.2.</span> <span class="nav-text">三个核心量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%85%B3%E9%94%AE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.3.</span> <span class="nav-text">两个关键数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E9%93%BE%E8%B7%AF%EF%BC%88%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%EF%BC%89"><span class="nav-number">1.3.4.</span> <span class="nav-text">算法链路（执行流程）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.5.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5-%E8%BE%93%E5%87%BA-%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.6.</span> <span class="nav-text">输入 &#x2F; 输出 &#x2F; 代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9%E5%B0%8F%E7%BB%93"><span class="nav-number">1.3.7.</span> <span class="nav-text">优缺点小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hybrid-A-%EF%BC%88%E6%B7%B7%E5%90%88-A-%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">Hybrid A*（混合 A*）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89-Hybrid-A"><span class="nav-number">1.4.1.</span> <span class="nav-text">为什么要有 Hybrid A*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%94%B9%E5%8A%A8%EF%BC%9A%E7%8A%B6%E6%80%81%E4%BB%8E%E7%A6%BB%E6%95%A3%E6%A0%85%E6%A0%BC-%E2%86%92-%E8%BF%9E%E7%BB%AD%E4%BD%8D%E5%A7%BF"><span class="nav-number">1.4.2.</span> <span class="nav-text">核心改动：状态从离散栅格 → 连续位姿</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E7%A9%BA%E9%97%B4%E6%80%8E%E4%B9%88%E6%90%9C%E7%B4%A2%EF%BC%9F%E2%80%94%E2%80%943D-%E6%A0%85%E6%A0%BC%E5%8E%BB%E9%87%8D"><span class="nav-number">1.4.3.</span> <span class="nav-text">连续空间怎么搜索？——3D 栅格去重</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8F%91%E5%87%BD%E6%95%B0%E8%A6%81%E5%8D%87%E7%BA%A7"><span class="nav-number">1.4.4.</span> <span class="nav-text">启发函数要升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reeds-Shepp-%E5%8A%A0%E9%80%9F%EF%BC%9A%E8%BF%99%E6%98%AF-%E2%80%9CA-RS%E2%80%9D-%E7%9A%84-RS-%E9%83%A8%E5%88%86"><span class="nav-number">1.4.5.</span> <span class="nav-text">Reeds-Shepp 加速：这是 “A* RS” 的 RS 部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E9%93%BE%E8%B7%AF"><span class="nav-number">1.4.6.</span> <span class="nav-text">算法链路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="nav-number">1.4.7.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5-%E8%BE%93%E5%87%BA-%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0-1"><span class="nav-number">1.4.8.</span> <span class="nav-text">输入 &#x2F; 输出 &#x2F; 代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9%E5%B0%8F%E7%BB%93-1"><span class="nav-number">1.4.9.</span> <span class="nav-text">优缺点小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RRT%EF%BC%88Rapidly-exploring-Random-Tree%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%8E%A2%E7%B4%A2%E9%9A%8F%E6%9C%BA%E6%A0%91%EF%BC%89"><span class="nav-number">1.5.</span> <span class="nav-text">RRT（Rapidly-exploring Random Tree，快速探索随机树）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B4%E8%A7%89%EF%BC%9A%E5%BE%80%E9%9A%8F%E6%9C%BA%E6%96%B9%E5%90%91%E9%95%BF%E6%A0%91"><span class="nav-number">1.5.1.</span> <span class="nav-text">直觉：往随机方向长树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E9%93%BE%E8%B7%AF-1"><span class="nav-number">1.5.2.</span> <span class="nav-text">算法链路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-1"><span class="nav-number">1.5.3.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5-%E8%BE%93%E5%87%BA-%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0-2"><span class="nav-number">1.5.4.</span> <span class="nav-text">输入 &#x2F; 输出 &#x2F; 代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9%E5%B0%8F%E7%BB%93-2"><span class="nav-number">1.5.5.</span> <span class="nav-text">优缺点小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RRT-%EF%BC%88Optimal-RRT%EF%BC%8C%E6%9C%80%E4%BC%98-RRT%EF%BC%89"><span class="nav-number">1.6.</span> <span class="nav-text">RRT*（Optimal RRT，最优 RRT）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RRT-%E7%9A%84%E9%97%AE%E9%A2%98%E5%9C%A8%E5%93%AA"><span class="nav-number">1.6.1.</span> <span class="nav-text">RRT 的问题在哪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%85%B3%E9%94%AE%E6%93%8D%E4%BD%9C"><span class="nav-number">1.6.2.</span> <span class="nav-text">两个关键操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E9%93%BE%E8%B7%AF-2"><span class="nav-number">1.6.3.</span> <span class="nav-text">算法链路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-2"><span class="nav-number">1.6.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5-%E8%BE%93%E5%87%BA-%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0-3"><span class="nav-number">1.6.5.</span> <span class="nav-text">输入 &#x2F; 输出 &#x2F; 代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9%E5%B0%8F%E7%BB%93-3"><span class="nav-number">1.6.6.</span> <span class="nav-text">优缺点小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E7%A7%8D%E7%AE%97%E6%B3%95%E5%A4%A7%E5%AF%B9%E6%AF%94%EF%BC%88%E8%83%8C%E8%BF%99%E5%BC%A0%E8%A1%A8%E5%B0%B1%E5%A4%9F%EF%BC%89"><span class="nav-number">1.7.</span> <span class="nav-text">四种算法大对比（背这张表就够）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E8%AE%B0"><span class="nav-number">1.7.1.</span> <span class="nav-text">怎么记</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E5%9B%9E%E4%BD%A0%E7%9A%84%E4%B8%BB%E7%BA%BF%EF%BC%9Afreespace-planning-%E4%B8%8E-%E2%80%9CA-RS%E2%80%9D"><span class="nav-number">1.8.</span> <span class="nav-text">串回你的主线：freespace planning 与 “A* RS”</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#freespace-planning-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.8.1.</span> <span class="nav-text">freespace planning 是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%80%9CA-RS%E2%80%9D-%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.8.2.</span> <span class="nav-text">“A* RS” 到底是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B3%8A%E8%BD%A6%E7%94%A8-RS-%E8%80%8C%E4%B8%8D%E6%98%AF-Dubins"><span class="nav-number">1.8.3.</span> <span class="nav-text">为什么泊车用 RS 而不是 Dubins</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%9C%8B%E6%87%82%E5%9B%9B%E4%B8%AA%E7%AE%97%E6%B3%95%E7%9A%84%E2%80%9D%E4%BA%A7%E7%89%A9%E2%80%9D%E5%B7%AE%E5%BC%82"><span class="nav-number">1.9.</span> <span class="nav-text">一张图看懂四个算法的”产物”差异</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="全局路径规划算法学习笔记 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          全局路径规划算法学习笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：13:37:39" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="全局路径规划算法学习笔记（A-Hybrid-A-RRT-RRT-）"><a href="#全局路径规划算法学习笔记（A-Hybrid-A-RRT-RRT-）" class="headerlink" title="全局路径规划算法学习笔记（A* &#x2F; Hybrid A* &#x2F; RRT &#x2F; RRT*）"></a>全局路径规划算法学习笔记（A* &#x2F; Hybrid A* &#x2F; RRT &#x2F; RRT*）</h1><blockquote>
+<p>本文聚焦四个最经典的全局路径规划算法：<strong>A*</strong>、<strong>Hybrid A*</strong>（混合 A*）、<strong>RRT</strong>、<strong>RRT*</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="先把全局图景搭起来（思维导图）"><a href="#先把全局图景搭起来（思维导图）" class="headerlink" title="先把全局图景搭起来（思维导图）"></a>先把全局图景搭起来（思维导图）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">mindmap</span><br><span class="line">  root((全局路径规划))</span><br><span class="line">    基于搜索 Search-based</span><br><span class="line">      A 星</span><br><span class="line">        离散栅格 2D</span><br><span class="line">        f=g+h</span><br><span class="line">        最优且完备</span><br><span class="line">      Hybrid A 星</span><br><span class="line">        连续位姿 x y theta</span><br><span class="line">        车辆运动学</span><br><span class="line">        Reeds-Shepp 加速</span><br><span class="line">        路径平滑可执行</span><br><span class="line">    基于采样 Sampling-based</span><br><span class="line">      RRT</span><br><span class="line">        随机撒点生长</span><br><span class="line">        概率完备</span><br><span class="line">        不最优 路径曲折</span><br><span class="line">      RRT 星</span><br><span class="line">        重新选父 ChooseParent</span><br><span class="line">        重布线 Rewire</span><br><span class="line">        渐进最优</span><br><span class="line">    公共要素</span><br><span class="line">      状态空间 State</span><br><span class="line">      碰撞检测 Collision</span><br><span class="line">      代价函数 Cost</span><br><span class="line">      启发函数 Heuristic</span><br><span class="line">      回溯路径 Traceback</span><br><span class="line">    评价指标</span><br><span class="line">      完备性 Completeness</span><br><span class="line">      最优性 Optimality</span><br><span class="line">      路径质量</span><br><span class="line">      计算效率</span><br></pre></td></tr></table></figure>
+
+<p><strong>A* &#x2F; Hybrid A* 属于”基于搜索”，RRT &#x2F; RRT* 属于”基于采样”</strong>。前者把空间切成格子或用运动基元一格一格扩，后者在空间里随机撒点往目标长。两条路线各有适用场景，下面逐个拆。</p>
+<h2 id="一些贯穿全文的概念"><a href="#一些贯穿全文的概念" class="headerlink" title="一些贯穿全文的概念"></a>一些贯穿全文的概念</h2><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>状态 &#x2F; 节点 State</strong></td>
+<td>规划的基本单元。A* 里是栅格坐标，Hybrid A* 里是位姿 (x, y, θ)，RRT 里是连续点。</td>
+</tr>
+<tr>
+<td><strong>完备性 Completeness</strong></td>
+<td>“只要解存在，算法一定能找到”。A* 是完备的，RRT 是”概率完备”（时间够长概率趋于1）。</td>
+</tr>
+<tr>
+<td><strong>最优性 Optimality</strong></td>
+<td>“找到的解是不是代价最小的”。A*（在 h 满足条件时）最优；RRT 不最优；RRT* “渐进最优”。</td>
+</tr>
+<tr>
+<td><strong>完备 vs 最优</strong></td>
+<td>完备保证”能找到”，最优保证”找到的是最好的”。两者独立。</td>
+</tr>
+<tr>
+<td><strong>代价函数 Cost function</strong></td>
+<td>衡量一条路&#x2F;一个状态有多”贵”的函数，搜索类算法靠它排序、采样类靠它重连。</td>
+</tr>
+<tr>
+<td><strong>启发函数 Heuristic h(n)</strong></td>
+<td>对”剩余距离”的估计，只搜索类（A*&#x2F;Hybrid A*）用，用来优先扩展有希望的方向。</td>
+</tr>
+<tr>
+<td><strong>碰撞检测 Collision check</strong></td>
+<td>判断一段路径&#x2F;一个状态是否撞障碍。所有算法都要做，往往是性能瓶颈。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>完备性、最优性是评价规划算法的两把尺子</strong>，下面的对比会反复用到。</p>
+</blockquote>
+<hr>
+<h2 id="A-算法"><a href="#A-算法" class="headerlink" title="A* 算法"></a>A* 算法</h2><p><img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/Astar_progress_animation.gif" alt="img"></p>
+<h3 id="Dijkstra-和贪心最好优先的结合"><a href="#Dijkstra-和贪心最好优先的结合" class="headerlink" title="Dijkstra 和贪心最好优先的结合"></a>Dijkstra 和贪心最好优先的结合</h3><ul>
+<li><strong>Dijkstra</strong>：只看已经走了多远 <code>g(n)</code>，向四面八方均匀扩展。保证最短，但慢，会探索很多没用的方向。</li>
+<li><strong>贪心最好优先（Greedy Best-First）</strong>：只看估计离终点还有多远 <code>h(n)</code>，猛冲目标。快，但可能被障碍带偏，不保证最短。</li>
+<li><strong>A*</strong>：两者相加，<code>f(n) = g(n) + h(n)</code>。既考虑已走代价，又用启发值引导方向。<strong>当 h 是”可采纳的（admissible，即从不高估）”时，A* 保证最优。</strong></li>
+</ul>
+<p>这就是 A* 的全部灵魂：用一个加权和给每个节点打分，永远优先选择扩展分最低的节点。</p>
+<h3 id="三个核心量"><a href="#三个核心量" class="headerlink" title="三个核心量"></a>三个核心量</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">g(n) : 从起点到节点 n 的【实际】累积代价（已知）</span><br><span class="line">h(n) : 从节点 n 到终点的【启发式估计】代价（猜的，但别高估）</span><br><span class="line">f(n) = g(n) + h(n) : 经过 n 到终点的【估计总代价】</span><br></pre></td></tr></table></figure>
+
+<p><strong>h 的选择</strong>（栅格地图常用）：</p>
+<ul>
+<li>4 连通 → 曼哈顿距离 <code>|dx| + |dy|</code></li>
+<li>8 连通 → 对角线距离 <code>max(|dx|,|dy|) + (√2−1)·min(|dx|,|dy|)</code></li>
+<li>一般情况 → 欧氏距离 <code>√(dx²+dy²)</code></li>
+</ul>
+<blockquote>
+<p>对 8 连通栅格，<strong>对角线距离</strong>最贴合实际可走路径，是最常用的选择。h 必须不超过真实最短距离，否则最优性失效。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>四连通 (4-Connected)</strong></th>
+<th><strong>八连通 (8-Connected)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>可移动方向</strong></td>
+<td>4 个（上下左右）</td>
+<td>8 个（包含对角线）</td>
+</tr>
+<tr>
+<td><strong>推荐的 $h$ 函数</strong></td>
+<td><strong>曼哈顿距离</strong></td>
+<td><strong>对角线距离</strong> &#x2F; <strong>切比雪夫距离</strong></td>
+</tr>
+<tr>
+<td><strong>路径效果</strong></td>
+<td>锯齿状折线，比较生硬</td>
+<td>更平滑，允许走捷径</td>
+</tr>
+<tr>
+<td><strong>计算复杂度</strong></td>
+<td>每次探寻 4 个邻居，计算稍快</td>
+<td>每次探寻 8 个邻居，计算量稍大</td>
+</tr>
+</tbody></table>
+<h3 id="两个关键数据结构"><a href="#两个关键数据结构" class="headerlink" title="两个关键数据结构"></a>两个关键数据结构</h3><ul>
+<li><strong>Open List（开放表）</strong>：已发现、还没扩展的节点。通常用<strong>最小堆&#x2F;优先队列</strong>，按 f 值排序，取最小 O(log n)。</li>
+<li><strong>Closed List（关闭表）</strong>：已经扩展过的节点。用哈希集合，O(1) 查重。</li>
+</ul>
+<h3 id="算法链路（执行流程）"><a href="#算法链路（执行流程）" class="headerlink" title="算法链路（执行流程）"></a>算法链路（执行流程）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    %% 节点定义与逻辑连线</span><br><span class="line">    Start([开始 A* 算法]) --&gt; Init</span><br><span class="line">    Init[&quot;1. 初始化:&lt;br&gt;• frontier 优先级队列&lt;br&gt;• came_from 路径字典&lt;br&gt;• cost_so_far 代价字典&quot;] --&gt; SetStart</span><br><span class="line">    SetStart[&quot;2. 起点入队:&lt;br&gt;• frontier.put(start, 0)&lt;br&gt;• cost_so_far[start] = 0&lt;br&gt;• came_from[start] = None&quot;] --&gt; WhileCheck</span><br><span class="line">    </span><br><span class="line">    WhileCheck&#123;3. 外循环:&lt;br&gt;frontier 是否为空?&#125;</span><br><span class="line">    </span><br><span class="line">    WhileCheck -- 否 (不为空) --&gt; GetMin</span><br><span class="line">    WhileCheck -- 是 (队列空) --&gt; LoopEnd</span><br><span class="line">    </span><br><span class="line">    GetMin[&quot;4. 弹出当前最优:&lt;br&gt;current = frontier.get()&lt;br&gt;获得 F 值最低的节点&quot;] --&gt; CheckGoal</span><br><span class="line">    </span><br><span class="line">    CheckGoal&#123;5. 终点检测:&lt;br&gt;current == goal ?&#125;</span><br><span class="line">    CheckGoal -- 是 --&gt; Break([结束循环&lt;br&gt;成功找到最优路径])</span><br><span class="line">    CheckGoal -- 否 --&gt; ForNeighbor</span><br><span class="line">    </span><br><span class="line">    ForNeighbor&#123;6. 内循环:&lt;br&gt;是否还有未遍历的邻居 next?&#125;</span><br><span class="line">    </span><br><span class="line">    %% 内循环逻辑</span><br><span class="line">    ForNeighbor -- 是 (有邻居) --&gt; CalcCost</span><br><span class="line">    ForNeighbor -- 否 (邻居完) --&gt; WhileCheck</span><br><span class="line">    </span><br><span class="line">    CalcCost[&quot;7. 计算新代价:&lt;br&gt;new_cost = cost_so_far[current] + cost(current, next)&quot;] --&gt; CheckBetter</span><br><span class="line">    </span><br><span class="line">    CheckBetter&#123;8. 是否为更优路径?&lt;br&gt;next 不在 cost_so_far 中&lt;br&gt;OR&lt;br&gt;new_cost &lt; 已记录的代价?&#125;</span><br><span class="line">    </span><br><span class="line">    CheckBetter -- 是 (值得探索) --&gt; UpdateData</span><br><span class="line">    CheckBetter -- 否 (绕远路了) --&gt; ForNeighbor</span><br><span class="line">    </span><br><span class="line">    UpdateData[&quot;9. 更新邻居信息:&lt;br&gt;• cost_so_far[next] = new_cost&lt;br&gt;• priority = new_cost + heuristic&lt;br&gt;• frontier.put(next, priority)&lt;br&gt;• came_from[next] = current&quot;] --&gt; ForNeighbor</span><br><span class="line">    </span><br><span class="line">    LoopEnd([所有节点已遍历完&lt;br&gt;但未找到终点/无路可走])</span><br><span class="line"></span><br><span class="line">    %% ==========================================</span><br><span class="line">    %% 样式定义与类绑定（统一放在底部，防止解析错误）</span><br><span class="line">    %% ==========================================</span><br><span class="line">    classDef startEnd fill:#F5B041,stroke:#333,stroke-width:2px,color:#fff;</span><br><span class="line">    classDef process fill:#AED6F1,stroke:#333,stroke-width:1px;</span><br><span class="line">    classDef condition fill:#F9E79F,stroke:#333,stroke-width:1px;</span><br><span class="line">    classDef update fill:#ABEBC6,stroke:#333,stroke-width:1px;</span><br><span class="line"></span><br><span class="line">    class Start,Break,LoopEnd startEnd;</span><br><span class="line">    class Init,SetStart,GetMin,CalcCost process;</span><br><span class="line">    class WhileCheck,CheckGoal,ForNeighbor,CheckBetter condition;</span><br><span class="line">    class UpdateData update;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"># 初始化优先级队列，用于存放待探索的节点，队列会根据优先级（F值）自动从小到大排序</span><br><span class="line">frontier = PriorityQueue()</span><br><span class="line"># 将起点放入队列，起点的初始优先级（代价）为 0</span><br><span class="line">frontier.put(start, 0)</span><br><span class="line"></span><br><span class="line"># 初始化字典：记录每个节点的“前驱节点”，用于最后反向追踪还原出整条最优路径</span><br><span class="line">came_from: dict[Location, Location] = dict()</span><br><span class="line"># 初始化字典：记录从起点到当前节点的“实际已知最小代价”（即 G 值）</span><br><span class="line">cost_so_far: dict[Location, float] = dict()</span><br><span class="line"></span><br><span class="line"># 起点没有前驱节点，设为 None</span><br><span class="line">came_from[start] = None</span><br><span class="line"># 起点到起点的实际代价为 0</span><br><span class="line">cost_so_far[start] = 0</span><br><span class="line"></span><br><span class="line"># 开始主循环，直到队列为空（所有能走的路都尝试过）</span><br><span class="line">while not frontier.empty():</span><br><span class="line">   # 从优先级队列中弹出当前“总预估代价（F值）”最低的节点</span><br><span class="line">   current = frontier.get()</span><br><span class="line"></span><br><span class="line">   # 【终点检测】如果当前弹出的节点就是目标点，说明已经找到最优路径，直接结束循环</span><br><span class="line">   if current == goal:</span><br><span class="line">      break</span><br><span class="line">   </span><br><span class="line">   # 遍历当前节点的所有相邻节点（邻居）</span><br><span class="line">   for next in graph.neighbors(current):</span><br><span class="line">      # 计算如果通过当前节点走到相邻节点，所需的新实际代价（New G = Current G + Step Cost）</span><br><span class="line">      new_cost = cost_so_far[current] + graph.cost(current, next)</span><br><span class="line">      </span><br><span class="line">      # 如果这个相邻节点还没有被访问过，或者找到了一条到达该节点更省钱/更短的新路径</span><br><span class="line">      if next not in cost_so_far or new_cost &lt; cost_so_far[next]:</span><br><span class="line">         # 更新或记录到达该相邻节点的最小实际代价（G值）</span><br><span class="line">         cost_so_far[next] = new_cost</span><br><span class="line">         </span><br><span class="line">         # 计算该相邻节点的总预估代价（F值 = 新的 G 值 + 启发式 H 值）</span><br><span class="line">         # heuristic(goal, next) 预测了从这个邻居到终点还需要多少代价</span><br><span class="line">         priority = new_cost + heuristic(goal, next)</span><br><span class="line">         </span><br><span class="line">         # 将该相邻节点放入队列，并以刚刚算出的 priority（F值）作为其排序优先级</span><br><span class="line">         frontier.put(next, priority)</span><br><span class="line">         </span><br><span class="line">         # 记录或更新该相邻节点是从哪个节点走过来的（更新路径树）</span><br><span class="line">         came_from[next] = current</span><br></pre></td></tr></table></figure>
+
+<h3 id="输入-输出-代价函数"><a href="#输入-输出-代价函数" class="headerlink" title="输入 &#x2F; 输出 &#x2F; 代价函数"></a>输入 &#x2F; 输出 &#x2F; 代价函数</h3><ul>
+<li><strong>输入</strong>：栅格地图（含障碍）、起点、终点、启发函数 <code>h</code></li>
+<li><strong>输出</strong>：从起点到终点的一条<strong>最短</strong>路径（节点序列），或”无解”</li>
+<li><strong>代价函数</strong>：<ul>
+<li>节点级：<code>f(n) = g(n) + h(n)</code>，<code>g</code> 是累积步长代价（直走&#x3D;1，斜走&#x3D;√2）</li>
+<li>路径级：整条路径 <code>g</code> 的和，即总长度</li>
+<li>想加偏好（如远离墙、少转弯），在 <code>cost(n,m)</code> 里加权即可</li>
+</ul>
+</li>
+</ul>
+<h3 id="优缺点小结"><a href="#优缺点小结" class="headerlink" title="优缺点小结"></a>优缺点小结</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>完备 + 最优（h 可采纳时）</td>
+<td>路径是<strong>栅格折线</strong>，车辆无法直接跟踪</td>
+</tr>
+<tr>
+<td>思想简单、实现成熟</td>
+<td>2D 还行，维度一高（3D+）就”维度灾难”，爆炸</td>
+</tr>
+<tr>
+<td>启发值可控，可调节速度&#x2F;质量</td>
+<td>不考虑运动学（朝向、最小转弯半径）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="Hybrid-A-（混合-A-）"><a href="#Hybrid-A-（混合-A-）" class="headerlink" title="Hybrid A*（混合 A*）"></a>Hybrid A*（混合 A*）</h2><h3 id="为什么要有-Hybrid-A"><a href="#为什么要有-Hybrid-A" class="headerlink" title="为什么要有 Hybrid A*"></a>为什么要有 Hybrid A*</h3><p>普通 A* 的路径长这样：在栅格中心之间走折线、走 45°。<strong>一辆真实的车（阿克曼转向，有最小转弯半径）根本走不出来</strong>。如果直接拿 A* 路径给控制器，要么跟踪不上，要么得做大量后处理（平滑、拟合），还可能拟合失败。</p>
+<p>Hybrid A* 的目标：<strong>直接在车辆的”位姿空间”里搜索，让搜出来的路径本身就能被车开出来。</strong></p>
+<h3 id="核心改动：状态从离散栅格-→-连续位姿"><a href="#核心改动：状态从离散栅格-→-连续位姿" class="headerlink" title="核心改动：状态从离散栅格 → 连续位姿"></a>核心改动：状态从离散栅格 → 连续位姿</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>A*</th>
+<th>Hybrid A*</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>状态</td>
+<td>栅格 (i, j)</td>
+<td>连续位姿 (x, y, θ)，θ 是车头朝向</td>
+</tr>
+<tr>
+<td>邻居生成</td>
+<td>上下左右&#x2F;对角</td>
+<td>用<strong>车辆运动学</strong>前进一步（运动基元 motion primitive）</td>
+</tr>
+<tr>
+<td>路径形状</td>
+<td>栅格折线</td>
+<td>真实可行驶轨迹（圆弧&#x2F;RS 曲线段拼接）</td>
+</tr>
+</tbody></table>
+<p><strong>运动基元</strong>怎么来：给定车的最小转弯半径 R，常见做法是预设一组控制输入，比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">方向 × 转向 = 6 个基元</span><br><span class="line">方向: 前进(D) / 后退(R)</span><br><span class="line">转向: 左转(L) / 直行(S) / 右转(Rr)</span><br><span class="line">每个基元让车前进固定弧长, 得到一段圆弧或直线, 末端就是一个新位姿</span><br></pre></td></tr></table></figure>
+
+<p>每次扩展就是：从当前位姿，分别走这 6 段，得到 <strong>6 个候选新位姿</strong>。</p>
+<h3 id="连续空间怎么搜索？——3D-栅格去重"><a href="#连续空间怎么搜索？——3D-栅格去重" class="headerlink" title="连续空间怎么搜索？——3D 栅格去重"></a>连续空间怎么搜索？——3D 栅格去重</h3><p>纯连续位姿有无限多个，没法搜。Hybrid A* 的巧思：</p>
+<ul>
+<li>把连续位姿 <code>(x, y, θ)</code> <strong>投影到一个 3D 离散栅格</strong>（x 分箱、y 分箱、θ 分箱）。</li>
+<li>每个 3D cell 里<strong>只保留一个状态</strong>（通常是代价最低的那个，或第一个到达的）。</li>
+<li>这样搜索空间是有限的（分辨率完备），但每个状态本身又是连续的真实位姿——<strong>路径连续平滑，但搜索规模可控</strong>。</li>
+</ul>
+<blockquote>
+<p>一句话：<strong>用离散栅格做”去重&#x2F;记忆”，用连续状态做”路径生成”</strong>。这就是 “Hybrid（混合）” 二字的含义——离散 + 连续的混合。</p>
+</blockquote>
+<h3 id="启发函数要升级"><a href="#启发函数要升级" class="headerlink" title="启发函数要升级"></a>启发函数要升级</h3><p>普通欧氏距离在 Hybrid A* 里太弱（因为还要考虑朝向和不能横移），扩展会爆炸。常用更强的启发：</p>
+<ol>
+<li><strong>2D A* &#x2F; Dijkstra 距离</strong>：先在 2D（忽略 θ、允许任意方向移动）上跑一遍，拿到每个格子到目标的距离，作为 h。这已经比欧氏强很多。</li>
+<li><strong>Reeds-Shepp 距离</strong>：直接算”如果没障碍，从当前位姿到目标的最短 RS 曲线长度”。更强，但要配合碰撞检查裁剪。</li>
+</ol>
+<p>工程上常把两者结合，甚至取多种启发的最大值，兼顾引导力和可采纳性。</p>
+<h3 id="Reeds-Shepp-加速：这是-“A-RS”-的-RS-部分"><a href="#Reeds-Shepp-加速：这是-“A-RS”-的-RS-部分" class="headerlink" title="Reeds-Shepp 加速：这是 “A* RS” 的 RS 部分"></a>Reeds-Shepp 加速：这是 “A* RS” 的 RS 部分</h3><p>光靠运动基元一格一格扩，最后可能永远”差一点点”对不上目标的精确朝向 θ。解决办法：</p>
+<ul>
+<li>每次扩展出一个节点后，<strong>尝试用 Reeds-Shepp 曲线直接连到目标</strong>。</li>
+<li>如果这条 RS 曲线<strong>无碰撞</strong>，那就直接接上、结束搜索。</li>
+<li>这让算法能<strong>精确收敛到目标位姿</strong>，大幅减少靠近目标时的无谓扩展。</li>
+</ul>
+<blockquote>
+<p><strong>Reeds-Shepp 曲线</strong>：给定两个位姿，在”车能前进、能后退”的前提下，存在<strong>解析的最短路径</strong>（由若干段圆弧+直线组合，公式可查表）。能前进能后退 &#x3D; 适合<strong>泊车</strong>这种需要揉库的场景。<br><strong>Dubins 曲线</strong>：只能前进不能后退的对应物，适合单向行驶。</p>
+</blockquote>
+<h3 id="算法链路"><a href="#算法链路" class="headerlink" title="算法链路"></a>算法链路</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Start([开始 Hybrid A* 算法]) --&gt; Init</span><br><span class="line">    Init[&quot;1. 初始化:&lt;br&gt;• 开启列表 open_set (优先级队列)&lt;br&gt;• 3D 闭合列表 closed_3d (用于剪枝)&lt;br&gt;• 确定车辆物理参数 (轴距 L、最大转角)&quot;] --&gt; PushStart</span><br><span class="line">    </span><br><span class="line">    PushStart[&quot;2. 起点入队:&lt;br&gt;• 计算起点 G 和 H 值&lt;br&gt;• 放入 open_set&quot;] --&gt; LoopCheck</span><br><span class="line">    </span><br><span class="line">    LoopCheck&#123;3. open_set 是否为空?&#125;</span><br><span class="line">    LoopCheck -- 是 --&gt; Failed([规划失败: 无可行路径])</span><br><span class="line">    LoopCheck -- 否 --&gt; GetMin</span><br><span class="line">    </span><br><span class="line">    GetMin[&quot;4. 弹出当前最优节点:&lt;br&gt;current = open_set.pop_min()&quot;] --&gt; CheckAnalytic</span><br><span class="line">    </span><br><span class="line">    CheckAnalytic&#123;&quot;5. 解析展开尝试:&lt;br&gt;能否通过 Reeds-Shepp/Dubins 曲线&lt;br&gt;在无碰撞情况下直接连接终点?&quot;&#125;</span><br><span class="line">    CheckAnalytic -- 成功 --&gt; Reconstruct[&quot;6. 拼接当前路径与解析路径&quot;] --&gt; Success([规划成功: 输出最优轨迹])</span><br><span class="line">    </span><br><span class="line">    CheckGoal&#123;&quot;7. 终点检测:&lt;br&gt;current 离 goal 是否足够近?&quot;&#125;</span><br><span class="line">    CheckGoal -- 是 --&gt; Reconstruct</span><br><span class="line">    </span><br><span class="line">    CheckAnalytic -- 失败 --&gt; CheckGoal</span><br><span class="line">    </span><br><span class="line">    CheckGoal -- 否 --&gt; ExpandNeighbors[&quot;8. 运动学节点展开:&lt;br&gt;对车辆施加不同的控制量 (如 左转, 直行, 右转)&lt;br&gt;利用自行车模型计算出 N 个连续的新状态 next_state&quot;]</span><br><span class="line">    </span><br><span class="line">    ExpandNeighbors --&gt; ForEachNeighbor&#123;&quot;9. 遍历每个生成的 next_state&quot;&#125;</span><br><span class="line">    </span><br><span class="line">    ForEachNeighbor -- 遍历完成 --&gt; LoopCheck</span><br><span class="line">    </span><br><span class="line">    ForEachNeighbor -- 正在处理一个 next --&gt; CollisionCheck&#123;&quot;10. 碰撞检测:&lt;br&gt;该段连续轨迹是否撞墙?&quot;&#125;</span><br><span class="line">    CollisionCheck -- 是 (碰撞) --&gt; ForEachNeighbor</span><br><span class="line">    </span><br><span class="line">    CollisionCheck -- 否 --&gt; VoxelCheck&#123;&quot;11. 3D 栅格剪枝:&lt;br&gt;计算其离散 3D 索引 (x_d, y_d, theta_d)&lt;br&gt;该 3D 栅格是否已被 closed_3d 访问?&quot;&#125;</span><br><span class="line">    VoxelCheck -- 是 (已被访问过) --&gt; ForEachNeighbor</span><br><span class="line">    </span><br><span class="line">    VoxelCheck -- 否 (全新空间) --&gt; CalcCost[&quot;12. 计算代价与路径记录:&lt;br&gt;• G = current.G + 移动距离 + 转向惩罚&lt;br&gt;• H = 启发式代价 (非完整约束距离 &amp; 避障距离)&lt;br&gt;• F = G + H&lt;br&gt;• 记录父节点关系&quot;]</span><br><span class="line">    </span><br><span class="line">    CalcCost --&gt; PushOpen[&quot;13. 状态归档:&lt;br&gt;• 将 next_state 放入 open_set&lt;br&gt;• 将 (x_d, y_d, theta_d) 标记为已访问 (closed_3d)&quot;]</span><br><span class="line">    PushOpen --&gt; ForEachNeighbor</span><br><span class="line"></span><br><span class="line">    %% 样式与绑定</span><br><span class="line">    classDef startEnd fill:#F5B041,stroke:#333,stroke-width:2px,color:#fff;</span><br><span class="line">    classDef process fill:#AED6F1,stroke:#333,stroke-width:1px;</span><br><span class="line">    classDef condition fill:#F9E79F,stroke:#333,stroke-width:1px;</span><br><span class="line">    classDef update fill:#ABEBC6,stroke:#333,stroke-width:1px;</span><br><span class="line"></span><br><span class="line">    class Start,Success,Failed startEnd;</span><br><span class="line">    class Init,PushStart,GetMin,ExpandNeighbors,CalcCost,PushOpen,Reconstruct process;</span><br><span class="line">    class LoopCheck,CheckAnalytic,CheckGoal,ForEachNeighbor,CollisionCheck,VoxelCheck condition;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">function HybridA*(start_pose, goal_pose, map, vehicle):</span><br><span class="line">    open = 优先队列(按 f); closed = 空</span><br><span class="line">    start.g = 0; start.h = heuristic(start, goal); start.f = start.h</span><br><span class="line">    open.push(start)</span><br><span class="line"></span><br><span class="line">    while open 非空:</span><br><span class="line">        n = open.pop()                       # f 最小的位姿</span><br><span class="line"></span><br><span class="line">        # ---- Reeds-Shepp 解析射靶 ----</span><br><span class="line">        rs = ReedsShepp(n, goal)             # 算最短 RS 曲线</span><br><span class="line">        if rs 存在 and 无碰撞(rs, map):</span><br><span class="line">            return 回溯(n) + rs              # 接上, 结束</span><br><span class="line"></span><br><span class="line">        closed.add(投影到3D栅格(n))</span><br><span class="line"></span><br><span class="line">        # ---- 运动基元扩展 ----</span><br><span class="line">        for 每个运动基元 prim in vehicle.primitives:   # 前进/后退 × 左/直/右</span><br><span class="line">            m = integrate(n, prim)           # 用车辆运动学前进一步, 得新位姿</span><br><span class="line">            cell = 投影到3D栅格(m)</span><br><span class="line">            if cell in closed or 碰撞(轨迹 n-&gt;m):</span><br><span class="line">                continue</span><br><span class="line">            tentative_g = n.g + cost(n, m)</span><br><span class="line">            if cell 未记录 or tentative_g &lt; 已记录的 g:</span><br><span class="line">                m.g = tentative_g</span><br><span class="line">                m.h = heuristic(m, goal)</span><br><span class="line">                m.f = m.g + m.h</span><br><span class="line">                m.parent = n</span><br><span class="line">                记录 cell -&gt; m</span><br><span class="line">                open.push(m)</span><br><span class="line">    return 失败</span><br></pre></td></tr></table></figure>
+
+<h3 id="输入-输出-代价函数-1"><a href="#输入-输出-代价函数-1" class="headerlink" title="输入 &#x2F; 输出 &#x2F; 代价函数"></a>输入 &#x2F; 输出 &#x2F; 代价函数</h3><ul>
+<li><strong>输入</strong>：地图（用于碰撞检测）、起点位姿 <code>(x,y,θ)</code>、终点位姿、车辆参数（最小转弯半径、基元集）、启发函数</li>
+<li><strong>输出</strong>：一条<strong>平滑、满足车辆运动学、可直接执行</strong>的路径</li>
+<li><strong>代价函数</strong>（比 A* 丰富，能反映真实驾驶偏好）：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">g = w_len · 路径长度</span><br><span class="line">+ w_steer · 转向变化量          # 少打方向盘</span><br><span class="line">+ w_switch · 前进/后退切换次数   # 少揉库换挡</span><br><span class="line">+ w_back  · 倒车距离             # 尽量少倒车</span><br></pre></td></tr></table></figure>
+
+<p>调这些权重，就能让规划器偏好”短”还是”顺”还是”少倒车”——这是工程上很有用的杠杆。</p>
+<h3 id="优缺点小结-1"><a href="#优缺点小结-1" class="headerlink" title="优缺点小结"></a>优缺点小结</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径<strong>直接可执行</strong>，无需平滑后处理</td>
+<td>3D 搜索，比 2D A* 慢</td>
+</tr>
+<tr>
+<td>考虑朝向和运动学，适合真实车辆</td>
+<td><strong>分辨率完备</strong>而非真正完备（栅格分得不够细可能漏解）</td>
+</tr>
+<tr>
+<td>RS 射靶能精确收敛到目标位姿</td>
+<td>代价&#x2F;启发调参比 A* 复杂</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="RRT（Rapidly-exploring-Random-Tree，快速探索随机树）"><a href="#RRT（Rapidly-exploring-Random-Tree，快速探索随机树）" class="headerlink" title="RRT（Rapidly-exploring Random Tree，快速探索随机树）"></a>RRT（Rapidly-exploring Random Tree，快速探索随机树）</h2><h3 id="直觉：往随机方向长树"><a href="#直觉：往随机方向长树" class="headerlink" title="直觉：往随机方向长树"></a>直觉：往随机方向长树</h3><p>基于搜索的方法在高维空间（比如机械臂 6 关节 + 障碍）会爆炸——栅格数随维度指数增长。RRT 的思路完全不同：<strong>不切格子，直接在空间里随机撒点，让一棵树朝随机点生长。</strong></p>
+<p>为什么”快速探索”？因为均匀随机撒点，树会<strong>均匀地向四面八方伸展</strong>，自然就快速覆盖整个空间，不会卡在一个角落。它对维度不敏感，6 维、10 维照样跑。</p>
+<h3 id="算法链路-1"><a href="#算法链路-1" class="headerlink" title="算法链路"></a>算法链路</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">flowchart TD</span><br><span class="line">    A[树 T 初始化: 只有起点] --&gt; B[随机采样 q_rand&lt;br/&gt;小概率直接采目标 goal-bias]</span><br><span class="line">    B --&gt; C[在 T 中找离 q_rand 最近的节点 q_near]</span><br><span class="line">    C --&gt; D[从 q_near 朝 q_rand 走固定步长 -&gt; q_new&lt;br/&gt;steer 函数, 可含运动学]</span><br><span class="line">    D --&gt; E&#123;q_near-&gt;q_new 碰撞?&#125;</span><br><span class="line">    E -- 是 --&gt; B</span><br><span class="line">    E -- 否 --&gt; F[把 q_new 作为 q_near 的子节点加入 T]</span><br><span class="line">    F --&gt; G&#123;q_new 进入目标区域?&#125;</span><br><span class="line">    G -- 是 --&gt; H[回溯路径]</span><br><span class="line">    G -- 否 --&gt; B</span><br></pre></td></tr></table></figure>
+
+<h3 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function RRT(start, goal_region, sample_space, step, collision):</span><br><span class="line">    T = &#123; start &#125;</span><br><span class="line">    for i = 1 to N:</span><br><span class="line">        q_rand = RandomSample(sample_space)        # 小概率: q_rand = goal  (goal bias)</span><br><span class="line">        q_near  = Nearest(T, q_rand)</span><br><span class="line">        q_new   = Steer(q_near, q_rand, step)      # 朝 q_rand 走一步</span><br><span class="line">        if not collision(路径 q_near -&gt; q_new):</span><br><span class="line">            T.add(q_new, parent = q_near)</span><br><span class="line">            if q_new in goal_region:</span><br><span class="line">                return 回溯路径(q_new)</span><br><span class="line">    return 失败 / 返回当前最好的路径</span><br></pre></td></tr></table></figure>
+
+<p>几个关键点：</p>
+<ul>
+<li><strong>Steer 函数</strong>：决定”怎么走这一步”。最简单是直线插值；要考虑运动学（如车辆）就用 RS&#x2F;Dubins 段。</li>
+<li><strong>goal bias</strong>：纯随机效率低，所以通常以 5%~10% 概率直接把目标点当 <code>q_rand</code>，引导树往目标长。</li>
+<li><strong>step 步长</strong>：太长容易撞、太短探索慢，要调。</li>
+</ul>
+<h3 id="输入-输出-代价函数-2"><a href="#输入-输出-代价函数-2" class="headerlink" title="输入 &#x2F; 输出 &#x2F; 代价函数"></a>输入 &#x2F; 输出 &#x2F; 代价函数</h3><ul>
+<li><strong>输入</strong>：采样空间、起点、目标区域、步长、碰撞检测函数</li>
+<li><strong>输出</strong>：一条<strong>可行</strong>路径（注意：不保证短、不保证平滑，往往很曲折）</li>
+<li><strong>代价函数</strong>：RRT 本身基本不显式优化代价，主要靠”局部路径长度”做 Steer 和 Nearest。路径质量差，<strong>需要后处理</strong>（shortcut 抄近路、smoothing 平滑）。</li>
+</ul>
+<h3 id="优缺点小结-2"><a href="#优缺点小结-2" class="headerlink" title="优缺点小结"></a>优缺点小结</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>高维空间表现好，不炸</td>
+<td><strong>概率完备</strong>（非确定完备）</td>
+</tr>
+<tr>
+<td>实现简单、对复杂障碍适应强</td>
+<td>路径<strong>不最优</strong>，曲折难走</td>
+</tr>
+<tr>
+<td>速度快，适合”先找个解”</td>
+<td>单次运行结果随机，不稳定</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>这个”不最优”正是 RRT* 要补的短板。</p>
+</blockquote>
+<hr>
+<h2 id="RRT-（Optimal-RRT，最优-RRT）"><a href="#RRT-（Optimal-RRT，最优-RRT）" class="headerlink" title="RRT*（Optimal RRT，最优 RRT）"></a>RRT*（Optimal RRT，最优 RRT）</h2><h3 id="RRT-的问题在哪"><a href="#RRT-的问题在哪" class="headerlink" title="RRT 的问题在哪"></a>RRT 的问题在哪</h3><p>RRT 一个节点连上父节点后，<strong>就再也不改了</strong>。哪怕后面发现”从另一个节点连过来更近”，它也不会重连。所以路径往往绕远、冗长。</p>
+<p>RRT* 的核心改进：<strong>每次加新节点时，不仅给新节点找最好的爸爸，还顺便帮邻居们重新认爸爸。</strong> 这样随着采样增多，整棵树越来越”顺”，路径越来越短。</p>
+<h3 id="两个关键操作"><a href="#两个关键操作" class="headerlink" title="两个关键操作"></a>两个关键操作</h3><p>设新节点 <code>q_new</code> 已经生成，在它周围画一个半径 <code>r</code> 的邻域，邻域内的节点集合记为 <code>Q_near</code>。</p>
+<p><strong>① ChooseParent（重新选父）——给 q_new 找最便宜的爹</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">默认爹是 q_near。但遍历 Q_near 里所有候选 c：</span><br><span class="line">    cost(经过 c 到 q_new) = cost(c) + dist(c, q_new)</span><br><span class="line">取让这个值【最小】、且连线无碰撞的 c 作为 q_new 的父亲。</span><br></pre></td></tr></table></figure>
+<p>→ q_new 一开始就连上最优父节点，而不是最近的那个。</p>
+<p><strong>② Rewire（重布线）——帮邻居们换个更便宜的爹</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">遍历 Q_near 里每个节点 c：</span><br><span class="line">    if cost(q_new) + dist(q_new, c) &lt; cost(c):   # 经过 q_new 到 c 更短</span><br><span class="line">        if 连线 q_new -&gt; c 无碰撞:</span><br><span class="line">            把 c 的父亲改成 q_new                # 重连!</span><br></pre></td></tr></table></figure>
+<p>→ 老节点也能受益于新节点，整棵树持续优化。</p>
+<p><strong>渐近最优性（Asymptotic Optimality）</strong>：当采样数 → ∞，路径代价 → 全局最优。代价是：每次迭代要多做很多碰撞检测和距离计算，<strong>单步比 RRT 慢不少</strong>。</p>
+<blockquote>
+<p>邻域半径 <code>r</code> 有理论公式（随采样数 n 减小），保证渐近最优性的同时控制计算量。工程上常取 <code>r = γ · (log n / n)^(1/d)</code>，d 是空间维度。</p>
+</blockquote>
+<h3 id="算法链路-2"><a href="#算法链路-2" class="headerlink" title="算法链路"></a>算法链路</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">flowchart TD</span><br><span class="line">    A[T 初始化: 起点] --&gt; B[采样 q_rand, 找最近 q_near, Steer 得 q_new]</span><br><span class="line">    B --&gt; C[碰撞?]</span><br><span class="line">    C -- 是 --&gt; B</span><br><span class="line">    C -- 否 --&gt; D[&quot;ChooseParent: 在邻域内为 q_new 选代价最小的父节点&quot;]</span><br><span class="line">    D --&gt; E[把 q_new 加入树]</span><br><span class="line">    E --&gt; F[&quot;Rewire: 邻域内若经 q_new 更短, 则把邻居重连到 q_new&quot;]</span><br><span class="line">    F --&gt; G&#123;达到停止条件? 时间/样本数&#125;</span><br><span class="line">    G -- 否 --&gt; B</span><br><span class="line">    G -- 是 --&gt; H[返回当前到目标的最优路径]</span><br></pre></td></tr></table></figure>
+
+<h3 id="伪代码-2"><a href="#伪代码-2" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function RRT*(start, goal, ...):</span><br><span class="line">    T = &#123; start &#125;</span><br><span class="line">    for i = 1 to N:</span><br><span class="line">        q_rand = RandomSample()            # 含 goal bias</span><br><span class="line">        q_near = Nearest(T, q_rand)</span><br><span class="line">        q_new  = Steer(q_near, q_rand, step)</span><br><span class="line">        if collision(q_near -&gt; q_new): continue</span><br><span class="line"></span><br><span class="line">        Q_near = Near(T, q_new, r)         # 邻域内候选节点</span><br><span class="line">        # ---- 1. 重新选父 ----</span><br><span class="line">        q_min = q_near;  c_min = cost(q_near) + dist(q_near, q_new)</span><br><span class="line">        for c in Q_near:</span><br><span class="line">            if not collision(c -&gt; q_new) and cost(c) + dist(c, q_new) &lt; c_min:</span><br><span class="line">                q_min = c;  c_min = cost(c) + dist(c, q_new)</span><br><span class="line">        T.add(q_new, parent = q_min)</span><br><span class="line"></span><br><span class="line">        # ---- 2. 重布线 ----</span><br><span class="line">        for c in Q_near:</span><br><span class="line">            if not collision(q_new -&gt; c) and cost(q_new) + dist(q_new, c) &lt; cost(c):</span><br><span class="line">                c.parent = q_new           # 重连</span><br><span class="line">    return 从树中取到 goal 的最优路径</span><br></pre></td></tr></table></figure>
+
+<h3 id="输入-输出-代价函数-3"><a href="#输入-输出-代价函数-3" class="headerlink" title="输入 &#x2F; 输出 &#x2F; 代价函数"></a>输入 &#x2F; 输出 &#x2F; 代价函数</h3><ul>
+<li><strong>输入&#x2F;输出</strong>：同 RRT，但输出质量高得多</li>
+<li><strong>代价函数</strong>：这里代价函数很关键——<code>cost(节点)</code> 是从根到该节点的累积路径长度（或加权代价），ChooseParent 和 Rewire 都是在<strong>最小化它</strong>。</li>
+</ul>
+<h3 id="优缺点小结-3"><a href="#优缺点小结-3" class="headerlink" title="优缺点小结"></a>优缺点小结</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>渐近最优</strong>，路径越跑越好</td>
+<td>单步计算比 RRT 重，实时性差</td>
+</tr>
+<tr>
+<td>仍适合高维空间</td>
+<td>收敛需要足够多样本，早期路径不一定好</td>
+</tr>
+<tr>
+<td>概率完备</td>
+<td>理论最优 ≠ 工程上能等到最优</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四种算法大对比（背这张表就够）"><a href="#四种算法大对比（背这张表就够）" class="headerlink" title="四种算法大对比（背这张表就够）"></a>四种算法大对比（背这张表就够）</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th><strong>A*</strong></th>
+<th><strong>Hybrid A*</strong></th>
+<th><strong>RRT</strong></th>
+<th><strong>RRT*</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>类别</strong></td>
+<td>基于搜索</td>
+<td>基于搜索</td>
+<td>基于采样</td>
+<td>基于采样</td>
+</tr>
+<tr>
+<td><strong>状态空间</strong></td>
+<td>2D 离散栅格</td>
+<td>3D 连续位姿 (x,y,θ)</td>
+<td>连续，任意维</td>
+<td>连续，任意维</td>
+</tr>
+<tr>
+<td><strong>邻居生成</strong></td>
+<td>4&#x2F;8 邻域</td>
+<td>车辆运动基元</td>
+<td>朝随机点走一步</td>
+<td>同 RRT</td>
+</tr>
+<tr>
+<td><strong>完备性</strong></td>
+<td>完备</td>
+<td><strong>分辨率完备</strong></td>
+<td><strong>概率完备</strong></td>
+<td>概率完备</td>
+</tr>
+<tr>
+<td><strong>最优性</strong></td>
+<td>最优（h 可采纳）</td>
+<td>加权最优（分辨率）</td>
+<td><strong>不最优</strong></td>
+<td><strong>渐近最优</strong></td>
+</tr>
+<tr>
+<td><strong>路径质量</strong></td>
+<td>折线，需后处理</td>
+<td>平滑、可直接执行</td>
+<td>曲折，需后处理</td>
+<td>较好，渐进改善</td>
+</tr>
+<tr>
+<td><strong>考虑运动学</strong></td>
+<td>否</td>
+<td><strong>是</strong></td>
+<td>可选（Steer）</td>
+<td>可选（Steer）</td>
+</tr>
+<tr>
+<td><strong>适合维度</strong></td>
+<td>低（2D）</td>
+<td>中低（3D）</td>
+<td>高维</td>
+<td>高维</td>
+</tr>
+<tr>
+<td><strong>速度</strong></td>
+<td>中快</td>
+<td>较慢</td>
+<td><strong>快</strong></td>
+<td>较慢</td>
+</tr>
+<tr>
+<td><strong>结果稳定性</strong></td>
+<td>确定性强</td>
+<td>确定性强</td>
+<td>随机性强</td>
+<td>随机性强</td>
+</tr>
+<tr>
+<td><strong>典型场景</strong></td>
+<td>游戏寻路、2D 机器人</td>
+<td><strong>自动驾驶泊车</strong>、非全向车</td>
+<td>高维机械臂、快速找解</td>
+<td>高维且要质量</td>
+</tr>
+</tbody></table>
+<h3 id="怎么记"><a href="#怎么记" class="headerlink" title="怎么记"></a>怎么记</h3><ul>
+<li><strong>想要确定 + 最优 + 低维</strong> → A*</li>
+<li><strong>想要确定 + 路径能直接开 + 3D 位姿</strong> → Hybrid A*（你的 freespace planning 主力）</li>
+<li><strong>想要快速 + 高维 + 不在乎最优</strong> → RRT</li>
+<li><strong>想要高维 + 路径质量好</strong> → RRT*</li>
+</ul>
+<hr>
+<h2 id="串回你的主线：freespace-planning-与-“A-RS”"><a href="#串回你的主线：freespace-planning-与-“A-RS”" class="headerlink" title="串回你的主线：freespace planning 与 “A* RS”"></a>串回你的主线：freespace planning 与 “A* RS”</h2><p>现在把四个算法和你的学习目标接起来：</p>
+<h3 id="freespace-planning-是什么"><a href="#freespace-planning-是什么" class="headerlink" title="freespace planning 是什么"></a>freespace planning 是什么</h3><p>“freespace planning” 通常指<strong>在自由空间（无障碍的连续空间）里做几何&#x2F;运动学规划</strong>，自动驾驶里特别用于<strong>低速泊车、掉头、揉库</strong>这类场景——需要精确控制终点位姿（车要停进车位，朝向也得对）。</p>
+<h3 id="“A-RS”-到底是什么"><a href="#“A-RS”-到底是什么" class="headerlink" title="“A* RS” 到底是什么"></a>“A* RS” 到底是什么</h3><p>你看到的 <em><em>“A</em> + RS”</em>* 基本就是 <strong>Hybrid A* 配 Reeds-Shepp 曲线</strong>，即本文第 3 节那套：</p>
+<ul>
+<li><strong>A*</strong> 部分：用 A* 那套 <code>f=g+h</code>、Open&#x2F;Closed、优先队列的搜索框架，但状态是连续位姿、用运动基元扩展（&#x3D; Hybrid A*）。</li>
+<li><strong>RS</strong> 部分：<ol>
+<li><strong>运动基元用 RS 曲线段</strong>（而非简单圆弧），更贴合”能前进能后退”的车；</li>
+<li><strong>接近目标时用 RS 曲线”射靶”</strong>，解析地精确收敛到目标位姿。</li>
+</ol>
+</li>
+</ul>
+<p>所以理解了第 3 节，你的 “A* RS” 也就通了 80%。剩下的 20% 是工程调参：启发函数选哪种、代价权重怎么定、3D 栅格分辨率多细。</p>
+<h3 id="为什么泊车用-RS-而不是-Dubins"><a href="#为什么泊车用-RS-而不是-Dubins" class="headerlink" title="为什么泊车用 RS 而不是 Dubins"></a>为什么泊车用 RS 而不是 Dubins</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>Reeds-Shepp</th>
+<th>Dubins</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前进</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>后退</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>适合</td>
+<td><strong>泊车&#x2F;揉库</strong>（要换挡）</td>
+<td>单向巡航&#x2F;无人机</td>
+</tr>
+</tbody></table>
+<p>泊车场景车要反复前进后退对准车位，所以 RS 更合适——这也是 freespace planning 几乎都用 RS 的原因。</p>
+<hr>
+<h2 id="一张图看懂四个算法的”产物”差异"><a href="#一张图看懂四个算法的”产物”差异" class="headerlink" title="一张图看懂四个算法的”产物”差异"></a>一张图看懂四个算法的”产物”差异</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">    subgraph S1[A* 产物]</span><br><span class="line">        A1[&quot;栅格折线&lt;br/&gt;不能直接开&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph S2[Hybrid A* 产物]</span><br><span class="line">        A2[&quot;平滑曲线&lt;br/&gt;直接可执行&lt;br/&gt;满足运动学&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph S3[RRT 产物]</span><br><span class="line">        A3[&quot;随机曲折路径&lt;br/&gt;可行但不优&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph S4[RRT* 产物]</span><br><span class="line">        A4[&quot;渐进平滑路径&lt;br/&gt;可行且越来越优&quot;]</span><br><span class="line">    end</span><br><span class="line">    S1 -. 需后处理 .-&gt; 车辆</span><br><span class="line">    S2 ==&gt; 车辆[直接给控制器]</span><br><span class="line">    S3 -. 需后处理 .-&gt; 车辆</span><br><span class="line">    S4 -. 后处理少 .-&gt; 车辆</span><br></pre></td></tr></table></figure>
+
+<hr>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/" rel="prev" title="在WSL中部署Claude code">
+                  <i class="fa fa-angle-left"></i> 在WSL中部署Claude code
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/08/Typora%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%BA%94%E5%9B%BE%E5%BA%8A%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/" rel="next" title="Typora及其对应图床安装使用">
+                  Typora及其对应图床安装使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

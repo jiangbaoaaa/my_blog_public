@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="自动驾驶开发环境配置安装WSLWSL允许在Windows上原生运行Linux，直接使用Bash、apt等Linux工具 启用相关Windows功能 以管理员身份运行PowerShell  在PowerShell中，输入： 12dism.exe &#x2F;online &#x2F;enable-feature &#x2F;featurename:Microsoft-Windows-Subsystem-Linux &#x2F;all &#x2F;n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动驾驶开发环境配置">
+<meta property="og:url" content="https://gen2710.netlify.app/2026/07/08/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%88%9D%E4%BD%93%E9%AA%8C/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="自动驾驶开发环境配置安装WSLWSL允许在Windows上原生运行Linux，直接使用Bash、apt等Linux工具 启用相关Windows功能 以管理员身份运行PowerShell  在PowerShell中，输入： 12dism.exe &#x2F;online &#x2F;enable-feature &#x2F;featurename:Microsoft-Windows-Subsystem-Linux &#x2F;all &#x2F;n">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624113619905.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624113832173.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624114925275.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624115351611.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624125537856.png">
+<meta property="article:published_time" content="2026-07-08T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-08T05:39:02.080Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624113619905.png">
+
+
+<link rel="canonical" href="https://gen2710.netlify.app/2026/07/08/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%88%9D%E4%BD%93%E9%AA%8C/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gen2710.netlify.app/2026/07/08/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%88%9D%E4%BD%93%E9%AA%8C/","path":"2026/07/08/自动驾驶开发环境配置及初体验/","title":"自动驾驶开发环境配置"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>自动驾驶开发环境配置 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">自动驾驶开发环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WSL"><span class="nav-number">1.1.</span> <span class="nav-text">安装WSL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E7%94%A8%E7%9B%B8%E5%85%B3Windows%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.1.</span> <span class="nav-text">启用相关Windows功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WSL-1"><span class="nav-number">1.1.2.</span> <span class="nav-text">安装WSL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.3.</span> <span class="nav-text">导入开发环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%99%A8%E6%B5%8B%E8%AF%95"><span class="nav-number">1.2.</span> <span class="nav-text">模拟器测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BF%80%E6%B4%BB%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83"><span class="nav-number">1.2.1.</span> <span class="nav-text">激活工作环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%A8%A1%E6%8B%9F%E5%99%A8%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.2.</span> <span class="nav-text">运行模拟器启动命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%9C%B0%E5%9B%BE%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.3.</span> <span class="nav-text">添加地图文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%96%B0%E5%9C%B0%E5%9B%BE%E9%87%8D%E6%96%B0%E5%90%AF%E5%8A%A8%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">1.2.4.</span> <span class="nav-text">用新地图重新启动模拟器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BF%E7%9C%9F%E8%BF%90%E5%8A%A8"><span class="nav-number">1.3.</span> <span class="nav-text">仿真运动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%99%E5%AE%9A%E7%9B%AE%E6%A0%87%E7%82%B9"><span class="nav-number">1.3.1.</span> <span class="nav-text">给定目标点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E5%87%BBEngage-%E5%8F%91%E8%BD%A6"><span class="nav-number">1.3.2.</span> <span class="nav-text">点击Engage 发车</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%88%9D%E4%BD%93%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="自动驾驶开发环境配置 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          自动驾驶开发环境配置
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：13:39:02" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="自动驾驶开发环境配置"><a href="#自动驾驶开发环境配置" class="headerlink" title="自动驾驶开发环境配置"></a>自动驾驶开发环境配置</h1><h2 id="安装WSL"><a href="#安装WSL" class="headerlink" title="安装WSL"></a>安装WSL</h2><p>WSL允许在Windows上原生运行Linux，直接使用Bash、apt等Linux工具</p>
+<h3 id="启用相关Windows功能"><a href="#启用相关Windows功能" class="headerlink" title="启用相关Windows功能"></a>启用相关Windows功能</h3><ol>
+<li><p>以管理员身份运行PowerShell</p>
+</li>
+<li><p>在PowerShell中，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</span><br><span class="line">dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>重启计算机</li>
+</ol>
+</li>
+</ol>
+<h3 id="安装WSL-1"><a href="#安装WSL-1" class="headerlink" title="安装WSL"></a>安装WSL</h3><ol>
+<li><p>以管理员身份打开PowerShell</p>
+</li>
+<li><p>安装WSL:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>等待安装完成，重启计算机</p>
+</li>
+</ol>
+<hr>
+<p>PS:安装不成功的话可以直接下载对应的exe文件</p>
+<p>网址：<a target="_blank" rel="noopener" href="https://github.com/microsoft/WSL/releases">https://github.com/microsoft/WSL/releases</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624113619905.png" alt="image-20260624113619710"></p>
+<p>选择对应的下载即可</p>
+<p>验证安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --version</span><br></pre></td></tr></table></figure>
+
+<h3 id="导入开发环境"><a href="#导入开发环境" class="headerlink" title="导入开发环境"></a>导入开发环境</h3><p>首先下载对应的开发环境：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624113832173.png" alt="image-20260624113832088"></p>
+<p>找一个剩余空间大于 150GB 的盘（假设是 D 盘），在刚才打开的 PowerShell 中输入以下命令（<strong>注意将路径替换为你自己电脑上真实存放的路径</strong>）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --import AutowareEnv D:\WSL\Autoware D:\Downloads\autoware-wsl.tar</span><br></pre></td></tr></table></figure>
+
+<p>这样，就按照设置的样子，导入了需要运行的镜像</p>
+<p><strong>如何进入系统</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl -d AutowareEnv</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\gen27&gt; wsl -d AutowareEnv</span><br><span class="line">wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。</span><br><span class="line">ros@Hita:/mnt/c/Users/gen27$</span><br></pre></td></tr></table></figure>
+
+<p>这样就完成了基础的环境配置</p>
+<hr>
+<h2 id="模拟器测试"><a href="#模拟器测试" class="headerlink" title="模拟器测试"></a>模拟器测试</h2><p>在你的 WSL 终端中（请确保当前不在运行其他东西，如果是的话，按 <code>Ctrl + C</code> 终止，或者新开一个 PowerShell 终端并输入 <code>wsl -d AutowareEnv</code> 进入）</p>
+<h3 id="激活工作环境"><a href="#激活工作环境" class="headerlink" title="激活工作环境"></a>激活工作环境</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/autoware/install/setup.bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行模拟器启动命令"><a href="#运行模拟器启动命令" class="headerlink" title="运行模拟器启动命令"></a>运行模拟器启动命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autoware_map vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624114925275.png" alt="image-20260624114925116"></p>
+<h3 id="添加地图文件"><a href="#添加地图文件" class="headerlink" title="添加地图文件"></a>添加地图文件</h3><ul>
+<li>.osm文件：矢量地图，包含车道线、斑马线、红绿灯的位置和规则</li>
+<li>.pcd文件：点云地图，是激光雷达扫描出来的真实3D物理环境</li>
+</ul>
+<ol>
+<li>在Windows下载文件</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624115351611.png" alt="image-20260624115351573"></p>
+<ol start="2">
+<li><p>在Linux中建立专属地图档案</p>
+<p>创建新文件夹：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/autoware_map/gz_test_map</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝文件并规范命名</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /mnt/d/Downloads/GZ_map/*.osm ~/autoware_map/gz_test_map/lanelet2_map.osm</span><br><span class="line">cp /mnt/d/Downloads/GZ_map/*.pcd ~/autoware_map/gz_test_map/pointcloud_map.pcd</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>检查是否成功</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l ~/autoware_map/gz_test_map/</span><br></pre></td></tr></table></figure>
+
+<h3 id="用新地图重新启动模拟器"><a href="#用新地图重新启动模拟器" class="headerlink" title="用新地图重新启动模拟器"></a>用新地图重新启动模拟器</h3><p>现在需要再次启动Planning Simulator，但是这次需要把地图路径指向新建的gz_test_map文件</p>
+<ol>
+<li>激活环境</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/autoware/install/setup.bash</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>运行新的启动命令</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autoware_map/gz_test_map vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624125537856.png" alt="image-20260624125537275"></p>
+<p>这个是运行结果。现在可以在仿真实验上测试无人车运动</p>
+<h2 id="仿真运动"><a href="#仿真运动" class="headerlink" title="仿真运动"></a>仿真运动</h2><h3 id="给定目标点"><a href="#给定目标点" class="headerlink" title="给定目标点"></a>给定目标点</h3><ol>
+<li><p><strong>选择工具：</strong> 将鼠标移到 RViz 界面最上方的工具栏，找到并点击 <strong><code>2D Goal Pose</code></strong> 按钮（图标通常是一个带箭头的标记）。</p>
+</li>
+<li><p>在地图上画出终点</p>
+<ul>
+<li><p>将鼠标移动到右侧黑白点云地图上的一条<strong>有效车道</strong>上（最好在车辆前方一段距离）。</p>
+</li>
+<li><p><strong>按住鼠标左键不放</strong>，顺着你期望的停车方向（车道前进方向）<strong>轻轻拖动一下鼠标</strong>，然后松开。</p>
+</li>
+</ul>
+</li>
+<li><p>验证现象：</p>
+<ul>
+<li><p>地图上会立刻生成一条从当前位置延伸到终点的<strong>彩色渐变轨迹线</strong>。</p>
+</li>
+<li><p>左侧的 <code>STATE</code> 会从 <code>WAITING_FOR_ROUTE</code> 变成亮蓝色的 <strong><code>WAITING_FOR_ENGAGE</code>（等待激活）</strong>。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="点击Engage-发车"><a href="#点击Engage-发车" class="headerlink" title="点击Engage 发车"></a>点击Engage 发车</h3><p>路线规划出来后，车还处于挂着 P 挡（PARKING）拉着手刹的状态。</p>
+<ol>
+<li><strong>寻找 Engage 按钮：</strong> 在左侧 <code>AutowareStatePanel</code> 面板中，往下看，找到写着 <strong><code>Engage: False</code></strong> 字样上方或旁边对应的 <strong><code>Engage</code> 按钮</strong>（有时它就是一个可以直接点击的长条按钮，或者需要展开）。</li>
+<li><strong>点击激活：</strong> 用鼠标点击它。</li>
+<li><strong>验证现象：</strong><ul>
+<li>状态栏的 <code>GEAR</code> 会从 <code>PARKING</code> 切换到 <code>DRIVE</code>。</li>
+<li><code>STATE</code> 会变成绿色的 <code>DRIVING</code>（行驶中）。</li>
+<li>界面左上角那个白色的方向盘会开始自动转动，旁边的时速表（<code>0.00km/h</code>）数字会逐渐变大，系统坐标系或隐藏的小车就会沿着那条彩色轨迹跑起来了</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/05/16/%E4%BD%BF%E7%94%A8MID-360%E5%9F%BA%E4%BA%8Escout_mini%E5%AE%8C%E6%88%90move_base%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%8F%8A%E9%81%BF%E9%9A%9C/" rel="prev" title="使用MID-360基于scout_mini完成move_base路径规划及避障">
+                  <i class="fa fa-angle-left"></i> 使用MID-360基于scout_mini完成move_base路径规划及避障
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/" rel="next" title="在WSL中部署Claude code">
+                  在WSL中部署Claude code <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -139,13 +139,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -183,7 +183,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/05/16/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/Typora%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%BA%94%E5%9B%BE%E5%BA%8A%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
@@ -201,7 +201,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/05/16/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/" class="post-title-link" itemprop="url">使用livox_mid360部署liosam</a>
+          <a href="/2026/07/08/Typora%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%BA%94%E5%9B%BE%E5%BA%8A%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Typora及其对应图床安装使用</a>
         </h2>
 
         <div class="post-meta-container">
@@ -211,15 +211,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2026-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-16T00:00:00+08:00">2026-05-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：13:37:50" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -227,7 +221,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
+          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
         </span>
     </span>
 
@@ -241,60 +235,846 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="使用livox-mid360部署liosam（实物）"><a href="#使用livox-mid360部署liosam（实物）" class="headerlink" title="使用livox_mid360部署liosam（实物）"></a>使用livox_mid360部署liosam（实物）</h1><h2 id="硬件要求"><a href="#硬件要求" class="headerlink" title="硬件要求"></a>硬件要求</h2><ul>
-<li>安装Ubuntu20.04工控机</li>
-<li>Livox_MID360</li>
-<li>网线</li>
-<li>12V直流电源</li>
-</ul>
-<h2 id="软件依赖"><a href="#软件依赖" class="headerlink" title="软件依赖"></a>软件依赖</h2><ul>
-<li>ROS Noetic</li>
-<li>Livox_SDK2</li>
-<li>livox_ros_driver2</li>
-<li>LIO-SAM</li>
-<li>GTSAM</li>
-<li>PCL</li>
-<li>Eigen3</li>
-</ul>
-<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装Noetic"><a href="#安装Noetic" class="headerlink" title="安装Noetic"></a>安装Noetic</h3><p>略</p>
-<h3 id="安装Livox-SDK2"><a href="#安装Livox-SDK2" class="headerlink" title="安装Livox_SDK2"></a>安装Livox_SDK2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Livox-SDK/Livox-SDK2.git</span><br><span class="line">cd Livox-SDK2</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake .. &amp;&amp; make -j8</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+          <h1 id="Typora及其对应图床安装使用"><a href="#Typora及其对应图床安装使用" class="headerlink" title="Typora及其对应图床安装使用"></a>Typora及其对应图床安装使用</h1><h2 id="Typora安装"><a href="#Typora安装" class="headerlink" title="Typora安装"></a>Typora安装</h2><h3 id="下载Typora"><a href="#下载Typora" class="headerlink" title="下载Typora"></a>下载Typora</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624110216623.png" alt="image-20260624110216592"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624110327264.png" alt="image-20260624110327230"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624110359123.png" alt="image-20260624110359097"></p>
+<p>找到该文件，把这个文件放入刚才Typora文件路径下</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624110501502.png" alt="image-20260624110501450" style="zoom: 50%;" />
 
-<h3 id="安装livox-ros-driver2"><a href="#安装livox-ros-driver2" class="headerlink" title="安装livox_ros_driver2"></a>安装livox_ros_driver2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/Livox-SDK/livox_ros_driver2.git</span><br><span class="line">cd livox_ros_driver2</span><br><span class="line">source /opt/ros/noetic/setup.sh</span><br><span class="line">./build.sh ROS1</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">echo &quot;source ~/liosam_2d_nav_ws/devel/setup.bash&quot; &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>这样就完成了Typora激活</p>
+<h2 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h2><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624110805897.png" alt="image-20260624110805836" style="zoom:50%;" />
 
-<h3 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h3><h4 id="设置电脑静态IP"><a href="#设置电脑静态IP" class="headerlink" title="设置电脑静态IP"></a>设置电脑静态IP</h4><ol>
-<li>打开网络设置，选择有线连接</li>
-<li>设置 IPv4 为手动模式</li>
-<li>IP 地址：192.168.1.50</li>
-<li>子网掩码：255.255.255.0</li>
-<li>网关：192.168.1.1</li>
-</ol>
-<h4 id="确定MID360的IP地址"><a href="#确定MID360的IP地址" class="headerlink" title="确定MID360的IP地址"></a>确定MID360的IP地址</h4><p>MID360 的默认 IP 地址基于其序列号，规则如下：</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624110909889.png" alt="image-20260624110909849" style="zoom:50%;" />
+
+<h2 id="添加插件"><a href="#添加插件" class="headerlink" title="添加插件"></a>添加插件</h2><p>插件网址：<a target="_blank" rel="noopener" href="https://github.com/obgnail/typora_plugin">https://github.com/obgnail/typora_plugin</a><br>按照要求安装插件即可</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624111045242.png" alt="image-20260624111045206" style="zoom:25%;" />
+
+<p>安装完成之后，侧边栏会有相应的显示</p>
+<h2 id="安装PicGo"><a href="#安装PicGo" class="headerlink" title="安装PicGo"></a>安装PicGo</h2><p>官网：<a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/releases">Releases · Molunerfinn&#x2F;PicGo</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624111234568.png" alt="image-20260624111234455"></p>
+<p>选择这个</p>
+<p>安装完成，需要在github上新建一个仓库，这里不再赘述，可以参考网上资料</p>
+<p>直接过渡到PicGo配置</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624111555906.png" alt="image-20260624111555860" style="zoom:50%;" />
+
+<p>其中，自定义域名：<a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/[github%E7%94%A8%E6%88%B7%E5%90%8D]/[%E4%BB%93%E5%BA%93%E5%90%8D]@main">https://cdn.jsdelivr.net/gh/[github用户名]/[仓库名]@main</a><br>修改完成之后，就可以</p>
+<h2 id="Typora与PicGo配合使用"><a href="#Typora与PicGo配合使用" class="headerlink" title="Typora与PicGo配合使用"></a>Typora与PicGo配合使用</h2><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624111750413.png" alt="image-20260624111750363" style="zoom:50%;" />
+
+<p>这样就完成了基础的配置。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/08/%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">全局路径规划算法学习笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：13:37:39" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="全局路径规划算法学习笔记（A-Hybrid-A-RRT-RRT-）"><a href="#全局路径规划算法学习笔记（A-Hybrid-A-RRT-RRT-）" class="headerlink" title="全局路径规划算法学习笔记（A* &#x2F; Hybrid A* &#x2F; RRT &#x2F; RRT*）"></a>全局路径规划算法学习笔记（A* &#x2F; Hybrid A* &#x2F; RRT &#x2F; RRT*）</h1><blockquote>
+<p>本文聚焦四个最经典的全局路径规划算法：<strong>A*</strong>、<strong>Hybrid A*</strong>（混合 A*）、<strong>RRT</strong>、<strong>RRT*</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="先把全局图景搭起来（思维导图）"><a href="#先把全局图景搭起来（思维导图）" class="headerlink" title="先把全局图景搭起来（思维导图）"></a>先把全局图景搭起来（思维导图）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">mindmap</span><br><span class="line">  root((全局路径规划))</span><br><span class="line">    基于搜索 Search-based</span><br><span class="line">      A 星</span><br><span class="line">        离散栅格 2D</span><br><span class="line">        f=g+h</span><br><span class="line">        最优且完备</span><br><span class="line">      Hybrid A 星</span><br><span class="line">        连续位姿 x y theta</span><br><span class="line">        车辆运动学</span><br><span class="line">        Reeds-Shepp 加速</span><br><span class="line">        路径平滑可执行</span><br><span class="line">    基于采样 Sampling-based</span><br><span class="line">      RRT</span><br><span class="line">        随机撒点生长</span><br><span class="line">        概率完备</span><br><span class="line">        不最优 路径曲折</span><br><span class="line">      RRT 星</span><br><span class="line">        重新选父 ChooseParent</span><br><span class="line">        重布线 Rewire</span><br><span class="line">        渐进最优</span><br><span class="line">    公共要素</span><br><span class="line">      状态空间 State</span><br><span class="line">      碰撞检测 Collision</span><br><span class="line">      代价函数 Cost</span><br><span class="line">      启发函数 Heuristic</span><br><span class="line">      回溯路径 Traceback</span><br><span class="line">    评价指标</span><br><span class="line">      完备性 Completeness</span><br><span class="line">      最优性 Optimality</span><br><span class="line">      路径质量</span><br><span class="line">      计算效率</span><br></pre></td></tr></table></figure>
+
+<p><strong>A* &#x2F; Hybrid A* 属于”基于搜索”，RRT &#x2F; RRT* 属于”基于采样”</strong>。前者把空间切成格子或用运动基元一格一格扩，后者在空间里随机撒点往目标长。两条路线各有适用场景，下面逐个拆。</p>
+<h2 id="一些贯穿全文的概念"><a href="#一些贯穿全文的概念" class="headerlink" title="一些贯穿全文的概念"></a>一些贯穿全文的概念</h2><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>状态 &#x2F; 节点 State</strong></td>
+<td>规划的基本单元。A* 里是栅格坐标，Hybrid A* 里是位姿 (x, y, θ)，RRT 里是连续点。</td>
+</tr>
+<tr>
+<td><strong>完备性 Completeness</strong></td>
+<td>“只要解存在，算法一定能找到”。A* 是完备的，RRT 是”概率完备”（时间够长概率趋于1）。</td>
+</tr>
+<tr>
+<td><strong>最优性 Optimality</strong></td>
+<td>“找到的解是不是代价最小的”。A*（在 h 满足条件时）最优；RRT 不最优；RRT* “渐进最优”。</td>
+</tr>
+<tr>
+<td><strong>完备 vs 最优</strong></td>
+<td>完备保证”能找到”，最优保证”找到的是最好的”。两者独立。</td>
+</tr>
+<tr>
+<td><strong>代价函数 Cost function</strong></td>
+<td>衡量一条路&#x2F;一个状态有多”贵”的函数，搜索类算法靠它排序、采样类靠它重连。</td>
+</tr>
+<tr>
+<td><strong>启发函数 Heuristic h(n)</strong></td>
+<td>对”剩余距离”的估计，只搜索类（A*&#x2F;Hybrid A*）用，用来优先扩展有希望的方向。</td>
+</tr>
+<tr>
+<td><strong>碰撞检测 Collision check</strong></td>
+<td>判断一段路径&#x2F;一个状态是否撞障碍。所有算法都要做，往往是性能瓶颈。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>完备性、最优性是评价规划算法的两把尺子</strong>，下面的对比会反复用到。</p>
+</blockquote>
+<hr>
+<h2 id="A-算法"><a href="#A-算法" class="headerlink" title="A* 算法"></a>A* 算法</h2><p><img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/Astar_progress_animation.gif" alt="img"></p>
+<h3 id="Dijkstra-和贪心最好优先的结合"><a href="#Dijkstra-和贪心最好优先的结合" class="headerlink" title="Dijkstra 和贪心最好优先的结合"></a>Dijkstra 和贪心最好优先的结合</h3><ul>
+<li><strong>Dijkstra</strong>：只看已经走了多远 <code>g(n)</code>，向四面八方均匀扩展。保证最短，但慢，会探索很多没用的方向。</li>
+<li><strong>贪心最好优先（Greedy Best-First）</strong>：只看估计离终点还有多远 <code>h(n)</code>，猛冲目标。快，但可能被障碍带偏，不保证最短。</li>
+<li><strong>A*</strong>：两者相加，<code>f(n) = g(n) + h(n)</code>。既考虑已走代价，又用启发值引导方向。<strong>当 h 是”可采纳的（admissible，即从不高估）”时，A* 保证最优。</strong></li>
+</ul>
+<p>这就是 A* 的全部灵魂：用一个加权和给每个节点打分，永远优先选择扩展分最低的节点。</p>
+<h3 id="三个核心量"><a href="#三个核心量" class="headerlink" title="三个核心量"></a>三个核心量</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">g(n) : 从起点到节点 n 的【实际】累积代价（已知）</span><br><span class="line">h(n) : 从节点 n 到终点的【启发式估计】代价（猜的，但别高估）</span><br><span class="line">f(n) = g(n) + h(n) : 经过 n 到终点的【估计总代价】</span><br></pre></td></tr></table></figure>
+
+<p><strong>h 的选择</strong>（栅格地图常用）：</p>
 <ul>
-<li>查看雷达底部的序列号（如 47MDM6J0020434）</li>
-<li>取序列号最后两位数字（38），则雷达 IP 为 192.168.1.134</li>
+<li>4 连通 → 曼哈顿距离 <code>|dx| + |dy|</code></li>
+<li>8 连通 → 对角线距离 <code>max(|dx|,|dy|) + (√2−1)·min(|dx|,|dy|)</code></li>
+<li>一般情况 → 欧氏距离 <code>√(dx²+dy²)</code></li>
 </ul>
-<h4 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/livox_ros_driver2/config</span><br><span class="line">gedit MID360_config.json</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对 8 连通栅格，<strong>对角线距离</strong>最贴合实际可走路径，是最常用的选择。h 必须不超过真实最短距离，否则最优性失效。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>四连通 (4-Connected)</strong></th>
+<th><strong>八连通 (8-Connected)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>可移动方向</strong></td>
+<td>4 个（上下左右）</td>
+<td>8 个（包含对角线）</td>
+</tr>
+<tr>
+<td><strong>推荐的 $h$ 函数</strong></td>
+<td><strong>曼哈顿距离</strong></td>
+<td><strong>对角线距离</strong> &#x2F; <strong>切比雪夫距离</strong></td>
+</tr>
+<tr>
+<td><strong>路径效果</strong></td>
+<td>锯齿状折线，比较生硬</td>
+<td>更平滑，允许走捷径</td>
+</tr>
+<tr>
+<td><strong>计算复杂度</strong></td>
+<td>每次探寻 4 个邻居，计算稍快</td>
+<td>每次探寻 8 个邻居，计算量稍大</td>
+</tr>
+</tbody></table>
+<h3 id="两个关键数据结构"><a href="#两个关键数据结构" class="headerlink" title="两个关键数据结构"></a>两个关键数据结构</h3><ul>
+<li><strong>Open List（开放表）</strong>：已发现、还没扩展的节点。通常用<strong>最小堆&#x2F;优先队列</strong>，按 f 值排序，取最小 O(log n)。</li>
+<li><strong>Closed List（关闭表）</strong>：已经扩展过的节点。用哈希集合，O(1) 查重。</li>
+</ul>
+<h3 id="算法链路（执行流程）"><a href="#算法链路（执行流程）" class="headerlink" title="算法链路（执行流程）"></a>算法链路（执行流程）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    %% 节点定义与逻辑连线</span><br><span class="line">    Start([开始 A* 算法]) --&gt; Init</span><br><span class="line">    Init[&quot;1. 初始化:&lt;br&gt;• frontier 优先级队列&lt;br&gt;• came_from 路径字典&lt;br&gt;• cost_so_far 代价字典&quot;] --&gt; SetStart</span><br><span class="line">    SetStart[&quot;2. 起点入队:&lt;br&gt;• frontier.put(start, 0)&lt;br&gt;• cost_so_far[start] = 0&lt;br&gt;• came_from[start] = None&quot;] --&gt; WhileCheck</span><br><span class="line">    </span><br><span class="line">    WhileCheck&#123;3. 外循环:&lt;br&gt;frontier 是否为空?&#125;</span><br><span class="line">    </span><br><span class="line">    WhileCheck -- 否 (不为空) --&gt; GetMin</span><br><span class="line">    WhileCheck -- 是 (队列空) --&gt; LoopEnd</span><br><span class="line">    </span><br><span class="line">    GetMin[&quot;4. 弹出当前最优:&lt;br&gt;current = frontier.get()&lt;br&gt;获得 F 值最低的节点&quot;] --&gt; CheckGoal</span><br><span class="line">    </span><br><span class="line">    CheckGoal&#123;5. 终点检测:&lt;br&gt;current == goal ?&#125;</span><br><span class="line">    CheckGoal -- 是 --&gt; Break([结束循环&lt;br&gt;成功找到最优路径])</span><br><span class="line">    CheckGoal -- 否 --&gt; ForNeighbor</span><br><span class="line">    </span><br><span class="line">    ForNeighbor&#123;6. 内循环:&lt;br&gt;是否还有未遍历的邻居 next?&#125;</span><br><span class="line">    </span><br><span class="line">    %% 内循环逻辑</span><br><span class="line">    ForNeighbor -- 是 (有邻居) --&gt; CalcCost</span><br><span class="line">    ForNeighbor -- 否 (邻居完) --&gt; WhileCheck</span><br><span class="line">    </span><br><span class="line">    CalcCost[&quot;7. 计算新代价:&lt;br&gt;new_cost = cost_so_far[current] + cost(current, next)&quot;] --&gt; CheckBetter</span><br><span class="line">    </span><br><span class="line">    CheckBetter&#123;8. 是否为更优路径?&lt;br&gt;next 不在 cost_so_far 中&lt;br&gt;OR&lt;br&gt;new_cost &lt; 已记录的代价?&#125;</span><br><span class="line">    </span><br><span class="line">    CheckBetter -- 是 (值得探索) --&gt; UpdateData</span><br><span class="line">    CheckBetter -- 否 (绕远路了) --&gt; ForNeighbor</span><br><span class="line">    </span><br><span class="line">    UpdateData[&quot;9. 更新邻居信息:&lt;br&gt;• cost_so_far[next] = new_cost&lt;br&gt;• priority = new_cost + heuristic&lt;br&gt;• frontier.put(next, priority)&lt;br&gt;• came_from[next] = current&quot;] --&gt; ForNeighbor</span><br><span class="line">    </span><br><span class="line">    LoopEnd([所有节点已遍历完&lt;br&gt;但未找到终点/无路可走])</span><br><span class="line"></span><br><span class="line">    %% ==========================================</span><br><span class="line">    %% 样式定义与类绑定（统一放在底部，防止解析错误）</span><br><span class="line">    %% ==========================================</span><br><span class="line">    classDef startEnd fill:#F5B041,stroke:#333,stroke-width:2px,color:#fff;</span><br><span class="line">    classDef process fill:#AED6F1,stroke:#333,stroke-width:1px;</span><br><span class="line">    classDef condition fill:#F9E79F,stroke:#333,stroke-width:1px;</span><br><span class="line">    classDef update fill:#ABEBC6,stroke:#333,stroke-width:1px;</span><br><span class="line"></span><br><span class="line">    class Start,Break,LoopEnd startEnd;</span><br><span class="line">    class Init,SetStart,GetMin,CalcCost process;</span><br><span class="line">    class WhileCheck,CheckGoal,ForNeighbor,CheckBetter condition;</span><br><span class="line">    class UpdateData update;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>修改以下内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;lidar_summary_info&quot; : &#123;</span><br><span class="line">    &quot;lidar_type&quot;: 8</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;MID360&quot;: &#123;</span><br><span class="line">    &quot;lidar_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_port&quot;: 56100,</span><br><span class="line">      &quot;push_msg_port&quot;: 56200,</span><br><span class="line">      &quot;point_data_port&quot;: 56300,</span><br><span class="line">      &quot;imu_data_port&quot;: 56400,</span><br><span class="line">      &quot;log_data_port&quot;: 56500</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;host_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;cmd_data_port&quot;: 56101,</span><br><span class="line">      &quot;push_msg_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;push_msg_port&quot;: 56201,</span><br><span class="line">      &quot;point_data_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;point_data_port&quot;: 56301,</span><br><span class="line">      &quot;imu_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;imu_data_port&quot;: 56401,</span><br><span class="line">      &quot;log_data_ip&quot; : &quot;&quot;,</span><br><span class="line">      &quot;log_data_port&quot;: 56501</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;lidar_configs&quot; : [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;ip&quot; : &quot;192.168.1.134&quot;,  // 雷达IP</span><br><span class="line">      &quot;pcl_data_type&quot; : 1,</span><br><span class="line">      &quot;pattern_mode&quot; : 0,</span><br><span class="line">      &quot;extrinsic_parameter&quot; : &#123;</span><br><span class="line">        &quot;roll&quot;: 0.0,</span><br><span class="line">        &quot;pitch&quot;: 0.0,</span><br><span class="line">        &quot;yaw&quot;: 0.0,</span><br><span class="line">        &quot;x&quot;: 0,</span><br><span class="line">        &quot;y&quot;: 0,</span><br><span class="line">        &quot;z&quot;: 0</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"># 初始化优先级队列，用于存放待探索的节点，队列会根据优先级（F值）自动从小到大排序</span><br><span class="line">frontier = PriorityQueue()</span><br><span class="line"># 将起点放入队列，起点的初始优先级（代价）为 0</span><br><span class="line">frontier.put(start, 0)</span><br><span class="line"></span><br><span class="line"># 初始化字典：记录每个节点的“前驱节点”，用于最后反向追踪还原出整条最优路径</span><br><span class="line">came_from: dict[Location, Location] = dict()</span><br><span class="line"># 初始化字典：记录从起点到当前节点的“实际已知最小代价”（即 G 值）</span><br><span class="line">cost_so_far: dict[Location, float] = dict()</span><br><span class="line"></span><br><span class="line"># 起点没有前驱节点，设为 None</span><br><span class="line">came_from[start] = None</span><br><span class="line"># 起点到起点的实际代价为 0</span><br><span class="line">cost_so_far[start] = 0</span><br><span class="line"></span><br><span class="line"># 开始主循环，直到队列为空（所有能走的路都尝试过）</span><br><span class="line">while not frontier.empty():</span><br><span class="line">   # 从优先级队列中弹出当前“总预估代价（F值）”最低的节点</span><br><span class="line">   current = frontier.get()</span><br><span class="line"></span><br><span class="line">   # 【终点检测】如果当前弹出的节点就是目标点，说明已经找到最优路径，直接结束循环</span><br><span class="line">   if current == goal:</span><br><span class="line">      break</span><br><span class="line">   </span><br><span class="line">   # 遍历当前节点的所有相邻节点（邻居）</span><br><span class="line">   for next in graph.neighbors(current):</span><br><span class="line">      # 计算如果通过当前节点走到相邻节点，所需的新实际代价（New G = Current G + Step Cost）</span><br><span class="line">      new_cost = cost_so_far[current] + graph.cost(current, next)</span><br><span class="line">      </span><br><span class="line">      # 如果这个相邻节点还没有被访问过，或者找到了一条到达该节点更省钱/更短的新路径</span><br><span class="line">      if next not in cost_so_far or new_cost &lt; cost_so_far[next]:</span><br><span class="line">         # 更新或记录到达该相邻节点的最小实际代价（G值）</span><br><span class="line">         cost_so_far[next] = new_cost</span><br><span class="line">         </span><br><span class="line">         # 计算该相邻节点的总预估代价（F值 = 新的 G 值 + 启发式 H 值）</span><br><span class="line">         # heuristic(goal, next) 预测了从这个邻居到终点还需要多少代价</span><br><span class="line">         priority = new_cost + heuristic(goal, next)</span><br><span class="line">         </span><br><span class="line">         # 将该相邻节点放入队列，并以刚刚算出的 priority（F值）作为其排序优先级</span><br><span class="line">         frontier.put(next, priority)</span><br><span class="line">         </span><br><span class="line">         # 记录或更新该相邻节点是从哪个节点走过来的（更新路径树）</span><br><span class="line">         came_from[next] = current</span><br></pre></td></tr></table></figure>
 
-<h3 id="安装LIO-SAM"><a href="#安装LIO-SAM" class="headerlink" title="安装LIO-SAM"></a>安装LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/nkymzsy/LIO-SAM-MID360.git  # MID360适配版本</span><br><span class="line">cd LIO-SAM-MID360</span><br><span class="line">git submodule update --init</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+<h3 id="输入-输出-代价函数"><a href="#输入-输出-代价函数" class="headerlink" title="输入 &#x2F; 输出 &#x2F; 代价函数"></a>输入 &#x2F; 输出 &#x2F; 代价函数</h3><ul>
+<li><strong>输入</strong>：栅格地图（含障碍）、起点、终点、启发函数 <code>h</code></li>
+<li><strong>输出</strong>：从起点到终点的一条<strong>最短</strong>路径（节点序列），或”无解”</li>
+<li><strong>代价函数</strong>：<ul>
+<li>节点级：<code>f(n) = g(n) + h(n)</code>，<code>g</code> 是累积步长代价（直走&#x3D;1，斜走&#x3D;√2）</li>
+<li>路径级：整条路径 <code>g</code> 的和，即总长度</li>
+<li>想加偏好（如远离墙、少转弯），在 <code>cost(n,m)</code> 里加权即可</li>
+</ul>
+</li>
+</ul>
+<h3 id="优缺点小结"><a href="#优缺点小结" class="headerlink" title="优缺点小结"></a>优缺点小结</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>完备 + 最优（h 可采纳时）</td>
+<td>路径是<strong>栅格折线</strong>，车辆无法直接跟踪</td>
+</tr>
+<tr>
+<td>思想简单、实现成熟</td>
+<td>2D 还行，维度一高（3D+）就”维度灾难”，爆炸</td>
+</tr>
+<tr>
+<td>启发值可控，可调节速度&#x2F;质量</td>
+<td>不考虑运动学（朝向、最小转弯半径）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="Hybrid-A-（混合-A-）"><a href="#Hybrid-A-（混合-A-）" class="headerlink" title="Hybrid A*（混合 A*）"></a>Hybrid A*（混合 A*）</h2><h3 id="为什么要有-Hybrid-A"><a href="#为什么要有-Hybrid-A" class="headerlink" title="为什么要有 Hybrid A*"></a>为什么要有 Hybrid A*</h3><p>普通 A* 的路径长这样：在栅格中心之间走折线、走 45°。<strong>一辆真实的车（阿克曼转向，有最小转弯半径）根本走不出来</strong>。如果直接拿 A* 路径给控制器，要么跟踪不上，要么得做大量后处理（平滑、拟合），还可能拟合失败。</p>
+<p>Hybrid A* 的目标：<strong>直接在车辆的”位姿空间”里搜索，让搜出来的路径本身就能被车开出来。</strong></p>
+<h3 id="核心改动：状态从离散栅格-→-连续位姿"><a href="#核心改动：状态从离散栅格-→-连续位姿" class="headerlink" title="核心改动：状态从离散栅格 → 连续位姿"></a>核心改动：状态从离散栅格 → 连续位姿</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>A*</th>
+<th>Hybrid A*</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>状态</td>
+<td>栅格 (i, j)</td>
+<td>连续位姿 (x, y, θ)，θ 是车头朝向</td>
+</tr>
+<tr>
+<td>邻居生成</td>
+<td>上下左右&#x2F;对角</td>
+<td>用<strong>车辆运动学</strong>前进一步（运动基元 motion primitive）</td>
+</tr>
+<tr>
+<td>路径形状</td>
+<td>栅格折线</td>
+<td>真实可行驶轨迹（圆弧&#x2F;RS 曲线段拼接）</td>
+</tr>
+</tbody></table>
+<p><strong>运动基元</strong>怎么来：给定车的最小转弯半径 R，常见做法是预设一组控制输入，比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">方向 × 转向 = 6 个基元</span><br><span class="line">方向: 前进(D) / 后退(R)</span><br><span class="line">转向: 左转(L) / 直行(S) / 右转(Rr)</span><br><span class="line">每个基元让车前进固定弧长, 得到一段圆弧或直线, 末端就是一个新位姿</span><br></pre></td></tr></table></figure>
 
-<p>修改参数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit params.yaml</span><br></pre></td></tr></table></figure>
+<p>每次扩展就是：从当前位姿，分别走这 6 段，得到 <strong>6 个候选新位姿</strong>。</p>
+<h3 id="连续空间怎么搜索？——3D-栅格去重"><a href="#连续空间怎么搜索？——3D-栅格去重" class="headerlink" title="连续空间怎么搜索？——3D 栅格去重"></a>连续空间怎么搜索？——3D 栅格去重</h3><p>纯连续位姿有无限多个，没法搜。Hybrid A* 的巧思：</p>
+<ul>
+<li>把连续位姿 <code>(x, y, θ)</code> <strong>投影到一个 3D 离散栅格</strong>（x 分箱、y 分箱、θ 分箱）。</li>
+<li>每个 3D cell 里<strong>只保留一个状态</strong>（通常是代价最低的那个，或第一个到达的）。</li>
+<li>这样搜索空间是有限的（分辨率完备），但每个状态本身又是连续的真实位姿——<strong>路径连续平滑，但搜索规模可控</strong>。</li>
+</ul>
+<blockquote>
+<p>一句话：<strong>用离散栅格做”去重&#x2F;记忆”，用连续状态做”路径生成”</strong>。这就是 “Hybrid（混合）” 二字的含义——离散 + 连续的混合。</p>
+</blockquote>
+<h3 id="启发函数要升级"><a href="#启发函数要升级" class="headerlink" title="启发函数要升级"></a>启发函数要升级</h3><p>普通欧氏距离在 Hybrid A* 里太弱（因为还要考虑朝向和不能横移），扩展会爆炸。常用更强的启发：</p>
+<ol>
+<li><strong>2D A* &#x2F; Dijkstra 距离</strong>：先在 2D（忽略 θ、允许任意方向移动）上跑一遍，拿到每个格子到目标的距离，作为 h。这已经比欧氏强很多。</li>
+<li><strong>Reeds-Shepp 距离</strong>：直接算”如果没障碍，从当前位姿到目标的最短 RS 曲线长度”。更强，但要配合碰撞检查裁剪。</li>
+</ol>
+<p>工程上常把两者结合，甚至取多种启发的最大值，兼顾引导力和可采纳性。</p>
+<h3 id="Reeds-Shepp-加速：这是-“A-RS”-的-RS-部分"><a href="#Reeds-Shepp-加速：这是-“A-RS”-的-RS-部分" class="headerlink" title="Reeds-Shepp 加速：这是 “A* RS” 的 RS 部分"></a>Reeds-Shepp 加速：这是 “A* RS” 的 RS 部分</h3><p>光靠运动基元一格一格扩，最后可能永远”差一点点”对不上目标的精确朝向 θ。解决办法：</p>
+<ul>
+<li>每次扩展出一个节点后，<strong>尝试用 Reeds-Shepp 曲线直接连到目标</strong>。</li>
+<li>如果这条 RS 曲线<strong>无碰撞</strong>，那就直接接上、结束搜索。</li>
+<li>这让算法能<strong>精确收敛到目标位姿</strong>，大幅减少靠近目标时的无谓扩展。</li>
+</ul>
+<blockquote>
+<p><strong>Reeds-Shepp 曲线</strong>：给定两个位姿，在”车能前进、能后退”的前提下，存在<strong>解析的最短路径</strong>（由若干段圆弧+直线组合，公式可查表）。能前进能后退 &#x3D; 适合<strong>泊车</strong>这种需要揉库的场景。<br><strong>Dubins 曲线</strong>：只能前进不能后退的对应物，适合单向行驶。</p>
+</blockquote>
+<h3 id="算法链路"><a href="#算法链路" class="headerlink" title="算法链路"></a>算法链路</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Start([开始 Hybrid A* 算法]) --&gt; Init</span><br><span class="line">    Init[&quot;1. 初始化:&lt;br&gt;• 开启列表 open_set (优先级队列)&lt;br&gt;• 3D 闭合列表 closed_3d (用于剪枝)&lt;br&gt;• 确定车辆物理参数 (轴距 L、最大转角)&quot;] --&gt; PushStart</span><br><span class="line">    </span><br><span class="line">    PushStart[&quot;2. 起点入队:&lt;br&gt;• 计算起点 G 和 H 值&lt;br&gt;• 放入 open_set&quot;] --&gt; LoopCheck</span><br><span class="line">    </span><br><span class="line">    LoopCheck&#123;3. open_set 是否为空?&#125;</span><br><span class="line">    LoopCheck -- 是 --&gt; Failed([规划失败: 无可行路径])</span><br><span class="line">    LoopCheck -- 否 --&gt; GetMin</span><br><span class="line">    </span><br><span class="line">    GetMin[&quot;4. 弹出当前最优节点:&lt;br&gt;current = open_set.pop_min()&quot;] --&gt; CheckAnalytic</span><br><span class="line">    </span><br><span class="line">    CheckAnalytic&#123;&quot;5. 解析展开尝试:&lt;br&gt;能否通过 Reeds-Shepp/Dubins 曲线&lt;br&gt;在无碰撞情况下直接连接终点?&quot;&#125;</span><br><span class="line">    CheckAnalytic -- 成功 --&gt; Reconstruct[&quot;6. 拼接当前路径与解析路径&quot;] --&gt; Success([规划成功: 输出最优轨迹])</span><br><span class="line">    </span><br><span class="line">    CheckGoal&#123;&quot;7. 终点检测:&lt;br&gt;current 离 goal 是否足够近?&quot;&#125;</span><br><span class="line">    CheckGoal -- 是 --&gt; Reconstruct</span><br><span class="line">    </span><br><span class="line">    CheckAnalytic -- 失败 --&gt; CheckGoal</span><br><span class="line">    </span><br><span class="line">    CheckGoal -- 否 --&gt; ExpandNeighbors[&quot;8. 运动学节点展开:&lt;br&gt;对车辆施加不同的控制量 (如 左转, 直行, 右转)&lt;br&gt;利用自行车模型计算出 N 个连续的新状态 next_state&quot;]</span><br><span class="line">    </span><br><span class="line">    ExpandNeighbors --&gt; ForEachNeighbor&#123;&quot;9. 遍历每个生成的 next_state&quot;&#125;</span><br><span class="line">    </span><br><span class="line">    ForEachNeighbor -- 遍历完成 --&gt; LoopCheck</span><br><span class="line">    </span><br><span class="line">    ForEachNeighbor -- 正在处理一个 next --&gt; CollisionCheck&#123;&quot;10. 碰撞检测:&lt;br&gt;该段连续轨迹是否撞墙?&quot;&#125;</span><br><span class="line">    CollisionCheck -- 是 (碰撞) --&gt; ForEachNeighbor</span><br><span class="line">    </span><br><span class="line">    CollisionCheck -- 否 --&gt; VoxelCheck&#123;&quot;11. 3D 栅格剪枝:&lt;br&gt;计算其离散 3D 索引 (x_d, y_d, theta_d)&lt;br&gt;该 3D 栅格是否已被 closed_3d 访问?&quot;&#125;</span><br><span class="line">    VoxelCheck -- 是 (已被访问过) --&gt; ForEachNeighbor</span><br><span class="line">    </span><br><span class="line">    VoxelCheck -- 否 (全新空间) --&gt; CalcCost[&quot;12. 计算代价与路径记录:&lt;br&gt;• G = current.G + 移动距离 + 转向惩罚&lt;br&gt;• H = 启发式代价 (非完整约束距离 &amp; 避障距离)&lt;br&gt;• F = G + H&lt;br&gt;• 记录父节点关系&quot;]</span><br><span class="line">    </span><br><span class="line">    CalcCost --&gt; PushOpen[&quot;13. 状态归档:&lt;br&gt;• 将 next_state 放入 open_set&lt;br&gt;• 将 (x_d, y_d, theta_d) 标记为已访问 (closed_3d)&quot;]</span><br><span class="line">    PushOpen --&gt; ForEachNeighbor</span><br><span class="line"></span><br><span class="line">    %% 样式与绑定</span><br><span class="line">    classDef startEnd fill:#F5B041,stroke:#333,stroke-width:2px,color:#fff;</span><br><span class="line">    classDef process fill:#AED6F1,stroke:#333,stroke-width:1px;</span><br><span class="line">    classDef condition fill:#F9E79F,stroke:#333,stroke-width:1px;</span><br><span class="line">    classDef update fill:#ABEBC6,stroke:#333,stroke-width:1px;</span><br><span class="line"></span><br><span class="line">    class Start,Success,Failed startEnd;</span><br><span class="line">    class Init,PushStart,GetMin,ExpandNeighbors,CalcCost,PushOpen,Reconstruct process;</span><br><span class="line">    class LoopCheck,CheckAnalytic,CheckGoal,ForEachNeighbor,CollisionCheck,VoxelCheck condition;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Sensor Settings</span><br><span class="line">sensor: livox                              # 设置为livox</span><br><span class="line">N_SCAN: 4                                  # MID360的线束数量</span><br><span class="line">Horizon_SCAN: 6000                         # 水平分辨率</span><br><span class="line">downsampleRate: 1                          # 下采样率</span><br><span class="line">lidarMinRange: 1.0                         # 最小雷达范围</span><br><span class="line">lidarMaxRange: 100.0                       # 最大雷达范围</span><br><span class="line"> </span><br><span class="line"># IMU参数 (如果使用内置IMU)</span><br><span class="line">imuTopic: &quot;/livox/imu&quot;                     # IMU话题</span><br><span class="line">imuAccNoise: 0.01                          # 加速度计噪声</span><br><span class="line">imuGyrNoise: 0.001                         # 陀螺仪噪声</span><br><span class="line">imuAccBiasN: 0.0002                        # 加速度计偏置噪声</span><br><span class="line">imuGyrBiasN: 0.00001                       # 陀螺仪偏置噪声</span><br></pre></td></tr></table></figure>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">function HybridA*(start_pose, goal_pose, map, vehicle):</span><br><span class="line">    open = 优先队列(按 f); closed = 空</span><br><span class="line">    start.g = 0; start.h = heuristic(start, goal); start.f = start.h</span><br><span class="line">    open.push(start)</span><br><span class="line"></span><br><span class="line">    while open 非空:</span><br><span class="line">        n = open.pop()                       # f 最小的位姿</span><br><span class="line"></span><br><span class="line">        # ---- Reeds-Shepp 解析射靶 ----</span><br><span class="line">        rs = ReedsShepp(n, goal)             # 算最短 RS 曲线</span><br><span class="line">        if rs 存在 and 无碰撞(rs, map):</span><br><span class="line">            return 回溯(n) + rs              # 接上, 结束</span><br><span class="line"></span><br><span class="line">        closed.add(投影到3D栅格(n))</span><br><span class="line"></span><br><span class="line">        # ---- 运动基元扩展 ----</span><br><span class="line">        for 每个运动基元 prim in vehicle.primitives:   # 前进/后退 × 左/直/右</span><br><span class="line">            m = integrate(n, prim)           # 用车辆运动学前进一步, 得新位姿</span><br><span class="line">            cell = 投影到3D栅格(m)</span><br><span class="line">            if cell in closed or 碰撞(轨迹 n-&gt;m):</span><br><span class="line">                continue</span><br><span class="line">            tentative_g = n.g + cost(n, m)</span><br><span class="line">            if cell 未记录 or tentative_g &lt; 已记录的 g:</span><br><span class="line">                m.g = tentative_g</span><br><span class="line">                m.h = heuristic(m, goal)</span><br><span class="line">                m.f = m.g + m.h</span><br><span class="line">                m.parent = n</span><br><span class="line">                记录 cell -&gt; m</span><br><span class="line">                open.push(m)</span><br><span class="line">    return 失败</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit paramsLivoxIMU.yaml</span><br></pre></td></tr></table></figure>
+<h3 id="输入-输出-代价函数-1"><a href="#输入-输出-代价函数-1" class="headerlink" title="输入 &#x2F; 输出 &#x2F; 代价函数"></a>输入 &#x2F; 输出 &#x2F; 代价函数</h3><ul>
+<li><strong>输入</strong>：地图（用于碰撞检测）、起点位姿 <code>(x,y,θ)</code>、终点位姿、车辆参数（最小转弯半径、基元集）、启发函数</li>
+<li><strong>输出</strong>：一条<strong>平滑、满足车辆运动学、可直接执行</strong>的路径</li>
+<li><strong>代价函数</strong>（比 A* 丰富，能反映真实驾驶偏好）：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">g = w_len · 路径长度</span><br><span class="line">+ w_steer · 转向变化量          # 少打方向盘</span><br><span class="line">+ w_switch · 前进/后退切换次数   # 少揉库换挡</span><br><span class="line">+ w_back  · 倒车距离             # 尽量少倒车</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  savePCDDirectory: &quot;/liosam_2d_nav_ws/PCD&quot;        # in your home folder, starts and ends with &quot;/&quot;. Warning: the code deletes &quot;LOAM&quot; folder then recreates it. See &quot;mapOptimization&quot; for implementation</span><br><span class="line">## 修改为对应保存地址</span><br></pre></td></tr></table></figure>
+<p>调这些权重，就能让规划器偏好”短”还是”顺”还是”少倒车”——这是工程上很有用的杠杆。</p>
+<h3 id="优缺点小结-1"><a href="#优缺点小结-1" class="headerlink" title="优缺点小结"></a>优缺点小结</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径<strong>直接可执行</strong>，无需平滑后处理</td>
+<td>3D 搜索，比 2D A* 慢</td>
+</tr>
+<tr>
+<td>考虑朝向和运动学，适合真实车辆</td>
+<td><strong>分辨率完备</strong>而非真正完备（栅格分得不够细可能漏解）</td>
+</tr>
+<tr>
+<td>RS 射靶能精确收敛到目标位姿</td>
+<td>代价&#x2F;启发调参比 A* 复杂</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="RRT（Rapidly-exploring-Random-Tree，快速探索随机树）"><a href="#RRT（Rapidly-exploring-Random-Tree，快速探索随机树）" class="headerlink" title="RRT（Rapidly-exploring Random Tree，快速探索随机树）"></a>RRT（Rapidly-exploring Random Tree，快速探索随机树）</h2><h3 id="直觉：往随机方向长树"><a href="#直觉：往随机方向长树" class="headerlink" title="直觉：往随机方向长树"></a>直觉：往随机方向长树</h3><p>基于搜索的方法在高维空间（比如机械臂 6 关节 + 障碍）会爆炸——栅格数随维度指数增长。RRT 的思路完全不同：<strong>不切格子，直接在空间里随机撒点，让一棵树朝随机点生长。</strong></p>
+<p>为什么”快速探索”？因为均匀随机撒点，树会<strong>均匀地向四面八方伸展</strong>，自然就快速覆盖整个空间，不会卡在一个角落。它对维度不敏感，6 维、10 维照样跑。</p>
+<h3 id="算法链路-1"><a href="#算法链路-1" class="headerlink" title="算法链路"></a>算法链路</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">flowchart TD</span><br><span class="line">    A[树 T 初始化: 只有起点] --&gt; B[随机采样 q_rand&lt;br/&gt;小概率直接采目标 goal-bias]</span><br><span class="line">    B --&gt; C[在 T 中找离 q_rand 最近的节点 q_near]</span><br><span class="line">    C --&gt; D[从 q_near 朝 q_rand 走固定步长 -&gt; q_new&lt;br/&gt;steer 函数, 可含运动学]</span><br><span class="line">    D --&gt; E&#123;q_near-&gt;q_new 碰撞?&#125;</span><br><span class="line">    E -- 是 --&gt; B</span><br><span class="line">    E -- 否 --&gt; F[把 q_new 作为 q_near 的子节点加入 T]</span><br><span class="line">    F --&gt; G&#123;q_new 进入目标区域?&#125;</span><br><span class="line">    G -- 是 --&gt; H[回溯路径]</span><br><span class="line">    G -- 否 --&gt; B</span><br></pre></td></tr></table></figure>
 
-<h2 id="运行与测试"><a href="#运行与测试" class="headerlink" title="运行与测试"></a>运行与测试</h2><h3 id="启动MID360雷达"><a href="#启动MID360雷达" class="headerlink" title="启动MID360雷达"></a>启动MID360雷达</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch livox_ros_driver2 msg_MID360.launch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function RRT(start, goal_region, sample_space, step, collision):</span><br><span class="line">    T = &#123; start &#125;</span><br><span class="line">    for i = 1 to N:</span><br><span class="line">        q_rand = RandomSample(sample_space)        # 小概率: q_rand = goal  (goal bias)</span><br><span class="line">        q_near  = Nearest(T, q_rand)</span><br><span class="line">        q_new   = Steer(q_near, q_rand, step)      # 朝 q_rand 走一步</span><br><span class="line">        if not collision(路径 q_near -&gt; q_new):</span><br><span class="line">            T.add(q_new, parent = q_near)</span><br><span class="line">            if q_new in goal_region:</span><br><span class="line">                return 回溯路径(q_new)</span><br><span class="line">    return 失败 / 返回当前最好的路径</span><br></pre></td></tr></table></figure>
 
-<h3 id="启动LIO-SAM"><a href="#启动LIO-SAM" class="headerlink" title="启动LIO-SAM"></a>启动LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch lio_sam run6axis.launch  # 使用内置六轴IMU</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>几个关键点：</p>
+<ul>
+<li><strong>Steer 函数</strong>：决定”怎么走这一步”。最简单是直线插值；要考虑运动学（如车辆）就用 RS&#x2F;Dubins 段。</li>
+<li><strong>goal bias</strong>：纯随机效率低，所以通常以 5%~10% 概率直接把目标点当 <code>q_rand</code>，引导树往目标长。</li>
+<li><strong>step 步长</strong>：太长容易撞、太短探索慢，要调。</li>
+</ul>
+<h3 id="输入-输出-代价函数-2"><a href="#输入-输出-代价函数-2" class="headerlink" title="输入 &#x2F; 输出 &#x2F; 代价函数"></a>输入 &#x2F; 输出 &#x2F; 代价函数</h3><ul>
+<li><strong>输入</strong>：采样空间、起点、目标区域、步长、碰撞检测函数</li>
+<li><strong>输出</strong>：一条<strong>可行</strong>路径（注意：不保证短、不保证平滑，往往很曲折）</li>
+<li><strong>代价函数</strong>：RRT 本身基本不显式优化代价，主要靠”局部路径长度”做 Steer 和 Nearest。路径质量差，<strong>需要后处理</strong>（shortcut 抄近路、smoothing 平滑）。</li>
+</ul>
+<h3 id="优缺点小结-2"><a href="#优缺点小结-2" class="headerlink" title="优缺点小结"></a>优缺点小结</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>高维空间表现好，不炸</td>
+<td><strong>概率完备</strong>（非确定完备）</td>
+</tr>
+<tr>
+<td>实现简单、对复杂障碍适应强</td>
+<td>路径<strong>不最优</strong>，曲折难走</td>
+</tr>
+<tr>
+<td>速度快，适合”先找个解”</td>
+<td>单次运行结果随机，不稳定</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>这个”不最优”正是 RRT* 要补的短板。</p>
+</blockquote>
+<hr>
+<h2 id="RRT-（Optimal-RRT，最优-RRT）"><a href="#RRT-（Optimal-RRT，最优-RRT）" class="headerlink" title="RRT*（Optimal RRT，最优 RRT）"></a>RRT*（Optimal RRT，最优 RRT）</h2><h3 id="RRT-的问题在哪"><a href="#RRT-的问题在哪" class="headerlink" title="RRT 的问题在哪"></a>RRT 的问题在哪</h3><p>RRT 一个节点连上父节点后，<strong>就再也不改了</strong>。哪怕后面发现”从另一个节点连过来更近”，它也不会重连。所以路径往往绕远、冗长。</p>
+<p>RRT* 的核心改进：<strong>每次加新节点时，不仅给新节点找最好的爸爸，还顺便帮邻居们重新认爸爸。</strong> 这样随着采样增多，整棵树越来越”顺”，路径越来越短。</p>
+<h3 id="两个关键操作"><a href="#两个关键操作" class="headerlink" title="两个关键操作"></a>两个关键操作</h3><p>设新节点 <code>q_new</code> 已经生成，在它周围画一个半径 <code>r</code> 的邻域，邻域内的节点集合记为 <code>Q_near</code>。</p>
+<p><strong>① ChooseParent（重新选父）——给 q_new 找最便宜的爹</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">默认爹是 q_near。但遍历 Q_near 里所有候选 c：</span><br><span class="line">    cost(经过 c 到 q_new) = cost(c) + dist(c, q_new)</span><br><span class="line">取让这个值【最小】、且连线无碰撞的 c 作为 q_new 的父亲。</span><br></pre></td></tr></table></figure>
+<p>→ q_new 一开始就连上最优父节点，而不是最近的那个。</p>
+<p><strong>② Rewire（重布线）——帮邻居们换个更便宜的爹</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">遍历 Q_near 里每个节点 c：</span><br><span class="line">    if cost(q_new) + dist(q_new, c) &lt; cost(c):   # 经过 q_new 到 c 更短</span><br><span class="line">        if 连线 q_new -&gt; c 无碰撞:</span><br><span class="line">            把 c 的父亲改成 q_new                # 重连!</span><br></pre></td></tr></table></figure>
+<p>→ 老节点也能受益于新节点，整棵树持续优化。</p>
+<p><strong>渐近最优性（Asymptotic Optimality）</strong>：当采样数 → ∞，路径代价 → 全局最优。代价是：每次迭代要多做很多碰撞检测和距离计算，<strong>单步比 RRT 慢不少</strong>。</p>
+<blockquote>
+<p>邻域半径 <code>r</code> 有理论公式（随采样数 n 减小），保证渐近最优性的同时控制计算量。工程上常取 <code>r = γ · (log n / n)^(1/d)</code>，d 是空间维度。</p>
+</blockquote>
+<h3 id="算法链路-2"><a href="#算法链路-2" class="headerlink" title="算法链路"></a>算法链路</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">flowchart TD</span><br><span class="line">    A[T 初始化: 起点] --&gt; B[采样 q_rand, 找最近 q_near, Steer 得 q_new]</span><br><span class="line">    B --&gt; C[碰撞?]</span><br><span class="line">    C -- 是 --&gt; B</span><br><span class="line">    C -- 否 --&gt; D[&quot;ChooseParent: 在邻域内为 q_new 选代价最小的父节点&quot;]</span><br><span class="line">    D --&gt; E[把 q_new 加入树]</span><br><span class="line">    E --&gt; F[&quot;Rewire: 邻域内若经 q_new 更短, 则把邻居重连到 q_new&quot;]</span><br><span class="line">    F --&gt; G&#123;达到停止条件? 时间/样本数&#125;</span><br><span class="line">    G -- 否 --&gt; B</span><br><span class="line">    G -- 是 --&gt; H[返回当前到目标的最优路径]</span><br></pre></td></tr></table></figure>
 
-<h3 id="可视化效果"><a href="#可视化效果" class="headerlink" title="可视化效果"></a>可视化效果</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119191708927.png" alt="image-20260119191708927"></p>
-<p>后续可以通过控制小车底盘运动，开始建图，并且保存点云地图了</p>
+<h3 id="伪代码-2"><a href="#伪代码-2" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function RRT*(start, goal, ...):</span><br><span class="line">    T = &#123; start &#125;</span><br><span class="line">    for i = 1 to N:</span><br><span class="line">        q_rand = RandomSample()            # 含 goal bias</span><br><span class="line">        q_near = Nearest(T, q_rand)</span><br><span class="line">        q_new  = Steer(q_near, q_rand, step)</span><br><span class="line">        if collision(q_near -&gt; q_new): continue</span><br><span class="line"></span><br><span class="line">        Q_near = Near(T, q_new, r)         # 邻域内候选节点</span><br><span class="line">        # ---- 1. 重新选父 ----</span><br><span class="line">        q_min = q_near;  c_min = cost(q_near) + dist(q_near, q_new)</span><br><span class="line">        for c in Q_near:</span><br><span class="line">            if not collision(c -&gt; q_new) and cost(c) + dist(c, q_new) &lt; c_min:</span><br><span class="line">                q_min = c;  c_min = cost(c) + dist(c, q_new)</span><br><span class="line">        T.add(q_new, parent = q_min)</span><br><span class="line"></span><br><span class="line">        # ---- 2. 重布线 ----</span><br><span class="line">        for c in Q_near:</span><br><span class="line">            if not collision(q_new -&gt; c) and cost(q_new) + dist(q_new, c) &lt; cost(c):</span><br><span class="line">                c.parent = q_new           # 重连</span><br><span class="line">    return 从树中取到 goal 的最优路径</span><br></pre></td></tr></table></figure>
+
+<h3 id="输入-输出-代价函数-3"><a href="#输入-输出-代价函数-3" class="headerlink" title="输入 &#x2F; 输出 &#x2F; 代价函数"></a>输入 &#x2F; 输出 &#x2F; 代价函数</h3><ul>
+<li><strong>输入&#x2F;输出</strong>：同 RRT，但输出质量高得多</li>
+<li><strong>代价函数</strong>：这里代价函数很关键——<code>cost(节点)</code> 是从根到该节点的累积路径长度（或加权代价），ChooseParent 和 Rewire 都是在<strong>最小化它</strong>。</li>
+</ul>
+<h3 id="优缺点小结-3"><a href="#优缺点小结-3" class="headerlink" title="优缺点小结"></a>优缺点小结</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>渐近最优</strong>，路径越跑越好</td>
+<td>单步计算比 RRT 重，实时性差</td>
+</tr>
+<tr>
+<td>仍适合高维空间</td>
+<td>收敛需要足够多样本，早期路径不一定好</td>
+</tr>
+<tr>
+<td>概率完备</td>
+<td>理论最优 ≠ 工程上能等到最优</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四种算法大对比（背这张表就够）"><a href="#四种算法大对比（背这张表就够）" class="headerlink" title="四种算法大对比（背这张表就够）"></a>四种算法大对比（背这张表就够）</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th><strong>A*</strong></th>
+<th><strong>Hybrid A*</strong></th>
+<th><strong>RRT</strong></th>
+<th><strong>RRT*</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>类别</strong></td>
+<td>基于搜索</td>
+<td>基于搜索</td>
+<td>基于采样</td>
+<td>基于采样</td>
+</tr>
+<tr>
+<td><strong>状态空间</strong></td>
+<td>2D 离散栅格</td>
+<td>3D 连续位姿 (x,y,θ)</td>
+<td>连续，任意维</td>
+<td>连续，任意维</td>
+</tr>
+<tr>
+<td><strong>邻居生成</strong></td>
+<td>4&#x2F;8 邻域</td>
+<td>车辆运动基元</td>
+<td>朝随机点走一步</td>
+<td>同 RRT</td>
+</tr>
+<tr>
+<td><strong>完备性</strong></td>
+<td>完备</td>
+<td><strong>分辨率完备</strong></td>
+<td><strong>概率完备</strong></td>
+<td>概率完备</td>
+</tr>
+<tr>
+<td><strong>最优性</strong></td>
+<td>最优（h 可采纳）</td>
+<td>加权最优（分辨率）</td>
+<td><strong>不最优</strong></td>
+<td><strong>渐近最优</strong></td>
+</tr>
+<tr>
+<td><strong>路径质量</strong></td>
+<td>折线，需后处理</td>
+<td>平滑、可直接执行</td>
+<td>曲折，需后处理</td>
+<td>较好，渐进改善</td>
+</tr>
+<tr>
+<td><strong>考虑运动学</strong></td>
+<td>否</td>
+<td><strong>是</strong></td>
+<td>可选（Steer）</td>
+<td>可选（Steer）</td>
+</tr>
+<tr>
+<td><strong>适合维度</strong></td>
+<td>低（2D）</td>
+<td>中低（3D）</td>
+<td>高维</td>
+<td>高维</td>
+</tr>
+<tr>
+<td><strong>速度</strong></td>
+<td>中快</td>
+<td>较慢</td>
+<td><strong>快</strong></td>
+<td>较慢</td>
+</tr>
+<tr>
+<td><strong>结果稳定性</strong></td>
+<td>确定性强</td>
+<td>确定性强</td>
+<td>随机性强</td>
+<td>随机性强</td>
+</tr>
+<tr>
+<td><strong>典型场景</strong></td>
+<td>游戏寻路、2D 机器人</td>
+<td><strong>自动驾驶泊车</strong>、非全向车</td>
+<td>高维机械臂、快速找解</td>
+<td>高维且要质量</td>
+</tr>
+</tbody></table>
+<h3 id="怎么记"><a href="#怎么记" class="headerlink" title="怎么记"></a>怎么记</h3><ul>
+<li><strong>想要确定 + 最优 + 低维</strong> → A*</li>
+<li><strong>想要确定 + 路径能直接开 + 3D 位姿</strong> → Hybrid A*（你的 freespace planning 主力）</li>
+<li><strong>想要快速 + 高维 + 不在乎最优</strong> → RRT</li>
+<li><strong>想要高维 + 路径质量好</strong> → RRT*</li>
+</ul>
+<hr>
+<h2 id="串回你的主线：freespace-planning-与-“A-RS”"><a href="#串回你的主线：freespace-planning-与-“A-RS”" class="headerlink" title="串回你的主线：freespace planning 与 “A* RS”"></a>串回你的主线：freespace planning 与 “A* RS”</h2><p>现在把四个算法和你的学习目标接起来：</p>
+<h3 id="freespace-planning-是什么"><a href="#freespace-planning-是什么" class="headerlink" title="freespace planning 是什么"></a>freespace planning 是什么</h3><p>“freespace planning” 通常指<strong>在自由空间（无障碍的连续空间）里做几何&#x2F;运动学规划</strong>，自动驾驶里特别用于<strong>低速泊车、掉头、揉库</strong>这类场景——需要精确控制终点位姿（车要停进车位，朝向也得对）。</p>
+<h3 id="“A-RS”-到底是什么"><a href="#“A-RS”-到底是什么" class="headerlink" title="“A* RS” 到底是什么"></a>“A* RS” 到底是什么</h3><p>你看到的 <em><em>“A</em> + RS”</em>* 基本就是 <strong>Hybrid A* 配 Reeds-Shepp 曲线</strong>，即本文第 3 节那套：</p>
+<ul>
+<li><strong>A*</strong> 部分：用 A* 那套 <code>f=g+h</code>、Open&#x2F;Closed、优先队列的搜索框架，但状态是连续位姿、用运动基元扩展（&#x3D; Hybrid A*）。</li>
+<li><strong>RS</strong> 部分：<ol>
+<li><strong>运动基元用 RS 曲线段</strong>（而非简单圆弧），更贴合”能前进能后退”的车；</li>
+<li><strong>接近目标时用 RS 曲线”射靶”</strong>，解析地精确收敛到目标位姿。</li>
+</ol>
+</li>
+</ul>
+<p>所以理解了第 3 节，你的 “A* RS” 也就通了 80%。剩下的 20% 是工程调参：启发函数选哪种、代价权重怎么定、3D 栅格分辨率多细。</p>
+<h3 id="为什么泊车用-RS-而不是-Dubins"><a href="#为什么泊车用-RS-而不是-Dubins" class="headerlink" title="为什么泊车用 RS 而不是 Dubins"></a>为什么泊车用 RS 而不是 Dubins</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>Reeds-Shepp</th>
+<th>Dubins</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前进</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>后退</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>适合</td>
+<td><strong>泊车&#x2F;揉库</strong>（要换挡）</td>
+<td>单向巡航&#x2F;无人机</td>
+</tr>
+</tbody></table>
+<p>泊车场景车要反复前进后退对准车位，所以 RS 更合适——这也是 freespace planning 几乎都用 RS 的原因。</p>
+<hr>
+<h2 id="一张图看懂四个算法的”产物”差异"><a href="#一张图看懂四个算法的”产物”差异" class="headerlink" title="一张图看懂四个算法的”产物”差异"></a>一张图看懂四个算法的”产物”差异</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">    subgraph S1[A* 产物]</span><br><span class="line">        A1[&quot;栅格折线&lt;br/&gt;不能直接开&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph S2[Hybrid A* 产物]</span><br><span class="line">        A2[&quot;平滑曲线&lt;br/&gt;直接可执行&lt;br/&gt;满足运动学&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph S3[RRT 产物]</span><br><span class="line">        A3[&quot;随机曲折路径&lt;br/&gt;可行但不优&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph S4[RRT* 产物]</span><br><span class="line">        A4[&quot;渐进平滑路径&lt;br/&gt;可行且越来越优&quot;]</span><br><span class="line">    end</span><br><span class="line">    S1 -. 需后处理 .-&gt; 车辆</span><br><span class="line">    S2 ==&gt; 车辆[直接给控制器]</span><br><span class="line">    S3 -. 需后处理 .-&gt; 车辆</span><br><span class="line">    S4 -. 后处理少 .-&gt; 车辆</span><br></pre></td></tr></table></figure>
+
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/" class="post-title-link" itemprop="url">在WSL中部署Claude code</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：13:38:21" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="在WSL中部署Claude-code"><a href="#在WSL中部署Claude-code" class="headerlink" title="在WSL中部署Claude code"></a>在WSL中部署Claude code</h1><p>以下操作均在WSL中完成</p>
+<h2 id="下载Node-js"><a href="#下载Node-js" class="headerlink" title="下载Node.js"></a>下载Node.js</h2><p>使用NPM安装，需要先安装<strong>Node.js</strong></p>
+<p>Linux</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu / Debian</span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+
+<p>完成安装后验证</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node --version</span><br><span class="line">npm --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Claude-code"><a href="#安装Claude-code" class="headerlink" title="安装Claude code"></a>安装Claude code</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g @anthropic-ai/claude-code</span><br></pre></td></tr></table></figure>
+
+<h2 id="链接CCH服务"><a href="#链接CCH服务" class="headerlink" title="链接CCH服务"></a>链接CCH服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 创建隐藏的配置文件夹</span><br><span class="line">mkdir -p ~/.claude</span><br><span class="line"># 使用vscode打开并创建文件</span><br><span class="line">code ~/.claude/settings.json</span><br></pre></td></tr></table></figure>
+
+<p>复制并粘贴配置内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;env&quot;: &#123;</span><br><span class="line">    &quot;ANTHROPIC_AUTH_TOKEN&quot;: &quot;dbecc3b78be84362becef5772a73c591.jizfjQfxMIXG2nxv&quot;,</span><br><span class="line">    &quot;ANTHROPIC_BASE_URL&quot;: &quot;https://open.bigmodel.cn/api/anthropic&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;CLAUDE_CODE_EFFORT_LEVEL&quot;: &quot;max&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;includeCoAuthoredBy&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="保存并测试"><a href="#保存并测试" class="headerlink" title="保存并测试"></a>保存并测试</h2><p>在vscode中保存文件，打开终端测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Claude</span><br></pre></td></tr></table></figure>
+
+<h2 id="VS-Code拓展"><a href="#VS-Code拓展" class="headerlink" title="VS Code拓展"></a>VS Code拓展</h2><ul>
+<li>在VS Code 拓展市场搜索并按章Claude Code</li>
+<li>确认 settings.json或者环境变量已经配置完成</li>
+<li>如果接的是cch，保持自定义地址即可</li>
+</ul>
+<p>启动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%88%9D%E4%BD%93%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/08/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%88%9D%E4%BD%93%E9%AA%8C/" class="post-title-link" itemprop="url">自动驾驶开发环境配置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：13:39:02" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="自动驾驶开发环境配置"><a href="#自动驾驶开发环境配置" class="headerlink" title="自动驾驶开发环境配置"></a>自动驾驶开发环境配置</h1><h2 id="安装WSL"><a href="#安装WSL" class="headerlink" title="安装WSL"></a>安装WSL</h2><p>WSL允许在Windows上原生运行Linux，直接使用Bash、apt等Linux工具</p>
+<h3 id="启用相关Windows功能"><a href="#启用相关Windows功能" class="headerlink" title="启用相关Windows功能"></a>启用相关Windows功能</h3><ol>
+<li><p>以管理员身份运行PowerShell</p>
+</li>
+<li><p>在PowerShell中，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</span><br><span class="line">dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>重启计算机</li>
+</ol>
+</li>
+</ol>
+<h3 id="安装WSL-1"><a href="#安装WSL-1" class="headerlink" title="安装WSL"></a>安装WSL</h3><ol>
+<li><p>以管理员身份打开PowerShell</p>
+</li>
+<li><p>安装WSL:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>等待安装完成，重启计算机</p>
+</li>
+</ol>
+<hr>
+<p>PS:安装不成功的话可以直接下载对应的exe文件</p>
+<p>网址：<a target="_blank" rel="noopener" href="https://github.com/microsoft/WSL/releases">https://github.com/microsoft/WSL/releases</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624113619905.png" alt="image-20260624113619710"></p>
+<p>选择对应的下载即可</p>
+<p>验证安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --version</span><br></pre></td></tr></table></figure>
+
+<h3 id="导入开发环境"><a href="#导入开发环境" class="headerlink" title="导入开发环境"></a>导入开发环境</h3><p>首先下载对应的开发环境：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624113832173.png" alt="image-20260624113832088"></p>
+<p>找一个剩余空间大于 150GB 的盘（假设是 D 盘），在刚才打开的 PowerShell 中输入以下命令（<strong>注意将路径替换为你自己电脑上真实存放的路径</strong>）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --import AutowareEnv D:\WSL\Autoware D:\Downloads\autoware-wsl.tar</span><br></pre></td></tr></table></figure>
+
+<p>这样，就按照设置的样子，导入了需要运行的镜像</p>
+<p><strong>如何进入系统</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl -d AutowareEnv</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\gen27&gt; wsl -d AutowareEnv</span><br><span class="line">wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。</span><br><span class="line">ros@Hita:/mnt/c/Users/gen27$</span><br></pre></td></tr></table></figure>
+
+<p>这样就完成了基础的环境配置</p>
+<hr>
+<h2 id="模拟器测试"><a href="#模拟器测试" class="headerlink" title="模拟器测试"></a>模拟器测试</h2><p>在你的 WSL 终端中（请确保当前不在运行其他东西，如果是的话，按 <code>Ctrl + C</code> 终止，或者新开一个 PowerShell 终端并输入 <code>wsl -d AutowareEnv</code> 进入）</p>
+<h3 id="激活工作环境"><a href="#激活工作环境" class="headerlink" title="激活工作环境"></a>激活工作环境</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/autoware/install/setup.bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行模拟器启动命令"><a href="#运行模拟器启动命令" class="headerlink" title="运行模拟器启动命令"></a>运行模拟器启动命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autoware_map vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624114925275.png" alt="image-20260624114925116"></p>
+<h3 id="添加地图文件"><a href="#添加地图文件" class="headerlink" title="添加地图文件"></a>添加地图文件</h3><ul>
+<li>.osm文件：矢量地图，包含车道线、斑马线、红绿灯的位置和规则</li>
+<li>.pcd文件：点云地图，是激光雷达扫描出来的真实3D物理环境</li>
+</ul>
+<ol>
+<li>在Windows下载文件</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624115351611.png" alt="image-20260624115351573"></p>
+<ol start="2">
+<li><p>在Linux中建立专属地图档案</p>
+<p>创建新文件夹：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/autoware_map/gz_test_map</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝文件并规范命名</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /mnt/d/Downloads/GZ_map/*.osm ~/autoware_map/gz_test_map/lanelet2_map.osm</span><br><span class="line">cp /mnt/d/Downloads/GZ_map/*.pcd ~/autoware_map/gz_test_map/pointcloud_map.pcd</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>检查是否成功</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l ~/autoware_map/gz_test_map/</span><br></pre></td></tr></table></figure>
+
+<h3 id="用新地图重新启动模拟器"><a href="#用新地图重新启动模拟器" class="headerlink" title="用新地图重新启动模拟器"></a>用新地图重新启动模拟器</h3><p>现在需要再次启动Planning Simulator，但是这次需要把地图路径指向新建的gz_test_map文件</p>
+<ol>
+<li>激活环境</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/autoware/install/setup.bash</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>运行新的启动命令</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autoware_map/gz_test_map vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260624125537856.png" alt="image-20260624125537275"></p>
+<p>这个是运行结果。现在可以在仿真实验上测试无人车运动</p>
+<h2 id="仿真运动"><a href="#仿真运动" class="headerlink" title="仿真运动"></a>仿真运动</h2><h3 id="给定目标点"><a href="#给定目标点" class="headerlink" title="给定目标点"></a>给定目标点</h3><ol>
+<li><p><strong>选择工具：</strong> 将鼠标移到 RViz 界面最上方的工具栏，找到并点击 <strong><code>2D Goal Pose</code></strong> 按钮（图标通常是一个带箭头的标记）。</p>
+</li>
+<li><p>在地图上画出终点</p>
+<ul>
+<li><p>将鼠标移动到右侧黑白点云地图上的一条<strong>有效车道</strong>上（最好在车辆前方一段距离）。</p>
+</li>
+<li><p><strong>按住鼠标左键不放</strong>，顺着你期望的停车方向（车道前进方向）<strong>轻轻拖动一下鼠标</strong>，然后松开。</p>
+</li>
+</ul>
+</li>
+<li><p>验证现象：</p>
+<ul>
+<li><p>地图上会立刻生成一条从当前位置延伸到终点的<strong>彩色渐变轨迹线</strong>。</p>
+</li>
+<li><p>左侧的 <code>STATE</code> 会从 <code>WAITING_FOR_ROUTE</code> 变成亮蓝色的 <strong><code>WAITING_FOR_ENGAGE</code>（等待激活）</strong>。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="点击Engage-发车"><a href="#点击Engage-发车" class="headerlink" title="点击Engage 发车"></a>点击Engage 发车</h3><p>路线规划出来后，车还处于挂着 P 挡（PARKING）拉着手刹的状态。</p>
+<ol>
+<li><strong>寻找 Engage 按钮：</strong> 在左侧 <code>AutowareStatePanel</code> 面板中，往下看，找到写着 <strong><code>Engage: False</code></strong> 字样上方或旁边对应的 <strong><code>Engage</code> 按钮</strong>（有时它就是一个可以直接点击的长条按钮，或者需要展开）。</li>
+<li><strong>点击激活：</strong> 用鼠标点击它。</li>
+<li><strong>验证现象：</strong><ul>
+<li>状态栏的 <code>GEAR</code> 会从 <code>PARKING</code> 切换到 <code>DRIVE</code>。</li>
+<li><code>STATE</code> 会变成绿色的 <code>DRIVING</code>（行驶中）。</li>
+<li>界面左上角那个白色的方向盘会开始自动转动，旁边的时速表（<code>0.00km/h</code>）数字会逐渐变大，系统坐标系或隐藏的小车就会沿着那条彩色轨迹跑起来了</li>
+</ul>
+</li>
+</ol>
 
       
     </div>
@@ -514,7 +1294,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/05/16/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
@@ -532,7 +1312,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/" class="post-title-link" itemprop="url">第七章：3D SLAM</a>
+          <a href="/2026/05/16/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/" class="post-title-link" itemprop="url">使用livox_mid360部署liosam</a>
         </h2>
 
         <div class="post-meta-container">
@@ -543,7 +1323,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
+      <time title="创建时间：2026-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-16T00:00:00+08:00">2026-05-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -558,7 +1338,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
+          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
         </span>
     </span>
 
@@ -572,211 +1352,60 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="第七章：3D-SLAM"><a href="#第七章：3D-SLAM" class="headerlink" title="第七章：3D SLAM"></a>第七章：3D SLAM</h1><p>三维激光雷达的信息比二维激光雷达的信息更丰富，不容易被遮挡，能够更好地重建场地的三维结构，既可以对三维点云直接进行匹配，也可以提取一些几何特征之后再配准。</p>
-<h2 id="多线激光雷达的工作原理"><a href="#多线激光雷达的工作原理" class="headerlink" title="多线激光雷达的工作原理"></a>多线激光雷达的工作原理</h2><h3 id="机械旋转激光雷达"><a href="#机械旋转激光雷达" class="headerlink" title="机械旋转激光雷达"></a>机械旋转激光雷达</h3><p>多线激光雷达的工作原理可以概括为：</p>
-<p>在垂直方向上同时发射多数不同角度的激光，通过整体的水平旋转，将这些线扫描成为面，最终利用ToF测距原理，实时绘制出周围环境的三维点云地图。</p>
-<p><img src="https://th.bing.com/th/id/R.e1d76dadbb311a3597eb73f8e4a89ce0?rik=sRlyuHN3R9XJvg&riu=http://i1.kknews.cc/_XWGNGVBB_5H2gKMUxYdfwZXWkAlvyU/0.jpg&ehk=b8dr7KH6Qs9Z43OuvjvdTA2WIH6/Wyr3l87Rc+DWENU=&risl=&pid=ImgRaw&r=0" alt="一文看懂激光雷達 - 每日頭條"></p>
-<h3 id="固态激光雷达"><a href="#固态激光雷达" class="headerlink" title="固态激光雷达"></a>固态激光雷达</h3><p>机械旋转式激光雷达必须让激光探头转动起来，才能探测周身360°范围内的距离，所以，它们不可避免地要内置一套精密的运动机构。所以在车辆震动等恶劣条件下容易损坏。所以就出现了固态激光雷达。</p>
-<table>
-<thead>
-<tr>
-<th><strong>类型</strong></th>
-<th><strong>扫描方式</strong></th>
-<th><strong>运动部件</strong></th>
-<th><strong>关键优势</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>传统机械式</strong></td>
-<td>马达带动整体旋转</td>
-<td>有（宏观）</td>
-<td>360°扫描，技术成熟</td>
-</tr>
-<tr>
-<td><strong>MEMS（半固态）</strong></td>
-<td>微振镜高速摆动</td>
-<td>有（微观）</td>
-<td>体积小，成本可控</td>
-</tr>
-<tr>
-<td><strong>OPA（真固态）</strong></td>
-<td>光学相控阵（相位干涉）</td>
-<td>无</td>
-<td>扫描极快，无磨损</td>
-</tr>
-<tr>
-<td><strong>Flash（真固态）</strong></td>
-<td>瞬间照亮整个场景</td>
-<td>无</td>
-<td>瞬时成像，无运动模糊</td>
-</tr>
-</tbody></table>
-<p>其核心就是通过一个高速旋转的马达，带动整个激光收发阵列进行360°扫描，这种设计包含宏观的、高速运动的机械部件。</p>
-<hr>
-<h2 id="多线激光雷达的扫描匹配"><a href="#多线激光雷达的扫描匹配" class="headerlink" title="多线激光雷达的扫描匹配"></a>多线激光雷达的扫描匹配</h2><p>多线激光雷达的扫描匹配效果通常好于单线激光雷达，所以后端的处理更加简单，大多数多线激光雷达的SLAM系统不使用子地图的概念，直接管理点云本身，点云的配准主要以Scan to Scan 或者Scan to Map 为主。扫描匹配在多线激光雷达的背景下，也常常被称为点云配准。</p>
-<h3 id="点到点ICP"><a href="#点到点ICP" class="headerlink" title="点到点ICP"></a>点到点ICP</h3><p>算法目标是找到一个旋转矩阵R和平移向量t，使得所有最近点之间的平方和距离最小</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024184941235.png" alt="image-20251024184941235"></p>
-<p>实现基础的ICP算法，可以使用优化的思路，也可以使用解析的方法。如果利用线性代数的求解，可以使用SVD方法，如果利用非线性优化的方式求解，则可以考虑以迭代的方式去寻找最优值。</p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@83f6f3e78c3d:/sad# bin/test_icp </span><br></pre></td></tr></table></figure>
+          <h1 id="使用livox-mid360部署liosam（实物）"><a href="#使用livox-mid360部署liosam（实物）" class="headerlink" title="使用livox_mid360部署liosam（实物）"></a>使用livox_mid360部署liosam（实物）</h1><h2 id="硬件要求"><a href="#硬件要求" class="headerlink" title="硬件要求"></a>硬件要求</h2><ul>
+<li>安装Ubuntu20.04工控机</li>
+<li>Livox_MID360</li>
+<li>网线</li>
+<li>12V直流电源</li>
+</ul>
+<h2 id="软件依赖"><a href="#软件依赖" class="headerlink" title="软件依赖"></a>软件依赖</h2><ul>
+<li>ROS Noetic</li>
+<li>Livox_SDK2</li>
+<li>livox_ros_driver2</li>
+<li>LIO-SAM</li>
+<li>GTSAM</li>
+<li>PCL</li>
+<li>Eigen3</li>
+</ul>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装Noetic"><a href="#安装Noetic" class="headerlink" title="安装Noetic"></a>安装Noetic</h3><p>略</p>
+<h3 id="安装Livox-SDK2"><a href="#安装Livox-SDK2" class="headerlink" title="安装Livox_SDK2"></a>安装Livox_SDK2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Livox-SDK/Livox-SDK2.git</span><br><span class="line">cd Livox-SDK2</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake .. &amp;&amp; make -j8</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">I1024 11:02:09.837949 293437 icp_3d.h:54] source center: 0.0903871 00.407958 00.251414</span><br><span class="line">I1024 11:02:09.901722 293437 icp_3d.h:45] target center: 0.0338123 00.285905 00.280259</span><br><span class="line">I1024 11:02:09.901753 293437 icp_3d.cc:13] aligning with point to point</span><br><span class="line">I1024 11:02:09.914196 293437 icp_3d.cc:96] iter 0 total res: 11.5422, eff: 44501, mean res: 0.00025937, dxn: 0.0271865</span><br><span class="line">I1024 11:02:09.915769 293437 icp_3d.cc:101] iter 0 pose error: 0.0689076</span><br><span class="line">I1024 11:02:09.921993 293437 icp_3d.cc:96] iter 1 total res: 6.14814, eff: 44515, mean res: 0.000138114, dxn: 0.0208751</span><br><span class="line">I1024 11:02:09.922013 293437 icp_3d.cc:101] iter 1 pose error: 0.0481971</span><br><span class="line">I1024 11:02:09.927600 293437 icp_3d.cc:96] iter 2 total res: 3.09009, eff: 44515, mean res: 6.94168e-05, dxn: 0.0151436</span><br><span class="line">I1024 11:02:09.927616 293437 icp_3d.cc:101] iter 2 pose error: 0.0331746</span><br><span class="line">I1024 11:02:09.932889 293437 icp_3d.cc:96] iter 3 total res: 1.53134, eff: 44515, mean res: 3.44006e-05, dxn: 0.0106258</span><br><span class="line">I1024 11:02:09.932904 293437 icp_3d.cc:101] iter 3 pose error: 0.0226408</span><br><span class="line">I1024 11:02:09.937976 293437 icp_3d.cc:96] iter 4 total res: 0.771583, eff: 44515, mean res: 1.73331e-05, dxn: 0.00738089</span><br><span class="line">I1024 11:02:09.937989 293437 icp_3d.cc:101] iter 4 pose error: 0.0153396</span><br><span class="line">I1024 11:02:09.937992 293437 icp_3d.cc:105] converged, dx = 000.00535585 0-0.00211399 0-0.00348329 -0.000894436 000.00178088 0-0.00228441</span><br><span class="line">I1024 11:02:09.938019 293437 test_icp.cc:55] icp p2p align success, pose: 00.0265482 -0.0107408 0-0.023479 000.999314, -0.0688918 0-0.103293 0.00503468</span><br><span class="line">I1024 11:02:09.996821 293437 sys_utils.h:32] 方法 ICP P2P 平均调用时间/次数: 159.098/1 毫秒.</span><br><span class="line">......</span><br><span class="line">I1024 11:02:11.607481 293437 test_icp.cc:162] pose from ndt pcl: 0-0.0276939 -0.00399581 0-0.0326939 0000.999074, 0-0.0370633 -0.00879984 000.033367518530452800.301441</span><br><span class="line">I1024 11:02:11.643512 293437 test_icp.cc:165] score: 0.301441</span><br><span class="line">I1024 11:02:11.643522 293437 test_icp.cc:169] NDT PCL pose error: 0.160315</span><br><span class="line">I1024 11:02:11.643736 293437 sys_utils.h:32] 方法 NDT PCL 平均调用时间/次数: 272.092/1 毫秒.</span><br></pre></td></tr></table></figure>
+<h3 id="安装livox-ros-driver2"><a href="#安装livox-ros-driver2" class="headerlink" title="安装livox_ros_driver2"></a>安装livox_ros_driver2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/Livox-SDK/livox_ros_driver2.git</span><br><span class="line">cd livox_ros_driver2</span><br><span class="line">source /opt/ros/noetic/setup.sh</span><br><span class="line">./build.sh ROS1</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">echo &quot;source ~/liosam_2d_nav_ws/devel/setup.bash&quot; &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
 
-<p>在计算机显示这几个模型</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@83f6f3e78c3d:/sad# pcl_viewer ./data/ch7/icp_trans.pcd ./data/ch7/EPFL/kneeling_lady_target.pcd </span><br></pre></td></tr></table></figure>
+<h3 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h3><h4 id="设置电脑静态IP"><a href="#设置电脑静态IP" class="headerlink" title="设置电脑静态IP"></a>设置电脑静态IP</h4><ol>
+<li>打开网络设置，选择有线连接</li>
+<li>设置 IPv4 为手动模式</li>
+<li>IP 地址：192.168.1.50</li>
+<li>子网掩码：255.255.255.0</li>
+<li>网关：192.168.1.1</li>
+</ol>
+<h4 id="确定MID360的IP地址"><a href="#确定MID360的IP地址" class="headerlink" title="确定MID360的IP地址"></a>确定MID360的IP地址</h4><p>MID360 的默认 IP 地址基于其序列号，规则如下：</p>
+<ul>
+<li>查看雷达底部的序列号（如 47MDM6J0020434）</li>
+<li>取序列号最后两位数字（38），则雷达 IP 为 192.168.1.134</li>
+</ul>
+<h4 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/livox_ros_driver2/config</span><br><span class="line">gedit MID360_config.json</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024191417393.png" alt="image-20251024191417393"></p>
-<p>虽然点到点的ICP是基础，但是当它在处理稀疏、有噪声的多线LIDAR数据时有严重缺陷：</p>
-<ol>
-<li>最近点≠对应点：有可能一个点在下一帧真正的对应点没有被扫描到，这样错误的匹配可能会将点云错误拉向最近点，使得点云平移估计不准</li>
-<li>对离群点较为敏感：SVD求解的是最小二乘问题，对于所有点的误差平方求和，如果离群点太多，会产生巨大的误差，导致整个结果被带偏</li>
-<li>收敛性：容易陷入局部最小值，这个跟初始的齐次变换有很大关系，如果偏差过大，可能会找到一个错误的对齐方式，并且卡住</li>
-</ol>
-<p>所以可以进行改进，得到点到线或者点到面的ICP、NDT方法</p>
-<h3 id="点到线、点到面ICP"><a href="#点到线、点到面ICP" class="headerlink" title="点到线、点到面ICP"></a>点到线、点到面ICP</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024195936967.png" alt="image-20251024195936967"></p>
-<p>点到面ICP与点到点的ICP思路基本一致，有两个小的差异点：</p>
-<ol>
-<li>需要给最近邻点拟合平面，因此需要查找多个最近邻，然后进行局部平面拟合。可以使用第五章提到的方法</li>
-<li>需要添加一些阈值检查来判定平面是否合理，然后用平面参数计算高斯-牛顿函数的雅可比矩阵</li>
-</ol>
-<p>点到面ICP的测试程序与先前点到点的程序一样，点到面ICP在精度和效率上都有一定的优势</p>
-<h3 id="NDT方法"><a href="#NDT方法" class="headerlink" title="NDT方法"></a>NDT方法</h3><p>NDT (Normal Distributions Transform，正态分布变换) 是一种与ICP（迭代最近点）截然不同的点云配准（Scan Matching）算法。NDT不关注单个点，关心的是点云的局部统计特性和形状。利用这些统计信息进行匹配就可以了。一组点云中最基本的统计信息就是均值和方差。</p>
-<p>NDT算法核心是：</p>
-<ol>
-<li>建模：将目标点云转换为一个连续的、分段的概率密度函数（PDF）</li>
-<li>配准：调整源点云的位姿，使得源点云上的点在目标点云的概率模型下，其总似然最大。</li>
-</ol>
-<p>算法详解：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024202520289.png" alt="image-20251024202520289"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024202533861.png" alt="image-20251024202533861"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024202547361.png" alt="image-20251024202547361"></p>
-<p>与所有配准算法一样，NDT同样存在依靠初始估计的问题，另外，NDT也依赖体素大小，所有以来体素大小的算法会存在体素离散化的问题。</p>
-<p>综合比对各种配准算法的位姿收敛曲线：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027105306682.png" alt="image-20251027105306682"></p>
-<p>点到面的ICP能够取得最好的位姿精度，也有最快的收敛速度，如果按照最近领方法进行细分，还可以区分基于K-d 树和基于体素最近邻的各种配准算法。</p>
-<hr>
-<h2 id="直接法激光雷达里程计"><a href="#直接法激光雷达里程计" class="headerlink" title="直接法激光雷达里程计"></a>直接法激光雷达里程计</h2><p>有了配准方法，可以配准多个点云，然后将它们拼在一起，形成局部地图，最终构建一个激光雷达里程计（Lidar Odometry）模块。在3D SLAM中，点云之间可以很容易进行合并，也可以将过去一段时间内的点云组成一个局部地图，然后将当前帧和这个局部地图进行配准。这种不需要提取特征的激光雷达里程计被称为直接法激光雷达里程计。其核心原理是：对齐-迭代-优化。而特征法则是将里程计求解分为：提取-匹配-优化三个步骤。</p>
-<p>根据使用的配准方法不同，可以写出两种实现激光雷达里程计的思路</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027111019917.png" alt="image-20251027111019917"></p>
-<p>这两种思路的核心都是：扫描-地图匹配（Scan-to-Map）即使用当前的激光扫描去和一个已经建立的历史地图进行匹配，从而计算当前位姿。</p>
-<p>最核心的区别就是历史地图的表示方式和更新方式。</p>
-<p>左图的思路的历史地图是由原始点云构成的。通常使用ICP作为配准算法。当然也可以使用NDT作为配准算法。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027112332703.png" alt="image-20251027112332703"></p>
-<p>右图思路的历史地图是由概率分布构成，明确使用NDT算法</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027112434926.png" alt="image-20251027112434926"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027112609495.png"></p>
-<h3 id="使用NDT构建激光雷达里程计"><a href="#使用NDT构建激光雷达里程计" class="headerlink" title="使用NDT构建激光雷达里程计"></a>使用NDT构建激光雷达里程计</h3><p>如果两种算法都是用NDT来作为配准算法，左图会一直对当前的扫描数据和局部地图进行NDT配准，每隔一段距离或者一定角度就取一个关键帧，再把最近的若干个关键帧拼成一个局部地图，作为NDT算法的配准目标。配准的时候用上两帧的相对运动作为运动模型，预测当前帧的位姿，然后将它作为NDT的位姿初值。<strong>局部地图的合并、地图对应的体素、K-d树构建是里程计模块中主要消耗算力的部分。</strong></p>
-<p>使用这个算法，每次增加关键帧，都需要重新建立局部地图，同时要重置所有NDT体素。可以把当前的扫描数据直接放到NDT的体素中，同时对体素增加一个时间队列处理，让它自动丢弃很久没用到的那些体素，这个方法称为<strong>增量式NDT</strong>。</p>
-<h3 id="增量式NDT里程计"><a href="#增量式NDT里程计" class="headerlink" title="增量式NDT里程计"></a>增量式NDT里程计</h3><p>实现增量式NDT需要解决两个问题：</p>
-<ol>
-<li>如何维护不断增加的体素</li>
-<li>每个体素内的高斯参数应该如何改变</li>
-</ol>
-<p>首先解决第一个问题</p>
-<p>应该将体素数量限制在一定的范围内，那些很久之前建立的体素应该定期删除，需要维护一个近期使用的缓存机制（Least Recently Used Cache, LRU）。设置一个队列模型，把最近更新的体素放到最前面。当整个队列超出预期容量，就删除最旧的那部分体素。</p>
-<p><strong>高斯分布的增量式更新</strong></p>
-<p>不存储点本身，只需要存储计算均值还有协方差所需的累加值。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027160346422.png" alt="image-20251027160346422"></p>
-<p>这样，实现的逻辑比之前的里程计更简单，只需要取一些关键帧，不断维护，往NDT内部添加新关键帧，然后调用配准函数既可。局部地图被放到NDT内部维护，不必再去拼接关键帧点云了。</p>
-<h2 id="特征法激光雷达里程计"><a href="#特征法激光雷达里程计" class="headerlink" title="特征法激光雷达里程计"></a>特征法激光雷达里程计</h2><h3 id="特征的提取"><a href="#特征的提取" class="headerlink" title="特征的提取"></a>特征的提取</h3><p>先提取特征再做配准的激光雷达里程计，称为特征法激光雷达里程计（间接法）。在特征法里程计中，LOAM系列，和后续的各种改进版本，是自动驾驶行业中常用的开源方案，也是后续很多LIO系统的基础。</p>
-<p>实时SLAM对特征有以下几个要求：</p>
-<ol>
-<li>特征能反映点云的特点。我们不必直接对整个点云提取特征，而可以对单个线条上的扫描数据提取特征</li>
-<li>在提取特征之后，应该很容易对这些特征点进行几何配准，可以使用前面的ICP和NDT方法。</li>
-<li>特征提取不应该占用太多CPU或者GPU资源</li>
-<li>整个激光雷达里程计或SLAM系统必须使用同样的计算结构，不是一部分运行在CPU上，一部分运行在GPU上。</li>
-</ol>
-<h3 id="基于激光雷达线束的特征提取"><a href="#基于激光雷达线束的特征提取" class="headerlink" title="基于激光雷达线束的特征提取"></a>基于激光雷达线束的特征提取</h3><p>多线激光雷达带有线束信息，以及额外的信息：</p>
-<ol>
-<li>某个激光点来自哪一条扫描线</li>
-<li>同一条线上的激光点的先后顺序关系</li>
-<li>有的可以输出各点的极坐标角度、扫描时间等精确信息</li>
-</ol>
-<p>根据这些点的先后顺序，可以计算曲率：沿着同一根线束的曲率，如果曲率较大，就认为是角点，否则就认为是平面点。这样可以一定限度地提取特征，有助于进一步优化配准结果。</p>
-<h3 id="特征提取部分的实现"><a href="#特征提取部分的实现" class="headerlink" title="特征提取部分的实现"></a>特征提取部分的实现</h3><p>特征提取算法主要步骤：</p>
-<ol>
-<li>计算每个点的线束并且归类。</li>
-<li>依次计算线束中每个点的曲率</li>
-<li>把点云按照一周分为若干区间，选择其中曲率最大的若干点座位角点，其余作为平面点</li>
-</ol>
-<h3 id="特征法激光里程计的实现"><a href="#特征法激光里程计的实现" class="headerlink" title="特征法激光里程计的实现"></a>特征法激光里程计的实现</h3><p>为角点和平面点分别构建两个局部地图，两者的ICP会放在同一个优化问题中，从原理上来看，特征类算法对原始点云进行简单的特征分类，，再针对不同特征构建不同的优化问题。可以将地面、天花板分离出来单独处理，按照线束曲率的大小，把点云进一步分为角点、不尖锐的角点、平面点、不那么平的平面点。</p>
-<hr>
-<h2 id="松耦合LIO系统"><a href="#松耦合LIO系统" class="headerlink" title="松耦合LIO系统"></a>松耦合LIO系统</h2><p>很多激光雷达里程计算法都会使用IMU来知道激光匹配的预测方向。这种Lidar-inertial Odometry 系统被称为LIO系统或者LINS系统。是激光雷达和IMU进行耦合的系统。按照两个耦合的方法来分，可以分为紧耦合和松耦合。</p>
-<p>在松耦合LIO系统中，依然是一个状态估计器来计算车辆自身的状态。IMU和轮速为这个估计器提供惯性和速度方面的观测源。点云匹配结果为这个系统提供位姿数据的观测源。估计器中的卡尔曼滤波部分和点云配准部分是相对解耦的，<strong>可以任意选择一个里程计位姿作为观测源</strong>。点云配准时，也可以使用状态估计器的预测输出，作为初始位姿估计进行配准。相对的，紧耦合LIO系统就是把点云的残差方程直接作为观测方程，写入观测模型，这种做法相当于在滤波器或者优化算法中内置一个ICP或者NDT，将各种配准方法以及惯导的递推方法结合，就得到了一种LIO方案。</p>
-<table>
-<thead>
-<tr>
-<th><strong>对比维度</strong></th>
-<th><strong>🤖 松耦合 (Loosely-Coupled)</strong></th>
-<th><strong>🚀 紧耦合 (Tightly-Coupled)</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>融合数据</strong></td>
-<td>融合<strong>状态估计结果</strong>  (LiDAR位姿 $\leftrightarrow$ IMU位姿)</td>
-<td>融合<strong>原始测量数据</strong>  (LiDAR点云 $\leftrightarrow$ IMU读数)</td>
-</tr>
-<tr>
-<td><strong>核心思想</strong></td>
-<td>两个系统<strong>独立求解</strong>，再由第三方融合</td>
-<td>两个系统<strong>联合求解</strong>，构建一个统一的优化问题</td>
-</tr>
-<tr>
-<td><strong>信息利用</strong></td>
-<td><strong>信息有损</strong>。LiDAR模块只输出了一个位姿，丢弃了原始点云中的所有几何结构信息。</td>
-<td><strong>信息无损</strong>。优化器能看到所有原始信息，利用率高。</td>
-</tr>
-<tr>
-<td><strong>系统鲁棒性</strong></td>
-<td><strong>较差</strong>。如果LiDAR模块失效（例如在走廊里），它会输出一个坏的位姿，导致整个系统崩溃。</td>
-<td><strong>较好</strong>。如果LiDAR在走廊里特征退化，IMU的原始读数仍能在优化中提供强大约束，帮助LiDAR渡过难关。</td>
-</tr>
-<tr>
-<td><strong>系统复杂度</strong></td>
-<td><strong>较低</strong>。模块化，实现和调试相对简单。</td>
-<td><strong>非常高</strong>。需要处理IMU预积分、传感器时钟同步、复杂的非线性优化。</td>
-</tr>
-<tr>
-<td><strong>典型算法</strong></td>
-<td>基于EKF的融合（例如 <code>robot_pose_ekf</code>）</td>
-<td><strong>LIO-SAM</strong>, <strong>LINS</strong>, LVI-SAM, VINS-Mono</td>
-</tr>
-</tbody></table>
-<hr>
-<h3 id="坐标系说明"><a href="#坐标系说明" class="headerlink" title="坐标系说明"></a>坐标系说明</h3><p>由于引入IMU，现在有三个坐标系：世界坐标系（W）IMU坐标系（I）雷达坐标系（L）。IMU坐标系与雷达坐标系并不重合，他们之间存在一个转换关系，记为TIL。由于IMU的运动模型是在IMU坐标系下推导的，因此希望它们尽量保持不变，不要再引入其他变量。于是通过外参将点云转换到IMU坐标系下。整个系统将以IMU为中心来实现定位与建图效果。如果某个被雷达扫到的点为pL,那么IMU坐标系下这个点为：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027203307046.png" alt="image-20251027203307046"></p>
-<h3 id="松耦合LIO系统的运动与观测方程"><a href="#松耦合LIO系统的运动与观测方程" class="headerlink" title="松耦合LIO系统的运动与观测方程"></a>松耦合LIO系统的运动与观测方程</h3><p>整个松耦合LIO系统在IMU坐标系中运行，激光雷达里程计输出的位姿可以直接视为对状态变量R ,p的<strong>观测</strong>。</p>
-<h3 id="松耦合LIO系统的数据准备"><a href="#松耦合LIO系统的数据准备" class="headerlink" title="松耦合LIO系统的数据准备"></a>松耦合LIO系统的数据准备</h3><p>松耦合LIO系统的代码实现主要分为三步：</p>
-<ol>
-<li>将IMU数据与雷达数据同步</li>
-<li>处理雷达的运动补偿</li>
-<li>从ESKF中拿到预测的位姿数据，交给里程计算法，再将里程计配准之后的位姿放入ESKF中。</li>
-</ol>
-<h3 id="松耦合LIO系统的主要流程"><a href="#松耦合LIO系统的主要流程" class="headerlink" title="松耦合LIO系统的主要流程"></a>松耦合LIO系统的主要流程</h3><p>其<strong>核心思想</strong>是：LiDAR和IMU各自独立地计算出一个状态估计（里程计），然后将两个估计结果进行融合。</p>
-<p>松耦合系统通常可以分为两个并行的子系统和一个融合模块：</p>
-<ol>
-<li>LiDAR里程计</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028102354937.png" alt="image-20251028102354937"></p>
-<ol start="2">
-<li>IMU里程计</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028102433586.png" alt="image-20251028102433586"></p>
-<ol start="3">
-<li>状态融合</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028102528075.png" alt="image-20251028102528075"></p>
-<p><strong>使用IMU预测位姿进行运动补偿</strong></p>
-<p>由于松耦合LIO系统中有IMU位姿，因此可以使用IMU预测的位姿对点云进行运动补偿。所谓运动补偿，就是指补偿车辆运动带来的扫描数据畸变。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028103951387.png" alt="image-20251028103951387"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028104757650.png" alt="image-20251028104757650"></p>
-<p>可以运行test_loosely_lio程序来测试程序的表现。</p>
-<p>数据集下载地址：<a target="_blank" rel="noopener" href="https://1drv.ms/u/s!AgNFVSzSYXMahcEZejoUwCaHRcactQ?e=YsOYy2">https://1drv.ms/u/s!AgNFVSzSYXMahcEZejoUwCaHRcactQ?e=YsOYy2</a></p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/test_loosely_lio --bag_path ./dataset/sad/nclt/20120429.bag --dataset_type NCLT --config ./config/velodyne_nclt.yaml</span><br></pre></td></tr></table></figure>
+<p>修改以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;lidar_summary_info&quot; : &#123;</span><br><span class="line">    &quot;lidar_type&quot;: 8</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;MID360&quot;: &#123;</span><br><span class="line">    &quot;lidar_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_port&quot;: 56100,</span><br><span class="line">      &quot;push_msg_port&quot;: 56200,</span><br><span class="line">      &quot;point_data_port&quot;: 56300,</span><br><span class="line">      &quot;imu_data_port&quot;: 56400,</span><br><span class="line">      &quot;log_data_port&quot;: 56500</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;host_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;cmd_data_port&quot;: 56101,</span><br><span class="line">      &quot;push_msg_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;push_msg_port&quot;: 56201,</span><br><span class="line">      &quot;point_data_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;point_data_port&quot;: 56301,</span><br><span class="line">      &quot;imu_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;imu_data_port&quot;: 56401,</span><br><span class="line">      &quot;log_data_ip&quot; : &quot;&quot;,</span><br><span class="line">      &quot;log_data_port&quot;: 56501</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;lidar_configs&quot; : [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;ip&quot; : &quot;192.168.1.134&quot;,  // 雷达IP</span><br><span class="line">      &quot;pcl_data_type&quot; : 1,</span><br><span class="line">      &quot;pattern_mode&quot; : 0,</span><br><span class="line">      &quot;extrinsic_parameter&quot; : &#123;</span><br><span class="line">        &quot;roll&quot;: 0.0,</span><br><span class="line">        &quot;pitch&quot;: 0.0,</span><br><span class="line">        &quot;yaw&quot;: 0.0,</span><br><span class="line">        &quot;x&quot;: 0,</span><br><span class="line">        &quot;y&quot;: 0,</span><br><span class="line">        &quot;z&quot;: 0</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028105346791.png" alt="image-20251028105346791"></p>
-<p>内存不够，这里不下载了。</p>
+<h3 id="安装LIO-SAM"><a href="#安装LIO-SAM" class="headerlink" title="安装LIO-SAM"></a>安装LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/nkymzsy/LIO-SAM-MID360.git  # MID360适配版本</span><br><span class="line">cd LIO-SAM-MID360</span><br><span class="line">git submodule update --init</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>修改参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit params.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Sensor Settings</span><br><span class="line">sensor: livox                              # 设置为livox</span><br><span class="line">N_SCAN: 4                                  # MID360的线束数量</span><br><span class="line">Horizon_SCAN: 6000                         # 水平分辨率</span><br><span class="line">downsampleRate: 1                          # 下采样率</span><br><span class="line">lidarMinRange: 1.0                         # 最小雷达范围</span><br><span class="line">lidarMaxRange: 100.0                       # 最大雷达范围</span><br><span class="line"> </span><br><span class="line"># IMU参数 (如果使用内置IMU)</span><br><span class="line">imuTopic: &quot;/livox/imu&quot;                     # IMU话题</span><br><span class="line">imuAccNoise: 0.01                          # 加速度计噪声</span><br><span class="line">imuGyrNoise: 0.001                         # 陀螺仪噪声</span><br><span class="line">imuAccBiasN: 0.0002                        # 加速度计偏置噪声</span><br><span class="line">imuGyrBiasN: 0.00001                       # 陀螺仪偏置噪声</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit paramsLivoxIMU.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  savePCDDirectory: &quot;/liosam_2d_nav_ws/PCD&quot;        # in your home folder, starts and ends with &quot;/&quot;. Warning: the code deletes &quot;LOAM&quot; folder then recreates it. See &quot;mapOptimization&quot; for implementation</span><br><span class="line">## 修改为对应保存地址</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行与测试"><a href="#运行与测试" class="headerlink" title="运行与测试"></a>运行与测试</h2><h3 id="启动MID360雷达"><a href="#启动MID360雷达" class="headerlink" title="启动MID360雷达"></a>启动MID360雷达</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch livox_ros_driver2 msg_MID360.launch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="启动LIO-SAM"><a href="#启动LIO-SAM" class="headerlink" title="启动LIO-SAM"></a>启动LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch lio_sam run6axis.launch  # 使用内置六轴IMU</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="可视化效果"><a href="#可视化效果" class="headerlink" title="可视化效果"></a>可视化效果</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119191708927.png" alt="image-20260119191708927"></p>
+<p>后续可以通过控制小车底盘运动，开始建图，并且保存点云地图了</p>
 
       
     </div>
@@ -1118,7 +1747,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%85%AB%E7%AB%A0%EF%BC%9A%E7%B4%A7%E8%80%A6%E5%90%88LIO%E7%B3%BB%E7%BB%9F/">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
@@ -1136,7 +1765,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/03/%E7%AC%AC%E5%85%AB%E7%AB%A0%EF%BC%9A%E7%B4%A7%E8%80%A6%E5%90%88LIO%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">第八章：紧耦合LIO系统</a>
+          <a href="/2025/11/03/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/" class="post-title-link" itemprop="url">第七章：3D SLAM</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1176,32 +1805,211 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="第八章：紧耦合LIO系统"><a href="#第八章：紧耦合LIO系统" class="headerlink" title="第八章：紧耦合LIO系统"></a>第八章：紧耦合LIO系统</h1><h2 id="紧耦合的原理和优点"><a href="#紧耦合的原理和优点" class="headerlink" title="紧耦合的原理和优点"></a>紧耦合的原理和优点</h2><p>紧耦合是一种传感器融合策略，不再是融合结果，而是融合“原始数据”或者“原始约束”</p>
-<p>优势：</p>
+          <h1 id="第七章：3D-SLAM"><a href="#第七章：3D-SLAM" class="headerlink" title="第七章：3D SLAM"></a>第七章：3D SLAM</h1><p>三维激光雷达的信息比二维激光雷达的信息更丰富，不容易被遮挡，能够更好地重建场地的三维结构，既可以对三维点云直接进行匹配，也可以提取一些几何特征之后再配准。</p>
+<h2 id="多线激光雷达的工作原理"><a href="#多线激光雷达的工作原理" class="headerlink" title="多线激光雷达的工作原理"></a>多线激光雷达的工作原理</h2><h3 id="机械旋转激光雷达"><a href="#机械旋转激光雷达" class="headerlink" title="机械旋转激光雷达"></a>机械旋转激光雷达</h3><p>多线激光雷达的工作原理可以概括为：</p>
+<p>在垂直方向上同时发射多数不同角度的激光，通过整体的水平旋转，将这些线扫描成为面，最终利用ToF测距原理，实时绘制出周围环境的三维点云地图。</p>
+<p><img src="https://th.bing.com/th/id/R.e1d76dadbb311a3597eb73f8e4a89ce0?rik=sRlyuHN3R9XJvg&riu=http://i1.kknews.cc/_XWGNGVBB_5H2gKMUxYdfwZXWkAlvyU/0.jpg&ehk=b8dr7KH6Qs9Z43OuvjvdTA2WIH6/Wyr3l87Rc+DWENU=&risl=&pid=ImgRaw&r=0" alt="一文看懂激光雷達 - 每日頭條"></p>
+<h3 id="固态激光雷达"><a href="#固态激光雷达" class="headerlink" title="固态激光雷达"></a>固态激光雷达</h3><p>机械旋转式激光雷达必须让激光探头转动起来，才能探测周身360°范围内的距离，所以，它们不可避免地要内置一套精密的运动机构。所以在车辆震动等恶劣条件下容易损坏。所以就出现了固态激光雷达。</p>
+<table>
+<thead>
+<tr>
+<th><strong>类型</strong></th>
+<th><strong>扫描方式</strong></th>
+<th><strong>运动部件</strong></th>
+<th><strong>关键优势</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>传统机械式</strong></td>
+<td>马达带动整体旋转</td>
+<td>有（宏观）</td>
+<td>360°扫描，技术成熟</td>
+</tr>
+<tr>
+<td><strong>MEMS（半固态）</strong></td>
+<td>微振镜高速摆动</td>
+<td>有（微观）</td>
+<td>体积小，成本可控</td>
+</tr>
+<tr>
+<td><strong>OPA（真固态）</strong></td>
+<td>光学相控阵（相位干涉）</td>
+<td>无</td>
+<td>扫描极快，无磨损</td>
+</tr>
+<tr>
+<td><strong>Flash（真固态）</strong></td>
+<td>瞬间照亮整个场景</td>
+<td>无</td>
+<td>瞬时成像，无运动模糊</td>
+</tr>
+</tbody></table>
+<p>其核心就是通过一个高速旋转的马达，带动整个激光收发阵列进行360°扫描，这种设计包含宏观的、高速运动的机械部件。</p>
+<hr>
+<h2 id="多线激光雷达的扫描匹配"><a href="#多线激光雷达的扫描匹配" class="headerlink" title="多线激光雷达的扫描匹配"></a>多线激光雷达的扫描匹配</h2><p>多线激光雷达的扫描匹配效果通常好于单线激光雷达，所以后端的处理更加简单，大多数多线激光雷达的SLAM系统不使用子地图的概念，直接管理点云本身，点云的配准主要以Scan to Scan 或者Scan to Map 为主。扫描匹配在多线激光雷达的背景下，也常常被称为点云配准。</p>
+<h3 id="点到点ICP"><a href="#点到点ICP" class="headerlink" title="点到点ICP"></a>点到点ICP</h3><p>算法目标是找到一个旋转矩阵R和平移向量t，使得所有最近点之间的平方和距离最小</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024184941235.png" alt="image-20251024184941235"></p>
+<p>实现基础的ICP算法，可以使用优化的思路，也可以使用解析的方法。如果利用线性代数的求解，可以使用SVD方法，如果利用非线性优化的方式求解，则可以考虑以迭代的方式去寻找最优值。</p>
+<p>终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@83f6f3e78c3d:/sad# bin/test_icp </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">I1024 11:02:09.837949 293437 icp_3d.h:54] source center: 0.0903871 00.407958 00.251414</span><br><span class="line">I1024 11:02:09.901722 293437 icp_3d.h:45] target center: 0.0338123 00.285905 00.280259</span><br><span class="line">I1024 11:02:09.901753 293437 icp_3d.cc:13] aligning with point to point</span><br><span class="line">I1024 11:02:09.914196 293437 icp_3d.cc:96] iter 0 total res: 11.5422, eff: 44501, mean res: 0.00025937, dxn: 0.0271865</span><br><span class="line">I1024 11:02:09.915769 293437 icp_3d.cc:101] iter 0 pose error: 0.0689076</span><br><span class="line">I1024 11:02:09.921993 293437 icp_3d.cc:96] iter 1 total res: 6.14814, eff: 44515, mean res: 0.000138114, dxn: 0.0208751</span><br><span class="line">I1024 11:02:09.922013 293437 icp_3d.cc:101] iter 1 pose error: 0.0481971</span><br><span class="line">I1024 11:02:09.927600 293437 icp_3d.cc:96] iter 2 total res: 3.09009, eff: 44515, mean res: 6.94168e-05, dxn: 0.0151436</span><br><span class="line">I1024 11:02:09.927616 293437 icp_3d.cc:101] iter 2 pose error: 0.0331746</span><br><span class="line">I1024 11:02:09.932889 293437 icp_3d.cc:96] iter 3 total res: 1.53134, eff: 44515, mean res: 3.44006e-05, dxn: 0.0106258</span><br><span class="line">I1024 11:02:09.932904 293437 icp_3d.cc:101] iter 3 pose error: 0.0226408</span><br><span class="line">I1024 11:02:09.937976 293437 icp_3d.cc:96] iter 4 total res: 0.771583, eff: 44515, mean res: 1.73331e-05, dxn: 0.00738089</span><br><span class="line">I1024 11:02:09.937989 293437 icp_3d.cc:101] iter 4 pose error: 0.0153396</span><br><span class="line">I1024 11:02:09.937992 293437 icp_3d.cc:105] converged, dx = 000.00535585 0-0.00211399 0-0.00348329 -0.000894436 000.00178088 0-0.00228441</span><br><span class="line">I1024 11:02:09.938019 293437 test_icp.cc:55] icp p2p align success, pose: 00.0265482 -0.0107408 0-0.023479 000.999314, -0.0688918 0-0.103293 0.00503468</span><br><span class="line">I1024 11:02:09.996821 293437 sys_utils.h:32] 方法 ICP P2P 平均调用时间/次数: 159.098/1 毫秒.</span><br><span class="line">......</span><br><span class="line">I1024 11:02:11.607481 293437 test_icp.cc:162] pose from ndt pcl: 0-0.0276939 -0.00399581 0-0.0326939 0000.999074, 0-0.0370633 -0.00879984 000.033367518530452800.301441</span><br><span class="line">I1024 11:02:11.643512 293437 test_icp.cc:165] score: 0.301441</span><br><span class="line">I1024 11:02:11.643522 293437 test_icp.cc:169] NDT PCL pose error: 0.160315</span><br><span class="line">I1024 11:02:11.643736 293437 sys_utils.h:32] 方法 NDT PCL 平均调用时间/次数: 272.092/1 毫秒.</span><br></pre></td></tr></table></figure>
+
+<p>在计算机显示这几个模型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@83f6f3e78c3d:/sad# pcl_viewer ./data/ch7/icp_trans.pcd ./data/ch7/EPFL/kneeling_lady_target.pcd </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024191417393.png" alt="image-20251024191417393"></p>
+<p>虽然点到点的ICP是基础，但是当它在处理稀疏、有噪声的多线LIDAR数据时有严重缺陷：</p>
 <ol>
-<li>极高的精度：松耦合在第一步计算里程计时，已经丢弃了原始点云信息，只保留了一个位姿估计，紧耦合利用了所有的原始信息，IMU与LiDAR双向校正</li>
-<li>更强的鲁棒性：当LiDAR 失效或者是IMU剧烈抖动时，可以受到其他传感器的约束，系统能够输出稳定、平滑的位姿。</li>
+<li>最近点≠对应点：有可能一个点在下一帧真正的对应点没有被扫描到，这样错误的匹配可能会将点云错误拉向最近点，使得点云平移估计不准</li>
+<li>对离群点较为敏感：SVD求解的是最小二乘问题，对于所有点的误差平方求和，如果离群点太多，会产生巨大的误差，导致整个结果被带偏</li>
+<li>收敛性：容易陷入局部最小值，这个跟初始的齐次变换有很大关系，如果偏差过大，可能会找到一个错误的对齐方式，并且卡住</li>
 </ol>
-<h2 id="基于IEKF的LIO系统"><a href="#基于IEKF的LIO系统" class="headerlink" title="基于IEKF的LIO系统"></a>基于IEKF的LIO系统</h2><h3 id="IEKF状态变量与运动方程"><a href="#IEKF状态变量与运动方程" class="headerlink" title="IEKF状态变量与运动方程"></a>IEKF状态变量与运动方程</h3><p>在紧耦合LIO系统中，IMU与点云配准使用同样的状态模型、运动方程与观测方程。</p>
-<p>标准的EKF通过在当前状态估计点对非线性系统进行一次泰勒展开，然后应用标准卡尔曼滤波。但是对于LIO这种强非线性系统，一次线性化会引入巨大误差。IEKF是对EKF的重大改进，在更新步骤中，不只是线性化一次，而是进行多次迭代。每次迭代中，都围绕上一次迭代更新后的最新状态点重新进行线性化，允许IEKF逐步逼近非线性测量函数的真实最优解。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251029104924012.png" alt="image-20251029104924012"></p>
-<h2 id="实现基于IEKF的LIO系统"><a href="#实现基于IEKF的LIO系统" class="headerlink" title="实现基于IEKF的LIO系统"></a>实现基于IEKF的LIO系统</h2><p>紧耦合LIO系统的点云残差可以有多种计算方式：如点到线、点到面、NDT，等等。本次实现一个基于IEKF的NDT LIO，实现基于点到面ICP的LIO。</p>
-<h2 id="基于预积分的LIO系统"><a href="#基于预积分的LIO系统" class="headerlink" title="基于预积分的LIO系统"></a>基于预积分的LIO系统</h2><p>与组合导航一样，带有点云的LIO系统也可以通过预积分IMU因子加上雷达残差来实现。预积分因子可以更方便整合到现有的框架上。LIO-SAM把预积分因子与雷达里程计的因子结合，构成整个优化问题。</p>
+<p>所以可以进行改进，得到点到线或者点到面的ICP、NDT方法</p>
+<h3 id="点到线、点到面ICP"><a href="#点到线、点到面ICP" class="headerlink" title="点到线、点到面ICP"></a>点到线、点到面ICP</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024195936967.png" alt="image-20251024195936967"></p>
+<p>点到面ICP与点到点的ICP思路基本一致，有两个小的差异点：</p>
 <ol>
-<li><p>预积分因子通常关联两个关键帧的高维状态。在转换为图优化问题时，可以选择把各个顶点分开处理。</p>
-</li>
-<li><p>由于预积分因子关联的变量较多，并且观测量大部分是状态变量的差值，因此应该对状态变量有足够的观测和约束，否则整个状态变量容易在零空间内自由变动。</p>
-</li>
-<li><p>预积分的图优化模型如下图所示：</p>
-</li>
+<li>需要给最近邻点拟合平面，因此需要查找多个最近邻，然后进行局部平面拟合。可以使用第五章提到的方法</li>
+<li>需要添加一些阈值检查来判定平面是否合理，然后用平面参数计算高斯-牛顿函数的雅可比矩阵</li>
 </ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030095913708.png" alt="image-20251030095913708"></p>
-<p>对两个关键帧进行优化时，为上一个关键帧添加一个先验因子，然后在两个帧之间添加预积分因子和零偏随机游走因子，最后在下一个关键帧中添加NDT观测的位姿约束。</p>
-<ol start="4">
-<li>雷达里程计的观测位姿是依赖预测数据的，与RTK的位姿观测有着本质区别。如果雷达里程计使用一个不准确的预测位姿，可能会使得整个LIO系统发散。</li>
-<li>将原先EKF处理的预测和观测部分变成预积分器的预测和观测部分。</li>
+<p>点到面ICP的测试程序与先前点到点的程序一样，点到面ICP在精度和效率上都有一定的优势</p>
+<h3 id="NDT方法"><a href="#NDT方法" class="headerlink" title="NDT方法"></a>NDT方法</h3><p>NDT (Normal Distributions Transform，正态分布变换) 是一种与ICP（迭代最近点）截然不同的点云配准（Scan Matching）算法。NDT不关注单个点，关心的是点云的局部统计特性和形状。利用这些统计信息进行匹配就可以了。一组点云中最基本的统计信息就是均值和方差。</p>
+<p>NDT算法核心是：</p>
+<ol>
+<li>建模：将目标点云转换为一个连续的、分段的概率密度函数（PDF）</li>
+<li>配准：调整源点云的位姿，使得源点云上的点在目标点云的概率模型下，其总似然最大。</li>
 </ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030100801103.png" alt="image-20251030100801103"></p>
+<p>算法详解：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024202520289.png" alt="image-20251024202520289"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024202533861.png" alt="image-20251024202533861"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024202547361.png" alt="image-20251024202547361"></p>
+<p>与所有配准算法一样，NDT同样存在依靠初始估计的问题，另外，NDT也依赖体素大小，所有以来体素大小的算法会存在体素离散化的问题。</p>
+<p>综合比对各种配准算法的位姿收敛曲线：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027105306682.png" alt="image-20251027105306682"></p>
+<p>点到面的ICP能够取得最好的位姿精度，也有最快的收敛速度，如果按照最近领方法进行细分，还可以区分基于K-d 树和基于体素最近邻的各种配准算法。</p>
+<hr>
+<h2 id="直接法激光雷达里程计"><a href="#直接法激光雷达里程计" class="headerlink" title="直接法激光雷达里程计"></a>直接法激光雷达里程计</h2><p>有了配准方法，可以配准多个点云，然后将它们拼在一起，形成局部地图，最终构建一个激光雷达里程计（Lidar Odometry）模块。在3D SLAM中，点云之间可以很容易进行合并，也可以将过去一段时间内的点云组成一个局部地图，然后将当前帧和这个局部地图进行配准。这种不需要提取特征的激光雷达里程计被称为直接法激光雷达里程计。其核心原理是：对齐-迭代-优化。而特征法则是将里程计求解分为：提取-匹配-优化三个步骤。</p>
+<p>根据使用的配准方法不同，可以写出两种实现激光雷达里程计的思路</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027111019917.png" alt="image-20251027111019917"></p>
+<p>这两种思路的核心都是：扫描-地图匹配（Scan-to-Map）即使用当前的激光扫描去和一个已经建立的历史地图进行匹配，从而计算当前位姿。</p>
+<p>最核心的区别就是历史地图的表示方式和更新方式。</p>
+<p>左图的思路的历史地图是由原始点云构成的。通常使用ICP作为配准算法。当然也可以使用NDT作为配准算法。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027112332703.png" alt="image-20251027112332703"></p>
+<p>右图思路的历史地图是由概率分布构成，明确使用NDT算法</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027112434926.png" alt="image-20251027112434926"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027112609495.png"></p>
+<h3 id="使用NDT构建激光雷达里程计"><a href="#使用NDT构建激光雷达里程计" class="headerlink" title="使用NDT构建激光雷达里程计"></a>使用NDT构建激光雷达里程计</h3><p>如果两种算法都是用NDT来作为配准算法，左图会一直对当前的扫描数据和局部地图进行NDT配准，每隔一段距离或者一定角度就取一个关键帧，再把最近的若干个关键帧拼成一个局部地图，作为NDT算法的配准目标。配准的时候用上两帧的相对运动作为运动模型，预测当前帧的位姿，然后将它作为NDT的位姿初值。<strong>局部地图的合并、地图对应的体素、K-d树构建是里程计模块中主要消耗算力的部分。</strong></p>
+<p>使用这个算法，每次增加关键帧，都需要重新建立局部地图，同时要重置所有NDT体素。可以把当前的扫描数据直接放到NDT的体素中，同时对体素增加一个时间队列处理，让它自动丢弃很久没用到的那些体素，这个方法称为<strong>增量式NDT</strong>。</p>
+<h3 id="增量式NDT里程计"><a href="#增量式NDT里程计" class="headerlink" title="增量式NDT里程计"></a>增量式NDT里程计</h3><p>实现增量式NDT需要解决两个问题：</p>
+<ol>
+<li>如何维护不断增加的体素</li>
+<li>每个体素内的高斯参数应该如何改变</li>
+</ol>
+<p>首先解决第一个问题</p>
+<p>应该将体素数量限制在一定的范围内，那些很久之前建立的体素应该定期删除，需要维护一个近期使用的缓存机制（Least Recently Used Cache, LRU）。设置一个队列模型，把最近更新的体素放到最前面。当整个队列超出预期容量，就删除最旧的那部分体素。</p>
+<p><strong>高斯分布的增量式更新</strong></p>
+<p>不存储点本身，只需要存储计算均值还有协方差所需的累加值。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027160346422.png" alt="image-20251027160346422"></p>
+<p>这样，实现的逻辑比之前的里程计更简单，只需要取一些关键帧，不断维护，往NDT内部添加新关键帧，然后调用配准函数既可。局部地图被放到NDT内部维护，不必再去拼接关键帧点云了。</p>
+<h2 id="特征法激光雷达里程计"><a href="#特征法激光雷达里程计" class="headerlink" title="特征法激光雷达里程计"></a>特征法激光雷达里程计</h2><h3 id="特征的提取"><a href="#特征的提取" class="headerlink" title="特征的提取"></a>特征的提取</h3><p>先提取特征再做配准的激光雷达里程计，称为特征法激光雷达里程计（间接法）。在特征法里程计中，LOAM系列，和后续的各种改进版本，是自动驾驶行业中常用的开源方案，也是后续很多LIO系统的基础。</p>
+<p>实时SLAM对特征有以下几个要求：</p>
+<ol>
+<li>特征能反映点云的特点。我们不必直接对整个点云提取特征，而可以对单个线条上的扫描数据提取特征</li>
+<li>在提取特征之后，应该很容易对这些特征点进行几何配准，可以使用前面的ICP和NDT方法。</li>
+<li>特征提取不应该占用太多CPU或者GPU资源</li>
+<li>整个激光雷达里程计或SLAM系统必须使用同样的计算结构，不是一部分运行在CPU上，一部分运行在GPU上。</li>
+</ol>
+<h3 id="基于激光雷达线束的特征提取"><a href="#基于激光雷达线束的特征提取" class="headerlink" title="基于激光雷达线束的特征提取"></a>基于激光雷达线束的特征提取</h3><p>多线激光雷达带有线束信息，以及额外的信息：</p>
+<ol>
+<li>某个激光点来自哪一条扫描线</li>
+<li>同一条线上的激光点的先后顺序关系</li>
+<li>有的可以输出各点的极坐标角度、扫描时间等精确信息</li>
+</ol>
+<p>根据这些点的先后顺序，可以计算曲率：沿着同一根线束的曲率，如果曲率较大，就认为是角点，否则就认为是平面点。这样可以一定限度地提取特征，有助于进一步优化配准结果。</p>
+<h3 id="特征提取部分的实现"><a href="#特征提取部分的实现" class="headerlink" title="特征提取部分的实现"></a>特征提取部分的实现</h3><p>特征提取算法主要步骤：</p>
+<ol>
+<li>计算每个点的线束并且归类。</li>
+<li>依次计算线束中每个点的曲率</li>
+<li>把点云按照一周分为若干区间，选择其中曲率最大的若干点座位角点，其余作为平面点</li>
+</ol>
+<h3 id="特征法激光里程计的实现"><a href="#特征法激光里程计的实现" class="headerlink" title="特征法激光里程计的实现"></a>特征法激光里程计的实现</h3><p>为角点和平面点分别构建两个局部地图，两者的ICP会放在同一个优化问题中，从原理上来看，特征类算法对原始点云进行简单的特征分类，，再针对不同特征构建不同的优化问题。可以将地面、天花板分离出来单独处理，按照线束曲率的大小，把点云进一步分为角点、不尖锐的角点、平面点、不那么平的平面点。</p>
+<hr>
+<h2 id="松耦合LIO系统"><a href="#松耦合LIO系统" class="headerlink" title="松耦合LIO系统"></a>松耦合LIO系统</h2><p>很多激光雷达里程计算法都会使用IMU来知道激光匹配的预测方向。这种Lidar-inertial Odometry 系统被称为LIO系统或者LINS系统。是激光雷达和IMU进行耦合的系统。按照两个耦合的方法来分，可以分为紧耦合和松耦合。</p>
+<p>在松耦合LIO系统中，依然是一个状态估计器来计算车辆自身的状态。IMU和轮速为这个估计器提供惯性和速度方面的观测源。点云匹配结果为这个系统提供位姿数据的观测源。估计器中的卡尔曼滤波部分和点云配准部分是相对解耦的，<strong>可以任意选择一个里程计位姿作为观测源</strong>。点云配准时，也可以使用状态估计器的预测输出，作为初始位姿估计进行配准。相对的，紧耦合LIO系统就是把点云的残差方程直接作为观测方程，写入观测模型，这种做法相当于在滤波器或者优化算法中内置一个ICP或者NDT，将各种配准方法以及惯导的递推方法结合，就得到了一种LIO方案。</p>
+<table>
+<thead>
+<tr>
+<th><strong>对比维度</strong></th>
+<th><strong>🤖 松耦合 (Loosely-Coupled)</strong></th>
+<th><strong>🚀 紧耦合 (Tightly-Coupled)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>融合数据</strong></td>
+<td>融合<strong>状态估计结果</strong>  (LiDAR位姿 $\leftrightarrow$ IMU位姿)</td>
+<td>融合<strong>原始测量数据</strong>  (LiDAR点云 $\leftrightarrow$ IMU读数)</td>
+</tr>
+<tr>
+<td><strong>核心思想</strong></td>
+<td>两个系统<strong>独立求解</strong>，再由第三方融合</td>
+<td>两个系统<strong>联合求解</strong>，构建一个统一的优化问题</td>
+</tr>
+<tr>
+<td><strong>信息利用</strong></td>
+<td><strong>信息有损</strong>。LiDAR模块只输出了一个位姿，丢弃了原始点云中的所有几何结构信息。</td>
+<td><strong>信息无损</strong>。优化器能看到所有原始信息，利用率高。</td>
+</tr>
+<tr>
+<td><strong>系统鲁棒性</strong></td>
+<td><strong>较差</strong>。如果LiDAR模块失效（例如在走廊里），它会输出一个坏的位姿，导致整个系统崩溃。</td>
+<td><strong>较好</strong>。如果LiDAR在走廊里特征退化，IMU的原始读数仍能在优化中提供强大约束，帮助LiDAR渡过难关。</td>
+</tr>
+<tr>
+<td><strong>系统复杂度</strong></td>
+<td><strong>较低</strong>。模块化，实现和调试相对简单。</td>
+<td><strong>非常高</strong>。需要处理IMU预积分、传感器时钟同步、复杂的非线性优化。</td>
+</tr>
+<tr>
+<td><strong>典型算法</strong></td>
+<td>基于EKF的融合（例如 <code>robot_pose_ekf</code>）</td>
+<td><strong>LIO-SAM</strong>, <strong>LINS</strong>, LVI-SAM, VINS-Mono</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="坐标系说明"><a href="#坐标系说明" class="headerlink" title="坐标系说明"></a>坐标系说明</h3><p>由于引入IMU，现在有三个坐标系：世界坐标系（W）IMU坐标系（I）雷达坐标系（L）。IMU坐标系与雷达坐标系并不重合，他们之间存在一个转换关系，记为TIL。由于IMU的运动模型是在IMU坐标系下推导的，因此希望它们尽量保持不变，不要再引入其他变量。于是通过外参将点云转换到IMU坐标系下。整个系统将以IMU为中心来实现定位与建图效果。如果某个被雷达扫到的点为pL,那么IMU坐标系下这个点为：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027203307046.png" alt="image-20251027203307046"></p>
+<h3 id="松耦合LIO系统的运动与观测方程"><a href="#松耦合LIO系统的运动与观测方程" class="headerlink" title="松耦合LIO系统的运动与观测方程"></a>松耦合LIO系统的运动与观测方程</h3><p>整个松耦合LIO系统在IMU坐标系中运行，激光雷达里程计输出的位姿可以直接视为对状态变量R ,p的<strong>观测</strong>。</p>
+<h3 id="松耦合LIO系统的数据准备"><a href="#松耦合LIO系统的数据准备" class="headerlink" title="松耦合LIO系统的数据准备"></a>松耦合LIO系统的数据准备</h3><p>松耦合LIO系统的代码实现主要分为三步：</p>
+<ol>
+<li>将IMU数据与雷达数据同步</li>
+<li>处理雷达的运动补偿</li>
+<li>从ESKF中拿到预测的位姿数据，交给里程计算法，再将里程计配准之后的位姿放入ESKF中。</li>
+</ol>
+<h3 id="松耦合LIO系统的主要流程"><a href="#松耦合LIO系统的主要流程" class="headerlink" title="松耦合LIO系统的主要流程"></a>松耦合LIO系统的主要流程</h3><p>其<strong>核心思想</strong>是：LiDAR和IMU各自独立地计算出一个状态估计（里程计），然后将两个估计结果进行融合。</p>
+<p>松耦合系统通常可以分为两个并行的子系统和一个融合模块：</p>
+<ol>
+<li>LiDAR里程计</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028102354937.png" alt="image-20251028102354937"></p>
+<ol start="2">
+<li>IMU里程计</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028102433586.png" alt="image-20251028102433586"></p>
+<ol start="3">
+<li>状态融合</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028102528075.png" alt="image-20251028102528075"></p>
+<p><strong>使用IMU预测位姿进行运动补偿</strong></p>
+<p>由于松耦合LIO系统中有IMU位姿，因此可以使用IMU预测的位姿对点云进行运动补偿。所谓运动补偿，就是指补偿车辆运动带来的扫描数据畸变。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028103951387.png" alt="image-20251028103951387"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028104757650.png" alt="image-20251028104757650"></p>
+<p>可以运行test_loosely_lio程序来测试程序的表现。</p>
+<p>数据集下载地址：<a target="_blank" rel="noopener" href="https://1drv.ms/u/s!AgNFVSzSYXMahcEZejoUwCaHRcactQ?e=YsOYy2">https://1drv.ms/u/s!AgNFVSzSYXMahcEZejoUwCaHRcactQ?e=YsOYy2</a></p>
+<p>终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/test_loosely_lio --bag_path ./dataset/sad/nclt/20120429.bag --dataset_type NCLT --config ./config/velodyne_nclt.yaml</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028105346791.png" alt="image-20251028105346791"></p>
+<p>内存不够，这里不下载了。</p>
 
       
     </div>
@@ -1413,534 +2221,6 @@
 <p>与之前缺少RTK观测而发散的位置明显得到了改善，速度观测对于组合导航是有积极作用的。</p>
 <hr>
 <p>本章介绍了惯性导航系统的基本原理，以ESKF形式将IMU、卫星导航和轮式里程计进行融合，组成传统的组合导航方案。目前还没有引入图像和激光雷达传感器，只能看到车辆位置和姿态数据，没有只管描述场景结构。后续章节将以本章结果为基础，添加二维、三维激光雷达数据，用于建图和定位。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%85%AD%E7%AB%A0%EF%BC%9A2D%20SLAM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/03/%E7%AC%AC%E5%85%AD%E7%AB%A0%EF%BC%9A2D%20SLAM/" class="post-title-link" itemprop="url">第六章：2D SLAM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="第六章：2D-SLAM"><a href="#第六章：2D-SLAM" class="headerlink" title="第六章：2D SLAM"></a>第六章：2D SLAM</h1><h2 id="2D-SLAM-的基本原理"><a href="#2D-SLAM-的基本原理" class="headerlink" title="2D SLAM 的基本原理"></a>2D SLAM 的基本原理</h2><p>相比较于三维空间的点云，2D SLAM可以视为在俯视视角下工作的激光SLAM算法。在这种视角下，激光雷达扫描数据和地图数据可以被简化为二维形式。但是任然还有难以解决的问题，例如：大部分2D SLAM方案预设障碍物与激光雷达传感器在同一高度，如果存在其他高度的障碍物，或者物品形状随着高度有明显变化，那么二维地图就无法有效表达这类物体，导致机器人发生碰撞。本次将以现代的视角展示2D SLAM，现在展示一下典型的2D SLAM 框架。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251022150237595.png" alt="image-20251022150237595"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/640" alt="33857c834399a106506da7bd3d7c4634.png"></p>
-<p><strong>流程</strong></p>
-<ol>
-<li><p>数据输入：二维激光雷达传感器按照一定的频率向外输出激光测距的信息，产生一系列点云，这就是“扫描数据”</p>
-</li>
-<li><p>前端：扫描匹配。为了计算扫描对应的机器位姿，需要将它与某些东西进行配准，称为扫描匹配。既可以是将两次扫描的结果进行匹配，也可以是将它与地图进行匹配，所以扫描匹配可以分为Scan to Scan 和 Scan to Map 两种模式。扫描匹配的结果会被用来持续更新机器人的位姿，这个位姿输出就是实时的<strong>定位结果</strong>。</p>
-</li>
-<li><p>前端：插入子地图。当估计这个扫描的位姿之后，将这帧数据插入到当前子地图中，是的子地图不断增长。</p>
-<p><strong>子地图：</strong> 这是一个关键概念，系统不是把所有的点塞入一张大地图中，而是线构建一系列小的、内部一致的子地图，当一个子地图累计足够数据之后，就会被封存为历史子地图。</p>
-</li>
-<li><p>前端：SLAM输出。系统根据地图中的点云数据，实时更新一个占据栅格地图，这就是最终的<strong>地图输出</strong>。占据栅格地图会区分地图中的障碍物还有可通行区域，可以过滤掉运动物体对于地图的影响。</p>
-</li>
-<li><p>后端：扫描数据+历史子地图–&gt; 回环检测。当一个新的扫描数据产生时，回环检测模块会将其与所有历史子地图进行比较，以此来判断机器人是否回到一个以前来过的地方</p>
-</li>
-<li><p>后端：全局优化。如果回环检测成功，就会在位姿图中添加一个回环约束，系统会出发一次全局优化。优化器会调整所有历史位姿与子地图的位置，是的所有约束误差最小。</p>
-</li>
-</ol>
-<hr>
-<h2 id="前端里程计"><a href="#前端里程计" class="headerlink" title="前端里程计"></a>前端里程计</h2><h3 id="点到点的扫描匹配"><a href="#点到点的扫描匹配" class="headerlink" title="点到点的扫描匹配"></a>点到点的扫描匹配</h3><p><strong>核心目标</strong>：给定两帧激光扫描的数据（两组点云），计算出一个最佳刚体变换，是的两帧点云足够完美重合在一起</p>
-<p>核心算法：ICP (Iterative Closest Point, 迭代最近点)</p>
-<h4 id="使用OpenCV-显示二维激光雷达数据"><a href="#使用OpenCV-显示二维激光雷达数据" class="headerlink" title="使用OpenCV 显示二维激光雷达数据"></a>使用OpenCV 显示二维激光雷达数据</h4><p>会展示一个可视化函数演示，将雷达的距离和角度信息转化为笛卡尔坐标，再按照一定分辨率绘制在图像中。如果输入机器人位姿，则这个绘制程序还可以在运动状态下演示。</p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/test_2dlidar_io --bag_path ./dataset/sad/2dmapping/floor1.bag </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251022154451276.png" alt="image-20251022154451276"></p>
-<p>基于扫描的原理可以推导匹配算法的数学模型，</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251022154902504.png" alt="image-20251022154902504"></p>
-<p>问题的关键可以变为如何定义观测方程的详细形式，为每一个观测数据计算残差。有几个典型的解法：点到点的ICP，点到线的ICP，以及高斯似然场法。其中ICP算法将扫描匹配问题分为<strong>数据关联和位姿估计</strong>两步。交替执行，直至收敛。</p>
-<h3 id="点到点ICP的实现——（高斯-牛顿法）"><a href="#点到点ICP的实现——（高斯-牛顿法）" class="headerlink" title="点到点ICP的实现——（高斯-牛顿法）"></a>点到点ICP的实现——（高斯-牛顿法）</h3><p>在每一次基于高斯牛顿法的迭代中，重新计算点与点的最近邻，然后求解位姿的增量。要点有两个：1. 实现最近邻查找，2. 实现高斯牛顿迭代法</p>
-<p>可以使用K-d 树来实现二维点的最近邻查找。</p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/test_2d_icp_s2s </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251022190429234.png" alt="image-20251022190429234"></p>
-<p>这个程序会扫描数据配准至上一个扫描数据中，使用OpenCV对结果进行可视化。两个扫描在配准后能够很好地重合。能够实时看到配准结果。</p>
-<h3 id="点到线的扫描匹配算法"><a href="#点到线的扫描匹配算法" class="headerlink" title="点到线的扫描匹配算法"></a>点到线的扫描匹配算法</h3><p>点到线的ICP的整体流程与点到点的算法是一致的，唯一的不同就是在找到K近邻之后，拟合为一条直线，最终计算目标点与这条直线的垂直距离，这个方法被称为：Point-to-line ICP </p>
-<h3 id="似然场法"><a href="#似然场法" class="headerlink" title="似然场法"></a>似然场法</h3><p>点到点与点到线的ICP既可以用于Scan to Scan 又可以用于Scan to Map 配准，在2DSLAM中，通常会按照一定的分辨率将地图储存为占据栅格地图，可以设计一个将扫描数据与栅格地图进行配准的方法，即似然场法，也被称为高斯似然场法。</p>
-<p>似然场法的核心思想就是，不只是在占据栅格地图上的栅格给高分，还要在已占据的栅格附近都给不错的分数。总结来说就是通过预先将地图模糊化，将一个尖锐的匹配问题，转化为一个平滑的问题，极大提高了2D SLAM 中定位和建图的鲁棒性。</p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/test_2d_icp_likelihood </span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251022192512098.png" alt="image-20251022192512098"></p>
-<hr>
-<h2 id="占据栅格地图"><a href="#占据栅格地图" class="headerlink" title="占据栅格地图"></a>占据栅格地图</h2><h3 id="占据栅格地图的原理"><a href="#占据栅格地图的原理" class="headerlink" title="占据栅格地图的原理"></a>占据栅格地图的原理</h3><p>占据栅格地图的<strong>核心</strong>就是：将地图划分为无数个均匀小方格，为每一个小方格赋予一个概率值，这个值代表这个小方格被障碍物占据的可能性的代销。</p>
-<p>在最简单的模型中，每个格子只有三种状态：</p>
-<ol>
-<li>占据：有障碍物</li>
-<li>空闲：格子是空的，可以通行</li>
-<li>未知：不知道格子里是什么</li>
-</ol>
-<p>由于栅格地图本身存在分辨率限制，将连续的激光线条转换成栅格地图中每个格子的概率增减时，存在一个栅格化过程，如下右图所示，在二维栅格地图中，有两种栅格化方法：</p>
-<ol>
-<li>选择对每个激光线条计算栅格化结果</li>
-<li>选择先计算一个固定大小的模版区域</li>
-</ol>
-<p>这就引出了两种地图生成的方法</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251022194402035.png" alt="image-20251022194402035"></p>
-<h3 id="基于Bresenham算法的地图生成"><a href="#基于Bresenham算法的地图生成" class="headerlink" title="基于Bresenham算法的地图生成"></a>基于Bresenham算法的地图生成</h3><p>这是一种对直线进行栅格化的算法，通常用于几何直线矢量化。可以完全由整数运算实现，适用于刷新栅格地图。</p>
-<h3 id="基于模版的地图生成"><a href="#基于模版的地图生成" class="headerlink" title="基于模版的地图生成"></a>基于模版的地图生成</h3><p>如果不使用直线填充算法，可以考虑使用模版算法进行栅格填充。模版区域内每个格子的角度和距离都是预先算好的，需要更新栅格地图时，将模版中每隔格子的距离值与激光在该角度下的距离值进行比较。如果末班中的距离小于激光打到的距离，就可以认为该格子是空白的。如果等于激光打到的距离值，则认为是占据的。如果大于，则该格子不做更新。</p>
-<hr>
-<p>实现占据栅格地图</p>
-<ol>
-<li>对每一个子地图生成一个对应的占据栅格地图，没有进行回环修正时，可以视为地图坐标系</li>
-<li>占据栅格地图会和似然场绑定，一个子地图会同时生成占据栅格地图和似然场。</li>
-</ol>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@83f6f3e78c3d:/sad# bin/test_occupancy_grid --bag_path ./dataset/sad/2dmapping/floor1.bag </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251022204251174.png" alt="image-20251022204251174"></p>
-<p>显示了单个扫描数据生成的栅格地图，最终的栅格地图就是这些栅格地图叠加到一块的效果，实验中使用的激光雷达不是360°的，在机器人身后区域会有盲区。大部分具有一定高度的机器人都不可能让传感器完全悬空，不可避免会遮挡一部分传感器数据。</p>
-<h2 id="子地图"><a href="#子地图" class="headerlink" title="子地图"></a>子地图</h2><h3 id="子地图的原理"><a href="#子地图的原理" class="headerlink" title="子地图的原理"></a>子地图的原理</h3><p>把匹配算法和栅格地图放在一起，生成一个匹配好的结果，将若干个匹配好的结果放在一起，就形成了一个子地图。子地图是介于单个扫描数据和全局地图之间的数据形式，它把若干个扫描数据按照时间顺序归到一起，使用起来比较灵活。</p>
-<p>按照下面的逻辑实现一个基于子地图的2D SLAM</p>
-<ol>
-<li>一个子地图对应一个似然场和一个栅格地图</li>
-<li>总是把当前的扫描数据与当前的子地图进行匹配，得到的扫描数据在当前子地图中的位姿</li>
-<li>如果机器人发生位移或者旋转，则按照一定距离和角度选取关键帧</li>
-<li>如果机器人的移动范围超过了当前的子地图，或者当前子地图包含的关键帧超出一定数量，就建立一个新的子地图，新的子地图以当前帧为中心</li>
-<li>合并每一个子地图的栅格地图，就可以得到全局地图</li>
-</ol>
-<p>这就是2D SLAM 的建图过程</p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@83f6f3e78c3d:/sad# bin/test_2d_mapping </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251022210701575.png" alt="image-20251022210701575"></p>
-<p>总是把当前的扫描数据在当前的子地图中进行匹配，每个关键帧会被放到当前的子地图中，如果子地图中的关键帧数量超过预定数目，就添加一个新的子地图。这次的程序默认关闭回环检测，所以当运行一段时间之后，累积误差会使得地图产生明显的重影，可以使用回环检测消除这些累积误差。</p>
-<h2 id="回环检测与闭环"><a href="#回环检测与闭环" class="headerlink" title="回环检测与闭环"></a>回环检测与闭环</h2><p>当机器人走完一圈回到原来的场地时，新的子地图会与原来的子地图存在一定重叠区域，如果不对这些重叠区域做任何配准，那就会在拼接的时候出现重影，只要把当前的扫描数据或者子地图与历史地图配准，再调整各子地图之间的相对位置关系，就可以消除累计误差了。但是仍然有小问题需要处理：</p>
-<ol>
-<li>应该检查哪些历史子地图？</li>
-<li>检测回环时用到的配准方法与里程计中的配准方法稍有不同，里程计的配准是基于连续运动的，回环的位姿初始值是由累计误差的多少决定的。于是，实际的回环配准算法通常是在原有的ICP或者似然场基础上，增加一些针对较差位姿初始值的处理方式，例如网格搜索、粒子滤波、分枝定界、金字塔法。</li>
-<li>在检测到回环之后，需要对整个地图进行位姿修正，既可以基于关键帧的位姿来做，也可以基于子地图的位姿来做。虽然使用子地图的优化问题规模会小很多，但是无法修复单个子地图内部的畸变，因此现实中也有很多系统仍然使用关键帧作为基本的数据单元。</li>
-</ol>
-<p>回环检测并不是一步完成的，分为多个阶段：</p>
-<ol>
-<li>阶段一：候选帧搜索（位置识别）</li>
-<li>阶段二：候选帧验证（几何校正）</li>
-<li>阶段三：回环修正（图优化）</li>
-</ol>
-<p>阶段一：候选帧搜索</p>
-<p>可以使用视觉SLAM中的词袋模型来实挑选候选帧，这个同样适合激光SLAM。也可以使用扫描上下文的方式</p>
-<p>阶段二：候选帧验证</p>
-<p>使用不同的配准方法将当前帧与候选帧进行配准，验证匹配得分，如果满足条件则确认找到了回环</p>
-<p>阶段三：回环修正</p>
-<p>既然已经有了一个高精度的约束，那么可以修正整个SLAM轨迹和地图，使得图的总误差最小。</p>
-<h3 id="多分辨率的回环检测"><a href="#多分辨率的回环检测" class="headerlink" title="多分辨率的回环检测"></a>多分辨率的回环检测</h3><p>金字塔式的回环检测被称为由粗至精的，或者多分辨率的配准方法。或者多分辨率的配准方法。分枝定界法既是一种用于粗配准的方法，也是整数规划中的一个重要方法。至于多分辨率的似然场匹配，依然是一个扫描匹配问题，为了减少初始值不准确带来的影响，可以在原来的似然场之外，增加一些其他分辨率的似然场。可以在小分辨率的似然场中先进行一次匹配，然后把粗配准的结果投影到高分辨率的似然场中，星城由粗至精的匹配过程。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251023185100438.png" alt="image-20251023185100438"></p>
-<p>系统会为每一个级别的地图单独生成一个高斯似然场，从粗到精，先在最高层（80cm），这个层是最模糊、最平滑的似然场进行扫描匹配。会得到一个粗略的位姿估计，再接着在中间层（40cm ）将上一步得到的粗略位姿作为新的、更准的位姿，进一步修整，得到更为精确的位姿，最后在原始高精度的似然场上进行最后一次精修，得到最终的高精度位姿。</p>
-<p>虽然机器人可能回到了原来的位置，但是可能由于朝向不同，导致匹配度不够，所以在多分辨率配准中，只要匹配点数超过所有的扫描数据的一定比例，就可以认为地图被匹配上了。这个阈值表示回环检测的敏感程度。</p>
-<h3 id="基于子地图的回环修正"><a href="#基于子地图的回环修正" class="headerlink" title="基于子地图的回环修正"></a>基于子地图的回环修正</h3><p>如果当前帧与子地图之间存在配准关系，就会启动一次回环修正。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251023190556714.png" alt="image-20251023190556714"></p>
-<p>通过多分辨率匹配计算了当前帧在历史子地图中的位姿，在回环优化中，以每隔子地图的位姿为优化变量，构建一个位置图进行优化。位置图的观测主要来源是：一种是相邻位姿图之间的相对位姿观测，另一种是回环检测计算出来的两个子地图之间的相对位姿关系。为了防止检测到错误的回环，可以添加一个回环的验证过程，如果修正的累计误差太大，则回环被当成异常值剔除。</p>
-<p>这一部分会在每个子地图完成时建立它的多分辨率似然场，然后将最近的Scan与建完的子地图进行匹配，如果多分辨率匹配成功，就调用Optimize函数进行一次回环修正。直接影响整个子地图的位姿。</p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@83f6f3e78c3d:/sad# bin/test_2d_mapping -with_loop_closing=true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251023192644441.png" alt="image-20251023192644441"></p>
-<p>可以明显看到地图中间部分得到了修复，这样一个完整的基于子地图管理模式的2D SLAM 程序完成了，可以直接用于定位和导航。</p>
-<h3 id="讨论"><a href="#讨论" class="headerlink" title="讨论"></a>讨论</h3><h4 id="激光雷达的运动补偿、反光等问题"><a href="#激光雷达的运动补偿、反光等问题" class="headerlink" title="激光雷达的运动补偿、反光等问题"></a>激光雷达的运动补偿、反光等问题</h4><p>底盘与激光雷达在同时旋转的时候，会出现相对运动，这个过程会影响激光雷达每个点的实际测量距离，这个过程被称为运动畸变。可以由运动补偿算法去除。</p>
-<p>运动补偿基本思路是获取每一个激光雷达周期的起始时刻位姿与终止时刻位姿。在有IMU的场景下，可以通过IMU的数据，短时间预测就昂雷达在旋转一周内的运动，实现运动补偿。运动补偿会使得子地图内的配准更加有效。</p>
-<h4 id="IMU与机器人里程计的融合问题"><a href="#IMU与机器人里程计的融合问题" class="headerlink" title="IMU与机器人里程计的融合问题"></a>IMU与机器人里程计的融合问题</h4><p>如果单纯使用激光雷达，在特征不明显的地方，如走廊可能会出现退化问题。可以引入其他传感器，如IMU、轮速器、里程计或GPS信息融入SLAM系统中。</p>
-<p>关于激光雷达的SLAM算法整理：</p>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/lTlRKPzj89Iicfl6sJiArQ">https://mp.weixin.qq.com/s/lTlRKPzj89Iicfl6sJiArQ</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/" class="post-title-link" itemprop="url">第四章:预积分学</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="第四章-预积分学"><a href="#第四章-预积分学" class="headerlink" title="第四章:预积分学"></a>第四章:预积分学</h1><h2 id="IMU状态的预积分学"><a href="#IMU状态的预积分学" class="headerlink" title="IMU状态的预积分学"></a>IMU状态的预积分学</h2><p>为什么需要预积分?</p>
-<ol>
-<li>IMU采样频率极高:通常在100-200HZ之间，IMU提供关于运动的瞬时信息</li>
-<li>其他传感器频率低:通常在10HZ到30HZ之间，而GPS在1HZ到10HZ之间，这些传感器提供关于绝对姿态或者位置的修正信息</li>
-</ol>
-<p>如果直接在卡尔曼滤波器中处理IMU数据，每次IMU测量会进行一次预测，这样会带来致命问题:</p>
-<ol>
-<li>巨大计算负担</li>
-<li>状态耦合与重复传播</li>
-</ol>
-<p>但是IMU测量频率太高，并不希望优化过程随着IMU数据进行调用，那样太浪费计算资源。更希望将这些IMU测量值组合在一起处理。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194137833.png" alt="image-20251016194137833"></p>
-<p>但是这种直接积分方法在图优化框架中存在一个巨大问题：<strong>图优化会不断调整所有关键帧的位姿</strong></p>
-<p>**核心矛盾：**IMU积分与图优化中的状态变量紧密耦合，导致优化效率低下。</p>
-<p><strong>核心思想：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194456232.png" alt="image-20251016194456232"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194623171.png" alt="image-20251016194623171"></p>
-<p>经过推导，得到两帧之间的运动约束方程，由预积分量构成：</p>
-<p>image-20251016195218687<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194910851.png" alt="image-20251016194910851"></p>
-<p><strong>偏置的处理</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016195218687.png" alt="image-20251016195218687"></p>
-<h2 id="实践：预积分的程序实现"><a href="#实践：预积分的程序实现" class="headerlink" title="实践：预积分的程序实现"></a>实践：预积分的程序实现</h2><p>图优化是一个后端优化框架，用于融合多传感器信息，消除累积误差，获得全局一致的机器人轨迹和地图。</p>
-<p><strong>原理</strong></p>
-<ol>
-<li>将SLAM问题建模成一个图，其中顶点是待优化的状态变量，边是来自传感器的测量约束</li>
-<li>为每一条边定义一个误差函数，衡量当前估计与测量的符合程度</li>
-<li>构建一个总代价函数（所有误差的平方和）</li>
-<li>使用非线性最小二乘的迭代算法（例如高斯-牛顿法）求解，找到使总代价函数最小化的状态变量</li>
-</ol>
-<h3 id="实现基于预积分和图优化的GINS"><a href="#实现基于预积分和图优化的GINS" class="headerlink" title="实现基于预积分和图优化的GINS"></a>实现基于预积分和图优化的GINS</h3><p>终端输入： </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# python3 scripts/plot_ch3_state.py ./data/ch4/gins_preintg.txt </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016203459918.png" alt="image-20251016203459918"></p>
-<p>基于预积分和图优化的GINS的状态图与上一章相比，速度状态在预期之内，但是缺少GNSS时候，单纯的IMU预测依然会局部发散。</p>
-<table>
-<thead>
-<tr>
-<th><strong>特性维度</strong></th>
-<th><strong>基于ESKF的惯性导航</strong></th>
-<th><strong>基于图优化的GINS</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>数据处理范式</strong></td>
-<td><strong>滤波（Filtering）</strong></td>
-<td><strong>批量优化（Batch Optimization）</strong></td>
-</tr>
-<tr>
-<td></td>
-<td><strong>顺序、递归处理</strong>：一次只处理一个时刻的测量数据，更新当前状态。过去的状态被“<strong>边缘化</strong>”掉，信息被压缩到当前状态的均值和协方差中。</td>
-<td><strong>批次、迭代处理</strong>：同时处理一个时间窗口内（甚至所有历史）的状态和测量。保留了所有状态节点和它们之间的约束关系。</td>
-</tr>
-<tr>
-<td><strong>最优性</strong></td>
-<td><strong>局部最优</strong></td>
-<td><strong>全局最优（在窗口内）</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>在线性高斯假设下，KF是当前时刻的最优估计。但在非线性系统中，它只是一个近似，无法保证全局最优。</td>
-<td>通过反复迭代和重线性化，可以找到整个时间窗口内所有状态的<strong>最大后验估计</strong>，结果更接近全局最优解，轨迹的平滑性和一致性更好。</td>
-</tr>
-<tr>
-<td><strong>计算成本与延迟</strong></td>
-<td><strong>低且固定</strong></td>
-<td><strong>高且可变</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>每个更新步骤的计算量相对固定且较小。非常适合<strong>实时性要求高、计算资源受限</strong>的系统。延迟极低。</td>
-<td>计算成本随着图中顶点和边的数量（即窗口大小）增加而增加。求解大型非线性最小二乘问题开销大。<strong>延迟较高</strong>，因为需要等待数据累积成批次。</td>
-</tr>
-<tr>
-<td><strong>处理异常值</strong></td>
-<td><strong>脆弱</strong></td>
-<td><strong>鲁棒</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>一个错误的测量（Outlier）一旦被融合，其负面影响会永久性地污染后续的状态估计，很难恢复。</td>
-<td>更加鲁棒。异常值在图中会表现为一个具有巨大误差的边，可以通过<strong>鲁棒核函数（Robust Kernels）</strong>（如Huber Loss）来降低其在总代价函数中的权重，从而抵抗其影响。</td>
-</tr>
-<tr>
-<td><strong>处理延迟&#x2F;乱序数据</strong></td>
-<td><strong>困难</strong></td>
-<td><strong>简单、自然</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>标准的卡尔曼滤波框架假定测量是按时序到达的。处理延迟的测量（如GNSS）需要复杂的额外机制（如固定滞后平滑）。</td>
-<td><strong>天然支持</strong>。一个延迟到达的测量只是在图中增加了一条连接过去两个节点的边而已。在下一次优化时，这个信息会被自然地考虑进去，并修正相关的历史轨迹。</td>
-</tr>
-<tr>
-<td><strong>全局一致性&#x2F;回环</strong></td>
-<td><strong>不支持</strong></td>
-<td><strong>核心优势</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>无法处理回环检测（Loop Closure）。当系统回到原点时，滤波方法无法利用该信息来修正整个历史轨迹的累积误差。</td>
-<td>这是图优化的<strong>王牌优势</strong>。一个回环检测可以在图中两个相距很远的节点间建立一条强约束边。优化器会调整<strong>整条轨迹</strong>来满足这个约束，从而显著消除全局漂移，获得全局一致的地图和轨迹。</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E9%83%A8%E7%BD%B2%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/03/%E9%83%A8%E7%BD%B2%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">部署自动驾驶与机器人中的SLAM技术环境</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="部署自动驾驶与机器人中的SLAM技术环境"><a href="#部署自动驾驶与机器人中的SLAM技术环境" class="headerlink" title="部署自动驾驶与机器人中的SLAM技术环境"></a>部署自动驾驶与机器人中的SLAM技术环境</h1><h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
-<li>下载源代码</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/gaoxiang12/slam_in_autonomous_driving.git</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>进入项目目录</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd slam_in_autonomous_driving</span><br></pre></td></tr></table></figure>
-
-<h2 id="构建和运行Docker环境"><a href="#构建和运行Docker环境" class="headerlink" title="构建和运行Docker环境"></a>构建和运行Docker环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t sad:v1 .</span><br><span class="line">./docker/docker_run.sh</span><br></pre></td></tr></table></figure>
-
-<h2 id="在docker中编译"><a href="#在docker中编译" class="headerlink" title="在docker中编译"></a>在docker中编译</h2><ol>
-<li>编译第三方库</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 进入 g2o 源码目录</span><br><span class="line">cd ./thirdparty/g2o</span><br><span class="line"></span><br><span class="line"># 创建一个用于编译的 build 文件夹</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line"></span><br><span class="line"># 运行 cmake 和 make 进行编译</span><br><span class="line">cmake ..ls</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>编译本书主体代码</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 回到项目根目录</span><br><span class="line">cd /sad</span><br><span class="line"></span><br><span class="line"># 创建 build 文件夹</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line"></span><br><span class="line"># 运行 cmake 和 make 进行编译</span><br><span class="line">cmake ..</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure>
-
-<h2 id="下载数据集"><a href="#下载数据集" class="headerlink" title="下载数据集"></a>下载数据集</h2><p>百度云：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1ELOcF1UTKdfiKBAaXnE8sQ?pwd=feky">https://pan.baidu.com/s/1ELOcF1UTKdfiKBAaXnE8sQ?pwd=feky</a></p>
-<p>OneDrive:<a target="_blank" rel="noopener" href="https://1drv.ms/u/s!AgNFVSzSYXMahcEZejoUwCaHRcactQ?e=YsOYy2">https://1drv.ms/u/s!AgNFVSzSYXMahcEZejoUwCaHRcactQ?e=YsOYy2</a></p>
-<p>放置在：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251009184420733.png" alt="image-20251009184420733"></p>
-<h2 id="测试运行程序"><a href="#测试运行程序" class="headerlink" title="测试运行程序"></a>测试运行程序</h2><p>如果编译成功的话，可以在sad&#x2F;bin&#x2F;目录下看到很多文件</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251009184535846.png" alt="image-20251009184535846"></p>
-<p>简单测试一下第二章的一个程序界面：</p>
-<p>在终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# source /opt/ros/noetic/setup.bash</span><br><span class="line">root@ca1c92ebac5d:/sad# ./bin/motion </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251009184701815.png" alt="image-20251009184701815"></p>
-<p>这就代表成功了。可以后续学习了。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251009184701815.png"></p>
-<hr>
-<p>可能出现的问题</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# ./bin/motion </span><br><span class="line"></span><br><span class="line">No protocol specified</span><br><span class="line"></span><br><span class="line">terminate called after throwing an instance of &#x27;std::runtime_error&#x27;</span><br><span class="line"></span><br><span class="line">  what():  Pangolin X11: Failed to open X display</span><br><span class="line"></span><br><span class="line">Aborted (core dumped)</span><br></pre></td></tr></table></figure>
-
-<p>这是由于GUI程序需要手动授权，可以修改docker_run.sh文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 添加一行</span><br><span class="line">xhost +</span><br></pre></td></tr></table></figure>
-
-<p>再重新启动容器即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# ./bin/motion </span><br><span class="line"></span><br><span class="line">./bin/motion: error while loading shared libraries: librosconsole_log4cxx.so: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
-
-<p>只需要激活一下ROS环境就可以</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /opt/ros/noetic/setup.bash</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
