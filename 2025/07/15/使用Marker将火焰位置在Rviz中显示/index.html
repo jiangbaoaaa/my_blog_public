@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -261,14 +261,9 @@
 
 <p>为了保证marker数据显示的稳定性，添加了一个稳定时间以及位置变化阈值，这样可以稳定输出火焰位置。</p>
 <h2 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h2><ol>
-<li><pre><code class="language-bash"># 依次打开以下节点
-roslaunch realsense2_camera rs_camera.launch align_depth:=true
-rosrun robot_vision fire_detector.py 
-rosrun robot_vision fire_3D_locator.py 
-rosrun robot_vision fire_marker_publisher.py 
-</code></pre>
-<p>执行完以下程序之后，可以看到结果：</p>
-</li>
+<li><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 依次打开以下节点</span></span><br><span class="line">roslaunch realsense2_camera rs_camera.launch align_depth:=<span class="literal">true</span></span><br><span class="line">rosrun robot_vision fire_detector.py </span><br><span class="line">rosrun robot_vision fire_3D_locator.py </span><br><span class="line">rosrun robot_vision fire_marker_publisher.py </span><br></pre></td></tr></table></figure>
+
+执行完以下程序之后，可以看到结果：</li>
 </ol>
 <img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/11212.png" style="zoom:50%;" />
 

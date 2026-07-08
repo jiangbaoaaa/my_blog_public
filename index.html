@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -183,6 +183,144 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/05/16/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/05/16/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/" class="post-title-link" itemprop="url">使用livox_mid360部署liosam</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-16T00:00:00+08:00">2026-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="使用livox-mid360部署liosam（实物）"><a href="#使用livox-mid360部署liosam（实物）" class="headerlink" title="使用livox_mid360部署liosam（实物）"></a>使用livox_mid360部署liosam（实物）</h1><h2 id="硬件要求"><a href="#硬件要求" class="headerlink" title="硬件要求"></a>硬件要求</h2><ul>
+<li>安装Ubuntu20.04工控机</li>
+<li>Livox_MID360</li>
+<li>网线</li>
+<li>12V直流电源</li>
+</ul>
+<h2 id="软件依赖"><a href="#软件依赖" class="headerlink" title="软件依赖"></a>软件依赖</h2><ul>
+<li>ROS Noetic</li>
+<li>Livox_SDK2</li>
+<li>livox_ros_driver2</li>
+<li>LIO-SAM</li>
+<li>GTSAM</li>
+<li>PCL</li>
+<li>Eigen3</li>
+</ul>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装Noetic"><a href="#安装Noetic" class="headerlink" title="安装Noetic"></a>安装Noetic</h3><p>略</p>
+<h3 id="安装Livox-SDK2"><a href="#安装Livox-SDK2" class="headerlink" title="安装Livox_SDK2"></a>安装Livox_SDK2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Livox-SDK/Livox-SDK2.git</span><br><span class="line">cd Livox-SDK2</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake .. &amp;&amp; make -j8</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装livox-ros-driver2"><a href="#安装livox-ros-driver2" class="headerlink" title="安装livox_ros_driver2"></a>安装livox_ros_driver2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/Livox-SDK/livox_ros_driver2.git</span><br><span class="line">cd livox_ros_driver2</span><br><span class="line">source /opt/ros/noetic/setup.sh</span><br><span class="line">./build.sh ROS1</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">echo &quot;source ~/liosam_2d_nav_ws/devel/setup.bash&quot; &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h3><h4 id="设置电脑静态IP"><a href="#设置电脑静态IP" class="headerlink" title="设置电脑静态IP"></a>设置电脑静态IP</h4><ol>
+<li>打开网络设置，选择有线连接</li>
+<li>设置 IPv4 为手动模式</li>
+<li>IP 地址：192.168.1.50</li>
+<li>子网掩码：255.255.255.0</li>
+<li>网关：192.168.1.1</li>
+</ol>
+<h4 id="确定MID360的IP地址"><a href="#确定MID360的IP地址" class="headerlink" title="确定MID360的IP地址"></a>确定MID360的IP地址</h4><p>MID360 的默认 IP 地址基于其序列号，规则如下：</p>
+<ul>
+<li>查看雷达底部的序列号（如 47MDM6J0020434）</li>
+<li>取序列号最后两位数字（38），则雷达 IP 为 192.168.1.134</li>
+</ul>
+<h4 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/livox_ros_driver2/config</span><br><span class="line">gedit MID360_config.json</span><br></pre></td></tr></table></figure>
+
+<p>修改以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;lidar_summary_info&quot; : &#123;</span><br><span class="line">    &quot;lidar_type&quot;: 8</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;MID360&quot;: &#123;</span><br><span class="line">    &quot;lidar_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_port&quot;: 56100,</span><br><span class="line">      &quot;push_msg_port&quot;: 56200,</span><br><span class="line">      &quot;point_data_port&quot;: 56300,</span><br><span class="line">      &quot;imu_data_port&quot;: 56400,</span><br><span class="line">      &quot;log_data_port&quot;: 56500</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;host_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;cmd_data_port&quot;: 56101,</span><br><span class="line">      &quot;push_msg_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;push_msg_port&quot;: 56201,</span><br><span class="line">      &quot;point_data_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;point_data_port&quot;: 56301,</span><br><span class="line">      &quot;imu_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;imu_data_port&quot;: 56401,</span><br><span class="line">      &quot;log_data_ip&quot; : &quot;&quot;,</span><br><span class="line">      &quot;log_data_port&quot;: 56501</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;lidar_configs&quot; : [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;ip&quot; : &quot;192.168.1.134&quot;,  // 雷达IP</span><br><span class="line">      &quot;pcl_data_type&quot; : 1,</span><br><span class="line">      &quot;pattern_mode&quot; : 0,</span><br><span class="line">      &quot;extrinsic_parameter&quot; : &#123;</span><br><span class="line">        &quot;roll&quot;: 0.0,</span><br><span class="line">        &quot;pitch&quot;: 0.0,</span><br><span class="line">        &quot;yaw&quot;: 0.0,</span><br><span class="line">        &quot;x&quot;: 0,</span><br><span class="line">        &quot;y&quot;: 0,</span><br><span class="line">        &quot;z&quot;: 0</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装LIO-SAM"><a href="#安装LIO-SAM" class="headerlink" title="安装LIO-SAM"></a>安装LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/nkymzsy/LIO-SAM-MID360.git  # MID360适配版本</span><br><span class="line">cd LIO-SAM-MID360</span><br><span class="line">git submodule update --init</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>修改参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit params.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Sensor Settings</span><br><span class="line">sensor: livox                              # 设置为livox</span><br><span class="line">N_SCAN: 4                                  # MID360的线束数量</span><br><span class="line">Horizon_SCAN: 6000                         # 水平分辨率</span><br><span class="line">downsampleRate: 1                          # 下采样率</span><br><span class="line">lidarMinRange: 1.0                         # 最小雷达范围</span><br><span class="line">lidarMaxRange: 100.0                       # 最大雷达范围</span><br><span class="line"> </span><br><span class="line"># IMU参数 (如果使用内置IMU)</span><br><span class="line">imuTopic: &quot;/livox/imu&quot;                     # IMU话题</span><br><span class="line">imuAccNoise: 0.01                          # 加速度计噪声</span><br><span class="line">imuGyrNoise: 0.001                         # 陀螺仪噪声</span><br><span class="line">imuAccBiasN: 0.0002                        # 加速度计偏置噪声</span><br><span class="line">imuGyrBiasN: 0.00001                       # 陀螺仪偏置噪声</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit paramsLivoxIMU.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  savePCDDirectory: &quot;/liosam_2d_nav_ws/PCD&quot;        # in your home folder, starts and ends with &quot;/&quot;. Warning: the code deletes &quot;LOAM&quot; folder then recreates it. See &quot;mapOptimization&quot; for implementation</span><br><span class="line">## 修改为对应保存地址</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行与测试"><a href="#运行与测试" class="headerlink" title="运行与测试"></a>运行与测试</h2><h3 id="启动MID360雷达"><a href="#启动MID360雷达" class="headerlink" title="启动MID360雷达"></a>启动MID360雷达</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch livox_ros_driver2 msg_MID360.launch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="启动LIO-SAM"><a href="#启动LIO-SAM" class="headerlink" title="启动LIO-SAM"></a>启动LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch lio_sam run6axis.launch  # 使用内置六轴IMU</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="可视化效果"><a href="#可视化效果" class="headerlink" title="可视化效果"></a>可视化效果</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119191708927.png" alt="image-20260119191708927"></p>
+<p>后续可以通过控制小车底盘运动，开始建图，并且保存点云地图了</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/05/16/%E4%BD%BF%E7%94%A8MID-360%E5%9F%BA%E4%BA%8Escout_mini%E5%AE%8C%E6%88%90move_base%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%8F%8A%E9%81%BF%E9%9A%9C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -350,144 +488,6 @@
 <p>动态调节参数之后，需要手动把参数填回参数表中。</p>
 <hr>
 <p>这样，初始阶段的导航就完成了，后续可以加入避障算法来优化。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/05/16/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/05/16/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/" class="post-title-link" itemprop="url">使用livox_mid360部署liosam</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-16T00:00:00+08:00">2026-05-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="使用livox-mid360部署liosam（实物）"><a href="#使用livox-mid360部署liosam（实物）" class="headerlink" title="使用livox_mid360部署liosam（实物）"></a>使用livox_mid360部署liosam（实物）</h1><h2 id="硬件要求"><a href="#硬件要求" class="headerlink" title="硬件要求"></a>硬件要求</h2><ul>
-<li>安装Ubuntu20.04工控机</li>
-<li>Livox_MID360</li>
-<li>网线</li>
-<li>12V直流电源</li>
-</ul>
-<h2 id="软件依赖"><a href="#软件依赖" class="headerlink" title="软件依赖"></a>软件依赖</h2><ul>
-<li>ROS Noetic</li>
-<li>Livox_SDK2</li>
-<li>livox_ros_driver2</li>
-<li>LIO-SAM</li>
-<li>GTSAM</li>
-<li>PCL</li>
-<li>Eigen3</li>
-</ul>
-<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装Noetic"><a href="#安装Noetic" class="headerlink" title="安装Noetic"></a>安装Noetic</h3><p>略</p>
-<h3 id="安装Livox-SDK2"><a href="#安装Livox-SDK2" class="headerlink" title="安装Livox_SDK2"></a>安装Livox_SDK2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Livox-SDK/Livox-SDK2.git</span><br><span class="line">cd Livox-SDK2</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake .. &amp;&amp; make -j8</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装livox-ros-driver2"><a href="#安装livox-ros-driver2" class="headerlink" title="安装livox_ros_driver2"></a>安装livox_ros_driver2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/Livox-SDK/livox_ros_driver2.git</span><br><span class="line">cd livox_ros_driver2</span><br><span class="line">source /opt/ros/noetic/setup.sh</span><br><span class="line">./build.sh ROS1</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">echo &quot;source ~/liosam_2d_nav_ws/devel/setup.bash&quot; &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h3><h4 id="设置电脑静态IP"><a href="#设置电脑静态IP" class="headerlink" title="设置电脑静态IP"></a>设置电脑静态IP</h4><ol>
-<li>打开网络设置，选择有线连接</li>
-<li>设置 IPv4 为手动模式</li>
-<li>IP 地址：192.168.1.50</li>
-<li>子网掩码：255.255.255.0</li>
-<li>网关：192.168.1.1</li>
-</ol>
-<h4 id="确定MID360的IP地址"><a href="#确定MID360的IP地址" class="headerlink" title="确定MID360的IP地址"></a>确定MID360的IP地址</h4><p>MID360 的默认 IP 地址基于其序列号，规则如下：</p>
-<ul>
-<li>查看雷达底部的序列号（如 47MDM6J0020434）</li>
-<li>取序列号最后两位数字（38），则雷达 IP 为 192.168.1.134</li>
-</ul>
-<h4 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/livox_ros_driver2/config</span><br><span class="line">gedit MID360_config.json</span><br></pre></td></tr></table></figure>
-
-<p>修改以下内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;lidar_summary_info&quot; : &#123;</span><br><span class="line">    &quot;lidar_type&quot;: 8</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;MID360&quot;: &#123;</span><br><span class="line">    &quot;lidar_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_port&quot;: 56100,</span><br><span class="line">      &quot;push_msg_port&quot;: 56200,</span><br><span class="line">      &quot;point_data_port&quot;: 56300,</span><br><span class="line">      &quot;imu_data_port&quot;: 56400,</span><br><span class="line">      &quot;log_data_port&quot;: 56500</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;host_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;cmd_data_port&quot;: 56101,</span><br><span class="line">      &quot;push_msg_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;push_msg_port&quot;: 56201,</span><br><span class="line">      &quot;point_data_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;point_data_port&quot;: 56301,</span><br><span class="line">      &quot;imu_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;imu_data_port&quot;: 56401,</span><br><span class="line">      &quot;log_data_ip&quot; : &quot;&quot;,</span><br><span class="line">      &quot;log_data_port&quot;: 56501</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;lidar_configs&quot; : [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;ip&quot; : &quot;192.168.1.134&quot;,  // 雷达IP</span><br><span class="line">      &quot;pcl_data_type&quot; : 1,</span><br><span class="line">      &quot;pattern_mode&quot; : 0,</span><br><span class="line">      &quot;extrinsic_parameter&quot; : &#123;</span><br><span class="line">        &quot;roll&quot;: 0.0,</span><br><span class="line">        &quot;pitch&quot;: 0.0,</span><br><span class="line">        &quot;yaw&quot;: 0.0,</span><br><span class="line">        &quot;x&quot;: 0,</span><br><span class="line">        &quot;y&quot;: 0,</span><br><span class="line">        &quot;z&quot;: 0</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装LIO-SAM"><a href="#安装LIO-SAM" class="headerlink" title="安装LIO-SAM"></a>安装LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/nkymzsy/LIO-SAM-MID360.git  # MID360适配版本</span><br><span class="line">cd LIO-SAM-MID360</span><br><span class="line">git submodule update --init</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-<p>修改参数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit params.yaml</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Sensor Settings</span><br><span class="line">sensor: livox                              # 设置为livox</span><br><span class="line">N_SCAN: 4                                  # MID360的线束数量</span><br><span class="line">Horizon_SCAN: 6000                         # 水平分辨率</span><br><span class="line">downsampleRate: 1                          # 下采样率</span><br><span class="line">lidarMinRange: 1.0                         # 最小雷达范围</span><br><span class="line">lidarMaxRange: 100.0                       # 最大雷达范围</span><br><span class="line"> </span><br><span class="line"># IMU参数 (如果使用内置IMU)</span><br><span class="line">imuTopic: &quot;/livox/imu&quot;                     # IMU话题</span><br><span class="line">imuAccNoise: 0.01                          # 加速度计噪声</span><br><span class="line">imuGyrNoise: 0.001                         # 陀螺仪噪声</span><br><span class="line">imuAccBiasN: 0.0002                        # 加速度计偏置噪声</span><br><span class="line">imuGyrBiasN: 0.00001                       # 陀螺仪偏置噪声</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit paramsLivoxIMU.yaml</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  savePCDDirectory: &quot;/liosam_2d_nav_ws/PCD&quot;        # in your home folder, starts and ends with &quot;/&quot;. Warning: the code deletes &quot;LOAM&quot; folder then recreates it. See &quot;mapOptimization&quot; for implementation</span><br><span class="line">## 修改为对应保存地址</span><br></pre></td></tr></table></figure>
-
-<h2 id="运行与测试"><a href="#运行与测试" class="headerlink" title="运行与测试"></a>运行与测试</h2><h3 id="启动MID360雷达"><a href="#启动MID360雷达" class="headerlink" title="启动MID360雷达"></a>启动MID360雷达</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch livox_ros_driver2 msg_MID360.launch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="启动LIO-SAM"><a href="#启动LIO-SAM" class="headerlink" title="启动LIO-SAM"></a>启动LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch lio_sam run6axis.launch  # 使用内置六轴IMU</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="可视化效果"><a href="#可视化效果" class="headerlink" title="可视化效果"></a>可视化效果</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119191708927.png" alt="image-20260119191708927"></p>
-<p>后续可以通过控制小车底盘运动，开始建图，并且保存点云地图了</p>
 
       
     </div>
@@ -803,7 +803,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%83%AF%E6%80%A7%E5%AF%BC%E8%88%AA%E4%B8%8E%E7%BB%84%E5%90%88%E5%AF%BC%E8%88%AA/">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
@@ -821,7 +821,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/03/%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%83%AF%E6%80%A7%E5%AF%BC%E8%88%AA%E4%B8%8E%E7%BB%84%E5%90%88%E5%AF%BC%E8%88%AA/" class="post-title-link" itemprop="url">第三章：惯性导航与组合导航</a>
+          <a href="/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/" class="post-title-link" itemprop="url">第九章：自动驾驶车辆的离线地图构建</a>
         </h2>
 
         <div class="post-meta-container">
@@ -861,133 +861,36 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="自动驾驶与机器人中的SLAM技术——第三章：惯性导航与组合导航"><a href="#自动驾驶与机器人中的SLAM技术——第三章：惯性导航与组合导航" class="headerlink" title="自动驾驶与机器人中的SLAM技术——第三章：惯性导航与组合导航"></a>自动驾驶与机器人中的SLAM技术——第三章：惯性导航与组合导航</h1><h2 id="IMU系统的运动学"><a href="#IMU系统的运动学" class="headerlink" title="IMU系统的运动学"></a>IMU系统的运动学</h2><h3 id="激光SLAM"><a href="#激光SLAM" class="headerlink" title="激光SLAM"></a>激光SLAM</h3><p>问题：</p>
+          <h1 id="第九章：自动驾驶车辆的离线地图构建"><a href="#第九章：自动驾驶车辆的离线地图构建" class="headerlink" title="第九章：自动驾驶车辆的离线地图构建"></a>第九章：自动驾驶车辆的离线地图构建</h1><h2 id="点云建图的流程"><a href="#点云建图的流程" class="headerlink" title="点云建图的流程"></a>点云建图的流程</h2><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030103644153.png" alt="image-20251030103644153"></p>
+<p>上图是整个建图流程：</p>
 <ol>
-<li>频率低</li>
-<li>运动畸变</li>
-<li>特征稀疏场景失效</li>
+<li>从给定的ROS数据包中解出IMU、RTK和激光雷达数据。使用IMU与激光雷达数据组成LIO系统。</li>
+<li>大部分自动驾驶车辆会携带RTK设备或者组合导航设备。按照RTK或者组合导航的位姿给每个关键帧赋一个RTK位姿，作为观测。</li>
+<li>使用LIO作为相邻帧运动观测，使用RTK位姿作为绝对坐标观测，优化整条轨迹并且判定各关键帧的RTK有效性。这是<strong>第一轮优化</strong>。</li>
+<li>在上一步的基础上对地图进行回环检测，可以使用简单的基于欧氏距离的检测，使用NDT或者常见的配准算法计算相对位姿。</li>
+<li>再把信息放到统一的位姿图中进行优化，消除累计误差带来的重影，同时移除失效区域。这是<strong>第二轮优化</strong>。确定位姿之后，可以按照这些位姿到处点云地图。为了方便地图加载和查看，可以对点云进行切片处理。处理之后的点云可以用来进行高精度定位或者地图标注。</li>
 </ol>
-<h3 id="惯性导航"><a href="#惯性导航" class="headerlink" title="惯性导航"></a>惯性导航</h3><p>IMU通常包含加速度计和陀螺仪，可以高频测量设备自身的三轴加速度和三轴角速度。</p>
-<p>作用：</p>
+<h2 id="前端实现"><a href="#前端实现" class="headerlink" title="前端实现"></a>前端实现</h2><ol>
+<li>将ROS数据包中的RTK数据提取出来，放在RTK消息队列中，按照采集时间排序</li>
+<li>用第一个有效的RTK数据作为地图原点，用其他的RTK读书减去原点，作为RTK位置观测</li>
+<li>用IMU和激光雷达输出数据运行LIO，按照距离和角度阈值抽取关键帧，再保存关键帧结果。抽取关键帧时，也会从LIO中获取它的位姿和点云</li>
+</ol>
+<p>后续的建图流程可以从前端的结果出发，不必解析ROS数据包。先使用RTK位姿和LIO位姿进行联合优化，在此基础上进行回环检测，消除累计误差。</p>
+<h2 id="后端位姿图优化和异常值检验"><a href="#后端位姿图优化和异常值检验" class="headerlink" title="后端位姿图优化和异常值检验"></a>后端位姿图优化和异常值检验</h2><p>我们希望最终优化的轨迹能够考虑到各种传感器的输入，因此后端图优化需要包含以下因子：</p>
 <ol>
-<li>高频位姿估计</li>
-<li>运动畸变校正</li>
-<li>为激光匹配提供初始值</li>
+<li>RTK因子。这是一种绝对的位姿观测数据。</li>
+<li>雷达里程计信息，使用前面介绍的激光雷达里程计或者LIO作为局部连续性约束</li>
+<li>回环因子，执行回环检测就加载回环检测的相关信息，把它们放入图优化中。</li>
 </ol>
-<p>缺点：</p>
-<p>IMU是通过对加速度和角速度进行积分来推算位姿的，这个过程存在累计误差。时间一长，哪怕是很小的噪声也会被不断放大，导致推算出的位置和姿态会像“脱缰的野马”一样飘走（即漂移），无法长期独立工作。</p>
-<h3 id="组合导航"><a href="#组合导航" class="headerlink" title="组合导航"></a>组合导航</h3><p>组合导航就是将激光SLAM和惯性导航组合起来，形成一个激光惯性SLAM系统。核心思想：</p>
-<p>用IMU高频、短时精确的特性，弥补激光雷达的低频和畸变问题；同时，用激光SLAM长期、全局精确的特性，来不断校正IMU的累计误差。</p>
-<p>技术上主要分为两种融合方式：</p>
+<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>点云地图的质量很大程度上取决于回环检测是，设计回环检测的步骤如下：</p>
 <ol>
-<li>松耦合：这是一种比较简单直接的融合方式。激光SLAM和IMU各自独立计算出自己的位姿，然后通过一个滤波器（如卡尔曼滤波器）将这两个“结果”进行融合。它实现简单，但因为没有利用原始数据，精度和鲁棒性相对较差。</li>
-<li>紧耦合：这是一种更先进、更主流的融合方式。它将IMU的测量值（角速度、加速度）和激光雷达的原始特征（点、线、面）共同放入一个大的优化问题中进行求解（<strong>通常使用因子图优化或复杂的卡尔曼滤波器</strong>）。在这种框架下，激光的观测可以非常直接地校正IMU的状态（如零偏），IMU的数据也可以更精确地指导点云处理。紧耦合虽然复杂，但性能更优，鲁棒性更强，是当前研究和应用的热点。</li>
+<li>遍历第一轮优化轨迹中的关键帧。对每两个在空间上相隔较近，但是在时间上存在一定距离的关键帧进行一次回环检测。</li>
+<li>对于每个关键帧对，使用Scan to Map 的配准方法，在关键帧附近抽取一定数量的点云作为子地图，然后对扫描和子地图进行配准。</li>
+<li>由于每个检查点的计算都是独立的，使用并发编程让第二步能够在机器上并发执行，加快速度</li>
+<li>配准的实际执行由NDT完成，使用NDT的分值作为回环有效性的判断依据。</li>
+<li>记录所有成功的回环，并且在下次调用优化算法时读取回环检测的结果。</li>
 </ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013111509992.png" alt="image-20251013111509992"></p>
-<hr>
-<p> <img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013162551627.png" alt="image-20251013162551627"></p>
-<p><strong>这样就得到了纯粹的运动加速度，如果对速度进行一次时间积分，就得到了速度，对速度进行再次时间积分，就得到了位置。</strong></p>
-<p>需要注意的是，要把IMU放在车辆中心，否则可能会在车辆发生旋转和移动的时候，测量到由车辆旋转导致的离心力、科氏力和角加速度。会影响IMU的读数。</p>
-<h3 id="IMU测量方程中的噪声模型"><a href="#IMU测量方程中的噪声模型" class="headerlink" title="IMU测量方程中的噪声模型"></a>IMU测量方程中的噪声模型</h3><p>IMU噪声由两部分组成：<strong>测量噪声</strong>和<strong>零偏</strong>。在实际卡尔曼滤波算法中，系统状态不仅包括姿态、位置、速度，还会把偏置作为一个状态量来进行在线估计和校正，抑制IMU的漂移。噪声是滤波器的重要输入，通常通过艾伦方差工具对IMU进行离线标定获得。</p>
-<hr>
-<h2 id="使用IMU进行航迹推算"><a href="#使用IMU进行航迹推算" class="headerlink" title="使用IMU进行航迹推算"></a>使用IMU进行航迹推算</h2><p>在已知此时刻位置速度以及姿态的前提下，通过测量IMU数据，获得角速度以及加速度，来更新姿态以及位置速度。</p>
-<p> <img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013205001335.png" alt="image-20251013205001335"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013205021282.png" alt="image-20251013205021282"></p>
-<p>航迹推算是一个迭代积分的过程，在每个时间步，先用陀螺仪积分更新姿态，再利用新姿态消除加速度计读数中的重力，最后对纯运动加速度进行二次积分来更新速度和位置。在实际系统中，必须与其他传感器（GPS、LiDAR、相机等）进行融合，由这些外部传感器来不断校正IMU的累积误差，从而实现长期、鲁棒的定位。</p>
-<p>测试：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/run_imu_integration </span><br><span class="line">libGL error: MESA-LOADER: failed to retrieve device information</span><br><span class="line">libGL error: MESA-LOADER: failed to open nvidia-drm: /usr/lib/dri/nvidia-drm_dri.so: cannot open shared object file: No such file or directory (search paths /usr/lib/x86_64-linux-gnu/dri:\$$&#123;ORIGIN&#125;/dri:/usr/lib/dri, suffix _dri)</span><br><span class="line">libGL error: failed to load driver: nvidia-drm</span><br><span class="line">Framebuffer with requested attributes not available. Using available framebuffer. You may see visual artifacts.I1013 12:54:09.137753 327338 io_utils.cc:51] done.</span><br><span class="line">I1013 12:54:24.779198 327338 pangolin_window.cc:9] pangolin window is deallocated.</span><br></pre></td></tr></table></figure>
-
-<p>结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013205521074.png" alt="image-20251013205521074"></p>
-<p>显示的是车辆的实时位置，<strong>但是程序很快就发散到边缘，超出控制</strong>，必须要与其他传感器数据进行融合，得到更加准确的状态估计。传统导航领域，IMU最主要的融合方式是和卫星导航进行融合，这样的系统被称为<strong>GINS（GNSS——INS）系统</strong></p>
-<hr>
-<h2 id="卫星导航"><a href="#卫星导航" class="headerlink" title="卫星导航"></a>卫星导航</h2><p>我们日常生活中最熟悉的“GPS”其实是美国开发的系统的名称，而这类系统的通用术语是GNSS（Global Navigation Satellite System，全球卫星导航系统）。卫星导航实际上可以提供车辆所需的所有定位信息，包括车辆的位置、姿态、速度等物理量。</p>
-<p>卫星定位的最终精度受很多因素影响，人们提出各种校正技术消除已知误差。<strong>PPP（Precise Point Positioning 精密单点定位）</strong>、**RTK(Real-Time Kinematic 实时动态差分)**等技术取得进展，使得定位精度不断提升。</p>
-<p>差分全球卫星导航系统中差分技术是消除误差最核心，最有效的方法之一，基本思想是“通过比较消除共同误差”</p>
-<blockquote>
-<p>主要技术</p>
-</blockquote>
-<ul>
-<li>SBAS (星基增强系统)：这是一种广域差分系统。它由多个地面站组成网络，计算出大范围（如整个大陆）的修正信息，然后通过地球同步卫星广播给用户。例如美国的 WAAS、欧洲的 EGNOS，以及覆盖日本的 MSAS。</li>
-<li>RTK (实时动态) 技术：这是一种更高精度的载波相位差分技术。它不仅使用差分修正伪距，还利用了信号的载波相位进行测量。通过解算整周模糊度，RTK技术可以实现厘米级的实时定位精度，是测绘、精准农业和自动驾驶等领域的核心技术。</li>
-</ul>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251014104745365.png" alt="image-20251014104745365"></p>
-<p>两个蘑菇头就是RTK接收器，通常使用两个接收器组成双天线方案，根据两根天线的位置差计算车辆实时朝向。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251014105113283.png" alt="image-20251014105113283"></p>
-<h3 id="常见的世界坐标系"><a href="#常见的世界坐标系" class="headerlink" title="常见的世界坐标系"></a>常见的世界坐标系</h3><p>地球上最常见的坐标系就是经纬度坐标系，即<strong>地理坐标系</strong>。而UTM（Universsal Transverse Mercator Grid System）坐标系是将地球视为一个椭球体，投影至横躺圆柱体上，将其展开并且进行分区得到的。</p>
-<p>使用UTM的优点是使用了米制单位，与其他传感器兼容性好，缺点是某些地区可能存在两个分区的跨界处，需要进行额外的坐标处理。</p>
-<h3 id="RTK读数显示"><a href="#RTK读数显示" class="headerlink" title="RTK读数显示"></a>RTK读数显示</h3><p>下面演示如何将RTK的经纬度坐标转换为米制的UTM坐标，同时使用双天线方案确定车辆的方向角。不考虑车辆的俯仰和翻滚，只考虑航向角。</p>
-<p>要将RTK的经纬度坐标转换为米制的UTM坐标，同时使用双天线方案确定车辆的方向角。</p>
-<p><strong>第一部分</strong>：将RTK经纬（LLH）转换为米制的UTM坐标</p>
-<ol>
-<li>确定原始坐标的基准：首先需要明确RTK接收机输出的经纬度坐标是基于哪个大地基准的</li>
-<li>计算所在的UTM区域：</li>
-<li>执行坐标投影转换：将经纬度输出为UTM坐标</li>
-</ol>
-<p><strong>第二部分</strong>：使用双天线方案确定车辆方向角</p>
-<ol>
-<li>硬件安装：</li>
-<li>获取两根天线的精确UTM坐标</li>
-<li>计算方向向量（航向角）</li>
-</ol>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/process_gnss --txt_path ./data/ch3/10.txt </span><br></pre></td></tr></table></figure>
-
-<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015150503150.png" alt="image-20251015150503150" style="zoom: 50%;" />
-
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# python3 scripts/plot_ch3_gnss_3d.py ./data/ch3/gnss_output.txt</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015150734657.png" alt="image-20251015150734657"></p>
-<p>上述两张分别为GNSS轨迹的二维、三维视图。这个场景中RTK本身可以给出不错的车辆轨迹，但是高度层面临抖动明显和误差严重的问题。这个数据仅使用RTK设备提供的位置与方向角信息，而没有使用组合导航设备内部的角速度、线速度等物理量。</p>
-<hr>
-<h2 id="使用误差状态卡尔曼滤波器实现组合导航"><a href="#使用误差状态卡尔曼滤波器实现组合导航" class="headerlink" title="使用误差状态卡尔曼滤波器实现组合导航"></a>使用误差状态卡尔曼滤波器实现组合导航</h2><p>RTK设备为我们提供一个不太稳定的位姿观测源，可以使用RTK与IMU结合，使用拓展卡尔曼滤波器形成组合导航算法。严格来说，是使用误差状态卡尔曼滤波器（Error-State Kalman Filter, ESKF）。</p>
-<p>误差状态卡尔曼滤波器的核心思想是：不直接估计整个状态，而是将状态分为两部分：一个大的“标称状态”和一个小的“误差状态”。</p>
-<ol>
-<li>标称状态 (x): 使用IMU的原始测量值，通过非线性运动学方程进行高频积分。这个状态包含我们主要关心的量：位置 p、速度 v、姿态 q（通常用四元数表示）。</li>
-<li>误差状态 (δx): 使用一个线性的卡尔曼滤波器来估计标称状态中存在的微小误差。这个误差状态通常包括：位置误差 δp、速度误差 δv、姿态误差 δθ（一个小的旋转矢量）、以及IMU的偏置误差 ba,bg.</li>
-</ol>
-<p>整个过程是一个经典的“预测-校正”循环。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015193814197.png" alt="image-20251015193814197"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015194040993.png" alt="image-20251015194040993"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015194314371.png" alt="image-20251015194314371"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015194507206.png" alt="image-20251015194507206"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015194629908.png"></p>
-<p>解释标准卡尔曼滤波与误差状态卡尔曼滤波的联系</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015200220714.png" alt="image-20251015200220714"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015200345896.png" alt="image-20251015200345896"></p>
-<h2 id="实现ESKF的组合导航"><a href="#实现ESKF的组合导航" class="headerlink" title="实现ESKF的组合导航"></a>实现ESKF的组合导航</h2><p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015200345896.png)</span><br></pre></td></tr></table></figure>
-
-<p>该程序会显示实时的滤波器状态。</p>
-<ol>
-<li>ESKF每次递推和观测都有先验信息，轨迹比较平滑</li>
-<li>在一部分RTK不良的场合，ESKF会缺少观测，位移部分会呈快速发散状态</li>
-<li>实际上当RTK数据本身抖动和不良的情况下，ESKF输出的轨迹也会发生抖动</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015202230044.png" alt="image-20251015202230044"></p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# python3 scripts/plot_ch3_state.py ./data/ch3/gins.txt </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015202425375.png" alt="image-20251015202425375"></p>
-<p>左边为2D轨迹图，右上为四元数状态，右下为世界坐标系下速度状态。</p>
-<h3 id="速度观测量"><a href="#速度观测量" class="headerlink" title="速度观测量"></a>速度观测量</h3><p>在GINS（GNSS&#x2F;INS）系统中，长时间缺少RTK数据，ESKF就变为纯靠IMU积分的递推模式。该模式下位移将快速发散， 因为缺少速度观测。大部分轮式机器人会携带一个编码器测定自身速度，进而推算自身的局部运动情况。这些速度观测与IMU结合，可以形成局部的航迹推算，可以简单将他们融入ESKF，作为速度观测量。</p>
-<p>轮式编码器它被安装在车轮的转轴或电机上，用于测量车轮的旋转运动。通过测量轮子转了多少圈、转了多快以及朝哪个方向转，我们就可以间接计算出机器人或车辆的行驶距离、速度和方向。</p>
-<p>其特点可以概括为：</p>
-<ol>
-<li>单个轮式编码器只输出轮子转过的距离，可以对这个距离进行采样。如果每隔固定时间采样，就可以看成对速度的测量值。</li>
-<li>如果本身在底盘上的角度是固定不动的，可以通过编码器计算车辆位移</li>
-<li>轮子本身智能测量车辆在前进方向上的速度位移，无法测量平行方向上或者高度的速度位移</li>
-<li>实际中，车轮容易打滑，轮子可能会发生空转，导致编码器虽然有输出，胆识车辆本身并没有前进的状态。</li>
-</ol>
-<p>在代码中，可以添加其X方向上的速度作为观测模型，可以获得带有轮速的ESKF。</p>
-<p>终端输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/run_eskf_gins --with_odom=true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016112449750.png" alt="image-20251016112449750"></p>
-<p>与之前缺少RTK观测而发散的位置明显得到了改善，速度观测对于组合导航是有积极作用的。</p>
-<hr>
-<p>本章介绍了惯性导航系统的基本原理，以ESKF形式将IMU、卫星导航和轮式里程计进行融合，组成传统的组合导航方案。目前还没有引入图像和激光雷达传感器，只能看到车辆位置和姿态数据，没有只管描述场景结构。后续章节将以本章结果为基础，添加二维、三维激光雷达数据，用于建图和定位。</p>
+<h2 id="地图的导出"><a href="#地图的导出" class="headerlink" title="地图的导出"></a>地图的导出</h2><p>多数应用中，希望控制实时点云的载入规模，只加载自身周围200米范围内的点云，其他范围的点云视情况卸载，重新组织本章建立的点云，按照100米的边长进行分块，设计分块加载和卸载的接口。点云的切分实际上是根据每个点的坐标计算其所在的网格，然后将它投到对应的网格中。切分完地图之后，没快递图会独立到处一个PCD文件，程序可以快速读取到地图区块的位置。</p>
 
       
     </div>
@@ -1215,120 +1118,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/" class="post-title-link" itemprop="url">第九章：自动驾驶车辆的离线地图构建</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="第九章：自动驾驶车辆的离线地图构建"><a href="#第九章：自动驾驶车辆的离线地图构建" class="headerlink" title="第九章：自动驾驶车辆的离线地图构建"></a>第九章：自动驾驶车辆的离线地图构建</h1><h2 id="点云建图的流程"><a href="#点云建图的流程" class="headerlink" title="点云建图的流程"></a>点云建图的流程</h2><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030103644153.png" alt="image-20251030103644153"></p>
-<p>上图是整个建图流程：</p>
-<ol>
-<li>从给定的ROS数据包中解出IMU、RTK和激光雷达数据。使用IMU与激光雷达数据组成LIO系统。</li>
-<li>大部分自动驾驶车辆会携带RTK设备或者组合导航设备。按照RTK或者组合导航的位姿给每个关键帧赋一个RTK位姿，作为观测。</li>
-<li>使用LIO作为相邻帧运动观测，使用RTK位姿作为绝对坐标观测，优化整条轨迹并且判定各关键帧的RTK有效性。这是<strong>第一轮优化</strong>。</li>
-<li>在上一步的基础上对地图进行回环检测，可以使用简单的基于欧氏距离的检测，使用NDT或者常见的配准算法计算相对位姿。</li>
-<li>再把信息放到统一的位姿图中进行优化，消除累计误差带来的重影，同时移除失效区域。这是<strong>第二轮优化</strong>。确定位姿之后，可以按照这些位姿到处点云地图。为了方便地图加载和查看，可以对点云进行切片处理。处理之后的点云可以用来进行高精度定位或者地图标注。</li>
-</ol>
-<h2 id="前端实现"><a href="#前端实现" class="headerlink" title="前端实现"></a>前端实现</h2><ol>
-<li>将ROS数据包中的RTK数据提取出来，放在RTK消息队列中，按照采集时间排序</li>
-<li>用第一个有效的RTK数据作为地图原点，用其他的RTK读书减去原点，作为RTK位置观测</li>
-<li>用IMU和激光雷达输出数据运行LIO，按照距离和角度阈值抽取关键帧，再保存关键帧结果。抽取关键帧时，也会从LIO中获取它的位姿和点云</li>
-</ol>
-<p>后续的建图流程可以从前端的结果出发，不必解析ROS数据包。先使用RTK位姿和LIO位姿进行联合优化，在此基础上进行回环检测，消除累计误差。</p>
-<h2 id="后端位姿图优化和异常值检验"><a href="#后端位姿图优化和异常值检验" class="headerlink" title="后端位姿图优化和异常值检验"></a>后端位姿图优化和异常值检验</h2><p>我们希望最终优化的轨迹能够考虑到各种传感器的输入，因此后端图优化需要包含以下因子：</p>
-<ol>
-<li>RTK因子。这是一种绝对的位姿观测数据。</li>
-<li>雷达里程计信息，使用前面介绍的激光雷达里程计或者LIO作为局部连续性约束</li>
-<li>回环因子，执行回环检测就加载回环检测的相关信息，把它们放入图优化中。</li>
-</ol>
-<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>点云地图的质量很大程度上取决于回环检测是，设计回环检测的步骤如下：</p>
-<ol>
-<li>遍历第一轮优化轨迹中的关键帧。对每两个在空间上相隔较近，但是在时间上存在一定距离的关键帧进行一次回环检测。</li>
-<li>对于每个关键帧对，使用Scan to Map 的配准方法，在关键帧附近抽取一定数量的点云作为子地图，然后对扫描和子地图进行配准。</li>
-<li>由于每个检查点的计算都是独立的，使用并发编程让第二步能够在机器上并发执行，加快速度</li>
-<li>配准的实际执行由NDT完成，使用NDT的分值作为回环有效性的判断依据。</li>
-<li>记录所有成功的回环，并且在下次调用优化算法时读取回环检测的结果。</li>
-</ol>
-<h2 id="地图的导出"><a href="#地图的导出" class="headerlink" title="地图的导出"></a>地图的导出</h2><p>多数应用中，希望控制实时点云的载入规模，只加载自身周围200米范围内的点云，其他范围的点云视情况卸载，重新组织本章建立的点云，按照100米的边长进行分块，设计分块加载和卸载的接口。点云的切分实际上是根据每个点的坐标计算其所在的网格，然后将它投到对应的网格中。切分完地图之后，没快递图会独立到处一个PCD文件，程序可以快速读取到地图区块的位置。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%85%AB%E7%AB%A0%EF%BC%9A%E7%B4%A7%E8%80%A6%E5%90%88LIO%E7%B3%BB%E7%BB%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1413,6 +1202,217 @@
 <li>将原先EKF处理的预测和观测部分变成预积分器的预测和观测部分。</li>
 </ol>
 <p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030100801103.png" alt="image-20251030100801103"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%83%AF%E6%80%A7%E5%AF%BC%E8%88%AA%E4%B8%8E%E7%BB%84%E5%90%88%E5%AF%BC%E8%88%AA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/11/03/%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%83%AF%E6%80%A7%E5%AF%BC%E8%88%AA%E4%B8%8E%E7%BB%84%E5%90%88%E5%AF%BC%E8%88%AA/" class="post-title-link" itemprop="url">第三章：惯性导航与组合导航</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="自动驾驶与机器人中的SLAM技术——第三章：惯性导航与组合导航"><a href="#自动驾驶与机器人中的SLAM技术——第三章：惯性导航与组合导航" class="headerlink" title="自动驾驶与机器人中的SLAM技术——第三章：惯性导航与组合导航"></a>自动驾驶与机器人中的SLAM技术——第三章：惯性导航与组合导航</h1><h2 id="IMU系统的运动学"><a href="#IMU系统的运动学" class="headerlink" title="IMU系统的运动学"></a>IMU系统的运动学</h2><h3 id="激光SLAM"><a href="#激光SLAM" class="headerlink" title="激光SLAM"></a>激光SLAM</h3><p>问题：</p>
+<ol>
+<li>频率低</li>
+<li>运动畸变</li>
+<li>特征稀疏场景失效</li>
+</ol>
+<h3 id="惯性导航"><a href="#惯性导航" class="headerlink" title="惯性导航"></a>惯性导航</h3><p>IMU通常包含加速度计和陀螺仪，可以高频测量设备自身的三轴加速度和三轴角速度。</p>
+<p>作用：</p>
+<ol>
+<li>高频位姿估计</li>
+<li>运动畸变校正</li>
+<li>为激光匹配提供初始值</li>
+</ol>
+<p>缺点：</p>
+<p>IMU是通过对加速度和角速度进行积分来推算位姿的，这个过程存在累计误差。时间一长，哪怕是很小的噪声也会被不断放大，导致推算出的位置和姿态会像“脱缰的野马”一样飘走（即漂移），无法长期独立工作。</p>
+<h3 id="组合导航"><a href="#组合导航" class="headerlink" title="组合导航"></a>组合导航</h3><p>组合导航就是将激光SLAM和惯性导航组合起来，形成一个激光惯性SLAM系统。核心思想：</p>
+<p>用IMU高频、短时精确的特性，弥补激光雷达的低频和畸变问题；同时，用激光SLAM长期、全局精确的特性，来不断校正IMU的累计误差。</p>
+<p>技术上主要分为两种融合方式：</p>
+<ol>
+<li>松耦合：这是一种比较简单直接的融合方式。激光SLAM和IMU各自独立计算出自己的位姿，然后通过一个滤波器（如卡尔曼滤波器）将这两个“结果”进行融合。它实现简单，但因为没有利用原始数据，精度和鲁棒性相对较差。</li>
+<li>紧耦合：这是一种更先进、更主流的融合方式。它将IMU的测量值（角速度、加速度）和激光雷达的原始特征（点、线、面）共同放入一个大的优化问题中进行求解（<strong>通常使用因子图优化或复杂的卡尔曼滤波器</strong>）。在这种框架下，激光的观测可以非常直接地校正IMU的状态（如零偏），IMU的数据也可以更精确地指导点云处理。紧耦合虽然复杂，但性能更优，鲁棒性更强，是当前研究和应用的热点。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013111509992.png" alt="image-20251013111509992"></p>
+<hr>
+<p> <img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013162551627.png" alt="image-20251013162551627"></p>
+<p><strong>这样就得到了纯粹的运动加速度，如果对速度进行一次时间积分，就得到了速度，对速度进行再次时间积分，就得到了位置。</strong></p>
+<p>需要注意的是，要把IMU放在车辆中心，否则可能会在车辆发生旋转和移动的时候，测量到由车辆旋转导致的离心力、科氏力和角加速度。会影响IMU的读数。</p>
+<h3 id="IMU测量方程中的噪声模型"><a href="#IMU测量方程中的噪声模型" class="headerlink" title="IMU测量方程中的噪声模型"></a>IMU测量方程中的噪声模型</h3><p>IMU噪声由两部分组成：<strong>测量噪声</strong>和<strong>零偏</strong>。在实际卡尔曼滤波算法中，系统状态不仅包括姿态、位置、速度，还会把偏置作为一个状态量来进行在线估计和校正，抑制IMU的漂移。噪声是滤波器的重要输入，通常通过艾伦方差工具对IMU进行离线标定获得。</p>
+<hr>
+<h2 id="使用IMU进行航迹推算"><a href="#使用IMU进行航迹推算" class="headerlink" title="使用IMU进行航迹推算"></a>使用IMU进行航迹推算</h2><p>在已知此时刻位置速度以及姿态的前提下，通过测量IMU数据，获得角速度以及加速度，来更新姿态以及位置速度。</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013205001335.png" alt="image-20251013205001335"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013205021282.png" alt="image-20251013205021282"></p>
+<p>航迹推算是一个迭代积分的过程，在每个时间步，先用陀螺仪积分更新姿态，再利用新姿态消除加速度计读数中的重力，最后对纯运动加速度进行二次积分来更新速度和位置。在实际系统中，必须与其他传感器（GPS、LiDAR、相机等）进行融合，由这些外部传感器来不断校正IMU的累积误差，从而实现长期、鲁棒的定位。</p>
+<p>测试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/run_imu_integration </span><br><span class="line">libGL error: MESA-LOADER: failed to retrieve device information</span><br><span class="line">libGL error: MESA-LOADER: failed to open nvidia-drm: /usr/lib/dri/nvidia-drm_dri.so: cannot open shared object file: No such file or directory (search paths /usr/lib/x86_64-linux-gnu/dri:\$$&#123;ORIGIN&#125;/dri:/usr/lib/dri, suffix _dri)</span><br><span class="line">libGL error: failed to load driver: nvidia-drm</span><br><span class="line">Framebuffer with requested attributes not available. Using available framebuffer. You may see visual artifacts.I1013 12:54:09.137753 327338 io_utils.cc:51] done.</span><br><span class="line">I1013 12:54:24.779198 327338 pangolin_window.cc:9] pangolin window is deallocated.</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251013205521074.png" alt="image-20251013205521074"></p>
+<p>显示的是车辆的实时位置，<strong>但是程序很快就发散到边缘，超出控制</strong>，必须要与其他传感器数据进行融合，得到更加准确的状态估计。传统导航领域，IMU最主要的融合方式是和卫星导航进行融合，这样的系统被称为<strong>GINS（GNSS——INS）系统</strong></p>
+<hr>
+<h2 id="卫星导航"><a href="#卫星导航" class="headerlink" title="卫星导航"></a>卫星导航</h2><p>我们日常生活中最熟悉的“GPS”其实是美国开发的系统的名称，而这类系统的通用术语是GNSS（Global Navigation Satellite System，全球卫星导航系统）。卫星导航实际上可以提供车辆所需的所有定位信息，包括车辆的位置、姿态、速度等物理量。</p>
+<p>卫星定位的最终精度受很多因素影响，人们提出各种校正技术消除已知误差。<strong>PPP（Precise Point Positioning 精密单点定位）</strong>、**RTK(Real-Time Kinematic 实时动态差分)**等技术取得进展，使得定位精度不断提升。</p>
+<p>差分全球卫星导航系统中差分技术是消除误差最核心，最有效的方法之一，基本思想是“通过比较消除共同误差”</p>
+<blockquote>
+<p>主要技术</p>
+</blockquote>
+<ul>
+<li>SBAS (星基增强系统)：这是一种广域差分系统。它由多个地面站组成网络，计算出大范围（如整个大陆）的修正信息，然后通过地球同步卫星广播给用户。例如美国的 WAAS、欧洲的 EGNOS，以及覆盖日本的 MSAS。</li>
+<li>RTK (实时动态) 技术：这是一种更高精度的载波相位差分技术。它不仅使用差分修正伪距，还利用了信号的载波相位进行测量。通过解算整周模糊度，RTK技术可以实现厘米级的实时定位精度，是测绘、精准农业和自动驾驶等领域的核心技术。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251014104745365.png" alt="image-20251014104745365"></p>
+<p>两个蘑菇头就是RTK接收器，通常使用两个接收器组成双天线方案，根据两根天线的位置差计算车辆实时朝向。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251014105113283.png" alt="image-20251014105113283"></p>
+<h3 id="常见的世界坐标系"><a href="#常见的世界坐标系" class="headerlink" title="常见的世界坐标系"></a>常见的世界坐标系</h3><p>地球上最常见的坐标系就是经纬度坐标系，即<strong>地理坐标系</strong>。而UTM（Universsal Transverse Mercator Grid System）坐标系是将地球视为一个椭球体，投影至横躺圆柱体上，将其展开并且进行分区得到的。</p>
+<p>使用UTM的优点是使用了米制单位，与其他传感器兼容性好，缺点是某些地区可能存在两个分区的跨界处，需要进行额外的坐标处理。</p>
+<h3 id="RTK读数显示"><a href="#RTK读数显示" class="headerlink" title="RTK读数显示"></a>RTK读数显示</h3><p>下面演示如何将RTK的经纬度坐标转换为米制的UTM坐标，同时使用双天线方案确定车辆的方向角。不考虑车辆的俯仰和翻滚，只考虑航向角。</p>
+<p>要将RTK的经纬度坐标转换为米制的UTM坐标，同时使用双天线方案确定车辆的方向角。</p>
+<p><strong>第一部分</strong>：将RTK经纬（LLH）转换为米制的UTM坐标</p>
+<ol>
+<li>确定原始坐标的基准：首先需要明确RTK接收机输出的经纬度坐标是基于哪个大地基准的</li>
+<li>计算所在的UTM区域：</li>
+<li>执行坐标投影转换：将经纬度输出为UTM坐标</li>
+</ol>
+<p><strong>第二部分</strong>：使用双天线方案确定车辆方向角</p>
+<ol>
+<li>硬件安装：</li>
+<li>获取两根天线的精确UTM坐标</li>
+<li>计算方向向量（航向角）</li>
+</ol>
+<p>终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/process_gnss --txt_path ./data/ch3/10.txt </span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015150503150.png" alt="image-20251015150503150" style="zoom: 50%;" />
+
+<p>终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# python3 scripts/plot_ch3_gnss_3d.py ./data/ch3/gnss_output.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015150734657.png" alt="image-20251015150734657"></p>
+<p>上述两张分别为GNSS轨迹的二维、三维视图。这个场景中RTK本身可以给出不错的车辆轨迹，但是高度层面临抖动明显和误差严重的问题。这个数据仅使用RTK设备提供的位置与方向角信息，而没有使用组合导航设备内部的角速度、线速度等物理量。</p>
+<hr>
+<h2 id="使用误差状态卡尔曼滤波器实现组合导航"><a href="#使用误差状态卡尔曼滤波器实现组合导航" class="headerlink" title="使用误差状态卡尔曼滤波器实现组合导航"></a>使用误差状态卡尔曼滤波器实现组合导航</h2><p>RTK设备为我们提供一个不太稳定的位姿观测源，可以使用RTK与IMU结合，使用拓展卡尔曼滤波器形成组合导航算法。严格来说，是使用误差状态卡尔曼滤波器（Error-State Kalman Filter, ESKF）。</p>
+<p>误差状态卡尔曼滤波器的核心思想是：不直接估计整个状态，而是将状态分为两部分：一个大的“标称状态”和一个小的“误差状态”。</p>
+<ol>
+<li>标称状态 (x): 使用IMU的原始测量值，通过非线性运动学方程进行高频积分。这个状态包含我们主要关心的量：位置 p、速度 v、姿态 q（通常用四元数表示）。</li>
+<li>误差状态 (δx): 使用一个线性的卡尔曼滤波器来估计标称状态中存在的微小误差。这个误差状态通常包括：位置误差 δp、速度误差 δv、姿态误差 δθ（一个小的旋转矢量）、以及IMU的偏置误差 ba,bg.</li>
+</ol>
+<p>整个过程是一个经典的“预测-校正”循环。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015193814197.png" alt="image-20251015193814197"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015194040993.png" alt="image-20251015194040993"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015194314371.png" alt="image-20251015194314371"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015194507206.png" alt="image-20251015194507206"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015194629908.png"></p>
+<p>解释标准卡尔曼滤波与误差状态卡尔曼滤波的联系</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015200220714.png" alt="image-20251015200220714"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015200345896.png" alt="image-20251015200345896"></p>
+<h2 id="实现ESKF的组合导航"><a href="#实现ESKF的组合导航" class="headerlink" title="实现ESKF的组合导航"></a>实现ESKF的组合导航</h2><p>终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015200345896.png)</span><br></pre></td></tr></table></figure>
+
+<p>该程序会显示实时的滤波器状态。</p>
+<ol>
+<li>ESKF每次递推和观测都有先验信息，轨迹比较平滑</li>
+<li>在一部分RTK不良的场合，ESKF会缺少观测，位移部分会呈快速发散状态</li>
+<li>实际上当RTK数据本身抖动和不良的情况下，ESKF输出的轨迹也会发生抖动</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015202230044.png" alt="image-20251015202230044"></p>
+<p>终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# python3 scripts/plot_ch3_state.py ./data/ch3/gins.txt </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251015202425375.png" alt="image-20251015202425375"></p>
+<p>左边为2D轨迹图，右上为四元数状态，右下为世界坐标系下速度状态。</p>
+<h3 id="速度观测量"><a href="#速度观测量" class="headerlink" title="速度观测量"></a>速度观测量</h3><p>在GINS（GNSS&#x2F;INS）系统中，长时间缺少RTK数据，ESKF就变为纯靠IMU积分的递推模式。该模式下位移将快速发散， 因为缺少速度观测。大部分轮式机器人会携带一个编码器测定自身速度，进而推算自身的局部运动情况。这些速度观测与IMU结合，可以形成局部的航迹推算，可以简单将他们融入ESKF，作为速度观测量。</p>
+<p>轮式编码器它被安装在车轮的转轴或电机上，用于测量车轮的旋转运动。通过测量轮子转了多少圈、转了多快以及朝哪个方向转，我们就可以间接计算出机器人或车辆的行驶距离、速度和方向。</p>
+<p>其特点可以概括为：</p>
+<ol>
+<li>单个轮式编码器只输出轮子转过的距离，可以对这个距离进行采样。如果每隔固定时间采样，就可以看成对速度的测量值。</li>
+<li>如果本身在底盘上的角度是固定不动的，可以通过编码器计算车辆位移</li>
+<li>轮子本身智能测量车辆在前进方向上的速度位移，无法测量平行方向上或者高度的速度位移</li>
+<li>实际中，车轮容易打滑，轮子可能会发生空转，导致编码器虽然有输出，胆识车辆本身并没有前进的状态。</li>
+</ol>
+<p>在代码中，可以添加其X方向上的速度作为观测模型，可以获得带有轮速的ESKF。</p>
+<p>终端输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/run_eskf_gins --with_odom=true</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016112449750.png" alt="image-20251016112449750"></p>
+<p>与之前缺少RTK观测而发散的位置明显得到了改善，速度观测对于组合导航是有积极作用的。</p>
+<hr>
+<p>本章介绍了惯性导航系统的基本原理，以ESKF形式将IMU、卫星导航和轮式里程计进行融合，组成传统的组合导航方案。目前还没有引入图像和激光雷达传感器，只能看到车辆位置和姿态数据，没有只管描述场景结构。后续章节将以本章结果为基础，添加二维、三维激光雷达数据，用于建图和定位。</p>
 
       
     </div>
