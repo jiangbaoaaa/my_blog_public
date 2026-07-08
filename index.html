@@ -723,367 +723,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/" class="post-title-link" itemprop="url">Reeds-Shepp 曲线生成逻辑</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:07:50" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="W2-Day2-·-Reeds-Shepp-曲线生成逻辑"><a href="#W2-Day2-·-Reeds-Shepp-曲线生成逻辑" class="headerlink" title="W2 Day2 · Reeds-Shepp 曲线生成逻辑"></a>W2 Day2 · Reeds-Shepp 曲线生成逻辑</h1><p>本文按<strong>报告第 2 章结构</strong>（2.1–2.6）组织，内容 + 行号都来自源码核实。报告里 Day2 负责”<strong>RS 曲线生成逻辑</strong>“这一交付物，同时贡献”关键类 &#x2F; 关键函数”的<strong>算法层</strong>部分：</p>
-<blockquote>
-<ul>
-<li><strong>关键类</strong> → 2.2 <code>ReedsSheppStateSpace</code></li>
-<li><strong>关键函数</strong> → 2.3（<code>reedsShepp</code> 取最短 + 5 个分组生成函数 + <code>distance</code>&#x2F;<code>interpolate</code>）</li>
-<li><strong>RS 曲线生成逻辑</strong> → 2.4（核心）</li>
-</ul>
-<p>源码：<a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/src/reeds_shepp.cpp">reeds_shepp.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/include/freespace_planning_algorithms/reeds_shepp.hpp">reeds_shepp.hpp</a></p>
-<p>上游衔接：Day1 的 <code>makePlan</code>(L487) → A* → <code>estimateCost</code> → 本节 RS。下游：Day3 Hybrid A* 深读。</p>
-</blockquote>
-<hr>
-<h2 id="RS-曲线在规划框架中的定位与功能"><a href="#RS-曲线在规划框架中的定位与功能" class="headerlink" title="RS 曲线在规划框架中的定位与功能"></a>RS 曲线在规划框架中的定位与功能</h2><p>汽车不能像机器人那样原地旋转，必须遵守非完整运动学约束，即受限于最小转弯半径。</p>
-<ul>
-<li><strong>RS功能：在</strong>最小转弯半径约束<strong>下、<strong>允许前进 + 倒车</strong>，连接两个位姿 <code>(x, y, θ)</code> 的</strong>最短路径**。是 Dubins 曲线推广。</li>
-<li><strong>为什么泊车要用它</strong>：侧方&#x2F;倒车入库必须倒车，普通几何曲线（只前进）做不到；RS 给出”前进段 + 倒车段”拼接的最短解。</li>
-<li><strong>在这个模块的作用</strong>：RS 是 <code>freespace_planning_algorithms</code> 算法库里的<strong>几何工具</strong>，RS曲线并非直接求解从起点到终点的最终路径，而是作为图搜索算法（A* RRT*）的节点拓展工具。主要负责两个功能：<ol>
-<li><strong>启发函数</strong>（heuristic）：估”从当前点到终点还多远”，引导 A* 往终点搜（<code>astar_search.cpp:227</code>）。</li>
-<li><strong>shoot &#x2F; 终结</strong>：搜到某点时用 RS 直奔终点，命中即接上**（Day3 详读）**。</li>
-</ol>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. FreespacePlannerNode&lt;br&gt;(处理ROS消息与状态机)&quot;] --&gt; Astar[&quot;2. AstarSearch 或 RRT*&lt;br&gt;(基于Costmap进行全局避障寻路)&quot;]</span><br><span class="line">    Astar -- &quot;A*尝试直达终点 / RRT*尝试向外生长&quot; --&gt; RS[&quot;3. ReedsSheppStateSpace&lt;br&gt;(输入 s0 和 s1 计算两点间最短曲线)&quot;]</span><br><span class="line">    RS -- &quot;返回离散点集与代价&quot; --&gt; Astar</span><br></pre></td></tr></table></figure>
-
-<p>在 <strong>Hybrid A</strong>* 中，RS 曲线常被用作 <strong>Shot Heuristic (解析解剪枝)</strong>：当算法探索到一个靠近终点的节点时，如果不考虑障碍物，直接用 RS 曲线连向终点。如果这条 RS 曲线在 Costmap 上不碰撞，搜索就直接宣告成功，极大地加速了计算。</p>
-<hr>
-<h2 id="关键类：ReedsSheppStateSpace（成员表）"><a href="#关键类：ReedsSheppStateSpace（成员表）" class="headerlink" title="关键类：ReedsSheppStateSpace（成员表）"></a>关键类：<code>ReedsSheppStateSpace</code>（成员表）</h2><blockquote>
-<p>类声明：<code>class ReedsSheppStateSpace</code>（hpp L93）。它<strong>不是 ROS 节点</strong>，是纯几何工具类（无订阅&#x2F;发布&#x2F;定时器）。读它看”持有什么状态 + 提供哪些几何方法”。</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>成员</th>
-<th>类型 &#x2F; 签名</th>
-<th>行号</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>rho_</code></td>
-<td><code>double</code></td>
-<td>hpp L138</td>
-<td><strong>转弯半径</strong>（唯一状态），所有弧的半径</td>
-</tr>
-<tr>
-<td>枚举 <code>ReedsSheppPathSegmentType</code></td>
-<td><code>{RS_NOP, RS_LEFT, RS_STRAIGHT, RS_RIGHT}</code></td>
-<td>hpp L97</td>
-<td><strong>段形状</strong>（4 种，注意：方向不在这里）</td>
-</tr>
-<tr>
-<td><code>reedsSheppPathType[18][5]</code></td>
-<td><code>static const</code> 表</td>
-<td>hpp L100 &#x2F; cpp L623</td>
-<td><strong>18 种路径类型</strong>（每类是一组段形状序列）</td>
-</tr>
-<tr>
-<td>内部类 <code>ReedsSheppPath</code></td>
-<td>—</td>
-<td>hpp L103</td>
-<td>一条路径的完整描述：<code>type_</code> + <code>length_[5]</code> + <code>totalLength_</code></td>
-</tr>
-<tr>
-<td><code>struct StateXYT</code></td>
-<td><code>{x, y, yaw}</code></td>
-<td>hpp L121</td>
-<td>输入位姿（位置 + 航向）</td>
-</tr>
-<tr>
-<td><code>distance(s0, s1)</code></td>
-<td>方法</td>
-<td>hpp L130 &#x2F; cpp L656</td>
-<td>返回两位姿的<strong>RS 最短距离</strong>（米）</td>
-</tr>
-<tr>
-<td><code>reedsShepp(s0, s1)</code></td>
-<td>方法</td>
-<td>hpp L133 &#x2F; cpp L661</td>
-<td>返回<strong>最短路径对象</strong></td>
-</tr>
-<tr>
-<td><code>interpolate(s0, path, seg)</code></td>
-<td>方法</td>
-<td>hpp L135 &#x2F; cpp L670</td>
-<td>沿路径<strong>采样</strong>一个点（给定弧长）</td>
-</tr>
-</tbody></table>
-<blockquote>
-<ul>
-<li><strong>方向（前进&#x2F;倒车）不在枚举里</strong>，而在 <code>length_[i]</code> 的<strong>正负号</strong>：正&#x3D;前进，负&#x3D;倒车。枚举只编码”直&#x2F;左&#x2F;右”三种<strong>形状</strong>。</li>
-<li><strong>路径类型是 18 类</strong>（不是网上常说的 48）。<code>reedsSheppPathType[18][5]</code>（cpp L623），48 是对称展开的理论数，代码用 18 规范行 + 对称变换实现。数组大小是[18,5]因为一个RS曲线最多由5个运动段组成。</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="关键函数"><a href="#关键函数" class="headerlink" title="关键函数"></a>关键函数</h2><table>
-<thead>
-<tr>
-<th>函数</th>
-<th>行号</th>
-<th>职责</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>reedsShepp(x,y,phi)</code>（匿名命名空间）</td>
-<td>cpp L608</td>
-<td><strong>★取最短入口</strong>：依次调 5 个分组生成器，全程保留最短路径</td>
-</tr>
-<tr>
-<td><code>CSC</code> &#x2F; <code>CCC</code> &#x2F; <code>CCCC</code> &#x2F; <code>CCSC</code> &#x2F; <code>CCSCC</code></td>
-<td>cpp L158 &#x2F; L235 &#x2F; L332 &#x2F; L430 &#x2F; L575</td>
-<td><strong>5 个分组生成器</strong>：各算一类候选路径，用对称变换翻倍后留最短</td>
-</tr>
-<tr>
-<td><code>distance(s0, s1)</code></td>
-<td>cpp L656</td>
-<td><code>rho_ * path.length()</code> —— 归一化长度 × 半径 &#x3D; 实际米数</td>
-</tr>
-<tr>
-<td><code>reedsShepp(s0, s1)</code>（类方法）</td>
-<td>cpp L661</td>
-<td>坐标转到起点系 + 除以 <code>rho_</code> 归一化 → 调匿名 <code>reedsShepp</code></td>
-</tr>
-<tr>
-<td><code>interpolate(s0, path, seg)</code></td>
-<td>cpp L670</td>
-<td>沿路径走 <code>seg</code> 弧长，逐段积分出目标点（见证曲率跳变）</td>
-</tr>
-<tr>
-<td>8 个公式函数 <code>LpSpLp</code> 等</td>
-<td>cpp L125–L555</td>
-<td>各对应 RS 论文一个 formula（8.1–8.11），算单一几何解</td>
-</tr>
-</tbody></table>
-<p>**核心数学结算：**CSC等生成器，内部会调用LpSpLp等函数，然后再接着被核心函数reedsShepp()依次调用，每次调用都会比较当前算出的路径长度与已有最短长度比较，保留最短的一条。</p>
-<p>**对外计算接口：**ReedsShepp,外界获取最短路径的方法，首相将起点与终点之间的相对差值，进行平移旋转，转化为相对于原点的目标点。除以最小转弯半径，把问题归一化到单位园的集合问题上，调用匿名函数reedsShepp结算最短路径。. </p>
-<p>**轨迹离散化：*<em>interpolate，会给定一条RS path 和一个长度 seg (通常是离散步长，如0.1米)，通过积分计算出在0.1米处，车辆实际坐标。这样，可以使得外层A</em>等全局算法，每隔0.1米采样一个点，然后去Costmap上确认是否撞墙。</p>
-<p>下面贴<strong>最关键的两个</strong>（<code>reedsShepp</code> 取最短 + <code>CSC</code> 分组生成器）带标注代码。</p>
-<h3 id="①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度"><a href="#①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度" class="headerlink" title="① reedsShepp 取最短入口（cpp L608）——整个 RS 生成的总调度"></a>① <code>reedsShepp</code> 取最短入口（cpp L608）——整个 RS 生成的总调度</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ReedsSheppStateSpace::ReedsSheppPath <span class="title">reedsShepp</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ReedsSheppStateSpace::ReedsSheppPath path;   <span class="comment">// 默认 length = max（“目前最短”初值设无穷大）</span></span><br><span class="line">  <span class="built_in">CSC</span>(x, y, phi, path);     <span class="comment">// L611  圆弧-直线-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCC</span>(x, y, phi, path);     <span class="comment">// L612  三圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCCC</span>(x, y, phi, path);    <span class="comment">// L613  四圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSC</span>(x, y, phi, path);    <span class="comment">// L614  圆弧-圆弧-直-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSCC</span>(x, y, phi, path);   <span class="comment">// L615  圆弧-圆弧-直-圆弧-圆弧类候选</span></span><br><span class="line">  <span class="keyword">return</span> path;              <span class="comment">// 全程只留最短，返回的就是最短路径</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p><code>path</code> 是<strong>引用传入</strong>每个分组函数，初值 <code>length=max</code>。每个分组里每算出一个候选 <code>L</code>，只要 <code>L &lt; path.length()</code> 就覆盖 <code>path</code>。<br>所以”取最短”不是最后比一次，而是<strong>边算边贪心更新</strong>——5 个分组跑完，<code>path</code> 自然就是全局最短。</p>
-</blockquote>
-<h3 id="②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板"><a href="#②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板" class="headerlink" title="② CSC 分组生成器（cpp L158）——对称变换翻倍的样板"></a>② <code>CSC</code> 分组生成器（cpp L158）——对称变换翻倍的样板</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CSC</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi, ReedsSheppStateSpace::ReedsSheppPath &amp; path)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">double</span> t, u, v, L_min = path.<span class="built_in">length</span>(), L;</span><br><span class="line">  <span class="comment">// 基本形 LpSpLp（左-直-左，全前进）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, y, phi, t, u, v) &amp;&amp; L_min &gt; (L = std::<span class="built_in">abs</span>(t)+std::<span class="built_in">abs</span>(u)+std::<span class="built_in">abs</span>(v))) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], t, u, v);   <span class="comment">// 类型行 14</span></span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip：坐标/符号取反 → 得到“全倒车”版本（同一条形状，方向全反）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], -t, -u, -v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// reflect：y、phi 取反 → 左右镜像（左转变右转）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, -y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], t, u, v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip + reflect：两者叠加</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, -y, phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], -t, -u, -v);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// …后面还有 LpSpRp（左-直-右）的同样 4 种对称，共 8 个候选</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="③-distance（cpp-L656）——A-启发函数最终调的就是它"><a href="#③-distance（cpp-L656）——A-启发函数最终调的就是它" class="headerlink" title="③ distance（cpp L656）——A* 启发函数最终调的就是它"></a>③ <code>distance</code>（cpp L656）——A* 启发函数最终调的就是它</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">ReedsSheppStateSpace::distance</span><span class="params">(<span class="type">const</span> StateXYT &amp; s0, <span class="type">const</span> StateXYT &amp; s1)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> rho_ * <span class="built_in">reedsShepp</span>(s0, s1).<span class="built_in">length</span>();   <span class="comment">// 归一化长度 × 半径 = 实际米数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这就是 Day1→Day2 的接口：A* 的 <code>estimateCost</code>(astar_search.cpp:227) → <code>calcReedsSheppDistance</code>(L31) → 本函数 → 给 A* 当”到终点还多远”的启发值。</p>
-</blockquote>
-<hr>
-<h2 id="RS-曲线生成逻辑"><a href="#RS-曲线生成逻辑" class="headerlink" title="RS 曲线生成逻辑"></a>RS 曲线生成逻辑</h2><h3 id="三种形状-×-两种方向-6-基元"><a href="#三种形状-×-两种方向-6-基元" class="headerlink" title="三种形状 × 两种方向 &#x3D; 6 基元"></a>三种形状 × 两种方向 &#x3D; 6 基元</h3><p>RS 把任意路径切成”段”，每段是下面 3 种<strong>形状</strong>之一，方向由长度正负决定：</p>
-<table>
-<thead>
-<tr>
-<th>形状</th>
-<th>枚举（hpp L97）</th>
-<th>曲率</th>
-<th>弧长正</th>
-<th>弧长负</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>直行</td>
-<td><code>RS_STRAIGHT</code></td>
-<td><code>0</code></td>
-<td>前进直行</td>
-<td>倒车直行</td>
-</tr>
-<tr>
-<td>左转弧</td>
-<td><code>RS_LEFT</code></td>
-<td><code>+1/rho_</code></td>
-<td>前进左转</td>
-<td>倒车左转</td>
-</tr>
-<tr>
-<td>右转弧</td>
-<td><code>RS_RIGHT</code></td>
-<td><code>−1/rho_</code></td>
-<td>前进右转</td>
-<td>倒车右转</td>
-</tr>
-<tr>
-<td>（占位）</td>
-<td><code>RS_NOP</code></td>
-<td>—</td>
-<td>未用段填这个</td>
-<td>—</td>
-</tr>
-</tbody></table>
-<p>→ <strong>3 形状 × 2 方向 &#x3D; 6 基元</strong>（S+&#x2F;S−&#x2F;L+&#x2F;L−&#x2F;R+&#x2F;R−）。<code>RS_NOP</code> 仅用于把不足 5 段的路径补齐。</p>
-<blockquote>
-<p>公式函数命名就是这个意思：<code>LpSpLp</code> &#x3D; Left-plus、Straight-plus、Left-plus（全前进的”左-直-左”）；<code>m</code>&#x3D;minus&#x3D;倒车，如 <code>LpRmL</code>&#x3D;左前-右倒-左前。</p>
-</blockquote>
-<h3 id="路径类型表：18-类（cpp-L623–642）"><a href="#路径类型表：18-类（cpp-L623–642）" class="headerlink" title="路径类型表：18 类（cpp L623–642）"></a>路径类型表：18 类（cpp L623–642）</h3><p>每类是一组”段形状序列”（最多 5 段，多的位填 <code>RS_NOP</code>）：</p>
-<table>
-<thead>
-<tr>
-<th>组</th>
-<th>类型行</th>
-<th>段形状序列</th>
-<th>举例含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>CCC</td>
-<td>0 &#x2F; 1</td>
-<td>L-R-L &#x2F; R-L-R</td>
-<td>三圆弧（如 LRL）</td>
-</tr>
-<tr>
-<td>CCCC</td>
-<td>2 &#x2F; 3</td>
-<td>L-R-L-R &#x2F; R-L-R-S&#x2F;…</td>
-<td>四圆弧</td>
-</tr>
-<tr>
-<td>CCSC</td>
-<td>4–11</td>
-<td>含一段直线的 4 段组合</td>
-<td>圆-圆-直-圆 等</td>
-</tr>
-<tr>
-<td>CSC</td>
-<td>12–15</td>
-<td>L-S-R &#x2F; R-S-L &#x2F; L-S-L &#x2F; R-S-R</td>
-<td><strong>圆-直-圆</strong>（最常见，如 LSL&#x2F;LSR）</td>
-</tr>
-<tr>
-<td>CCSCC</td>
-<td>16 &#x2F; 17</td>
-<td>L-R-S-L-R &#x2F; R-L-S-R-L</td>
-<td>五段组合</td>
-</tr>
-</tbody></table>
-<h3 id="生成-取最短流程"><a href="#生成-取最短流程" class="headerlink" title="生成 + 取最短流程"></a>生成 + 取最短流程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Input[&quot;输入：两位姿 s0(x,y,yaw), s1(x,y,yaw)&quot;] --&gt; ClassMethod[&quot;外部类方法 reedsShepp(s0, s1)&quot;]</span><br><span class="line">    </span><br><span class="line">    ClassMethod --&gt; Trans1[&quot;① 坐标系转换：&lt;br&gt;将 s1 平移旋转到 s0 局部坐标系&quot;]</span><br><span class="line">    Trans1 --&gt; Trans2[&quot;② 空间归一化：&lt;br&gt;将 x, y 除以 rho_&lt;br&gt;(转入单位半径圆的数学空间计算)&quot;]</span><br><span class="line">    </span><br><span class="line">    Trans2 --&gt; AnonMethod[&quot;匿名核心函数 ::reedsShepp(x, y, phi)&lt;br&gt;初始化 path 容器 (length = MAX)&quot;]</span><br><span class="line">    </span><br><span class="line">    AnonMethod --&gt; CSC[&quot;1. CSC() (曲线-直线-曲线)&quot;]</span><br><span class="line">    CSC --&gt; CCC[&quot;2. CCC() (纯曲线)&quot;]</span><br><span class="line">    CCC --&gt; CCCC[&quot;3. CCCC()&quot;]</span><br><span class="line">    CCCC --&gt; CCSC[&quot;4. CCSC()&quot;]</span><br><span class="line">    CCSC --&gt; CCSCC[&quot;5. CCSCC()&quot;]</span><br><span class="line">    </span><br><span class="line">    subgraph GroupCalc [&quot;各组核心函数内的计算与穷举机制&quot;]</span><br><span class="line">        Step1[&quot;调用基础数学公式 (如 LpSpLp)&lt;br&gt;计算一个基准解&quot;] --&gt; Step2[&quot;应用几何对称性生成 4~8 个候选组合：&lt;br&gt;1. Time flip (时间翻转)&lt;br&gt;2. Reflect (镜像反射)&lt;br&gt;3. Backwards (反向倒车)&quot;]</span><br><span class="line">        Step2 --&gt; Step3&#123;&quot;计算组合总弧长 L = |t|+|u|+|v|...&lt;br&gt;L &lt; L_min ?&quot;&#125;</span><br><span class="line">        Step3 -- Yes --&gt; Step4[&quot;覆盖当前最优 path&lt;br&gt;更新最小长度 L_min&quot;]</span><br><span class="line">        Step3 -- No --&gt; Step1</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CSC -.-&gt; GroupCalc</span><br><span class="line">    </span><br><span class="line">    CCSCC --&gt; Return[&quot;返回 path (全局最优最短)：&lt;br&gt;type_ 指向 18 种曲线分类之一&lt;br&gt;length_[5] 记录各段弧长 (正负表示前进/倒车)&quot;]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="关键认知：分段常曲率，G1-连续但曲率不连续"><a href="#关键认知：分段常曲率，G1-连续但曲率不连续" class="headerlink" title="关键认知：分段常曲率，G1 连续但曲率不连续"></a>关键认知：分段常曲率，G1 连续但<strong>曲率不连续</strong></h3><p>看 <code>interpolate</code>（cpp L670）就懂——它<strong>逐段</strong>走，每段是<strong>恒定曲率</strong>的运动：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (path.type_[i]) &#123;</span><br><span class="line">  <span class="keyword">case</span> RS_LEFT:     ... yaw += v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 +1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_RIGHT:    ... yaw -= v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 -1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_STRAIGHT: ... 直线        <span class="keyword">break</span>;   <span class="comment">// 曲率 0</span></span><br><span class="line">  <span class="keyword">case</span> RS_NOP:      <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>含义：</p>
-<ul>
-<li><strong>每段内部曲率恒定</strong>（直&#x3D;0，弧&#x3D;±1&#x2F;rho_）。</li>
-<li><strong>段与段交界处曲率跳变</strong>（如 0 → 1&#x2F;rho_，或 +1&#x2F;rho_ → −1&#x2F;rho_）。</li>
-<li>所以 RS 路径是 <strong>G1 连续</strong>（位置 + 切向连续，车能不”瞬移”地跟），但<strong>不是 C² 曲率连续</strong>。</li>
-</ul>
-<blockquote>
-<p>若 W3&#x2F;W4 验收口径要求”<strong>曲率连续</strong>“，RS 单独<strong>不满足</strong>（段间曲率阶跃）——需要后接样条&#x2F;回旋曲线（clothoid）平滑，或由控制器做限幅。</p>
-</blockquote>
-<hr>
-<h2 id="关键参数"><a href="#关键参数" class="headerlink" title="关键参数"></a>关键参数</h2><p>RS 工具类本身只有 <strong>1 个参数</strong>：<code>rho_</code>（转弯半径，hpp L138）。它<strong>不是节点参数</strong>，而是由 A* 传进来的：</p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>来源</th>
-<th>Day1 默认值</th>
-<th>对 RS 的影响</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>rho_</code>（turning radius）</td>
-<td>A* 的 <code>minimum_turning_radius</code> 传入（astar_search.cpp:227 的 <code>radius</code>）</td>
-<td><code>0.5</code> m</td>
-<td>半径越小，车能转的弯越急，RS 弧段越短</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><code>minimum_turning_radius</code> 是 Day1 参数表（cpp L295）里的算法参数，Day3 读 A* 时会看到它怎么传给 <code>ReedsSheppStateSpace</code>。Day2 只需知道：<strong><code>rho_</code> 决定 RS 所有弧的半径</strong>。</p>
-</blockquote>
-<h2 id="RS-在整条链路里的位置"><a href="#RS-在整条链路里的位置" class="headerlink" title="RS 在整条链路里的位置"></a>RS 在整条链路里的位置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. freespace_planner 节点&lt;br&gt;algo_-&gt;makePlan(current, goal)&quot;]</span><br><span class="line">    </span><br><span class="line">    Astar[&quot;2. AstarSearch::search()&lt;br&gt;A* 全局图搜索主循环&quot;]</span><br><span class="line">    </span><br><span class="line">    Node --&gt; Astar</span><br><span class="line">    </span><br><span class="line">    subgraph Astar_Internal [&quot;A* 内部调用逻辑&quot;]</span><br><span class="line">        EstCost[&quot;扩展节点时：&lt;br&gt;estimateCost(每个节点)&quot;]</span><br><span class="line">        Shoot[&quot;搜到终点附近时：&lt;br&gt;RS Shoot 直奔终点&quot;]</span><br><span class="line">        </span><br><span class="line">        CalcRS[&quot;calcReedsSheppDistance()&quot;]</span><br><span class="line">        </span><br><span class="line">        EstCost --&gt; CalcRS</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    Astar --&gt; EstCost</span><br><span class="line">    Astar -.-&gt;|&quot;条件触发&quot;| Shoot</span><br><span class="line">    </span><br><span class="line">    subgraph RS_Library [&quot;ReedsShepp 核心数学库&quot;]</span><br><span class="line">        RSDist[&quot;ReedsSheppStateSpace::distance()&quot;]</span><br><span class="line">        RSCore[&quot;ReedsSheppStateSpace::reedsShepp()&lt;br&gt;★ 获取最短 RS 曲线 ★&quot;]</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CalcRS --&gt; RSDist</span><br><span class="line">    Shoot --&gt; RSCore</span><br><span class="line">    RSDist --&gt; RSCore</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<ol>
-<li><strong>启发式代价计算</strong>：<code>estimateCost</code> 用 RS 快速估算当前点到终点的RS最短距离</li>
-<li><strong>解析展开</strong>（RS Shoot）：A* 搜到终点附近时，直接用 RS 接上终点</li>
-</ol>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/W2_Day3_Hybrid_A%E6%98%9F%E6%90%9C%E7%B4%A2_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1550,6 +1189,220 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/chap2_0_%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/08/chap2_0_%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">话题通信</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:11:44" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ROS2%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS2学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="话题通信"><a href="#话题通信" class="headerlink" title="话题通信"></a>话题通信</h1><h3 id="几个C-概念"><a href="#几个C-概念" class="headerlink" title="几个C++概念"></a>几个C++概念</h3><ol>
+<li>class:描述一类东西的数据还有功能</li>
+<li>:public rclcpp::Node:类把Node的功能全部继承下来，自己就是一个节点</li>
+<li>构造函数：和类同名的特殊函数，对象、产生时自动跑一次，做初始化</li>
+<li>this-&gt;：指向当前对象的成员</li>
+<li>指针&#x2F;智能指针：指向某块内存的地址，SharedPtr（共享指针）全自动管理内存，不用手动释放</li>
+<li>auto:让编译器自动推理变量类型</li>
+<li>std::bind：把成员函数+对象打包成一个可以回调的东西</li>
+<li>Main：每个C++程序入口</li>
+</ol>
+<p>关系图</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">类  (class)         ←—— 图纸 / 模具 / 设计方案</span><br><span class="line">↓ 用图纸造出实物</span><br><span class="line">对象 (object)       ←—— 按图纸真正造出来的、能用的东西</span><br><span class="line">↓ 对象身上有</span><br><span class="line">成员 (member)       ←—— 成员变量(存数据) + 成员函数(能做的事)</span><br><span class="line">↓ 对象出生时自动跑</span><br><span class="line">构造函数(constructor)←—— 出厂时的&quot;一次性初始化&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>构造函数：出厂的初始化操作，是一个特殊的成员函数，有两个特点：</p>
+<ol>
+<li>名字和类一样</li>
+<li>对象一旦被造出来，自动执行一次，负责出厂初始化</li>
+</ol>
+<p>对象是在main函数里构造的。</p>
+<p>正确流程：</p>
+<p>先写一个类，描述一种东西，用类名（）照着就能造出一个对象(实物),对象身上有一堆成员，包括变量还有函数，对象一产生，构造函数就会自动跑一遍，把成员初始化好。</p>
+<hr>
+<p>话题通信基于发布订阅模式。</p>
+<p>话题通信是一种以发布订阅的方式实现不同节点之间数据传输的通信模型。数据发布对象称为发布方，数据订阅对象称之为订阅方，发布方和订阅方通过话题相关联，发布方将消息发布在话题上，订阅方则从该话题订阅消息，消息的流向是单向的。</p>
+<p><img src="https://rzl6.github.io/ROS2_Tuition/assets/2.2%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B1.gif" alt="img"></p>
+<p>话题通信的发布方与订阅方是一种多对多的关系，也即，同一话题下可以存在多个发布方，也可以存在多个订阅方，这意味着数据会出现交叉传输的情况，当然如果没有订阅方，数据传输也会出现丢失的情况。</p>
+<p><img src="https://rzl6.github.io/ROS2_Tuition/assets/2.2%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B2.gif" alt="img"></p>
+<h2 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h2><ol>
+<li>编写话题通信实现，发布方以某个频率发布文本，订阅发&#x3D;方订阅消息并且输出在终端。</li>
+<li>编写话题通信实现，发布方以某个频率发布自定义接口消息，订阅方订阅消息，输出在终端</li>
+</ol>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>编写发布方实现；</p>
+<p>编写订阅方实现；</p>
+<p>编辑配置文件；</p>
+<p>编译；</p>
+<p>执行。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li><p>创建工作空间:ws01_plumbing 本章代码存储在该工作空间下</p>
+</li>
+<li><p>实际中会创建专门的接口功能包定义接口文件，预先创建接口功能包</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake base_interface_demo</span><br></pre></td></tr></table></figure>
+
+<p>该功能包用于保存本章自定义接口文件</p>
+<ol start="3">
+<li>终端进入工作空间的src目录，调用命令创建c++功能包</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create cpp01_topic --build-type ament_cmake --dependencies rclcpp std_msgs base_interfaces_demo</span><br></pre></td></tr></table></figure>
+
+<h2 id="话题通信之原生消息"><a href="#话题通信之原生消息" class="headerlink" title="话题通信之原生消息"></a>话题通信之原生消息</h2><p>ROS2 C++ 节点程序骨架</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">ROS2 C++ 节点程序</span><br><span class="line">│</span><br><span class="line">├── ① 头文件 #include</span><br><span class="line">│   ├── rclcpp/rclcpp.hpp         → 提供 Node / init / spin / shutdown</span><br><span class="line">│   └── std_msgs/msg/string.hpp   → 提供 String 消息类型</span><br><span class="line">│</span><br><span class="line">├── ② main 函数（程序入口）</span><br><span class="line">│   ├── rclcpp::init(argc, argv)        → 初始化 ROS2（必须最先调）</span><br><span class="line">│   ├── rclcpp::spin(节点对象)          → 进入事件循环（阻塞，靠它&quot;活着&quot;）</span><br><span class="line">│   └── rclcpp::shutdown()              → 释放资源</span><br><span class="line">│</span><br><span class="line">├── ③ 节点类（继承官方 rclcpp::Node）★核心</span><br><span class="line">│   │</span><br><span class="line">│   ├── 构造函数（对象出生时自动跑，做初始化）</span><br><span class="line">│   │   ├── Node(&quot;名字&quot;)        → 给节点起名</span><br><span class="line">│   │   ├── demo01: 建 publisher_（发布方）+ timer_（定时器）</span><br><span class="line">│   │   └── demo02: 建 subscription_（订阅方，带回调）</span><br><span class="line">│   │</span><br><span class="line">│   ├── 成员变量（对象身上存的数据）</span><br><span class="line">│   │   ├── demo01: publisher_、timer_、count_</span><br><span class="line">│   │   └── demo02: subscription_</span><br><span class="line">│   │</span><br><span class="line">│   └── 回调函数（事件来了被【自动】调用）</span><br><span class="line">│       ├── demo01: timer_callback   → 定时器到点 → 组织消息 → publish</span><br><span class="line">│       └── demo02: topic_callback   → 消息到达 → 打印</span><br><span class="line">│</span><br><span class="line">└── ④ 构建配置（让 .cpp 变成能 ros2 run 的程序）</span><br><span class="line">    ├── CMakeLists.txt → add_executable + ament_target_dependencies + install</span><br><span class="line">    └── package.xml    → 声明依赖 (rclcpp、std_msgs)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>发布者-&gt;订阅者链接回路</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">demo01（发布者 / 主动推）              demo02（订阅者 / 被动收）</span><br><span class="line">─────────────────────────              ─────────────────────────</span><br><span class="line"></span><br><span class="line">timer_  每 0.5 秒触发一次               subscription_  持续监听</span><br><span class="line">     │                                        ▲</span><br><span class="line">     ▼                                        │</span><br><span class="line">timer_callback                           topic_callback</span><br><span class="line">├─ 拼出 &quot;Hello, world! N&quot;                 └─ 打印 &quot;订阅的消息: ...&quot;</span><br><span class="line">└─ publisher_-&gt;publish()  ─── /topic ──▶  (消息一到，ROS2 自动调用)</span><br><span class="line">                            (String 类型)</span><br><span class="line"></span><br><span class="line">═══════ 回路闭合的三个对接条件 ═══════</span><br><span class="line">     ① 话题名 &quot;topic&quot;     → 两边必须【完全一致】</span><br><span class="line">     ② 消息类型 String    → 两边必须【完全一致】</span><br><span class="line">     ③ QoS 深度 10        → 兼容即可</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="发布方实现"><a href="#发布方实现" class="headerlink" title="发布方实现"></a>发布方实现</h3><p>功能包cpp01_topic的src目录下，新建C++文件demo01_talker_str.cpp，并编辑文件，输入如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line">/*  </span><br><span class="line">  需求：以某个固定频率发送文本&quot;hello world!&quot;，文本后缀编号，每发送一条消息，编号递增1。</span><br><span class="line">  步骤：</span><br><span class="line">    1.包含头文件；</span><br><span class="line">    2.初始化 ROS2 客户端；</span><br><span class="line">    3.定义节点类；</span><br><span class="line">      3-1.创建发布方；</span><br><span class="line">      3-2.创建定时器；</span><br><span class="line">      3-3.组织消息并发布。</span><br><span class="line">    4.调用spin函数，并传入节点对象指针；</span><br><span class="line">    5.释放资源。</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// ==================== 1. 包含头文件 ====================</span><br><span class="line">// rclcpp.hpp —— ROS2 的 C++ 核心库头文件</span><br><span class="line">#include &quot;rclcpp/rclcpp.hpp&quot;</span><br><span class="line"></span><br><span class="line">// std_msgs/msg/string.hpp —— 标准消息库里提供的 String 消息类型</span><br><span class="line">#include &quot;std_msgs/msg/string.hpp&quot;</span><br><span class="line"></span><br><span class="line">// using namespace ...：引入命名空间，省得每次写全名</span><br><span class="line">// std::chrono_literals 让我们可以直接写 &quot;500ms&quot; 这种带单位的时间字面量</span><br><span class="line">//   不写这行的话，下面的 500ms 会编译报错</span><br><span class="line">using namespace std::chrono_literals;</span><br><span class="line"></span><br><span class="line">// ==================== 3. 定义节点类 ====================</span><br><span class="line">// class：定义一个&quot;类&quot;（图纸/模板）</span><br><span class="line">// MinimalPublisher：类的名字（自己起的）</span><br><span class="line">// : public rclcpp::Node：表示&quot;公有继承自 rclcpp::Node&quot;</span><br><span class="line">//   —— 也就是我们自己造的这个类，本身就是一个 ROS2 节点</span><br><span class="line">//   继承 Node 已经实现好的一堆功能（日志、命名、参数管理…）</span><br><span class="line">class MinimalPublisher : public rclcpp::Node</span><br><span class="line">&#123;</span><br><span class="line">  public:</span><br><span class="line">    // 构造函数：名字必须和类名相同，没有返回值类型</span><br><span class="line">    // 当我们&quot;new 一个 MinimalPublisher 对象&quot;时，这段代码自动执行，完成初始化</span><br><span class="line">    MinimalPublisher()</span><br><span class="line">	// 初始化列表，对象产生给成员变量初始值，首先调用父类Node的构造函数，给节点</span><br><span class="line">	//命名，把成员变量count_ 初始化为 0</span><br><span class="line">    : Node(&quot;minimal_publisher&quot;), count_(0)</span><br><span class="line">    &#123;</span><br><span class="line">      // 3-1. 创建发布方 publisher：负责往某个话题上广播消息</span><br><span class="line">      // this-&gt;create_publisher&lt;消息类型&gt;(&quot;话题名&quot;, 队列深度)</span><br><span class="line">      //   &lt;std_msgs::msg::String&gt; 是&quot;模板参数&quot;，告诉它我们要发的是 String 消息</span><br><span class="line">      //   &quot;topic&quot; 是话题名字（将来订阅方必须用相同名字才能收到）</span><br><span class="line">      //   10 是 QoS（服务质量）里的&quot;历史深度&quot;：</span><br><span class="line">      //     如果订阅方一时处理不过来，最多帮它缓存 10 条历史消息，超过就丢旧的</span><br><span class="line">      // 返回的是一个&quot;智能指针&quot;，存进成员变量 publisher_，以后用它来 publish</span><br><span class="line">      publisher_ = this-&gt;create_publisher&lt;std_msgs::msg::String&gt;(&quot;topic&quot;, 10);</span><br><span class="line"></span><br><span class="line">      // 3-2. 创建定时器：每隔固定时间自动调用一次某个函数</span><br><span class="line">      // create_wall_timer(间隔时间, 要被调用的函数)</span><br><span class="line">      //   500ms：每 500 毫秒触发一次（即每秒 2 次）</span><br><span class="line">      //   std::bind(&amp;MinimalPublisher::timer_callback, this)：</span><br><span class="line">      //     把&quot;本对象的 timer_callback 成员函数&quot;打包成一个可被回调的东西</span><br><span class="line">      //     （C++ 里成员函数不能直接当回调，必须绑上 this 才知道对哪个对象调用）</span><br><span class="line">      timer_ = this-&gt;create_wall_timer(</span><br><span class="line">          500ms, std::bind(&amp;MinimalPublisher::timer_callback, this));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  private:</span><br><span class="line">    // private：下面的东西是&quot;私有的&quot;，只在类内部使用，外部访问不到</span><br><span class="line">    // 这就是定时器每次到点时要执行的回调函数</span><br><span class="line">    void timer_callback()</span><br><span class="line">    &#123;</span><br><span class="line">      // 3-3. 组织消息并发布</span><br><span class="line"></span><br><span class="line">      // auto：让编译器自动推断变量类型（这里推断为 std_msgs::msg::String）</span><br><span class="line">      // 这一行：创建一个 String 消息对象，起名叫 message</span><br><span class="line">      auto message = std_msgs::msg::String();</span><br><span class="line"></span><br><span class="line">      // 给消息的 data 字段（真正承载文本内容的部分）赋值</span><br><span class="line">      // &quot;Hello, world! &quot; + std::to_string(count_++)：</span><br><span class="line">      //   std::to_string(count_)：把数字 count_ 转成文本字符串</span><br><span class="line">      //   count_++：先用 count_ 当前的值，然后再把它加 1（所以下一条编号就 +1）</span><br><span class="line">      message.data = &quot;Hello, world! &quot; + std::to_string(count_++);</span><br><span class="line"></span><br><span class="line">      // RCLCPP_INFO：ROS2 提供的&quot;打印日志&quot;宏，类似 cout/printf，但会自动带上</span><br><span class="line">      //   节点名、时间戳等，方便调试。运行时你会在终端看到这行输出。</span><br><span class="line">      //   参数1：this-&gt;get_logger() —— 用当前节点自己的日志器</span><br><span class="line">      //   参数2：带 %s 的格式串 —— %s 是占位符，表示&quot;这里插入一个字符串&quot;</span><br><span class="line">      //   参数3：message.data.c_str() —— 把 C++ 的 string 转成 C 风格字符串（%s 要求）</span><br><span class="line">      RCLCPP_INFO(this-&gt;get_logger(), &quot;发布的消息：&#x27;%s&#x27;&quot;, message.data.c_str());</span><br><span class="line"></span><br><span class="line">      // 真正把消息发出去：调用 publisher_ 的 publish 方法</span><br><span class="line">      publisher_-&gt;publish(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ===== 下面三个是&quot;成员变量&quot;（对象内部存的数据），在构造函数里被初始化 =====</span><br><span class="line"></span><br><span class="line">    // 定时器对象。TimerBase::SharedPtr 是&quot;指向定时器的共享智能指针&quot;</span><br><span class="line">    //   SharedPtr = shared pointer：自动管理内存，用完不用手动 delete</span><br><span class="line">    rclcpp::TimerBase::SharedPtr timer_;</span><br><span class="line"></span><br><span class="line">    // 发布方对象，同样是智能指针</span><br><span class="line">    //   类型里带 &lt;std_msgs::msg::String&gt;，说明这个发布者只发 String 类型</span><br><span class="line">    rclcpp::Publisher&lt;std_msgs::msg::String&gt;::SharedPtr publisher_;</span><br><span class="line"></span><br><span class="line">    // 计数器：记录已经发了多少条。size_t 是&quot;足够大的无符号整数&quot;类型</span><br><span class="line">    size_t count_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// ==================== 程序入口 main ====================</span><br><span class="line">// 每个 C++ 程序都从 main 开始执行</span><br><span class="line">// int argc, char * argv[]：命令行参数（虽然这里没用到，但要原样传给 ROS2 初始化）</span><br><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">  // 2. 初始化 ROS2 客户端</span><br><span class="line">  //   做任何 ROS2 操作之前必须先调一次，它会读命令行参数、设置信号处理等</span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">  // 4. 调用 spin，让节点真正&quot;活起来&quot;</span><br><span class="line">  //   std::make_shared&lt;MinimalPublisher&gt;()：创建一个 MinimalPublisher 对象（智能指针）</span><br><span class="line">  //   rclcpp::spin(...)：进入&quot;事件循环&quot;——不停转着等待事件（比如定时器到点）</span><br><span class="line">  //     只要程序停在这里转，定时器就会每 500ms 触发一次 timer_callback</span><br><span class="line">  //   注意：spin 会&quot;阻塞&quot;在这一行，直到节点被关闭（比如按 Ctrl+C）才返回</span><br><span class="line">  rclcpp::spin(std::make_shared&lt;MinimalPublisher&gt;());</span><br><span class="line"></span><br><span class="line">  // 5. 释放资源：spin 返回后，清理 ROS2 相关的资源</span><br><span class="line">  rclcpp::shutdown();</span><br><span class="line">  return 0;   // 程序正常结束，返回 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="订阅方实现"><a href="#订阅方实现" class="headerlink" title="订阅方实现"></a>订阅方实现</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">    需求：订阅发布方发布的消息，并输出到终端。</span><br><span class="line">    步骤：</span><br><span class="line">        1.包含头文件；</span><br><span class="line">        2.初始化 ROS2 客户端；</span><br><span class="line">        3.定义节点类；</span><br><span class="line">            3-1.创建订阅方；</span><br><span class="line">            3-2.处理订阅到的消息。</span><br><span class="line">        4.调用spin函数，并传入节点对象指针；</span><br><span class="line">        5.释放资源。</span><br><span class="line"></span><br><span class="line">    ----------------------------------------------------------------</span><br><span class="line">    本文件是&quot;订阅者（listener）&quot;，与 demo01_talker_str（发布者）配套：</span><br><span class="line">      · demo01 往话题 &quot;topic&quot; 发 String 消息；</span><br><span class="line">      · 本文件 从话题 &quot;topic&quot; 收 String 消息，收到就打印。</span><br><span class="line">    两者靠【话题名 + 消息类型】对上号，构成&quot;发布 → 订阅&quot;的回路。</span><br><span class="line">    ----------------------------------------------------------------</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// ==================== 1. 包含头文件 ====================</span><br><span class="line">// 和发布方完全一样：rclcpp 核心库 + String 消息类型</span><br><span class="line">#include &quot;rclcpp/rclcpp.hpp&quot;</span><br><span class="line">#include &quot;std_msgs/msg/string.hpp&quot;</span><br><span class="line"></span><br><span class="line">// 引入占位符 _1，下面的 std::bind 要用到。</span><br><span class="line">// _1 代表&quot;回调函数的第 1 个参数&quot;——也就是将来收到的那条消息。</span><br><span class="line">using std::placeholders::_1;</span><br><span class="line"></span><br><span class="line">// ==================== 3. 定义节点类 ====================</span><br><span class="line">// MinimalSubscriber：订阅者节点类，同样继承自官方的 rclcpp::Node。</span><br><span class="line">// （继承之后，这个类本身就是一个 ROS2 节点，继承 Node 的各种能力）</span><br><span class="line">class MinimalSubscriber : public rclcpp::Node</span><br><span class="line">&#123;</span><br><span class="line">  public:</span><br><span class="line">    // 构造函数：对象一出生就自动执行，负责初始化</span><br><span class="line">    MinimalSubscriber() : Node(&quot;minimal_subscriber&quot;)  // 给节点起名 minimal_subscriber</span><br><span class="line">    &#123;</span><br><span class="line">      // 3-1. 创建订阅方 subscription_</span><br><span class="line">      // create_subscription&lt;消息类型&gt;(话题名, 队列深度, 回调函数)，三个参数：</span><br><span class="line">      //   · &quot;topic&quot; —— 话题名，必须和发布方 demo01 完全一致，否则收不到</span><br><span class="line">      //   · 10 —— QoS 历史深度，和发布方对应，最多缓存 10 条</span><br><span class="line">      //   · std::bind(&amp;MinimalSubscriber::topic_callback, this, _1) —— 回调函数</span><br><span class="line">      //       每收到一条消息，ROS2 就调用一次 topic_callback，其中：</span><br><span class="line">      //       &amp;MinimalSubscriber::topic_callback: 调哪个成员函数</span><br><span class="line">      //       this: 对当前这个对象调用</span><br><span class="line">      //       _1: 占位符，消息到来时自动填入，作为函数的第 1 个参数，等消息来的时候，就填入_1,对应形参msg。</span><br><span class="line">      // 返回一个智能指针，存进成员变量subscription_中。</span><br><span class="line">      subscription_ = this-&gt;create_subscription&lt;std_msgs::msg::String&gt;(</span><br><span class="line">        &quot;topic&quot;, 10, std::bind(&amp;MinimalSubscriber::topic_callback, this, _1));</span><br><span class="line">    &#125;</span><br><span class="line">  // 构建回调函数</span><br><span class="line">  private:</span><br><span class="line">    // 3-2. 处理订阅到的消息（回调函数）</span><br><span class="line">    //   每当话题上有新消息到达，ROS2 就【自动】调用一次这个函数，不用手动调。</span><br><span class="line">    //   参数 const std_msgs::msg::String &amp; msg：收到的消息</span><br><span class="line">    //     · const: 只读，承诺不修改消息内容</span><br><span class="line">    //     · &amp;: 引用，直接引用那块内存，避免拷贝，更高效</span><br><span class="line">    //   末尾的 const: 承诺本函数不修改对象自身的成员（只读方法）</span><br><span class="line">    void topic_callback(const std_msgs::msg::String &amp; msg) const</span><br><span class="line">    &#123;</span><br><span class="line">      // 把收到的消息内容打印出来（用法和发布方里的 RCLCPP_INFO 一样）</span><br><span class="line">      //   msg.data: String 消息里真正存文本的字段</span><br><span class="line">      //   .c_str(): 把 C++ 的 string 转成 C 风格字符串（%s 占位符要求这种格式）</span><br><span class="line">      RCLCPP_INFO(this-&gt;get_logger(), &quot;订阅的消息： &#x27;%s&#x27;&quot;, msg.data.c_str());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 成员变量：订阅方对象本身（智能指针，自动管理内存）</span><br><span class="line">    // 注意类型是 Subscription（订阅），区别于发布方的 Publisher</span><br><span class="line">    rclcpp::Subscription&lt;std_msgs::msg::String&gt;::SharedPtr subscription_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// ==================== 程序入口 main ====================</span><br><span class="line">// 每个 C++ 程序都从 main 开始执行</span><br><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">  // 2. 初始化 ROS2 客户端（做任何 ROS2 操作前必须先调一次）</span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">  // 4. 创建订阅者对象，并进入 spin 事件循环</span><br><span class="line">  //    spin 会一直转着等事件——只要有消息到达，就自动触发 topic_callback</span><br><span class="line">  //    （发布方靠&quot;定时器&quot;主动发；订阅方靠 spin&quot;被动等&quot;，这是两者本质区别）</span><br><span class="line">  rclcpp::spin(std::make_shared&lt;MinimalSubscriber&gt;());</span><br><span class="line"></span><br><span class="line">  // 5. 释放资源</span><br><span class="line">  rclcpp::shutdown();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><ol>
+<li>package.xml</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;depend&gt;rclcpp&lt;/depend&gt;</span><br><span class="line">&lt;depend&gt;std_msgs&lt;/depend&gt;</span><br><span class="line">&lt;depend&gt;base_interfaces_demo&lt;/depend&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>CmakeList.txt</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">find_package(ament_cmake REQUIRED)</span><br><span class="line">find_package(rclcpp REQUIRED)</span><br><span class="line">find_package(std_msgs REQUIRED)</span><br><span class="line">find_package(base_interfaces_demo REQUIRED)</span><br><span class="line">add_executable(demo01_talker_str src/demo01_talker_str.cpp)</span><br><span class="line">add_executable(demo02_listener_str src/demo02_listener_str.cpp)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo01_talker_str</span><br><span class="line">  rclcpp</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo02_listener_str</span><br><span class="line">  rclcpp</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">install(TARGETS demo01_talker_str demo02_listener_str</span><br><span class="line">  DESTINATION lib/$&#123;PROJECT_NAME&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colcon build --packages-select cpp01_topic</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">. install/setup.bash</span><br><span class="line">ros2 run cpp01_topic demo01_talker_str</span><br><span class="line">ros2 run cpp01_topic demo02_listenter_str</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707133933242.png" alt="image-20260707133932986"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707133952581.png" alt="image-20260707133952505"></p>
+<hr>
+<h2 id="话题通信自定义接口消息"><a href="#话题通信自定义接口消息" class="headerlink" title="话题通信自定义接口消息"></a>话题通信自定义接口消息</h2><p>流程与在功能包中编写可执行程序的流程类似</p>
+<ol>
+<li>创建并编辑.msg文件</li>
+<li>编辑配置文件</li>
+<li>编译</li>
+<li>测试</li>
+</ol>
+<h3 id="创建并编辑-msg文件"><a href="#创建并编辑-msg文件" class="headerlink" title="创建并编辑.msg文件"></a>创建并编辑.msg文件</h3><p>功能包base_interfaces_demo下新建msg文件夹，msg文件夹下新建Student.msg文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string   name</span><br><span class="line">int32    age</span><br><span class="line">float64  height</span><br></pre></td></tr></table></figure>
+
+<h3 id="编辑配置文件-1"><a href="#编辑配置文件-1" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><ol>
+<li>package.xml</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;build_depend&gt;rosidl_default_generators&lt;/build_depend&gt;</span><br><span class="line">&lt;exec_depend&gt;rosidl_default_runtime&lt;/exec_depend&gt;</span><br><span class="line">&lt;member_of_group&gt;rosidl_interface_packages&lt;/member_of_group&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>CMakeLists.txt文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">find_package(rosidl_default_generators REQUIRED)</span><br><span class="line"></span><br><span class="line">rosidl_generate_interfaces($&#123;PROJECT_NAME&#125;</span><br><span class="line">  &quot;msg/Student.msg&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>编译</li>
+</ol>
+<p>终端进入当前工作空间，编译功能包：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colcon build --packages-select base_interfaces_demo</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>测试</li>
+</ol>
+<p>编译完成之后，在工作空间下的install目录下将生成<code>Student.msg</code>文件对应的C++和Python文件，我们也可以在终端下进入工作空间，通过如下命令查看文件定义以及编译是否正常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. install/setup.bash</span><br><span class="line">ros2 interface show base_interfaces_demo/msg/Student</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707141005083.png" alt="image-20260707141004990"></p>
+<hr>
+<h2 id="话题通信之自定义消息"><a href="#话题通信之自定义消息" class="headerlink" title="话题通信之自定义消息"></a>话题通信之自定义消息</h2><blockquote>
+<p>C++文件中包含自定义消息相关头文件时，可能会抛出异常，可以配置VSCode中c_cpp_properties.json文件，在文件中的  includePath属性下添加一行：”${workspaceFolder}&#x2F;install&#x2F;base_interfaces_demo&#x2F;include&#x2F;**”</p>
+<p>添加完毕后，包含相关头文件时，就不会抛出异常了，其他接口文件或接口包的使用也与此同理。</p>
+</blockquote>
+<h3 id="发布方实现-1"><a href="#发布方实现-1" class="headerlink" title="发布方实现"></a>发布方实现</h3><p>功能包cpp01_topic的src目录下，新建C++文件demo01_talker_stu.cpp，并编辑文件，输入如下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">    需求：以某个固定频率（每 0.5s）发布学生信息（自定义消息 Student），</span><br><span class="line">          包含姓名(name)、年龄(age)、身高(height)。</span><br><span class="line">    说明：本文件和 demo01_talker_str 结构完全相同，唯一区别是消息类型</span><br><span class="line">          从官方的 String 换成了【自定义】的 base_interfaces_demo::msg::Student。</span><br><span class="line">          Student 在 base_interfaces_demo/msg/Student.msg 中定义：</span><br><span class="line">              string  name</span><br><span class="line">              int32   age</span><br><span class="line">              float64 height</span><br><span class="line">    步骤：</span><br><span class="line">        1.包含头文件；</span><br><span class="line">        2.初始化 ROS2 客户端；</span><br><span class="line">        3.定义节点类；</span><br><span class="line">            3-1.创建发布方；</span><br><span class="line">            3-2.创建定时器；</span><br><span class="line">            3-3.组织消息并发布。</span><br><span class="line">        4.调用 spin 函数，传入节点对象；</span><br><span class="line">        5.释放资源。</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// ==================== 1. 包含头文件 ====================</span><br><span class="line">// rclcpp 核心：提供 Node、init、spin、shutdown 等</span><br><span class="line">#include &quot;rclcpp/rclcpp.hpp&quot;</span><br><span class="line"></span><br><span class="line">// 自定义消息 Student 的头文件。</span><br><span class="line">//   ★文件名全小写 student，即使消息类型叫 Student（rosidl 生成时自动转小写）。</span><br><span class="line">//   路径 base_interfaces_demo/msg/student.hpp 对应类型 base_interfaces_demo::msg::Student</span><br><span class="line">#include &quot;base_interfaces_demo/msg/student.hpp&quot;</span><br><span class="line"></span><br><span class="line">// using namespace：引入整个命名空间，省得每次写全名。</span><br><span class="line">//   std::chrono_literals 让我们能直接写带单位的时间字面量 &quot;500ms&quot;。</span><br><span class="line">using namespace std::chrono_literals;</span><br><span class="line"></span><br><span class="line">// using 声明：把 base_interfaces_demo::msg::Student 这个长名字&quot;引入&quot;当前作用域，</span><br><span class="line">//   之后就可以直接写 Student，不用每次写 base_interfaces_demo::msg::Student。</span><br><span class="line">using base_interfaces_demo::msg::Student;</span><br><span class="line"></span><br><span class="line">// ==================== 3. 定义节点类 ====================</span><br><span class="line">// class 定义一个类。</span><br><span class="line">// : public rclcpp::Node 表示【公有继承】自官方的 Node 类——</span><br><span class="line">//   于是 MinimalPublisher 本身就是一个 ROS2 节点，白捡 Node 的能力（日志、发布/订阅接口等）。</span><br><span class="line">class MinimalPublisher : public rclcpp::Node</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    // 构造函数：名字和类名相同、没有返回类型；对象一出生就自动执行，负责初始化。</span><br><span class="line">    MinimalPublisher()</span><br><span class="line">    // 初始化列表：在对象&quot;一出生&quot;时就给成员赋初值（比在函数体里赋值更高效）。</span><br><span class="line">    //   Node(&quot;student_publisher&quot;)：调用父类 Node 的构造，给这个节点起名 student_publisher。</span><br><span class="line">    //   count_(0)：把成员变量 count_ 初始化为 0。</span><br><span class="line">    : Node(&quot;student_publisher&quot;), count_(0)</span><br><span class="line">    &#123;</span><br><span class="line">        // RCLCPP_INFO：ROS2 的日志打印宏（类似 printf），运行时会在终端输出。</span><br><span class="line">        //   第一个参数 this-&gt;get_logger()：用当前节点自己的日志器。</span><br><span class="line">        RCLCPP_INFO(this-&gt;get_logger(), &quot;开始发布消息！&quot;);</span><br><span class="line"></span><br><span class="line">        // 3-1. 创建发布方 publisher_：负责往某话题广播消息。</span><br><span class="line">        // create_publisher&lt;消息类型&gt;(话题名, 队列深度)</span><br><span class="line">        //   &lt;Student&gt;      —— 模板参数：指定发布的是 Student 类型（用了上面的 using 别名）</span><br><span class="line">        //   &quot;topic_stu&quot;    —— 话题名（订阅方必须用相同名字才能收到）</span><br><span class="line">        //   10             —— QoS 历史深度：订阅方来不及处理时，最多缓存 10 条历史消息</span><br><span class="line">        // this-&gt;：表示&quot;当前这个对象自己的&quot;；返回一个智能指针，存进成员 publisher_。</span><br><span class="line">        publisher_ = this-&gt;create_publisher&lt;Student&gt;(&quot;topic_stu&quot;, 10);</span><br><span class="line"></span><br><span class="line">        // 3-2. 创建定时器 timer_：每隔固定时间自动触发一次回调函数。</span><br><span class="line">        // create_wall_timer(间隔, 要调用的函数)</span><br><span class="line">        //   500ms —— 每 500 毫秒触发一次（即每秒 2 次）</span><br><span class="line">        //   std::bind(&amp;MinimalPublisher::timer_callback, this) ——</span><br><span class="line">        //     把&quot;本对象的 timer_callback 成员函数&quot;打包成一个可被回调的东西。</span><br><span class="line">        //     成员函数不能直接当回调用，必须用 std::bind 绑定 this，</span><br><span class="line">        //     这样回调发生时才知道&quot;对哪个对象&quot;调用。</span><br><span class="line">        timer_ = this-&gt;create_wall_timer(</span><br><span class="line">            500ms, std::bind(&amp;MinimalPublisher::timer_callback, this));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line">    // 定时器回调：每 0.5s 自动调用一次（不是我们手动调的，由 spin 里的事件循环触发）。</span><br><span class="line">    void timer_callback()</span><br><span class="line">    &#123;</span><br><span class="line">        // auto：让编译器自动推断变量类型（这里推断为 Student），少打字。</span><br><span class="line">        // 创建一条&quot;空&quot;的 Student 消息对象，名叫 stu。</span><br><span class="line">        auto stu = Student();</span><br><span class="line"></span><br><span class="line">        // 给消息的三个字段赋值（字段类型见 Student.msg）：</span><br><span class="line">        stu.name = &quot;张三&quot;;      // name   —— string  类型（C++ 里是 std::string）</span><br><span class="line">        stu.age = count_++;     // age    —— int32   类型；count_++ 是&quot;先用当前值，再 +1&quot;</span><br><span class="line">        stu.height = 1.65;      // height —— float64 类型（C++ 里是 double）</span><br><span class="line"></span><br><span class="line">        // 打印日志。</span><br><span class="line">        //   %s    → 字符串：stu.name 是 std::string，要用 .c_str() 转成 C 风格字符串才能配 %s</span><br><span class="line">        //   %d    → 整数  ：stu.age 是 int32，对应 %d</span><br><span class="line">        //   %.2f  → 浮点数（保留 2 位小数）：stu.height 是 float64(double)，对应 %f</span><br><span class="line">        //   ★height 是【变量】不是函数，写 stu.height，不能加 ()。</span><br><span class="line">        RCLCPP_INFO(this-&gt;get_logger(),</span><br><span class="line">                    &quot;学生信息：name = %s, age = %d, height = %.2f&quot;,</span><br><span class="line">                    stu.name.c_str(), stu.age, stu.height);</span><br><span class="line"></span><br><span class="line">        // 3-3. 真正把这条消息发出去。</span><br><span class="line">        publisher_-&gt;publish(stu);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ===== 成员变量（对象内部存的数据），在构造函数里被初始化 =====</span><br><span class="line"></span><br><span class="line">    // 定时器。TimerBase::SharedPtr 是&quot;共享智能指针&quot;：</span><br><span class="line">    //   SharedPtr 自动管理内存，用完不用手动 delete，能避免内存泄漏。</span><br><span class="line">    rclcpp::TimerBase::SharedPtr timer_;</span><br><span class="line"></span><br><span class="line">    // 发布方，同样是智能指针；类型里带 &lt;Student&gt; 表示它只发 Student 类型消息。</span><br><span class="line">    rclcpp::Publisher&lt;Student&gt;::SharedPtr publisher_;</span><br><span class="line"></span><br><span class="line">    // 计数器：记录已经发了多少条。size_t 是&quot;足够大的无符号整数&quot;类型。</span><br><span class="line">    size_t count_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// ==================== 程序入口 main ====================</span><br><span class="line">// 每个 C++ 程序都从 main 开始执行。</span><br><span class="line">// int argc, char * argv[]：命令行参数（这里原样传给 ROS2 初始化）。</span><br><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">    // 2. 初始化 ROS2 客户端（做任何 ROS2 操作前必须先调一次）。</span><br><span class="line">    rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">    // 4. 创建节点对象，并进入 spin 事件循环。</span><br><span class="line">    //   std::make_shared&lt;MinimalPublisher&gt;()：在堆上创建一个 MinimalPublisher 对象，</span><br><span class="line">    //     并返回指向它的共享智能指针。</span><br><span class="line">    //   rclcpp::spin(...)：进入事件循环，一直转着等事件（如定时器到点）；</span><br><span class="line">    //     只要停在这里转，定时器就会每 500ms 触发一次 timer_callback。</span><br><span class="line">    //     spin 会【阻塞】在这一行，直到节点被关闭（如按 Ctrl+C）才返回。</span><br><span class="line">    rclcpp::spin(std::make_shared&lt;MinimalPublisher&gt;());</span><br><span class="line"></span><br><span class="line">    // 5. 释放资源（spin 返回后，清理 ROS2 相关资源）。</span><br><span class="line">    rclcpp::shutdown();</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="订阅方实现-1"><a href="#订阅方实现-1" class="headerlink" title="订阅方实现"></a>订阅方实现</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">    需求：订阅发布方发布的学生消息（自定义消息 Student），并输出到终端。</span><br><span class="line">    说明：本文件和 demo02_listener_str 结构完全相同，唯一区别是消息类型</span><br><span class="line">          从官方 String 换成了【自定义】的 base_interfaces_demo::msg::Student。</span><br><span class="line">          它和 demo01_talker_stu 配套，靠【相同话题名 &quot;topic_stu&quot; + 相同类型 Student】对接。</span><br><span class="line">    步骤：</span><br><span class="line">        1.包含头文件；</span><br><span class="line">        2.初始化 ROS2 客户端；</span><br><span class="line">        3.定义节点类；</span><br><span class="line">            3-1.创建订阅方；</span><br><span class="line">            3-2.处理订阅到的消息。</span><br><span class="line">        4.调用 spin 函数，传入节点对象；</span><br><span class="line">        5.释放资源。</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// ==================== 1. 包含头文件 ====================</span><br><span class="line">// rclcpp 核心：提供 Node、init、spin、shutdown 等</span><br><span class="line">#include &quot;rclcpp/rclcpp.hpp&quot;</span><br><span class="line"></span><br><span class="line">// 自定义消息 Student 的头文件。</span><br><span class="line">//   ★后缀 .hpp（不是 .h）；文件名全小写 student。</span><br><span class="line">//   路径 base_interfaces_demo/msg/student.hpp 对应类型 base_interfaces_demo::msg::Student</span><br><span class="line">#include &quot;base_interfaces_demo/msg/student.hpp&quot;</span><br><span class="line"></span><br><span class="line">// 引入占位符 _1，下面的 std::bind 要用到。</span><br><span class="line">//   _1 代表&quot;回调函数的第 1 个参数&quot;——也就是将来收到的那条消息。</span><br><span class="line">using std::placeholders::_1;</span><br><span class="line"></span><br><span class="line">// using 声明：把 base_interfaces_demo::msg::Student 引入当前作用域，</span><br><span class="line">//   之后就可以直接写 Student，省得每次写全名。</span><br><span class="line">using base_interfaces_demo::msg::Student;</span><br><span class="line"></span><br><span class="line">// ==================== 3. 定义节点类 ====================</span><br><span class="line">// class 定义一个类；: public rclcpp::Node 表示【公有继承】自官方 Node，</span><br><span class="line">//   于是 MinimalSubscriber 本身就是一个 ROS2 节点。</span><br><span class="line">class MinimalSubscriber : public rclcpp::Node</span><br><span class="line">&#123;</span><br><span class="line">  public:</span><br><span class="line">    // 构造函数：对象一出生就自动执行，负责初始化。</span><br><span class="line">    MinimalSubscriber()</span><br><span class="line">    // 初始化列表：Node(&quot;student_subscriber&quot;) 调用父类构造，给节点起名。</span><br><span class="line">    : Node(&quot;student_subscriber&quot;)</span><br><span class="line">    &#123;</span><br><span class="line">      // 3-1. 创建订阅方 subscription_：从某话题接收消息。</span><br><span class="line">      // create_subscription&lt;消息类型&gt;(话题名, 队列深度, 回调函数)</span><br><span class="line">      //   &lt;Student&gt;     —— 模板参数：订阅的是 Student 类型（用了 using 别名）</span><br><span class="line">      //   &quot;topic_stu&quot;   —— 话题名：必须和发布方 demo01_talker_stu 完全一致，否则收不到！</span><br><span class="line">      //   10            —— QoS 历史深度，和发布方对应</span><br><span class="line">      //   std::bind(&amp;MinimalSubscriber::topic_callback, this, _1) —— 回调函数：</span><br><span class="line">      //     把&quot;本对象的 topic_callback&quot;打包成回调；this 表示对当前对象调用；</span><br><span class="line">      //     _1 是占位符，表示消息到来时自动填入，作为函数的第 1 个参数。</span><br><span class="line">      subscription_ = this-&gt;create_subscription&lt;Student&gt;(</span><br><span class="line">        &quot;topic_stu&quot;, 10,</span><br><span class="line">        std::bind(&amp;MinimalSubscriber::topic_callback, this, _1));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  private:</span><br><span class="line">    // 3-2. 回调函数：每收到一条消息，ROS2 就自动调用一次它（不用我们手动调）。</span><br><span class="line">    //   参数 const Student &amp; msg：收到的消息</span><br><span class="line">    //     const：只读，承诺不修改消息内容</span><br><span class="line">    //     &amp;    ：引用，直接引用那块内存，避免拷贝（消息可能很大，这样更高效）</span><br><span class="line">    //   末尾的 const：承诺本函数不修改对象自身的成员（只读方法）</span><br><span class="line">    void topic_callback(const Student &amp; msg) const</span><br><span class="line">    &#123;</span><br><span class="line">      // 把收到的学生消息打印出来。</span><br><span class="line">      //   msg.name.c_str() —— name 是 std::string，用 .c_str() 转成 C 字符串配 %s</span><br><span class="line">      //   msg.age          —— int32，配 %d</span><br><span class="line">      //   msg.height       —— float64(double)，配 %.2f；★是变量不是函数，不加 ()</span><br><span class="line">      RCLCPP_INFO(this-&gt;get_logger(),</span><br><span class="line">                  &quot;订阅的学生消息：name=%s, age=%d, height=%.2f&quot;,</span><br><span class="line">                  msg.name.c_str(), msg.age, msg.height);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 成员变量：订阅方对象本身（智能指针，自动管理内存）。</span><br><span class="line">    //   类型是 Subscription（订阅），区别于发布方的 Publisher。</span><br><span class="line">    rclcpp::Subscription&lt;Student&gt;::SharedPtr subscription_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// ==================== 程序入口 main ====================</span><br><span class="line">// 每个 C++ 程序从 main 开始执行。</span><br><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">  // 2. 初始化 ROS2 客户端（做任何 ROS2 操作前必须先调一次）。</span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">  // 4. 创建订阅者对象，并进入 spin 事件循环。</span><br><span class="line">  //   spin 会一直转着等事件——只要有消息到达，就自动触发 topic_callback。</span><br><span class="line">  //   （发布方靠定时器&quot;主动发&quot;；订阅方靠 spin&quot;被动等&quot;，这是两者本质区别）</span><br><span class="line">  rclcpp::spin(std::make_shared&lt;MinimalSubscriber&gt;());</span><br><span class="line"></span><br><span class="line">  // 5. 释放资源（spin 返回后——比如按了 Ctrl+C——清理 ROS2 相关资源）。</span><br><span class="line">  rclcpp::shutdown();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="编辑配置文件-2"><a href="#编辑配置文件-2" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><p>只要修改CMakeList.txt文件即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"># find dependencies</span><br><span class="line">find_package(ament_cmake REQUIRED)</span><br><span class="line">find_package(rclcpp REQUIRED)</span><br><span class="line">find_package(std_msgs REQUIRED)</span><br><span class="line">find_package(base_interfaces_demo REQUIRED)</span><br><span class="line">add_executable(demo01_talker_str src/demo01_talker_str.cpp)</span><br><span class="line">add_executable(demo02_listener_str src/demo02_listener_str.cpp)</span><br><span class="line">add_executable(demo01_talker_stu src/demo01_talker_stu.cpp)</span><br><span class="line">add_executable(demo02_listener_stu src/demo02_listener_stu.cpp)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo01_talker_str</span><br><span class="line">  rclcpp</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo02_listener_str</span><br><span class="line">  rclcpp</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo01_talker_stu</span><br><span class="line">  rclcpp</span><br><span class="line">  base_interfaces_demo</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo02_listener_stu</span><br><span class="line">  rclcpp</span><br><span class="line">  base_interfaces_demo</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">install(TARGETS demo01_talker_str demo02_listener_str demo01_talker_stu demo02_listener_stu</span><br><span class="line">  DESTINATION lib/$&#123;PROJECT_NAME&#125;)</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<h3 id="编译-1"><a href="#编译-1" class="headerlink" title="编译"></a>编译</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colcon build --packages-select cpp01_topic</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行-1"><a href="#执行-1" class="headerlink" title="执行"></a>执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. install/setup.bash</span><br><span class="line">ros2 run cpp01_topic demo03_talker_stu</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. install/setup.bash </span><br><span class="line">ros2 run cpp01_topic demo04_listener_stu</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707153048844.png" alt="image-20260707153048674"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707153100994.png" alt="image-20260707153100880"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/chap2_0_%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6%E7%AE%80%E4%BB%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1637,6 +1490,367 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int64 num</span><br><span class="line">---</span><br><span class="line">int64 sum</span><br><span class="line">---</span><br><span class="line">float64 progress</span><br></pre></td></tr></table></figure>
 
 <p>文件中声明的数据被<code>---</code>分割为三部分，上半部分用于声明请求数据，中间部分用于声明响应数据，下半部分用于声明连续反馈数据。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/" class="post-title-link" itemprop="url">Reeds-Shepp 曲线生成逻辑</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:07:50" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="W2-Day2-·-Reeds-Shepp-曲线生成逻辑"><a href="#W2-Day2-·-Reeds-Shepp-曲线生成逻辑" class="headerlink" title="W2 Day2 · Reeds-Shepp 曲线生成逻辑"></a>W2 Day2 · Reeds-Shepp 曲线生成逻辑</h1><p>本文按<strong>报告第 2 章结构</strong>（2.1–2.6）组织，内容 + 行号都来自源码核实。报告里 Day2 负责”<strong>RS 曲线生成逻辑</strong>“这一交付物，同时贡献”关键类 &#x2F; 关键函数”的<strong>算法层</strong>部分：</p>
+<blockquote>
+<ul>
+<li><strong>关键类</strong> → 2.2 <code>ReedsSheppStateSpace</code></li>
+<li><strong>关键函数</strong> → 2.3（<code>reedsShepp</code> 取最短 + 5 个分组生成函数 + <code>distance</code>&#x2F;<code>interpolate</code>）</li>
+<li><strong>RS 曲线生成逻辑</strong> → 2.4（核心）</li>
+</ul>
+<p>源码：<a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/src/reeds_shepp.cpp">reeds_shepp.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/include/freespace_planning_algorithms/reeds_shepp.hpp">reeds_shepp.hpp</a></p>
+<p>上游衔接：Day1 的 <code>makePlan</code>(L487) → A* → <code>estimateCost</code> → 本节 RS。下游：Day3 Hybrid A* 深读。</p>
+</blockquote>
+<hr>
+<h2 id="RS-曲线在规划框架中的定位与功能"><a href="#RS-曲线在规划框架中的定位与功能" class="headerlink" title="RS 曲线在规划框架中的定位与功能"></a>RS 曲线在规划框架中的定位与功能</h2><p>汽车不能像机器人那样原地旋转，必须遵守非完整运动学约束，即受限于最小转弯半径。</p>
+<ul>
+<li><strong>RS功能：在</strong>最小转弯半径约束<strong>下、<strong>允许前进 + 倒车</strong>，连接两个位姿 <code>(x, y, θ)</code> 的</strong>最短路径**。是 Dubins 曲线推广。</li>
+<li><strong>为什么泊车要用它</strong>：侧方&#x2F;倒车入库必须倒车，普通几何曲线（只前进）做不到；RS 给出”前进段 + 倒车段”拼接的最短解。</li>
+<li><strong>在这个模块的作用</strong>：RS 是 <code>freespace_planning_algorithms</code> 算法库里的<strong>几何工具</strong>，RS曲线并非直接求解从起点到终点的最终路径，而是作为图搜索算法（A* RRT*）的节点拓展工具。主要负责两个功能：<ol>
+<li><strong>启发函数</strong>（heuristic）：估”从当前点到终点还多远”，引导 A* 往终点搜（<code>astar_search.cpp:227</code>）。</li>
+<li><strong>shoot &#x2F; 终结</strong>：搜到某点时用 RS 直奔终点，命中即接上**（Day3 详读）**。</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. FreespacePlannerNode&lt;br&gt;(处理ROS消息与状态机)&quot;] --&gt; Astar[&quot;2. AstarSearch 或 RRT*&lt;br&gt;(基于Costmap进行全局避障寻路)&quot;]</span><br><span class="line">    Astar -- &quot;A*尝试直达终点 / RRT*尝试向外生长&quot; --&gt; RS[&quot;3. ReedsSheppStateSpace&lt;br&gt;(输入 s0 和 s1 计算两点间最短曲线)&quot;]</span><br><span class="line">    RS -- &quot;返回离散点集与代价&quot; --&gt; Astar</span><br></pre></td></tr></table></figure>
+
+<p>在 <strong>Hybrid A</strong>* 中，RS 曲线常被用作 <strong>Shot Heuristic (解析解剪枝)</strong>：当算法探索到一个靠近终点的节点时，如果不考虑障碍物，直接用 RS 曲线连向终点。如果这条 RS 曲线在 Costmap 上不碰撞，搜索就直接宣告成功，极大地加速了计算。</p>
+<hr>
+<h2 id="关键类：ReedsSheppStateSpace（成员表）"><a href="#关键类：ReedsSheppStateSpace（成员表）" class="headerlink" title="关键类：ReedsSheppStateSpace（成员表）"></a>关键类：<code>ReedsSheppStateSpace</code>（成员表）</h2><blockquote>
+<p>类声明：<code>class ReedsSheppStateSpace</code>（hpp L93）。它<strong>不是 ROS 节点</strong>，是纯几何工具类（无订阅&#x2F;发布&#x2F;定时器）。读它看”持有什么状态 + 提供哪些几何方法”。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型 &#x2F; 签名</th>
+<th>行号</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rho_</code></td>
+<td><code>double</code></td>
+<td>hpp L138</td>
+<td><strong>转弯半径</strong>（唯一状态），所有弧的半径</td>
+</tr>
+<tr>
+<td>枚举 <code>ReedsSheppPathSegmentType</code></td>
+<td><code>{RS_NOP, RS_LEFT, RS_STRAIGHT, RS_RIGHT}</code></td>
+<td>hpp L97</td>
+<td><strong>段形状</strong>（4 种，注意：方向不在这里）</td>
+</tr>
+<tr>
+<td><code>reedsSheppPathType[18][5]</code></td>
+<td><code>static const</code> 表</td>
+<td>hpp L100 &#x2F; cpp L623</td>
+<td><strong>18 种路径类型</strong>（每类是一组段形状序列）</td>
+</tr>
+<tr>
+<td>内部类 <code>ReedsSheppPath</code></td>
+<td>—</td>
+<td>hpp L103</td>
+<td>一条路径的完整描述：<code>type_</code> + <code>length_[5]</code> + <code>totalLength_</code></td>
+</tr>
+<tr>
+<td><code>struct StateXYT</code></td>
+<td><code>{x, y, yaw}</code></td>
+<td>hpp L121</td>
+<td>输入位姿（位置 + 航向）</td>
+</tr>
+<tr>
+<td><code>distance(s0, s1)</code></td>
+<td>方法</td>
+<td>hpp L130 &#x2F; cpp L656</td>
+<td>返回两位姿的<strong>RS 最短距离</strong>（米）</td>
+</tr>
+<tr>
+<td><code>reedsShepp(s0, s1)</code></td>
+<td>方法</td>
+<td>hpp L133 &#x2F; cpp L661</td>
+<td>返回<strong>最短路径对象</strong></td>
+</tr>
+<tr>
+<td><code>interpolate(s0, path, seg)</code></td>
+<td>方法</td>
+<td>hpp L135 &#x2F; cpp L670</td>
+<td>沿路径<strong>采样</strong>一个点（给定弧长）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<ul>
+<li><strong>方向（前进&#x2F;倒车）不在枚举里</strong>，而在 <code>length_[i]</code> 的<strong>正负号</strong>：正&#x3D;前进，负&#x3D;倒车。枚举只编码”直&#x2F;左&#x2F;右”三种<strong>形状</strong>。</li>
+<li><strong>路径类型是 18 类</strong>（不是网上常说的 48）。<code>reedsSheppPathType[18][5]</code>（cpp L623），48 是对称展开的理论数，代码用 18 规范行 + 对称变换实现。数组大小是[18,5]因为一个RS曲线最多由5个运动段组成。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="关键函数"><a href="#关键函数" class="headerlink" title="关键函数"></a>关键函数</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>行号</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>reedsShepp(x,y,phi)</code>（匿名命名空间）</td>
+<td>cpp L608</td>
+<td><strong>★取最短入口</strong>：依次调 5 个分组生成器，全程保留最短路径</td>
+</tr>
+<tr>
+<td><code>CSC</code> &#x2F; <code>CCC</code> &#x2F; <code>CCCC</code> &#x2F; <code>CCSC</code> &#x2F; <code>CCSCC</code></td>
+<td>cpp L158 &#x2F; L235 &#x2F; L332 &#x2F; L430 &#x2F; L575</td>
+<td><strong>5 个分组生成器</strong>：各算一类候选路径，用对称变换翻倍后留最短</td>
+</tr>
+<tr>
+<td><code>distance(s0, s1)</code></td>
+<td>cpp L656</td>
+<td><code>rho_ * path.length()</code> —— 归一化长度 × 半径 &#x3D; 实际米数</td>
+</tr>
+<tr>
+<td><code>reedsShepp(s0, s1)</code>（类方法）</td>
+<td>cpp L661</td>
+<td>坐标转到起点系 + 除以 <code>rho_</code> 归一化 → 调匿名 <code>reedsShepp</code></td>
+</tr>
+<tr>
+<td><code>interpolate(s0, path, seg)</code></td>
+<td>cpp L670</td>
+<td>沿路径走 <code>seg</code> 弧长，逐段积分出目标点（见证曲率跳变）</td>
+</tr>
+<tr>
+<td>8 个公式函数 <code>LpSpLp</code> 等</td>
+<td>cpp L125–L555</td>
+<td>各对应 RS 论文一个 formula（8.1–8.11），算单一几何解</td>
+</tr>
+</tbody></table>
+<p>**核心数学结算：**CSC等生成器，内部会调用LpSpLp等函数，然后再接着被核心函数reedsShepp()依次调用，每次调用都会比较当前算出的路径长度与已有最短长度比较，保留最短的一条。</p>
+<p>**对外计算接口：**ReedsShepp,外界获取最短路径的方法，首相将起点与终点之间的相对差值，进行平移旋转，转化为相对于原点的目标点。除以最小转弯半径，把问题归一化到单位园的集合问题上，调用匿名函数reedsShepp结算最短路径。. </p>
+<p>**轨迹离散化：*<em>interpolate，会给定一条RS path 和一个长度 seg (通常是离散步长，如0.1米)，通过积分计算出在0.1米处，车辆实际坐标。这样，可以使得外层A</em>等全局算法，每隔0.1米采样一个点，然后去Costmap上确认是否撞墙。</p>
+<p>下面贴<strong>最关键的两个</strong>（<code>reedsShepp</code> 取最短 + <code>CSC</code> 分组生成器）带标注代码。</p>
+<h3 id="①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度"><a href="#①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度" class="headerlink" title="① reedsShepp 取最短入口（cpp L608）——整个 RS 生成的总调度"></a>① <code>reedsShepp</code> 取最短入口（cpp L608）——整个 RS 生成的总调度</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ReedsSheppStateSpace::ReedsSheppPath <span class="title">reedsShepp</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ReedsSheppStateSpace::ReedsSheppPath path;   <span class="comment">// 默认 length = max（“目前最短”初值设无穷大）</span></span><br><span class="line">  <span class="built_in">CSC</span>(x, y, phi, path);     <span class="comment">// L611  圆弧-直线-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCC</span>(x, y, phi, path);     <span class="comment">// L612  三圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCCC</span>(x, y, phi, path);    <span class="comment">// L613  四圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSC</span>(x, y, phi, path);    <span class="comment">// L614  圆弧-圆弧-直-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSCC</span>(x, y, phi, path);   <span class="comment">// L615  圆弧-圆弧-直-圆弧-圆弧类候选</span></span><br><span class="line">  <span class="keyword">return</span> path;              <span class="comment">// 全程只留最短，返回的就是最短路径</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p><code>path</code> 是<strong>引用传入</strong>每个分组函数，初值 <code>length=max</code>。每个分组里每算出一个候选 <code>L</code>，只要 <code>L &lt; path.length()</code> 就覆盖 <code>path</code>。<br>所以”取最短”不是最后比一次，而是<strong>边算边贪心更新</strong>——5 个分组跑完，<code>path</code> 自然就是全局最短。</p>
+</blockquote>
+<h3 id="②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板"><a href="#②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板" class="headerlink" title="② CSC 分组生成器（cpp L158）——对称变换翻倍的样板"></a>② <code>CSC</code> 分组生成器（cpp L158）——对称变换翻倍的样板</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CSC</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi, ReedsSheppStateSpace::ReedsSheppPath &amp; path)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">double</span> t, u, v, L_min = path.<span class="built_in">length</span>(), L;</span><br><span class="line">  <span class="comment">// 基本形 LpSpLp（左-直-左，全前进）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, y, phi, t, u, v) &amp;&amp; L_min &gt; (L = std::<span class="built_in">abs</span>(t)+std::<span class="built_in">abs</span>(u)+std::<span class="built_in">abs</span>(v))) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], t, u, v);   <span class="comment">// 类型行 14</span></span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip：坐标/符号取反 → 得到“全倒车”版本（同一条形状，方向全反）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], -t, -u, -v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// reflect：y、phi 取反 → 左右镜像（左转变右转）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, -y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], t, u, v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip + reflect：两者叠加</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, -y, phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], -t, -u, -v);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// …后面还有 LpSpRp（左-直-右）的同样 4 种对称，共 8 个候选</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="③-distance（cpp-L656）——A-启发函数最终调的就是它"><a href="#③-distance（cpp-L656）——A-启发函数最终调的就是它" class="headerlink" title="③ distance（cpp L656）——A* 启发函数最终调的就是它"></a>③ <code>distance</code>（cpp L656）——A* 启发函数最终调的就是它</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">ReedsSheppStateSpace::distance</span><span class="params">(<span class="type">const</span> StateXYT &amp; s0, <span class="type">const</span> StateXYT &amp; s1)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> rho_ * <span class="built_in">reedsShepp</span>(s0, s1).<span class="built_in">length</span>();   <span class="comment">// 归一化长度 × 半径 = 实际米数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这就是 Day1→Day2 的接口：A* 的 <code>estimateCost</code>(astar_search.cpp:227) → <code>calcReedsSheppDistance</code>(L31) → 本函数 → 给 A* 当”到终点还多远”的启发值。</p>
+</blockquote>
+<hr>
+<h2 id="RS-曲线生成逻辑"><a href="#RS-曲线生成逻辑" class="headerlink" title="RS 曲线生成逻辑"></a>RS 曲线生成逻辑</h2><h3 id="三种形状-×-两种方向-6-基元"><a href="#三种形状-×-两种方向-6-基元" class="headerlink" title="三种形状 × 两种方向 &#x3D; 6 基元"></a>三种形状 × 两种方向 &#x3D; 6 基元</h3><p>RS 把任意路径切成”段”，每段是下面 3 种<strong>形状</strong>之一，方向由长度正负决定：</p>
+<table>
+<thead>
+<tr>
+<th>形状</th>
+<th>枚举（hpp L97）</th>
+<th>曲率</th>
+<th>弧长正</th>
+<th>弧长负</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>直行</td>
+<td><code>RS_STRAIGHT</code></td>
+<td><code>0</code></td>
+<td>前进直行</td>
+<td>倒车直行</td>
+</tr>
+<tr>
+<td>左转弧</td>
+<td><code>RS_LEFT</code></td>
+<td><code>+1/rho_</code></td>
+<td>前进左转</td>
+<td>倒车左转</td>
+</tr>
+<tr>
+<td>右转弧</td>
+<td><code>RS_RIGHT</code></td>
+<td><code>−1/rho_</code></td>
+<td>前进右转</td>
+<td>倒车右转</td>
+</tr>
+<tr>
+<td>（占位）</td>
+<td><code>RS_NOP</code></td>
+<td>—</td>
+<td>未用段填这个</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p>→ <strong>3 形状 × 2 方向 &#x3D; 6 基元</strong>（S+&#x2F;S−&#x2F;L+&#x2F;L−&#x2F;R+&#x2F;R−）。<code>RS_NOP</code> 仅用于把不足 5 段的路径补齐。</p>
+<blockquote>
+<p>公式函数命名就是这个意思：<code>LpSpLp</code> &#x3D; Left-plus、Straight-plus、Left-plus（全前进的”左-直-左”）；<code>m</code>&#x3D;minus&#x3D;倒车，如 <code>LpRmL</code>&#x3D;左前-右倒-左前。</p>
+</blockquote>
+<h3 id="路径类型表：18-类（cpp-L623–642）"><a href="#路径类型表：18-类（cpp-L623–642）" class="headerlink" title="路径类型表：18 类（cpp L623–642）"></a>路径类型表：18 类（cpp L623–642）</h3><p>每类是一组”段形状序列”（最多 5 段，多的位填 <code>RS_NOP</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>类型行</th>
+<th>段形状序列</th>
+<th>举例含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CCC</td>
+<td>0 &#x2F; 1</td>
+<td>L-R-L &#x2F; R-L-R</td>
+<td>三圆弧（如 LRL）</td>
+</tr>
+<tr>
+<td>CCCC</td>
+<td>2 &#x2F; 3</td>
+<td>L-R-L-R &#x2F; R-L-R-S&#x2F;…</td>
+<td>四圆弧</td>
+</tr>
+<tr>
+<td>CCSC</td>
+<td>4–11</td>
+<td>含一段直线的 4 段组合</td>
+<td>圆-圆-直-圆 等</td>
+</tr>
+<tr>
+<td>CSC</td>
+<td>12–15</td>
+<td>L-S-R &#x2F; R-S-L &#x2F; L-S-L &#x2F; R-S-R</td>
+<td><strong>圆-直-圆</strong>（最常见，如 LSL&#x2F;LSR）</td>
+</tr>
+<tr>
+<td>CCSCC</td>
+<td>16 &#x2F; 17</td>
+<td>L-R-S-L-R &#x2F; R-L-S-R-L</td>
+<td>五段组合</td>
+</tr>
+</tbody></table>
+<h3 id="生成-取最短流程"><a href="#生成-取最短流程" class="headerlink" title="生成 + 取最短流程"></a>生成 + 取最短流程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Input[&quot;输入：两位姿 s0(x,y,yaw), s1(x,y,yaw)&quot;] --&gt; ClassMethod[&quot;外部类方法 reedsShepp(s0, s1)&quot;]</span><br><span class="line">    </span><br><span class="line">    ClassMethod --&gt; Trans1[&quot;① 坐标系转换：&lt;br&gt;将 s1 平移旋转到 s0 局部坐标系&quot;]</span><br><span class="line">    Trans1 --&gt; Trans2[&quot;② 空间归一化：&lt;br&gt;将 x, y 除以 rho_&lt;br&gt;(转入单位半径圆的数学空间计算)&quot;]</span><br><span class="line">    </span><br><span class="line">    Trans2 --&gt; AnonMethod[&quot;匿名核心函数 ::reedsShepp(x, y, phi)&lt;br&gt;初始化 path 容器 (length = MAX)&quot;]</span><br><span class="line">    </span><br><span class="line">    AnonMethod --&gt; CSC[&quot;1. CSC() (曲线-直线-曲线)&quot;]</span><br><span class="line">    CSC --&gt; CCC[&quot;2. CCC() (纯曲线)&quot;]</span><br><span class="line">    CCC --&gt; CCCC[&quot;3. CCCC()&quot;]</span><br><span class="line">    CCCC --&gt; CCSC[&quot;4. CCSC()&quot;]</span><br><span class="line">    CCSC --&gt; CCSCC[&quot;5. CCSCC()&quot;]</span><br><span class="line">    </span><br><span class="line">    subgraph GroupCalc [&quot;各组核心函数内的计算与穷举机制&quot;]</span><br><span class="line">        Step1[&quot;调用基础数学公式 (如 LpSpLp)&lt;br&gt;计算一个基准解&quot;] --&gt; Step2[&quot;应用几何对称性生成 4~8 个候选组合：&lt;br&gt;1. Time flip (时间翻转)&lt;br&gt;2. Reflect (镜像反射)&lt;br&gt;3. Backwards (反向倒车)&quot;]</span><br><span class="line">        Step2 --&gt; Step3&#123;&quot;计算组合总弧长 L = |t|+|u|+|v|...&lt;br&gt;L &lt; L_min ?&quot;&#125;</span><br><span class="line">        Step3 -- Yes --&gt; Step4[&quot;覆盖当前最优 path&lt;br&gt;更新最小长度 L_min&quot;]</span><br><span class="line">        Step3 -- No --&gt; Step1</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CSC -.-&gt; GroupCalc</span><br><span class="line">    </span><br><span class="line">    CCSCC --&gt; Return[&quot;返回 path (全局最优最短)：&lt;br&gt;type_ 指向 18 种曲线分类之一&lt;br&gt;length_[5] 记录各段弧长 (正负表示前进/倒车)&quot;]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="关键认知：分段常曲率，G1-连续但曲率不连续"><a href="#关键认知：分段常曲率，G1-连续但曲率不连续" class="headerlink" title="关键认知：分段常曲率，G1 连续但曲率不连续"></a>关键认知：分段常曲率，G1 连续但<strong>曲率不连续</strong></h3><p>看 <code>interpolate</code>（cpp L670）就懂——它<strong>逐段</strong>走，每段是<strong>恒定曲率</strong>的运动：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (path.type_[i]) &#123;</span><br><span class="line">  <span class="keyword">case</span> RS_LEFT:     ... yaw += v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 +1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_RIGHT:    ... yaw -= v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 -1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_STRAIGHT: ... 直线        <span class="keyword">break</span>;   <span class="comment">// 曲率 0</span></span><br><span class="line">  <span class="keyword">case</span> RS_NOP:      <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>含义：</p>
+<ul>
+<li><strong>每段内部曲率恒定</strong>（直&#x3D;0，弧&#x3D;±1&#x2F;rho_）。</li>
+<li><strong>段与段交界处曲率跳变</strong>（如 0 → 1&#x2F;rho_，或 +1&#x2F;rho_ → −1&#x2F;rho_）。</li>
+<li>所以 RS 路径是 <strong>G1 连续</strong>（位置 + 切向连续，车能不”瞬移”地跟），但<strong>不是 C² 曲率连续</strong>。</li>
+</ul>
+<blockquote>
+<p>若 W3&#x2F;W4 验收口径要求”<strong>曲率连续</strong>“，RS 单独<strong>不满足</strong>（段间曲率阶跃）——需要后接样条&#x2F;回旋曲线（clothoid）平滑，或由控制器做限幅。</p>
+</blockquote>
+<hr>
+<h2 id="关键参数"><a href="#关键参数" class="headerlink" title="关键参数"></a>关键参数</h2><p>RS 工具类本身只有 <strong>1 个参数</strong>：<code>rho_</code>（转弯半径，hpp L138）。它<strong>不是节点参数</strong>，而是由 A* 传进来的：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>来源</th>
+<th>Day1 默认值</th>
+<th>对 RS 的影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rho_</code>（turning radius）</td>
+<td>A* 的 <code>minimum_turning_radius</code> 传入（astar_search.cpp:227 的 <code>radius</code>）</td>
+<td><code>0.5</code> m</td>
+<td>半径越小，车能转的弯越急，RS 弧段越短</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><code>minimum_turning_radius</code> 是 Day1 参数表（cpp L295）里的算法参数，Day3 读 A* 时会看到它怎么传给 <code>ReedsSheppStateSpace</code>。Day2 只需知道：<strong><code>rho_</code> 决定 RS 所有弧的半径</strong>。</p>
+</blockquote>
+<h2 id="RS-在整条链路里的位置"><a href="#RS-在整条链路里的位置" class="headerlink" title="RS 在整条链路里的位置"></a>RS 在整条链路里的位置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. freespace_planner 节点&lt;br&gt;algo_-&gt;makePlan(current, goal)&quot;]</span><br><span class="line">    </span><br><span class="line">    Astar[&quot;2. AstarSearch::search()&lt;br&gt;A* 全局图搜索主循环&quot;]</span><br><span class="line">    </span><br><span class="line">    Node --&gt; Astar</span><br><span class="line">    </span><br><span class="line">    subgraph Astar_Internal [&quot;A* 内部调用逻辑&quot;]</span><br><span class="line">        EstCost[&quot;扩展节点时：&lt;br&gt;estimateCost(每个节点)&quot;]</span><br><span class="line">        Shoot[&quot;搜到终点附近时：&lt;br&gt;RS Shoot 直奔终点&quot;]</span><br><span class="line">        </span><br><span class="line">        CalcRS[&quot;calcReedsSheppDistance()&quot;]</span><br><span class="line">        </span><br><span class="line">        EstCost --&gt; CalcRS</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    Astar --&gt; EstCost</span><br><span class="line">    Astar -.-&gt;|&quot;条件触发&quot;| Shoot</span><br><span class="line">    </span><br><span class="line">    subgraph RS_Library [&quot;ReedsShepp 核心数学库&quot;]</span><br><span class="line">        RSDist[&quot;ReedsSheppStateSpace::distance()&quot;]</span><br><span class="line">        RSCore[&quot;ReedsSheppStateSpace::reedsShepp()&lt;br&gt;★ 获取最短 RS 曲线 ★&quot;]</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CalcRS --&gt; RSDist</span><br><span class="line">    Shoot --&gt; RSCore</span><br><span class="line">    RSDist --&gt; RSCore</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<ol>
+<li><strong>启发式代价计算</strong>：<code>estimateCost</code> 用 RS 快速估算当前点到终点的RS最短距离</li>
+<li><strong>解析展开</strong>（RS Shoot）：A* 搜到终点附近时，直接用 RS 接上终点</li>
+</ol>
+</blockquote>
 
       
     </div>
@@ -1903,220 +2117,6 @@
 </tbody></table>
 <h2 id="与前三天的衔接"><a href="#与前三天的衔接" class="headerlink" title="与前三天的衔接"></a>与前三天的衔接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    %% 自定义节点样式 (美观、护眼、专业)</span><br><span class="line">    classDef planner fill:#e3f2fd,stroke:#1e88e5,stroke-width:2px,color:#0d47a1</span><br><span class="line">    classDef cruise fill:#fff3e0,stroke:#fb8c00,stroke-width:2px,color:#e65100</span><br><span class="line">    classDef surround fill:#ffebee,stroke:#e53935,stroke-width:2px,color:#b71c1c</span><br><span class="line">    classDef control fill:#e8f5e9,stroke:#43a047,stroke-width:2px,color:#1b5e20</span><br><span class="line">    classDef note fill:#fafafa,stroke:#9e9e9e,stroke-dasharray: 5 5,color:#616161</span><br><span class="line"></span><br><span class="line">    %% --- 1. 核心规划层 ---</span><br><span class="line">    subgraph SG_Plan [&quot;🗺️ 全局/泊车规划层 (Day 1-3)&quot;]</span><br><span class="line">        FP[&quot;freespace_planner&lt;br&gt;生成理想 Trajectory&lt;br&gt;(含倒车打点)&quot;]:::planner</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    %% --- 2. 安全兜底层 ---</span><br><span class="line">    subgraph SG_Avoid [&quot;🛡️ 局部避障兜底层 (Day 4)&quot;]</span><br><span class="line">        </span><br><span class="line">        OCP[&quot;obstacle_cruise_planner&lt;br&gt;🚗 行驶中：前方障碍检测&lt;br&gt;👉 动作：插停车点 / 降速跟车&quot;]:::cruise</span><br><span class="line">        </span><br><span class="line">        SOC[&quot;surround_obstacle_checker&lt;br&gt;🛑 起步/低速：360°防碰撞&lt;br&gt;👉 动作：检测过近发限速指令&quot;]:::surround</span><br><span class="line">        </span><br><span class="line">        Accept1&gt;验收①：轨迹不穿越障碍]:::note</span><br><span class="line">        OCP -.-&gt;|&quot;确保轨迹自身安全&quot;| Accept1</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    %% --- 3. 控制执行层 ---</span><br><span class="line">    subgraph SG_Control [&quot;⚙️ 速度仲裁与执行层 (下游)&quot;]</span><br><span class="line">        Ctrl[&quot;Controller / Cmd Gate&lt;br&gt;轨迹跟踪 &amp; 限速仲裁&quot;]:::control</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    %% --- 数据流向连接 ---</span><br><span class="line">    %% 轨迹流 (主干线)</span><br><span class="line">    FP ==&gt;|&quot;1. 原始轨迹 (Trajectory)&quot;| OCP</span><br><span class="line">    OCP ==&gt;|&quot;2. 改写速度后的安全轨迹 (Trajectory)&quot;| Ctrl</span><br><span class="line">    </span><br><span class="line">    %% 状态/指令流 (旁路线)</span><br><span class="line">    SOC -.-&gt;|&quot;3. 独立系统限速指令 (VelocityLimit=0)&lt;br&gt;强制覆盖轨迹速度&quot;| Ctrl</span><br></pre></td></tr></table></figure>
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/chap2_0_%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/07/08/chap2_0_%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">话题通信</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:11:44" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ROS2%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ROS2学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="话题通信"><a href="#话题通信" class="headerlink" title="话题通信"></a>话题通信</h1><h3 id="几个C-概念"><a href="#几个C-概念" class="headerlink" title="几个C++概念"></a>几个C++概念</h3><ol>
-<li>class:描述一类东西的数据还有功能</li>
-<li>:public rclcpp::Node:类把Node的功能全部继承下来，自己就是一个节点</li>
-<li>构造函数：和类同名的特殊函数，对象、产生时自动跑一次，做初始化</li>
-<li>this-&gt;：指向当前对象的成员</li>
-<li>指针&#x2F;智能指针：指向某块内存的地址，SharedPtr（共享指针）全自动管理内存，不用手动释放</li>
-<li>auto:让编译器自动推理变量类型</li>
-<li>std::bind：把成员函数+对象打包成一个可以回调的东西</li>
-<li>Main：每个C++程序入口</li>
-</ol>
-<p>关系图</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">类  (class)         ←—— 图纸 / 模具 / 设计方案</span><br><span class="line">↓ 用图纸造出实物</span><br><span class="line">对象 (object)       ←—— 按图纸真正造出来的、能用的东西</span><br><span class="line">↓ 对象身上有</span><br><span class="line">成员 (member)       ←—— 成员变量(存数据) + 成员函数(能做的事)</span><br><span class="line">↓ 对象出生时自动跑</span><br><span class="line">构造函数(constructor)←—— 出厂时的&quot;一次性初始化&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>构造函数：出厂的初始化操作，是一个特殊的成员函数，有两个特点：</p>
-<ol>
-<li>名字和类一样</li>
-<li>对象一旦被造出来，自动执行一次，负责出厂初始化</li>
-</ol>
-<p>对象是在main函数里构造的。</p>
-<p>正确流程：</p>
-<p>先写一个类，描述一种东西，用类名（）照着就能造出一个对象(实物),对象身上有一堆成员，包括变量还有函数，对象一产生，构造函数就会自动跑一遍，把成员初始化好。</p>
-<hr>
-<p>话题通信基于发布订阅模式。</p>
-<p>话题通信是一种以发布订阅的方式实现不同节点之间数据传输的通信模型。数据发布对象称为发布方，数据订阅对象称之为订阅方，发布方和订阅方通过话题相关联，发布方将消息发布在话题上，订阅方则从该话题订阅消息，消息的流向是单向的。</p>
-<p><img src="https://rzl6.github.io/ROS2_Tuition/assets/2.2%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B1.gif" alt="img"></p>
-<p>话题通信的发布方与订阅方是一种多对多的关系，也即，同一话题下可以存在多个发布方，也可以存在多个订阅方，这意味着数据会出现交叉传输的情况，当然如果没有订阅方，数据传输也会出现丢失的情况。</p>
-<p><img src="https://rzl6.github.io/ROS2_Tuition/assets/2.2%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B2.gif" alt="img"></p>
-<h2 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h2><ol>
-<li>编写话题通信实现，发布方以某个频率发布文本，订阅发&#x3D;方订阅消息并且输出在终端。</li>
-<li>编写话题通信实现，发布方以某个频率发布自定义接口消息，订阅方订阅消息，输出在终端</li>
-</ol>
-<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>编写发布方实现；</p>
-<p>编写订阅方实现；</p>
-<p>编辑配置文件；</p>
-<p>编译；</p>
-<p>执行。</p>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
-<li><p>创建工作空间:ws01_plumbing 本章代码存储在该工作空间下</p>
-</li>
-<li><p>实际中会创建专门的接口功能包定义接口文件，预先创建接口功能包</p>
-</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create --build-type ament_cmake base_interface_demo</span><br></pre></td></tr></table></figure>
-
-<p>该功能包用于保存本章自定义接口文件</p>
-<ol start="3">
-<li>终端进入工作空间的src目录，调用命令创建c++功能包</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 pkg create cpp01_topic --build-type ament_cmake --dependencies rclcpp std_msgs base_interfaces_demo</span><br></pre></td></tr></table></figure>
-
-<h2 id="话题通信之原生消息"><a href="#话题通信之原生消息" class="headerlink" title="话题通信之原生消息"></a>话题通信之原生消息</h2><p>ROS2 C++ 节点程序骨架</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">ROS2 C++ 节点程序</span><br><span class="line">│</span><br><span class="line">├── ① 头文件 #include</span><br><span class="line">│   ├── rclcpp/rclcpp.hpp         → 提供 Node / init / spin / shutdown</span><br><span class="line">│   └── std_msgs/msg/string.hpp   → 提供 String 消息类型</span><br><span class="line">│</span><br><span class="line">├── ② main 函数（程序入口）</span><br><span class="line">│   ├── rclcpp::init(argc, argv)        → 初始化 ROS2（必须最先调）</span><br><span class="line">│   ├── rclcpp::spin(节点对象)          → 进入事件循环（阻塞，靠它&quot;活着&quot;）</span><br><span class="line">│   └── rclcpp::shutdown()              → 释放资源</span><br><span class="line">│</span><br><span class="line">├── ③ 节点类（继承官方 rclcpp::Node）★核心</span><br><span class="line">│   │</span><br><span class="line">│   ├── 构造函数（对象出生时自动跑，做初始化）</span><br><span class="line">│   │   ├── Node(&quot;名字&quot;)        → 给节点起名</span><br><span class="line">│   │   ├── demo01: 建 publisher_（发布方）+ timer_（定时器）</span><br><span class="line">│   │   └── demo02: 建 subscription_（订阅方，带回调）</span><br><span class="line">│   │</span><br><span class="line">│   ├── 成员变量（对象身上存的数据）</span><br><span class="line">│   │   ├── demo01: publisher_、timer_、count_</span><br><span class="line">│   │   └── demo02: subscription_</span><br><span class="line">│   │</span><br><span class="line">│   └── 回调函数（事件来了被【自动】调用）</span><br><span class="line">│       ├── demo01: timer_callback   → 定时器到点 → 组织消息 → publish</span><br><span class="line">│       └── demo02: topic_callback   → 消息到达 → 打印</span><br><span class="line">│</span><br><span class="line">└── ④ 构建配置（让 .cpp 变成能 ros2 run 的程序）</span><br><span class="line">    ├── CMakeLists.txt → add_executable + ament_target_dependencies + install</span><br><span class="line">    └── package.xml    → 声明依赖 (rclcpp、std_msgs)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>发布者-&gt;订阅者链接回路</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">demo01（发布者 / 主动推）              demo02（订阅者 / 被动收）</span><br><span class="line">─────────────────────────              ─────────────────────────</span><br><span class="line"></span><br><span class="line">timer_  每 0.5 秒触发一次               subscription_  持续监听</span><br><span class="line">     │                                        ▲</span><br><span class="line">     ▼                                        │</span><br><span class="line">timer_callback                           topic_callback</span><br><span class="line">├─ 拼出 &quot;Hello, world! N&quot;                 └─ 打印 &quot;订阅的消息: ...&quot;</span><br><span class="line">└─ publisher_-&gt;publish()  ─── /topic ──▶  (消息一到，ROS2 自动调用)</span><br><span class="line">                            (String 类型)</span><br><span class="line"></span><br><span class="line">═══════ 回路闭合的三个对接条件 ═══════</span><br><span class="line">     ① 话题名 &quot;topic&quot;     → 两边必须【完全一致】</span><br><span class="line">     ② 消息类型 String    → 两边必须【完全一致】</span><br><span class="line">     ③ QoS 深度 10        → 兼容即可</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="发布方实现"><a href="#发布方实现" class="headerlink" title="发布方实现"></a>发布方实现</h3><p>功能包cpp01_topic的src目录下，新建C++文件demo01_talker_str.cpp，并编辑文件，输入如下内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line">/*  </span><br><span class="line">  需求：以某个固定频率发送文本&quot;hello world!&quot;，文本后缀编号，每发送一条消息，编号递增1。</span><br><span class="line">  步骤：</span><br><span class="line">    1.包含头文件；</span><br><span class="line">    2.初始化 ROS2 客户端；</span><br><span class="line">    3.定义节点类；</span><br><span class="line">      3-1.创建发布方；</span><br><span class="line">      3-2.创建定时器；</span><br><span class="line">      3-3.组织消息并发布。</span><br><span class="line">    4.调用spin函数，并传入节点对象指针；</span><br><span class="line">    5.释放资源。</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// ==================== 1. 包含头文件 ====================</span><br><span class="line">// rclcpp.hpp —— ROS2 的 C++ 核心库头文件</span><br><span class="line">#include &quot;rclcpp/rclcpp.hpp&quot;</span><br><span class="line"></span><br><span class="line">// std_msgs/msg/string.hpp —— 标准消息库里提供的 String 消息类型</span><br><span class="line">#include &quot;std_msgs/msg/string.hpp&quot;</span><br><span class="line"></span><br><span class="line">// using namespace ...：引入命名空间，省得每次写全名</span><br><span class="line">// std::chrono_literals 让我们可以直接写 &quot;500ms&quot; 这种带单位的时间字面量</span><br><span class="line">//   不写这行的话，下面的 500ms 会编译报错</span><br><span class="line">using namespace std::chrono_literals;</span><br><span class="line"></span><br><span class="line">// ==================== 3. 定义节点类 ====================</span><br><span class="line">// class：定义一个&quot;类&quot;（图纸/模板）</span><br><span class="line">// MinimalPublisher：类的名字（自己起的）</span><br><span class="line">// : public rclcpp::Node：表示&quot;公有继承自 rclcpp::Node&quot;</span><br><span class="line">//   —— 也就是我们自己造的这个类，本身就是一个 ROS2 节点</span><br><span class="line">//   继承 Node 已经实现好的一堆功能（日志、命名、参数管理…）</span><br><span class="line">class MinimalPublisher : public rclcpp::Node</span><br><span class="line">&#123;</span><br><span class="line">  public:</span><br><span class="line">    // 构造函数：名字必须和类名相同，没有返回值类型</span><br><span class="line">    // 当我们&quot;new 一个 MinimalPublisher 对象&quot;时，这段代码自动执行，完成初始化</span><br><span class="line">    MinimalPublisher()</span><br><span class="line">	// 初始化列表，对象产生给成员变量初始值，首先调用父类Node的构造函数，给节点</span><br><span class="line">	//命名，把成员变量count_ 初始化为 0</span><br><span class="line">    : Node(&quot;minimal_publisher&quot;), count_(0)</span><br><span class="line">    &#123;</span><br><span class="line">      // 3-1. 创建发布方 publisher：负责往某个话题上广播消息</span><br><span class="line">      // this-&gt;create_publisher&lt;消息类型&gt;(&quot;话题名&quot;, 队列深度)</span><br><span class="line">      //   &lt;std_msgs::msg::String&gt; 是&quot;模板参数&quot;，告诉它我们要发的是 String 消息</span><br><span class="line">      //   &quot;topic&quot; 是话题名字（将来订阅方必须用相同名字才能收到）</span><br><span class="line">      //   10 是 QoS（服务质量）里的&quot;历史深度&quot;：</span><br><span class="line">      //     如果订阅方一时处理不过来，最多帮它缓存 10 条历史消息，超过就丢旧的</span><br><span class="line">      // 返回的是一个&quot;智能指针&quot;，存进成员变量 publisher_，以后用它来 publish</span><br><span class="line">      publisher_ = this-&gt;create_publisher&lt;std_msgs::msg::String&gt;(&quot;topic&quot;, 10);</span><br><span class="line"></span><br><span class="line">      // 3-2. 创建定时器：每隔固定时间自动调用一次某个函数</span><br><span class="line">      // create_wall_timer(间隔时间, 要被调用的函数)</span><br><span class="line">      //   500ms：每 500 毫秒触发一次（即每秒 2 次）</span><br><span class="line">      //   std::bind(&amp;MinimalPublisher::timer_callback, this)：</span><br><span class="line">      //     把&quot;本对象的 timer_callback 成员函数&quot;打包成一个可被回调的东西</span><br><span class="line">      //     （C++ 里成员函数不能直接当回调，必须绑上 this 才知道对哪个对象调用）</span><br><span class="line">      timer_ = this-&gt;create_wall_timer(</span><br><span class="line">          500ms, std::bind(&amp;MinimalPublisher::timer_callback, this));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  private:</span><br><span class="line">    // private：下面的东西是&quot;私有的&quot;，只在类内部使用，外部访问不到</span><br><span class="line">    // 这就是定时器每次到点时要执行的回调函数</span><br><span class="line">    void timer_callback()</span><br><span class="line">    &#123;</span><br><span class="line">      // 3-3. 组织消息并发布</span><br><span class="line"></span><br><span class="line">      // auto：让编译器自动推断变量类型（这里推断为 std_msgs::msg::String）</span><br><span class="line">      // 这一行：创建一个 String 消息对象，起名叫 message</span><br><span class="line">      auto message = std_msgs::msg::String();</span><br><span class="line"></span><br><span class="line">      // 给消息的 data 字段（真正承载文本内容的部分）赋值</span><br><span class="line">      // &quot;Hello, world! &quot; + std::to_string(count_++)：</span><br><span class="line">      //   std::to_string(count_)：把数字 count_ 转成文本字符串</span><br><span class="line">      //   count_++：先用 count_ 当前的值，然后再把它加 1（所以下一条编号就 +1）</span><br><span class="line">      message.data = &quot;Hello, world! &quot; + std::to_string(count_++);</span><br><span class="line"></span><br><span class="line">      // RCLCPP_INFO：ROS2 提供的&quot;打印日志&quot;宏，类似 cout/printf，但会自动带上</span><br><span class="line">      //   节点名、时间戳等，方便调试。运行时你会在终端看到这行输出。</span><br><span class="line">      //   参数1：this-&gt;get_logger() —— 用当前节点自己的日志器</span><br><span class="line">      //   参数2：带 %s 的格式串 —— %s 是占位符，表示&quot;这里插入一个字符串&quot;</span><br><span class="line">      //   参数3：message.data.c_str() —— 把 C++ 的 string 转成 C 风格字符串（%s 要求）</span><br><span class="line">      RCLCPP_INFO(this-&gt;get_logger(), &quot;发布的消息：&#x27;%s&#x27;&quot;, message.data.c_str());</span><br><span class="line"></span><br><span class="line">      // 真正把消息发出去：调用 publisher_ 的 publish 方法</span><br><span class="line">      publisher_-&gt;publish(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ===== 下面三个是&quot;成员变量&quot;（对象内部存的数据），在构造函数里被初始化 =====</span><br><span class="line"></span><br><span class="line">    // 定时器对象。TimerBase::SharedPtr 是&quot;指向定时器的共享智能指针&quot;</span><br><span class="line">    //   SharedPtr = shared pointer：自动管理内存，用完不用手动 delete</span><br><span class="line">    rclcpp::TimerBase::SharedPtr timer_;</span><br><span class="line"></span><br><span class="line">    // 发布方对象，同样是智能指针</span><br><span class="line">    //   类型里带 &lt;std_msgs::msg::String&gt;，说明这个发布者只发 String 类型</span><br><span class="line">    rclcpp::Publisher&lt;std_msgs::msg::String&gt;::SharedPtr publisher_;</span><br><span class="line"></span><br><span class="line">    // 计数器：记录已经发了多少条。size_t 是&quot;足够大的无符号整数&quot;类型</span><br><span class="line">    size_t count_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// ==================== 程序入口 main ====================</span><br><span class="line">// 每个 C++ 程序都从 main 开始执行</span><br><span class="line">// int argc, char * argv[]：命令行参数（虽然这里没用到，但要原样传给 ROS2 初始化）</span><br><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">  // 2. 初始化 ROS2 客户端</span><br><span class="line">  //   做任何 ROS2 操作之前必须先调一次，它会读命令行参数、设置信号处理等</span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">  // 4. 调用 spin，让节点真正&quot;活起来&quot;</span><br><span class="line">  //   std::make_shared&lt;MinimalPublisher&gt;()：创建一个 MinimalPublisher 对象（智能指针）</span><br><span class="line">  //   rclcpp::spin(...)：进入&quot;事件循环&quot;——不停转着等待事件（比如定时器到点）</span><br><span class="line">  //     只要程序停在这里转，定时器就会每 500ms 触发一次 timer_callback</span><br><span class="line">  //   注意：spin 会&quot;阻塞&quot;在这一行，直到节点被关闭（比如按 Ctrl+C）才返回</span><br><span class="line">  rclcpp::spin(std::make_shared&lt;MinimalPublisher&gt;());</span><br><span class="line"></span><br><span class="line">  // 5. 释放资源：spin 返回后，清理 ROS2 相关的资源</span><br><span class="line">  rclcpp::shutdown();</span><br><span class="line">  return 0;   // 程序正常结束，返回 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="订阅方实现"><a href="#订阅方实现" class="headerlink" title="订阅方实现"></a>订阅方实现</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">    需求：订阅发布方发布的消息，并输出到终端。</span><br><span class="line">    步骤：</span><br><span class="line">        1.包含头文件；</span><br><span class="line">        2.初始化 ROS2 客户端；</span><br><span class="line">        3.定义节点类；</span><br><span class="line">            3-1.创建订阅方；</span><br><span class="line">            3-2.处理订阅到的消息。</span><br><span class="line">        4.调用spin函数，并传入节点对象指针；</span><br><span class="line">        5.释放资源。</span><br><span class="line"></span><br><span class="line">    ----------------------------------------------------------------</span><br><span class="line">    本文件是&quot;订阅者（listener）&quot;，与 demo01_talker_str（发布者）配套：</span><br><span class="line">      · demo01 往话题 &quot;topic&quot; 发 String 消息；</span><br><span class="line">      · 本文件 从话题 &quot;topic&quot; 收 String 消息，收到就打印。</span><br><span class="line">    两者靠【话题名 + 消息类型】对上号，构成&quot;发布 → 订阅&quot;的回路。</span><br><span class="line">    ----------------------------------------------------------------</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// ==================== 1. 包含头文件 ====================</span><br><span class="line">// 和发布方完全一样：rclcpp 核心库 + String 消息类型</span><br><span class="line">#include &quot;rclcpp/rclcpp.hpp&quot;</span><br><span class="line">#include &quot;std_msgs/msg/string.hpp&quot;</span><br><span class="line"></span><br><span class="line">// 引入占位符 _1，下面的 std::bind 要用到。</span><br><span class="line">// _1 代表&quot;回调函数的第 1 个参数&quot;——也就是将来收到的那条消息。</span><br><span class="line">using std::placeholders::_1;</span><br><span class="line"></span><br><span class="line">// ==================== 3. 定义节点类 ====================</span><br><span class="line">// MinimalSubscriber：订阅者节点类，同样继承自官方的 rclcpp::Node。</span><br><span class="line">// （继承之后，这个类本身就是一个 ROS2 节点，继承 Node 的各种能力）</span><br><span class="line">class MinimalSubscriber : public rclcpp::Node</span><br><span class="line">&#123;</span><br><span class="line">  public:</span><br><span class="line">    // 构造函数：对象一出生就自动执行，负责初始化</span><br><span class="line">    MinimalSubscriber() : Node(&quot;minimal_subscriber&quot;)  // 给节点起名 minimal_subscriber</span><br><span class="line">    &#123;</span><br><span class="line">      // 3-1. 创建订阅方 subscription_</span><br><span class="line">      // create_subscription&lt;消息类型&gt;(话题名, 队列深度, 回调函数)，三个参数：</span><br><span class="line">      //   · &quot;topic&quot; —— 话题名，必须和发布方 demo01 完全一致，否则收不到</span><br><span class="line">      //   · 10 —— QoS 历史深度，和发布方对应，最多缓存 10 条</span><br><span class="line">      //   · std::bind(&amp;MinimalSubscriber::topic_callback, this, _1) —— 回调函数</span><br><span class="line">      //       每收到一条消息，ROS2 就调用一次 topic_callback，其中：</span><br><span class="line">      //       &amp;MinimalSubscriber::topic_callback: 调哪个成员函数</span><br><span class="line">      //       this: 对当前这个对象调用</span><br><span class="line">      //       _1: 占位符，消息到来时自动填入，作为函数的第 1 个参数，等消息来的时候，就填入_1,对应形参msg。</span><br><span class="line">      // 返回一个智能指针，存进成员变量subscription_中。</span><br><span class="line">      subscription_ = this-&gt;create_subscription&lt;std_msgs::msg::String&gt;(</span><br><span class="line">        &quot;topic&quot;, 10, std::bind(&amp;MinimalSubscriber::topic_callback, this, _1));</span><br><span class="line">    &#125;</span><br><span class="line">  // 构建回调函数</span><br><span class="line">  private:</span><br><span class="line">    // 3-2. 处理订阅到的消息（回调函数）</span><br><span class="line">    //   每当话题上有新消息到达，ROS2 就【自动】调用一次这个函数，不用手动调。</span><br><span class="line">    //   参数 const std_msgs::msg::String &amp; msg：收到的消息</span><br><span class="line">    //     · const: 只读，承诺不修改消息内容</span><br><span class="line">    //     · &amp;: 引用，直接引用那块内存，避免拷贝，更高效</span><br><span class="line">    //   末尾的 const: 承诺本函数不修改对象自身的成员（只读方法）</span><br><span class="line">    void topic_callback(const std_msgs::msg::String &amp; msg) const</span><br><span class="line">    &#123;</span><br><span class="line">      // 把收到的消息内容打印出来（用法和发布方里的 RCLCPP_INFO 一样）</span><br><span class="line">      //   msg.data: String 消息里真正存文本的字段</span><br><span class="line">      //   .c_str(): 把 C++ 的 string 转成 C 风格字符串（%s 占位符要求这种格式）</span><br><span class="line">      RCLCPP_INFO(this-&gt;get_logger(), &quot;订阅的消息： &#x27;%s&#x27;&quot;, msg.data.c_str());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 成员变量：订阅方对象本身（智能指针，自动管理内存）</span><br><span class="line">    // 注意类型是 Subscription（订阅），区别于发布方的 Publisher</span><br><span class="line">    rclcpp::Subscription&lt;std_msgs::msg::String&gt;::SharedPtr subscription_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// ==================== 程序入口 main ====================</span><br><span class="line">// 每个 C++ 程序都从 main 开始执行</span><br><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">  // 2. 初始化 ROS2 客户端（做任何 ROS2 操作前必须先调一次）</span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">  // 4. 创建订阅者对象，并进入 spin 事件循环</span><br><span class="line">  //    spin 会一直转着等事件——只要有消息到达，就自动触发 topic_callback</span><br><span class="line">  //    （发布方靠&quot;定时器&quot;主动发；订阅方靠 spin&quot;被动等&quot;，这是两者本质区别）</span><br><span class="line">  rclcpp::spin(std::make_shared&lt;MinimalSubscriber&gt;());</span><br><span class="line"></span><br><span class="line">  // 5. 释放资源</span><br><span class="line">  rclcpp::shutdown();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><ol>
-<li>package.xml</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;depend&gt;rclcpp&lt;/depend&gt;</span><br><span class="line">&lt;depend&gt;std_msgs&lt;/depend&gt;</span><br><span class="line">&lt;depend&gt;base_interfaces_demo&lt;/depend&gt;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>CmakeList.txt</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">find_package(ament_cmake REQUIRED)</span><br><span class="line">find_package(rclcpp REQUIRED)</span><br><span class="line">find_package(std_msgs REQUIRED)</span><br><span class="line">find_package(base_interfaces_demo REQUIRED)</span><br><span class="line">add_executable(demo01_talker_str src/demo01_talker_str.cpp)</span><br><span class="line">add_executable(demo02_listener_str src/demo02_listener_str.cpp)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo01_talker_str</span><br><span class="line">  rclcpp</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo02_listener_str</span><br><span class="line">  rclcpp</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">install(TARGETS demo01_talker_str demo02_listener_str</span><br><span class="line">  DESTINATION lib/$&#123;PROJECT_NAME&#125;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colcon build --packages-select cpp01_topic</span><br></pre></td></tr></table></figure>
-
-<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">. install/setup.bash</span><br><span class="line">ros2 run cpp01_topic demo01_talker_str</span><br><span class="line">ros2 run cpp01_topic demo02_listenter_str</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707133933242.png" alt="image-20260707133932986"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707133952581.png" alt="image-20260707133952505"></p>
-<hr>
-<h2 id="话题通信自定义接口消息"><a href="#话题通信自定义接口消息" class="headerlink" title="话题通信自定义接口消息"></a>话题通信自定义接口消息</h2><p>流程与在功能包中编写可执行程序的流程类似</p>
-<ol>
-<li>创建并编辑.msg文件</li>
-<li>编辑配置文件</li>
-<li>编译</li>
-<li>测试</li>
-</ol>
-<h3 id="创建并编辑-msg文件"><a href="#创建并编辑-msg文件" class="headerlink" title="创建并编辑.msg文件"></a>创建并编辑.msg文件</h3><p>功能包base_interfaces_demo下新建msg文件夹，msg文件夹下新建Student.msg文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string   name</span><br><span class="line">int32    age</span><br><span class="line">float64  height</span><br></pre></td></tr></table></figure>
-
-<h3 id="编辑配置文件-1"><a href="#编辑配置文件-1" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><ol>
-<li>package.xml</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;build_depend&gt;rosidl_default_generators&lt;/build_depend&gt;</span><br><span class="line">&lt;exec_depend&gt;rosidl_default_runtime&lt;/exec_depend&gt;</span><br><span class="line">&lt;member_of_group&gt;rosidl_interface_packages&lt;/member_of_group&gt;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>CMakeLists.txt文件</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">find_package(rosidl_default_generators REQUIRED)</span><br><span class="line"></span><br><span class="line">rosidl_generate_interfaces($&#123;PROJECT_NAME&#125;</span><br><span class="line">  &quot;msg/Student.msg&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>编译</li>
-</ol>
-<p>终端进入当前工作空间，编译功能包：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colcon build --packages-select base_interfaces_demo</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>测试</li>
-</ol>
-<p>编译完成之后，在工作空间下的install目录下将生成<code>Student.msg</code>文件对应的C++和Python文件，我们也可以在终端下进入工作空间，通过如下命令查看文件定义以及编译是否正常：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. install/setup.bash</span><br><span class="line">ros2 interface show base_interfaces_demo/msg/Student</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707141005083.png" alt="image-20260707141004990"></p>
-<hr>
-<h2 id="话题通信之自定义消息"><a href="#话题通信之自定义消息" class="headerlink" title="话题通信之自定义消息"></a>话题通信之自定义消息</h2><blockquote>
-<p>C++文件中包含自定义消息相关头文件时，可能会抛出异常，可以配置VSCode中c_cpp_properties.json文件，在文件中的  includePath属性下添加一行：”${workspaceFolder}&#x2F;install&#x2F;base_interfaces_demo&#x2F;include&#x2F;**”</p>
-<p>添加完毕后，包含相关头文件时，就不会抛出异常了，其他接口文件或接口包的使用也与此同理。</p>
-</blockquote>
-<h3 id="发布方实现-1"><a href="#发布方实现-1" class="headerlink" title="发布方实现"></a>发布方实现</h3><p>功能包cpp01_topic的src目录下，新建C++文件demo01_talker_stu.cpp，并编辑文件，输入如下内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">    需求：以某个固定频率（每 0.5s）发布学生信息（自定义消息 Student），</span><br><span class="line">          包含姓名(name)、年龄(age)、身高(height)。</span><br><span class="line">    说明：本文件和 demo01_talker_str 结构完全相同，唯一区别是消息类型</span><br><span class="line">          从官方的 String 换成了【自定义】的 base_interfaces_demo::msg::Student。</span><br><span class="line">          Student 在 base_interfaces_demo/msg/Student.msg 中定义：</span><br><span class="line">              string  name</span><br><span class="line">              int32   age</span><br><span class="line">              float64 height</span><br><span class="line">    步骤：</span><br><span class="line">        1.包含头文件；</span><br><span class="line">        2.初始化 ROS2 客户端；</span><br><span class="line">        3.定义节点类；</span><br><span class="line">            3-1.创建发布方；</span><br><span class="line">            3-2.创建定时器；</span><br><span class="line">            3-3.组织消息并发布。</span><br><span class="line">        4.调用 spin 函数，传入节点对象；</span><br><span class="line">        5.释放资源。</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// ==================== 1. 包含头文件 ====================</span><br><span class="line">// rclcpp 核心：提供 Node、init、spin、shutdown 等</span><br><span class="line">#include &quot;rclcpp/rclcpp.hpp&quot;</span><br><span class="line"></span><br><span class="line">// 自定义消息 Student 的头文件。</span><br><span class="line">//   ★文件名全小写 student，即使消息类型叫 Student（rosidl 生成时自动转小写）。</span><br><span class="line">//   路径 base_interfaces_demo/msg/student.hpp 对应类型 base_interfaces_demo::msg::Student</span><br><span class="line">#include &quot;base_interfaces_demo/msg/student.hpp&quot;</span><br><span class="line"></span><br><span class="line">// using namespace：引入整个命名空间，省得每次写全名。</span><br><span class="line">//   std::chrono_literals 让我们能直接写带单位的时间字面量 &quot;500ms&quot;。</span><br><span class="line">using namespace std::chrono_literals;</span><br><span class="line"></span><br><span class="line">// using 声明：把 base_interfaces_demo::msg::Student 这个长名字&quot;引入&quot;当前作用域，</span><br><span class="line">//   之后就可以直接写 Student，不用每次写 base_interfaces_demo::msg::Student。</span><br><span class="line">using base_interfaces_demo::msg::Student;</span><br><span class="line"></span><br><span class="line">// ==================== 3. 定义节点类 ====================</span><br><span class="line">// class 定义一个类。</span><br><span class="line">// : public rclcpp::Node 表示【公有继承】自官方的 Node 类——</span><br><span class="line">//   于是 MinimalPublisher 本身就是一个 ROS2 节点，白捡 Node 的能力（日志、发布/订阅接口等）。</span><br><span class="line">class MinimalPublisher : public rclcpp::Node</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    // 构造函数：名字和类名相同、没有返回类型；对象一出生就自动执行，负责初始化。</span><br><span class="line">    MinimalPublisher()</span><br><span class="line">    // 初始化列表：在对象&quot;一出生&quot;时就给成员赋初值（比在函数体里赋值更高效）。</span><br><span class="line">    //   Node(&quot;student_publisher&quot;)：调用父类 Node 的构造，给这个节点起名 student_publisher。</span><br><span class="line">    //   count_(0)：把成员变量 count_ 初始化为 0。</span><br><span class="line">    : Node(&quot;student_publisher&quot;), count_(0)</span><br><span class="line">    &#123;</span><br><span class="line">        // RCLCPP_INFO：ROS2 的日志打印宏（类似 printf），运行时会在终端输出。</span><br><span class="line">        //   第一个参数 this-&gt;get_logger()：用当前节点自己的日志器。</span><br><span class="line">        RCLCPP_INFO(this-&gt;get_logger(), &quot;开始发布消息！&quot;);</span><br><span class="line"></span><br><span class="line">        // 3-1. 创建发布方 publisher_：负责往某话题广播消息。</span><br><span class="line">        // create_publisher&lt;消息类型&gt;(话题名, 队列深度)</span><br><span class="line">        //   &lt;Student&gt;      —— 模板参数：指定发布的是 Student 类型（用了上面的 using 别名）</span><br><span class="line">        //   &quot;topic_stu&quot;    —— 话题名（订阅方必须用相同名字才能收到）</span><br><span class="line">        //   10             —— QoS 历史深度：订阅方来不及处理时，最多缓存 10 条历史消息</span><br><span class="line">        // this-&gt;：表示&quot;当前这个对象自己的&quot;；返回一个智能指针，存进成员 publisher_。</span><br><span class="line">        publisher_ = this-&gt;create_publisher&lt;Student&gt;(&quot;topic_stu&quot;, 10);</span><br><span class="line"></span><br><span class="line">        // 3-2. 创建定时器 timer_：每隔固定时间自动触发一次回调函数。</span><br><span class="line">        // create_wall_timer(间隔, 要调用的函数)</span><br><span class="line">        //   500ms —— 每 500 毫秒触发一次（即每秒 2 次）</span><br><span class="line">        //   std::bind(&amp;MinimalPublisher::timer_callback, this) ——</span><br><span class="line">        //     把&quot;本对象的 timer_callback 成员函数&quot;打包成一个可被回调的东西。</span><br><span class="line">        //     成员函数不能直接当回调用，必须用 std::bind 绑定 this，</span><br><span class="line">        //     这样回调发生时才知道&quot;对哪个对象&quot;调用。</span><br><span class="line">        timer_ = this-&gt;create_wall_timer(</span><br><span class="line">            500ms, std::bind(&amp;MinimalPublisher::timer_callback, this));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line">    // 定时器回调：每 0.5s 自动调用一次（不是我们手动调的，由 spin 里的事件循环触发）。</span><br><span class="line">    void timer_callback()</span><br><span class="line">    &#123;</span><br><span class="line">        // auto：让编译器自动推断变量类型（这里推断为 Student），少打字。</span><br><span class="line">        // 创建一条&quot;空&quot;的 Student 消息对象，名叫 stu。</span><br><span class="line">        auto stu = Student();</span><br><span class="line"></span><br><span class="line">        // 给消息的三个字段赋值（字段类型见 Student.msg）：</span><br><span class="line">        stu.name = &quot;张三&quot;;      // name   —— string  类型（C++ 里是 std::string）</span><br><span class="line">        stu.age = count_++;     // age    —— int32   类型；count_++ 是&quot;先用当前值，再 +1&quot;</span><br><span class="line">        stu.height = 1.65;      // height —— float64 类型（C++ 里是 double）</span><br><span class="line"></span><br><span class="line">        // 打印日志。</span><br><span class="line">        //   %s    → 字符串：stu.name 是 std::string，要用 .c_str() 转成 C 风格字符串才能配 %s</span><br><span class="line">        //   %d    → 整数  ：stu.age 是 int32，对应 %d</span><br><span class="line">        //   %.2f  → 浮点数（保留 2 位小数）：stu.height 是 float64(double)，对应 %f</span><br><span class="line">        //   ★height 是【变量】不是函数，写 stu.height，不能加 ()。</span><br><span class="line">        RCLCPP_INFO(this-&gt;get_logger(),</span><br><span class="line">                    &quot;学生信息：name = %s, age = %d, height = %.2f&quot;,</span><br><span class="line">                    stu.name.c_str(), stu.age, stu.height);</span><br><span class="line"></span><br><span class="line">        // 3-3. 真正把这条消息发出去。</span><br><span class="line">        publisher_-&gt;publish(stu);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ===== 成员变量（对象内部存的数据），在构造函数里被初始化 =====</span><br><span class="line"></span><br><span class="line">    // 定时器。TimerBase::SharedPtr 是&quot;共享智能指针&quot;：</span><br><span class="line">    //   SharedPtr 自动管理内存，用完不用手动 delete，能避免内存泄漏。</span><br><span class="line">    rclcpp::TimerBase::SharedPtr timer_;</span><br><span class="line"></span><br><span class="line">    // 发布方，同样是智能指针；类型里带 &lt;Student&gt; 表示它只发 Student 类型消息。</span><br><span class="line">    rclcpp::Publisher&lt;Student&gt;::SharedPtr publisher_;</span><br><span class="line"></span><br><span class="line">    // 计数器：记录已经发了多少条。size_t 是&quot;足够大的无符号整数&quot;类型。</span><br><span class="line">    size_t count_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// ==================== 程序入口 main ====================</span><br><span class="line">// 每个 C++ 程序都从 main 开始执行。</span><br><span class="line">// int argc, char * argv[]：命令行参数（这里原样传给 ROS2 初始化）。</span><br><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">    // 2. 初始化 ROS2 客户端（做任何 ROS2 操作前必须先调一次）。</span><br><span class="line">    rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">    // 4. 创建节点对象，并进入 spin 事件循环。</span><br><span class="line">    //   std::make_shared&lt;MinimalPublisher&gt;()：在堆上创建一个 MinimalPublisher 对象，</span><br><span class="line">    //     并返回指向它的共享智能指针。</span><br><span class="line">    //   rclcpp::spin(...)：进入事件循环，一直转着等事件（如定时器到点）；</span><br><span class="line">    //     只要停在这里转，定时器就会每 500ms 触发一次 timer_callback。</span><br><span class="line">    //     spin 会【阻塞】在这一行，直到节点被关闭（如按 Ctrl+C）才返回。</span><br><span class="line">    rclcpp::spin(std::make_shared&lt;MinimalPublisher&gt;());</span><br><span class="line"></span><br><span class="line">    // 5. 释放资源（spin 返回后，清理 ROS2 相关资源）。</span><br><span class="line">    rclcpp::shutdown();</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="订阅方实现-1"><a href="#订阅方实现-1" class="headerlink" title="订阅方实现"></a>订阅方实现</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">    需求：订阅发布方发布的学生消息（自定义消息 Student），并输出到终端。</span><br><span class="line">    说明：本文件和 demo02_listener_str 结构完全相同，唯一区别是消息类型</span><br><span class="line">          从官方 String 换成了【自定义】的 base_interfaces_demo::msg::Student。</span><br><span class="line">          它和 demo01_talker_stu 配套，靠【相同话题名 &quot;topic_stu&quot; + 相同类型 Student】对接。</span><br><span class="line">    步骤：</span><br><span class="line">        1.包含头文件；</span><br><span class="line">        2.初始化 ROS2 客户端；</span><br><span class="line">        3.定义节点类；</span><br><span class="line">            3-1.创建订阅方；</span><br><span class="line">            3-2.处理订阅到的消息。</span><br><span class="line">        4.调用 spin 函数，传入节点对象；</span><br><span class="line">        5.释放资源。</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">// ==================== 1. 包含头文件 ====================</span><br><span class="line">// rclcpp 核心：提供 Node、init、spin、shutdown 等</span><br><span class="line">#include &quot;rclcpp/rclcpp.hpp&quot;</span><br><span class="line"></span><br><span class="line">// 自定义消息 Student 的头文件。</span><br><span class="line">//   ★后缀 .hpp（不是 .h）；文件名全小写 student。</span><br><span class="line">//   路径 base_interfaces_demo/msg/student.hpp 对应类型 base_interfaces_demo::msg::Student</span><br><span class="line">#include &quot;base_interfaces_demo/msg/student.hpp&quot;</span><br><span class="line"></span><br><span class="line">// 引入占位符 _1，下面的 std::bind 要用到。</span><br><span class="line">//   _1 代表&quot;回调函数的第 1 个参数&quot;——也就是将来收到的那条消息。</span><br><span class="line">using std::placeholders::_1;</span><br><span class="line"></span><br><span class="line">// using 声明：把 base_interfaces_demo::msg::Student 引入当前作用域，</span><br><span class="line">//   之后就可以直接写 Student，省得每次写全名。</span><br><span class="line">using base_interfaces_demo::msg::Student;</span><br><span class="line"></span><br><span class="line">// ==================== 3. 定义节点类 ====================</span><br><span class="line">// class 定义一个类；: public rclcpp::Node 表示【公有继承】自官方 Node，</span><br><span class="line">//   于是 MinimalSubscriber 本身就是一个 ROS2 节点。</span><br><span class="line">class MinimalSubscriber : public rclcpp::Node</span><br><span class="line">&#123;</span><br><span class="line">  public:</span><br><span class="line">    // 构造函数：对象一出生就自动执行，负责初始化。</span><br><span class="line">    MinimalSubscriber()</span><br><span class="line">    // 初始化列表：Node(&quot;student_subscriber&quot;) 调用父类构造，给节点起名。</span><br><span class="line">    : Node(&quot;student_subscriber&quot;)</span><br><span class="line">    &#123;</span><br><span class="line">      // 3-1. 创建订阅方 subscription_：从某话题接收消息。</span><br><span class="line">      // create_subscription&lt;消息类型&gt;(话题名, 队列深度, 回调函数)</span><br><span class="line">      //   &lt;Student&gt;     —— 模板参数：订阅的是 Student 类型（用了 using 别名）</span><br><span class="line">      //   &quot;topic_stu&quot;   —— 话题名：必须和发布方 demo01_talker_stu 完全一致，否则收不到！</span><br><span class="line">      //   10            —— QoS 历史深度，和发布方对应</span><br><span class="line">      //   std::bind(&amp;MinimalSubscriber::topic_callback, this, _1) —— 回调函数：</span><br><span class="line">      //     把&quot;本对象的 topic_callback&quot;打包成回调；this 表示对当前对象调用；</span><br><span class="line">      //     _1 是占位符，表示消息到来时自动填入，作为函数的第 1 个参数。</span><br><span class="line">      subscription_ = this-&gt;create_subscription&lt;Student&gt;(</span><br><span class="line">        &quot;topic_stu&quot;, 10,</span><br><span class="line">        std::bind(&amp;MinimalSubscriber::topic_callback, this, _1));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  private:</span><br><span class="line">    // 3-2. 回调函数：每收到一条消息，ROS2 就自动调用一次它（不用我们手动调）。</span><br><span class="line">    //   参数 const Student &amp; msg：收到的消息</span><br><span class="line">    //     const：只读，承诺不修改消息内容</span><br><span class="line">    //     &amp;    ：引用，直接引用那块内存，避免拷贝（消息可能很大，这样更高效）</span><br><span class="line">    //   末尾的 const：承诺本函数不修改对象自身的成员（只读方法）</span><br><span class="line">    void topic_callback(const Student &amp; msg) const</span><br><span class="line">    &#123;</span><br><span class="line">      // 把收到的学生消息打印出来。</span><br><span class="line">      //   msg.name.c_str() —— name 是 std::string，用 .c_str() 转成 C 字符串配 %s</span><br><span class="line">      //   msg.age          —— int32，配 %d</span><br><span class="line">      //   msg.height       —— float64(double)，配 %.2f；★是变量不是函数，不加 ()</span><br><span class="line">      RCLCPP_INFO(this-&gt;get_logger(),</span><br><span class="line">                  &quot;订阅的学生消息：name=%s, age=%d, height=%.2f&quot;,</span><br><span class="line">                  msg.name.c_str(), msg.age, msg.height);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 成员变量：订阅方对象本身（智能指针，自动管理内存）。</span><br><span class="line">    //   类型是 Subscription（订阅），区别于发布方的 Publisher。</span><br><span class="line">    rclcpp::Subscription&lt;Student&gt;::SharedPtr subscription_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// ==================== 程序入口 main ====================</span><br><span class="line">// 每个 C++ 程序从 main 开始执行。</span><br><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">  // 2. 初始化 ROS2 客户端（做任何 ROS2 操作前必须先调一次）。</span><br><span class="line">  rclcpp::init(argc, argv);</span><br><span class="line"></span><br><span class="line">  // 4. 创建订阅者对象，并进入 spin 事件循环。</span><br><span class="line">  //   spin 会一直转着等事件——只要有消息到达，就自动触发 topic_callback。</span><br><span class="line">  //   （发布方靠定时器&quot;主动发&quot;；订阅方靠 spin&quot;被动等&quot;，这是两者本质区别）</span><br><span class="line">  rclcpp::spin(std::make_shared&lt;MinimalSubscriber&gt;());</span><br><span class="line"></span><br><span class="line">  // 5. 释放资源（spin 返回后——比如按了 Ctrl+C——清理 ROS2 相关资源）。</span><br><span class="line">  rclcpp::shutdown();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="编辑配置文件-2"><a href="#编辑配置文件-2" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><p>只要修改CMakeList.txt文件即可</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"># find dependencies</span><br><span class="line">find_package(ament_cmake REQUIRED)</span><br><span class="line">find_package(rclcpp REQUIRED)</span><br><span class="line">find_package(std_msgs REQUIRED)</span><br><span class="line">find_package(base_interfaces_demo REQUIRED)</span><br><span class="line">add_executable(demo01_talker_str src/demo01_talker_str.cpp)</span><br><span class="line">add_executable(demo02_listener_str src/demo02_listener_str.cpp)</span><br><span class="line">add_executable(demo01_talker_stu src/demo01_talker_stu.cpp)</span><br><span class="line">add_executable(demo02_listener_stu src/demo02_listener_stu.cpp)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo01_talker_str</span><br><span class="line">  rclcpp</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo02_listener_str</span><br><span class="line">  rclcpp</span><br><span class="line">  std_msgs</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo01_talker_stu</span><br><span class="line">  rclcpp</span><br><span class="line">  base_interfaces_demo</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">ament_target_dependencies(</span><br><span class="line">  demo02_listener_stu</span><br><span class="line">  rclcpp</span><br><span class="line">  base_interfaces_demo</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">install(TARGETS demo01_talker_str demo02_listener_str demo01_talker_stu demo02_listener_stu</span><br><span class="line">  DESTINATION lib/$&#123;PROJECT_NAME&#125;)</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
-
-<h3 id="编译-1"><a href="#编译-1" class="headerlink" title="编译"></a>编译</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colcon build --packages-select cpp01_topic</span><br></pre></td></tr></table></figure>
-
-<h3 id="执行-1"><a href="#执行-1" class="headerlink" title="执行"></a>执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. install/setup.bash</span><br><span class="line">ros2 run cpp01_topic demo03_talker_stu</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. install/setup.bash </span><br><span class="line">ros2 run cpp01_topic demo04_listener_stu</span><br></pre></td></tr></table></figure>
-
-<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707153048844.png" alt="image-20260707153048674"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260707153100994.png" alt="image-20260707153100880"></p>
 
       
     </div>
@@ -3546,7 +3546,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：13:38:21" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:25:59" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -3581,7 +3581,7 @@
 <h2 id="链接CCH服务"><a href="#链接CCH服务" class="headerlink" title="链接CCH服务"></a>链接CCH服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 创建隐藏的配置文件夹</span><br><span class="line">mkdir -p ~/.claude</span><br><span class="line"># 使用vscode打开并创建文件</span><br><span class="line">code ~/.claude/settings.json</span><br></pre></td></tr></table></figure>
 
 <p>复制并粘贴配置内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;env&quot;: &#123;</span><br><span class="line">    &quot;ANTHROPIC_AUTH_TOKEN&quot;: &quot;dbecc3b78be84362becef5772a73c591.jizfjQfxMIXG2nxv&quot;,</span><br><span class="line">    &quot;ANTHROPIC_BASE_URL&quot;: &quot;https://open.bigmodel.cn/api/anthropic&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;CLAUDE_CODE_EFFORT_LEVEL&quot;: &quot;max&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;includeCoAuthoredBy&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;env&quot;: &#123;</span><br><span class="line">    &quot;ANTHROPIC_AUTH_TOKEN&quot;: &quot;your key&quot;,</span><br><span class="line">    &quot;ANTHROPIC_BASE_URL&quot;: &quot;https://open.bigmodel.cn/api/anthropic&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;CLAUDE_CODE_EFFORT_LEVEL&quot;: &quot;max&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;includeCoAuthoredBy&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="保存并测试"><a href="#保存并测试" class="headerlink" title="保存并测试"></a>保存并测试</h2><p>在vscode中保存文件，打开终端测试</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Claude</span><br></pre></td></tr></table></figure>
