@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="侧方停车仿真测试报告   项目 内容    报告名称 《侧方位停车仿真测试报告》（PARKING 触发条件 &#x2F; 仿真环境 &#x2F; 调参过程 &#x2F; 三条验收结果）   姓名 陈国庆   模块 规划   模块负责人 &#x2F; 带教 邬学维（带教：邬学维 &#x2F; 陈宇秋）   入职日期 &#x2F; 考察期 2026&#x2F;6&#x2F;23 &#x2F; 2 个月">
+<meta property="og:type" content="article">
+<meta property="og:title" content="侧方位停车仿真测试报告">
+<meta property="og:url" content="https://gen2710.netlify.app/2026/07/10/W3_%E4%BE%A7%E6%96%B9%E5%81%9C%E8%BD%A6%E4%BB%BF%E7%9C%9F%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="侧方停车仿真测试报告   项目 内容    报告名称 《侧方位停车仿真测试报告》（PARKING 触发条件 &#x2F; 仿真环境 &#x2F; 调参过程 &#x2F; 三条验收结果）   姓名 陈国庆   模块 规划   模块负责人 &#x2F; 带教 邬学维（带教：邬学维 &#x2F; 陈宇秋）   入职日期 &#x2F; 考察期 2026&#x2F;6&#x2F;23 &#x2F; 2 个月">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710104249082.png">
+<meta property="og:image" content="c:\Users\gen27\AppData\Roaming\Typora\typora-user-images\image-20260710104504297.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710105403254.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710105624470.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710105918543.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710142029545.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710145553803.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710143748122.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164349385.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164403879.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164349385.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164555640.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710151523375.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710151537367.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710161509084.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710161453889.png">
+<meta property="article:published_time" content="2026-07-10T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-10T08:55:05.748Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710104249082.png">
+
+
+<link rel="canonical" href="https://gen2710.netlify.app/2026/07/10/W3_%E4%BE%A7%E6%96%B9%E5%81%9C%E8%BD%A6%E4%BB%BF%E7%9C%9F%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gen2710.netlify.app/2026/07/10/W3_%E4%BE%A7%E6%96%B9%E5%81%9C%E8%BD%A6%E4%BB%BF%E7%9C%9F%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/","path":"2026/07/10/W3_侧方停车仿真测试报告/","title":"侧方位停车仿真测试报告"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>侧方位停车仿真测试报告 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%A7%E6%96%B9%E5%81%9C%E8%BD%A6%E4%BB%BF%E7%9C%9F%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A"><span class="nav-number">1.</span> <span class="nav-text">侧方停车仿真测试报告</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E8%AF%B4%E6%98%8E%E4%B8%8E%E4%BB%BB%E5%8A%A1%E5%AF%B9%E9%BD%90"><span class="nav-number">1.1.</span> <span class="nav-text">文档说明与任务对齐</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E6%8A%A5%E5%91%8A%E5%9C%A8%E4%BB%BB%E5%8A%A1%E8%B7%9F%E8%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.1.1.</span> <span class="nav-text">本报告在任务跟踪表中的位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E8%8C%83%E5%9B%B4-%E2%86%94-%E9%AA%8C%E6%94%B6-%E2%86%94-%E7%AB%A0%E8%8A%82-%E6%98%A0%E5%B0%84"><span class="nav-number">1.1.2.</span> <span class="nav-text">测试范围 ↔ 验收 ↔ 章节 映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83%E4%B8%8E%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6%E6%B8%85%E5%8D%95"><span class="nav-number">1.1.3.</span> <span class="nav-text">仿真环境与相关文件清单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%9C%B0%E5%9B%BE%E5%B1%95%E7%A4%BA"><span class="nav-number">1.1.4.</span> <span class="nav-text">测试地图展示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#osm%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">.osm地图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pcd%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">.pcd地图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.2.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PARKING-%E5%9C%BA%E6%99%AF%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">PARKING 场景触发条件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E9%93%BE%E8%B7%AF%E5%AE%9A%E4%BD%8D"><span class="nav-number">1.3.1.</span> <span class="nav-text">触发链路定位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E6%BF%80%E6%B4%BB%E5%90%8E%E7%9A%84%E6%89%A7%E8%A1%8C%E9%93%BE"><span class="nav-number">1.3.2.</span> <span class="nav-text">节点激活后的执行链</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%B5%8B%E8%AF%95%E5%9C%BA%E6%99%AF"><span class="nav-number">1.4.</span> <span class="nav-text">仿真环境与测试场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%9C%BA%E6%99%AF%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.4.1.</span> <span class="nav-text">测试场景设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#freespace-planner-%E8%B0%83%E5%8F%82"><span class="nav-number">1.5.</span> <span class="nav-text">freespace_planner 调参</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E5%8F%82%E5%AF%B9%E8%B1%A1%EF%BC%88%E9%80%9F%E6%9F%A5%EF%BC%89"><span class="nav-number">1.5.1.</span> <span class="nav-text">调参对象（速查）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%BA%BF%E9%85%8D%E7%BD%AE"><span class="nav-number">1.5.2.</span> <span class="nav-text">基线配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E5%8F%82%E8%AE%B0%E5%BD%95%E8%A1%A8"><span class="nav-number">1.5.3.</span> <span class="nav-text">调参记录表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%A8%E8%BF%B9%E5%BD%A2%E6%80%81%E5%90%88%E7%90%86%E6%80%A7"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">轨迹形态合理性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.5.4.</span> <span class="nav-text">判断信号</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BF%E7%9C%9F%E7%BB%93%E6%9E%9C%EF%BC%88%E4%BE%A7%E6%96%B9%E5%81%9C%E8%BD%A6%EF%BC%89"><span class="nav-number">1.6.</span> <span class="nav-text">仿真结果（侧方停车）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E6%94%B6%E2%91%A0%EF%BC%9A%E8%BD%A8%E8%BF%B9%E4%B8%8D%E7%A9%BF%E8%B6%8A%E8%BD%A6%E4%BD%8D%E8%BE%B9%E7%95%8C-%E9%9A%9C%E7%A2%8D%E3%80%81%E5%BD%A2%E7%8A%B6%E5%90%88%E7%90%86"><span class="nav-number">1.6.1.</span> <span class="nav-text">验收①：轨迹不穿越车位边界 &#x2F; 障碍、形状合理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E6%94%B6%E2%91%A1%EF%BC%9A%E6%95%B0%E5%80%BC%E6%A0%A1%E9%AA%8C"><span class="nav-number">1.6.2.</span> <span class="nav-text">验收②：数值校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E6%94%B6%E2%91%A2%EF%BC%9A%E7%90%86%E6%83%B3%E8%B7%9F%E9%9A%8F%E5%88%B0%E7%BB%88%E7%82%B9"><span class="nav-number">1.6.3.</span> <span class="nav-text">验收③：理想跟随到终点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E9%93%BE%E8%B7%AF%E6%80%BB%E5%9B%BE"><span class="nav-number">1.7.</span> <span class="nav-text">测试链路总图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA%E4%B8%8E%E6%80%BB%E7%BB%93"><span class="nav-number">1.8.</span> <span class="nav-text">结论与总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E6%9D%A1%E9%AA%8C%E6%94%B6%E8%BE%BE%E6%A0%87%E5%88%A4%E5%AE%9A"><span class="nav-number">1.8.1.</span> <span class="nav-text">三条验收达标判定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E8%B7%AF%E8%B7%91%E9%80%9A%E7%BB%93%E8%AE%BA"><span class="nav-number">1.8.2.</span> <span class="nav-text">链路跑通结论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E5%8F%82%E6%A0%B8%E5%BF%83%E7%BB%93%E8%AE%BA"><span class="nav-number">1.8.3.</span> <span class="nav-text">调参核心结论</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8E%92%E6%9F%A5"><span class="nav-number">1.9.</span> <span class="nav-text">测试问题与排查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.10.</span> <span class="nav-text">后续工作</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/10/W3_%E4%BE%A7%E6%96%B9%E5%81%9C%E8%BD%A6%E4%BB%BF%E7%9C%9F%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="侧方位停车仿真测试报告 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          侧方位停车仿真测试报告
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-10 12:00:00 / 修改时间：16:55:05" itemprop="dateCreated datePublished" datetime="2026-07-10T12:00:00+08:00">2026-07-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">--</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="侧方停车仿真测试报告"><a href="#侧方停车仿真测试报告" class="headerlink" title="侧方停车仿真测试报告"></a>侧方停车仿真测试报告</h1><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>报告名称</td>
+<td>《侧方位停车仿真测试报告》（PARKING 触发条件 &#x2F; 仿真环境 &#x2F; 调参过程 &#x2F; 三条验收结果）</td>
+</tr>
+<tr>
+<td>姓名</td>
+<td>陈国庆</td>
+</tr>
+<tr>
+<td>模块</td>
+<td>规划</td>
+</tr>
+<tr>
+<td>模块负责人 &#x2F; 带教</td>
+<td>邬学维（带教：邬学维 &#x2F; 陈宇秋）</td>
+</tr>
+<tr>
+<td>入职日期 &#x2F; 考察期</td>
+<td>2026&#x2F;6&#x2F;23 &#x2F; 2 个月</td>
+</tr>
+<tr>
+<td>对应任务</td>
+<td>跟踪表【第一月】W3（7&#x2F;7–7&#x2F;11，权重 <strong>30%</strong>）</td>
+</tr>
+<tr>
+<td>评价标准 &#x2F; 交付物</td>
+<td>Planning Sim 跑通侧方位停车（验收①轨迹合理 &#x2F; ②数值校验 &#x2F; ③理想跟随）</td>
+</tr>
+<tr>
+<td>测试素材</td>
+<td>W3 Day1 仿真测试 + freespace_planner 调参记录</td>
+</tr>
+<tr>
+<td>日期</td>
+<td>2026&#x2F;07&#x2F;07</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>本报告是 W3 的核心交付物。</strong> 上游承接 W2 源码走读（<code>freespace_planner</code> &#x2F; Hybrid A* &#x2F; RS 的实现细节），下游支撑 W4 倒车入库（复用同一 RS 曲线栈）。W3 的三条仿真验收口径（① 轨迹不穿越障碍、② 曲率连续且最小转弯半径满足且末点停位误差达标、③ simple_planning_simulator 理想跟随跑通）。</p>
+<h2 id="文档说明与任务对齐"><a href="#文档说明与任务对齐" class="headerlink" title="文档说明与任务对齐"></a>文档说明与任务对齐</h2><h3 id="本报告在任务跟踪表中的位置"><a href="#本报告在任务跟踪表中的位置" class="headerlink" title="本报告在任务跟踪表中的位置"></a><strong>本报告在任务跟踪表中的位置</strong></h3><table>
+<thead>
+<tr>
+<th>周次</th>
+<th>计划周期</th>
+<th>权重</th>
+<th>任务目标</th>
+<th>交付物</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W2</td>
+<td>6&#x2F;30–7&#x2F;4</td>
+<td>20%</td>
+<td>Autoware 自由空间规划模块源码走读</td>
+<td>《源码走读报告》</td>
+<td>已交（上游）</td>
+</tr>
+<tr>
+<td><strong>W3</strong></td>
+<td><strong>7&#x2F;7–7&#x2F;11</strong></td>
+<td><strong>30%</strong></td>
+<td><strong>【侧方位停车】算法实现与仿真跑通</strong>（RS 曲线 &#x2F; 几何路径拼接，低速阿克曼约束）</td>
+<td><strong>Planning Sim 跑通侧方位停车</strong></td>
+<td><strong>进行中</strong></td>
+</tr>
+<tr>
+<td>W4</td>
+<td>7&#x2F;14–7&#x2F;18</td>
+<td>35%</td>
+<td>【倒车入库】算法实现与仿真跑通（复用侧方位 RS 曲线栈）</td>
+<td>跑通倒车入库 + 月末演示</td>
+<td>未启动（下游）</td>
+</tr>
+</tbody></table>
+<h3 id="测试范围-↔-验收-↔-章节-映射"><a href="#测试范围-↔-验收-↔-章节-映射" class="headerlink" title="测试范围 ↔ 验收 ↔ 章节 映射"></a>测试范围 ↔ 验收 ↔ 章节 映射</h3><table>
+<thead>
+<tr>
+<th>验收要求</th>
+<th>报告章节</th>
+<th>测试方法</th>
+<th>素材</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PARKING 场景是否正确触发</td>
+<td>第 1 章</td>
+<td>起点 &#x2F; goal 设进 parking_lot 多边形，查 scenario 话题</td>
+<td>scenario 切换截图</td>
+</tr>
+<tr>
+<td>仿真环境与测试场景</td>
+<td>第 2 章</td>
+<td>planning_simulator + 临空港地图</td>
+<td>启动录屏</td>
+</tr>
+<tr>
+<td>调参过程（轨迹形态）</td>
+<td>第 3 章</td>
+<td>逐参数调整 freespace_planner.param</td>
+<td>调参记录表 + 各组动图</td>
+</tr>
+<tr>
+<td>① 轨迹不穿越边界 &#x2F; 形状合理</td>
+<td>第 4 章</td>
+<td>Rviz 看轨迹与车位边界</td>
+<td>入库动图</td>
+</tr>
+<tr>
+<td>② 曲率 &#x2F; 半径 &#x2F; 末点误差</td>
+<td>第 4 章</td>
+<td>导出轨迹点算 $\kappa$、$r$、末点偏差</td>
+<td>数值表</td>
+</tr>
+<tr>
+<td>③ 理想跟随到终点</td>
+<td>第 4 章</td>
+<td>simple_planning_simulator 跟车</td>
+<td>跟随动图</td>
+</tr>
+</tbody></table>
+<h3 id="仿真环境与相关文件清单"><a href="#仿真环境与相关文件清单" class="headerlink" title="仿真环境与相关文件清单"></a>仿真环境与相关文件清单</h3><table>
+<thead>
+<tr>
+<th>项</th>
+<th>配置 &#x2F; 路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统</td>
+<td>WSL2 Ubuntu 22.04</td>
+</tr>
+<tr>
+<td>ROS2</td>
+<td>Humble</td>
+</tr>
+<tr>
+<td>Autoware</td>
+<td>autoware_0442（<code>~/autoware_0442/install/setup.bash</code>）</td>
+</tr>
+<tr>
+<td>地图</td>
+<td>临空港 <code>~/autoware_map/linkonggang_map/lanelet2_map.osm</code>（lanelet2，83 lanelet）</td>
+</tr>
+<tr>
+<td>测试车位</td>
+<td><code>parking_lot A</code></td>
+</tr>
+<tr>
+<td>算法</td>
+<td>freespace_planner，<code>planning_algorithm=astar</code>（Hybrid A*）</td>
+</tr>
+<tr>
+<td>相关源码</td>
+<td><code>scenario_selector_node.cpp</code>（W2 第 1 章）、<code>freespace_planner_node.cpp</code>、<code>astar_search.cpp</code>、<code>reeds_shepp.cpp</code>（W2 第 1–3 章）</td>
+</tr>
+</tbody></table>
+<h3 id="测试地图展示"><a href="#测试地图展示" class="headerlink" title="测试地图展示"></a>测试地图展示</h3><h4 id="osm地图"><a href="#osm地图" class="headerlink" title=".osm地图"></a>.osm地图</h4><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710104249082.png" alt="image-20260710104248891" style="zoom:50%;" />
+
+<p>图示红色区域为停车区(parking_lot)，是触发freespace_planner的关键。</p>
+<h4 id="pcd地图"><a href="#pcd地图" class="headerlink" title=".pcd地图"></a>.pcd地图</h4><p><img src="C:\Users\gen27\AppData\Roaming\Typora\typora-user-images\image-20260710104504297.png" alt="image-20260710104504297"></p>
+<hr>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>本报告在 Autoware planning_simulator 上测试侧方位停车。核心链路：车当前位姿落入 <code>parking_lot</code> 多边形内 → <code>scenario_selector</code> 切 PARKING（<code>scenario_selector_node.cpp:158</code>，<code>isInParkingLot</code> 查 <code>current_pose</code>）→ <code>freespace_planner</code> 经 <code>onTimer</code> 三重判定调用 <code>algo_-&gt;makePlan()</code>（<code>freespace_planner_node.cpp:487</code>），内核 Hybrid A* 以 RS 距离为启发搜出含倒车段的路径，按 <code>is_back</code> 标记分段发布为 <code>Trajectory</code>。通过逐参数调整 <code>freespace_planner.param</code>（重点是 <code>use_back</code>、<code>minimum_turning_radius</code>、<code>reverse_weight</code>、<code>goal_range</code>），在临空港地图的 <code>parking_lot A</code> 上跑通侧方入库，并按验收①②③量化轨迹质量。</p>
+<hr>
+<h2 id="PARKING-场景触发条件"><a href="#PARKING-场景触发条件" class="headerlink" title="PARKING 场景触发条件"></a>PARKING 场景触发条件</h2><h3 id="触发链路定位"><a href="#触发链路定位" class="headerlink" title="触发链路定位"></a>触发链路定位</h3><p>侧方停车由 <code>freespace_planner</code> 在 <strong>PARKING</strong> 场景下完成。场景是否激活由上游 <code>scenario_selector</code> 决定，判定依据来自源码（W2 走读）：</p>
+<p><code>scenario_selector_node.cpp:158</code> 的 <code>selectScenarioByPosition()</code>，其中 <code>isInParkingLot</code>（第 162 行）查的是&#x3D;&#x3D;车当前位姿 <code>current_pose</code> 是否落在 parking_lot 多边形内&#x3D;&#x3D;——不是看 goal 在不在车位里。车在多边形内 → 切 PARKING；否则保持 LANE_DRIVING，freespace_planner 不出泊车轨迹。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    P[&quot;设起点：2D Pose Estimate&lt;br&gt;点进 parking_lot A 内&quot;] --&gt; SS[&quot;scenario_selector&lt;br&gt;selectScenarioByPosition :158&quot;]</span><br><span class="line">    SS --&gt; CK&#123;&quot;isInParkingLot(current_pose)?&lt;br&gt;:162&quot;&#125;</span><br><span class="line">    CK --&gt;|&quot;是&quot;| PK[&quot;切 PARKING&quot;]</span><br><span class="line">    CK --&gt;|&quot;否&quot;| LD[&quot;LANE_DRIVING&lt;br&gt;不出泊车轨迹&quot;]</span><br><span class="line">    PK --&gt; FP[&quot;freespace_planner onTimer&lt;br&gt;三重判定：输入齐? isActive(PARKING)? 要重规划?&quot;]</span><br><span class="line">    FP --&gt; MM[&quot;planTrajectory → makePlan :487&lt;br&gt;Hybrid A* + RS&quot;]</span><br><span class="line">    MM --&gt; TR[&quot;含倒车段 Trajectory&lt;br&gt;/planning/scenario_planning/parking/trajectory&quot;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="节点激活后的执行链"><a href="#节点激活后的执行链" class="headerlink" title="节点激活后的执行链"></a>节点激活后的执行链</h3><p>PARKING 激活后，<code>freespace_planner</code> 的 <code>onTimer</code>（<code>freespace_planner_node.cpp:414</code>）经三重判定——输入齐全（L417）、当前场景为 PARKING（<code>isActive</code>，L421）、需要重规划（<code>isPlanRequired</code>，L438）——进入 <code>planTrajectory</code>（L468），调用 <code>algo_-&gt;makePlan(current, goal)</code>（L487）。<code>makePlan</code> 内核为 Hybrid A*：在 <code>(x,y,θ)</code> 三维网格上用运动基元扩展、以 RS 距离为启发搜出含倒车段的路径，按 <code>is_back</code> 标记分段发布为 <code>Trajectory</code>（倒车段 <code>velocity&lt;0</code>）。</p>
+<p>验证话题：<code>/planning/scenario_planning/scenario</code>（应显示 PARKING）与 <code>/planning/scenario_planning/parking/trajectory</code>（应有数据）。</p>
+<hr>
+<h2 id="仿真环境与测试场景"><a href="#仿真环境与测试场景" class="headerlink" title="仿真环境与测试场景"></a>仿真环境与测试场景</h2><h3 id="测试场景设计"><a href="#测试场景设计" class="headerlink" title="测试场景设计"></a>测试场景设计</h3><table>
+<thead>
+<tr>
+<th>项</th>
+<th>设置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>起点（2D Pose Estimate）</td>
+<td>parking_lot A 多边形内，朝向大致平行于路面</td>
+</tr>
+<tr>
+<td>目标（2D Goal Pose）</td>
+<td>A 内的最终停车位姿</td>
+</tr>
+<tr>
+<td>期望行为</td>
+<td>scenario 切 PARKING → freespace_planner 出”前进段 + 倒车段”轨迹 → 车侧方入库</td>
+</tr>
+<tr>
+<td>engage</td>
+<td>默认 auto-engage（<code>initial_engage_state=true</code>）</td>
+</tr>
+</tbody></table>
+<p>启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /opt/ros/humble/setup.bash</span><br><span class="line"><span class="built_in">source</span> ~/autoware_0442/install/setup.bash</span><br><span class="line">ros2 launch autoware_launch planning_simulator.launch.xml \</span><br><span class="line">  map_path:=/home/gen/autoware_map/linkonggang_map \</span><br><span class="line">  vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit</span><br></pre></td></tr></table></figure>
+
+<p>下图显示实际测试侧方停车图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710105403254.gif" alt="linkonggang_park_over"></p>
+<p>下图显示rqt中的结构</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710105624470.png" alt="image-20260710105624170"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 node info /planning/scenario_planning/parking/freespace_planner</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710105918543.png" alt="image-20260710105918373"></p>
+<p>可以测试需要订阅与发布哪些话题。</p>
+<hr>
+<h2 id="freespace-planner-调参"><a href="#freespace-planner-调参" class="headerlink" title="freespace_planner 调参"></a>freespace_planner 调参</h2><p>参数分三类（节点 &#x2F; 规划通用 &#x2F; A*），都在 <code>freespace_planner.param.yaml</code>。改完需重编：<code>colcon build --packages-select tier4_planning_launch</code>。</p>
+<h3 id="调参对象（速查）"><a href="#调参对象（速查）" class="headerlink" title="调参对象（速查）"></a>调参对象（速查）</h3><p><strong>节点级配置</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>planning_algorithm</code></td>
+<td><code>&quot;astar&quot;</code></td>
+<td>算法选择，泊车用 astar（Hybrid A*）；rrtstar 泊车不稳</td>
+</tr>
+<tr>
+<td><code>waypoints_velocity</code></td>
+<td><code>1.0</code></td>
+<td>输出轨迹恒速 [m&#x2F;s]</td>
+</tr>
+<tr>
+<td><code>vehicle_shape_margin_m</code></td>
+<td><code>0.5</code></td>
+<td>车体碰撞余量 [m]。调大→离障碍远但可通行空间变小易搜不出路；调小→贴边危险。</td>
+</tr>
+<tr>
+<td><code>th_arrived_distance_m</code></td>
+<td><code>0.5</code></td>
+<td>“到达终点”距离阈值 [m]，影响停车判定</td>
+</tr>
+<tr>
+<td><code>th_course_out_distance_m</code></td>
+<td><code>1.0</code></td>
+<td>“偏离轨迹”阈值 [m]，超过可能触发重规划</td>
+</tr>
+</tbody></table>
+<p><strong>规划通用配置（所有算法共用）</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>time_limit</code></td>
+<td><code>30000.0</code></td>
+<td>单次规划超时 [ms]，总搜不出路就调大（当前 30s 已很宽）</td>
+</tr>
+<tr>
+<td><code>max_turning_ratio</code></td>
+<td><code>0.5</code></td>
+<td>规划最大转向 &#x3D; 车实际最大转向 × 此比例。 0.5 → 最小转弯半径 ≈ 7.65m。调大(如 0.7)→允许更小半径更灵活但逼近极限。</td>
+</tr>
+<tr>
+<td><code>theta_size</code></td>
+<td><code>120</code></td>
+<td>整圈角度离散数。越大越平滑但搜索越慢；轨迹锯齿调大到 144</td>
+</tr>
+<tr>
+<td><code>lateral_goal_range</code></td>
+<td><code>0.5</code></td>
+<td>到达 goal 横向容差 [m]。收紧→停得准但难搜。</td>
+</tr>
+<tr>
+<td><code>longitudinal_goal_range</code></td>
+<td><code>1.0</code></td>
+<td>到达 goal 纵向容差 [m]</td>
+</tr>
+<tr>
+<td><code>angle_goal_range</code></td>
+<td><code>6.0</code></td>
+<td>到达 goal 航向容差 [deg]。</td>
+</tr>
+<tr>
+<td><code>curve_weight</code></td>
+<td><code>0.8</code></td>
+<td>转弯代价。调大→”能直就直”；调小→更短但弯多</td>
+</tr>
+<tr>
+<td><code>reverse_weight</code></td>
+<td><code>0.7</code></td>
+<td>倒车代价。侧方需要倒车，不能太大；倒车段过多再调大</td>
+</tr>
+<tr>
+<td><code>direction_change_weight</code></td>
+<td><code>2.0</code></td>
+<td>换向（前进↔倒车）代价。调大→减少来回揉库次数</td>
+</tr>
+<tr>
+<td><code>obstacle_threshold</code></td>
+<td><code>100</code></td>
+<td>costmap cell ≥ 多少算障碍 [0-255]。空地搜不出路→调高；漏障→调低</td>
+</tr>
+</tbody></table>
+<p><strong>A* 配置（<code>planning_algorithm=astar</code> 时生效）</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>astar.use_back</code></td>
+<td><code>true</code></td>
+<td>是否允许倒车。</td>
+</tr>
+<tr>
+<td><code>astar.search_method</code></td>
+<td><code>&quot;forward&quot;</code></td>
+<td>起步方向：forward（前进起步）&#x2F; backward（倒车起步）</td>
+</tr>
+<tr>
+<td><code>astar.adapt_expansion_distance</code></td>
+<td><code>true</code></td>
+<td>近 goal 时用 Reeds-Shepp 解析扩展，大幅加速终点收敛</td>
+</tr>
+<tr>
+<td><code>astar.near_goal_distance</code></td>
+<td><code>3.0</code></td>
+<td>距 goal 多少 [m] 内尝试 RS 直连。调大→更早连结(快但可能次优)</td>
+</tr>
+<tr>
+<td><code>astar.distance_heuristic_weight</code></td>
+<td><code>2.0</code></td>
+<td>启发权重（朝 goal 贪心程度）。调大→搜得快但可能次优</td>
+</tr>
+<tr>
+<td><code>astar.smoothness_weight</code></td>
+<td><code>0.5</code></td>
+<td>平滑度权重。调大→轨迹更平滑。</td>
+</tr>
+<tr>
+<td><code>astar.obstacle_distance_weight</code></td>
+<td><code>1.75</code></td>
+<td>离障碍距离权重。调大→轨迹远离障碍更安全。</td>
+</tr>
+<tr>
+<td><code>astar.goal_lat_distance_weight</code></td>
+<td><code>5.0</code></td>
+<td>横向贴近 goal 权重。调大→末点横向更准</td>
+</tr>
+</tbody></table>
+<h3 id="基线配置"><a href="#基线配置" class="headerlink" title="基线配置"></a>基线配置</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">waypoints_velocity:</span> <span class="number">1.0</span></span><br><span class="line"><span class="attr">vehicle_shape_margin_m:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">th_arrived_distance_m:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">time_limit:</span> <span class="number">30000</span></span><br><span class="line"><span class="attr">max_turning_ratio:</span> <span class="number">0.5</span>          <span class="comment"># 规划用最大转向比例，0.5 -&gt; 最小半径≈7.65m（&gt;真车4.5m，满足）</span></span><br><span class="line"><span class="attr">theta_size:</span> <span class="number">120</span></span><br><span class="line"><span class="attr">curve_weight:</span> <span class="number">0.8</span></span><br><span class="line"><span class="attr">reverse_weight:</span> <span class="number">0.7</span></span><br><span class="line"><span class="attr">lateral_goal_range:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">longitudinal_goal_range:</span> <span class="number">1.0</span></span><br><span class="line"><span class="attr">angle_goal_range:</span> <span class="number">6.0</span></span><br><span class="line"><span class="attr">obstacle_threshold:</span> <span class="number">100</span></span><br><span class="line"><span class="attr">use_back:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">distance_heuristic_weight:</span> <span class="number">2.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="调参记录表"><a href="#调参记录表" class="headerlink" title="调参记录表"></a>调参记录表</h3><p>为了保证就测试的规范性，选择采取固定起点、终点的位置的方式进行测试，每次修改一个参数，观察变化结果。图中白色部分为代价地图，白色表示可行。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710142029545.png" alt="image-20260710142029374"></p>
+<h4 id="轨迹形态合理性"><a href="#轨迹形态合理性" class="headerlink" title="轨迹形态合理性"></a>轨迹形态合理性</h4><blockquote>
+<p>每次修改参数，记下改前改后值与轨迹效果，并对应一组动图。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>参数</th>
+<th>改前</th>
+<th>改后</th>
+<th>现象 &#x2F; 效果</th>
+<th>对应动图_原参数</th>
+<th>对应动图现有参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>（基线）</td>
+<td>—</td>
+<td>见上</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>vehicle_shape_margin_m</td>
+<td>0.5</td>
+<td>1.0</td>
+<td>无明显变化，仿真中无障碍物参与，看不出效果</td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710145553803.gif" alt="vehicle_shape_margin_m_0.5-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710143748122.gif" alt="vehicle_shape_margin_m_0.5-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+</tr>
+<tr>
+<td>2</td>
+<td>theta_size；smoothness_weight</td>
+<td>70；0.5</td>
+<td>120；1.0</td>
+<td>轨迹更平滑，波动更小</td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164349385.gif" alt="theta_size70-smoothness_weight0.5-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164403879.gif" alt="theta_size120-smoothness_weight1.0-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+</tr>
+<tr>
+<td>3</td>
+<td>angle_goal_range；lateral_goal_range；longitudinal_goal_range；goal_lat_distance_weight</td>
+<td>6.0；0.5；1.0；5.0</td>
+<td>4.0；0.3；0.5；7.0</td>
+<td>轨迹更加贴近终点</td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164349385.gif" alt="theta_size70-smoothness_weight0.5-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164555640.gif" alt="ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+</tr>
+</tbody></table>
+<h3 id="判断信号"><a href="#判断信号" class="headerlink" title="判断信号"></a>判断信号</h3><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>调参方向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>完全搜不出 trajectory</td>
+<td><code>use_back</code>&#x3D;true、<code>minimum_turning_radius</code>↓、<code>goal_range</code>↑、<code>time_limit</code>↑、<code>obstacle_threshold</code>↑</td>
+</tr>
+<tr>
+<td>轨迹压到车位边界 &#x2F; 障碍</td>
+<td><code>vehicle_shape_margin_m</code>↑、<code>obstacle_threshold</code>↓</td>
+</tr>
+<tr>
+<td>倒车段过多、来回揉</td>
+<td><code>reverse_weight</code>↑、<code>curve_weight</code>↑</td>
+</tr>
+<tr>
+<td>搜索慢 &#x2F; 偶发超时</td>
+<td><code>distance_heuristic_weight</code>↑、<code>theta_size</code>↓、<code>time_limit</code>↑</td>
+</tr>
+<tr>
+<td>停位不准</td>
+<td><code>goal_range</code>↓、<code>th_arrived_distance_m</code>↓</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="仿真结果（侧方停车）"><a href="#仿真结果（侧方停车）" class="headerlink" title="仿真结果（侧方停车）"></a>仿真结果（侧方停车）</h2><h3 id="验收①：轨迹不穿越车位边界-障碍、形状合理"><a href="#验收①：轨迹不穿越车位边界-障碍、形状合理" class="headerlink" title="验收①：轨迹不穿越车位边界 &#x2F; 障碍、形状合理"></a>验收①：轨迹不穿越车位边界 &#x2F; 障碍、形状合理</h3><p>下面分从前、从后方进入侧方停车位置，均未超过停车区域</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710151523375.gif" alt="往前" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710151537367.gif" alt="往后" style="zoom:50%;" />
+
+<h3 id="验收②：数值校验"><a href="#验收②：数值校验" class="headerlink" title="验收②：数值校验"></a>验收②：数值校验</h3><p>测试按”建场景 → 触发 PARKING → 取泊车轨迹 → 数值校验”四步：前两步在 planning_simulator + RViz 手动操作——起点用 <code>2D Pose Estimate</code> 点进 parking_lot 多边形内，再用 <code>2D Goal Pose</code> 点进车位；后两步靠话题订阅与离线脚本。</p>
+<p><strong>取数：</strong> 离线脚本 <code>~/traj_eval.py</code> 订阅 <code>/planning/scenario_planning/parking/trajectory</code>（freespace 在 PARKING 下输出，含每个点的 <code>pose</code> 与 <code>longitudinal_velocity_mps</code>，后者 &lt;0 为倒车段）。三项指标计算如下：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>计算方法</th>
+<th>判定标准</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>最小转弯半径 $r_{\min}$</td>
+<td>三点 Menger 外接圆 $\kappa&#x3D;1&#x2F;r$，取所有三点组半径最小值（直线段跳过）</td>
+<td>$\geq$ 真车 &#x3D;&#x3D;4.5m&#x3D;&#x3D;（硬约束）</td>
+</tr>
+<tr>
+<td>曲率连续性</td>
+<td>相邻三点组曲率差 $\max\lvert\Delta\kappa\rvert$</td>
+<td>越小越平滑</td>
+</tr>
+<tr>
+<td>末点停位误差</td>
+<td>末点与 goal 的位置 $\sqrt{\Delta x^2+\Delta y^2}$、航向 $\lvert\Delta\psi\rvert$</td>
+<td>参考 ≤0.5m &#x2F; ≤5°</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>半径口径：&#x3D;&#x3D;验收标准按真车 4.5m&#x3D;&#x3D;（硬约束）；当前 <code>max_turning_ratio=0.5</code> 使规划搜索的最小半径 ≈7.65m，大于 4.5m，满足。实测值以 <code>traj_eval.py</code> 算出的 $r_{\min}$ 为准。</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710161509084.png" alt="image-20260710161508937"></p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710161453889.png" alt="image-20260710161453689" style="zoom:50%;" />
+
+
+
+<h3 id="验收③：理想跟随到终点"><a href="#验收③：理想跟随到终点" class="headerlink" title="验收③：理想跟随到终点"></a>验收③：理想跟随到终点</h3><p>simple_planning_simulator 理想跟随含倒车段的泊车轨迹，车从起点运动并停在车位终点。验收①的前进 &#x2F; 后退入库动图（见上）即跟随过程的直接证据——车按规划轨迹完成侧方入库并停住；末点是否落在车位终点、是否停稳，以验收②的末点停位误差数据为据（参考 ≤0.5m &#x2F; ≤5°）。</p>
+<hr>
+<h2 id="测试链路总图"><a href="#测试链路总图" class="headerlink" title="测试链路总图"></a>测试链路总图</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    classDef env fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b</span><br><span class="line">    classDef trigger fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100</span><br><span class="line">    classDef plan fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20</span><br><span class="line">    classDef verify fill:#ffebee,stroke:#e53935,stroke-width:2px,color:#b71c1c</span><br><span class="line"></span><br><span class="line">    subgraph SG_ENV [&quot;🚗 测试环境&quot;]</span><br><span class="line">        MAP[&quot;临空港地图 + parking_lot A&lt;br&gt;planning_simulator (autoware_0442)&quot;]:::env</span><br><span class="line">    end</span><br><span class="line">    subgraph SG_TRG [&quot;🔑 触发 (scenario_selector)&quot;]</span><br><span class="line">        POSE[&quot;2D Pose Estimate 点进 A 内&quot;]:::trigger</span><br><span class="line">        SEL[&quot;isInParkingLot(current_pose) :162&lt;br&gt;切 PARKING&quot;]:::trigger</span><br><span class="line">    end</span><br><span class="line">    subgraph SG_PLAN [&quot;🧠 规划 (freespace_planner)&quot;]</span><br><span class="line">        ONT[&quot;onTimer 三重判定 :414&quot;]:::plan</span><br><span class="line">        MK[&quot;makePlan :487&lt;br&gt;Hybrid A* + RS&quot;]:::plan</span><br><span class="line">        TRAJ[&quot;含倒车段 Trajectory&lt;br&gt;velocity&lt;0&quot;]:::plan</span><br><span class="line">    end</span><br><span class="line">    subgraph SG_VF [&quot;🛡️ 验收&quot;]</span><br><span class="line">        V1[&quot;① 轨迹不穿边界/形状合理&quot;]:::verify</span><br><span class="line">        V2[&quot;② 曲率/半径/末点误差&quot;]:::verify</span><br><span class="line">        V3[&quot;③ 理想跟随到终点&quot;]:::verify</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    MAP --&gt; POSE --&gt; SEL --&gt; ONT --&gt; MK --&gt; TRAJ</span><br><span class="line">    TRAJ --&gt; V1</span><br><span class="line">    TRAJ --&gt; V2</span><br><span class="line">    TRAJ --&gt; V3</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="结论与总结"><a href="#结论与总结" class="headerlink" title="结论与总结"></a>结论与总结</h2><h3 id="三条验收达标判定"><a href="#三条验收达标判定" class="headerlink" title="三条验收达标判定"></a>三条验收达标判定</h3><table>
+<thead>
+<tr>
+<th>验收</th>
+<th>标准</th>
+<th>实测</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>① 轨迹不穿越车位边界 &#x2F; 障碍、形状合理</td>
+<td>不穿 A 边界、呈”前进 + 倒车”侧方形态</td>
+<td>前进 &#x2F; 后退两种入位均未越界（见验收①动图）</td>
+</tr>
+<tr>
+<td>② 曲率连续、最小转弯半径满足、末点停位误差达标</td>
+<td>$r_{\min}\geq$ 4.5m、$\max\lvert\Delta\kappa\rvert$ 小、末点 ≤0.5m &#x2F; ≤5°</td>
+<td>见Fig 16</td>
+</tr>
+<tr>
+<td>③ 理想跟随跑通到终点</td>
+<td>simple_planning_simulator 跟到车位终点</td>
+<td>车按轨迹入库停住（见验收①动图 + 验收②末点误差）</td>
+</tr>
+</tbody></table>
+<h3 id="链路跑通结论"><a href="#链路跑通结论" class="headerlink" title="链路跑通结论"></a>链路跑通结论</h3><p>侧方停车 PARKING 链路在临空港地图 parking_lot A 上&#x3D;&#x3D;跑通&#x3D;&#x3D;：起点落入 parking_lot 多边形 → <code>scenario_selector</code> 切 PARKING（<code>:158 / :162</code>）→ <code>freespace_planner</code> <code>makePlan</code>（<code>:487</code>）输出含倒车段轨迹 → 车侧方入库。</p>
+<h3 id="调参核心结论"><a href="#调参核心结论" class="headerlink" title="调参核心结论"></a>调参核心结论</h3><p>最终采用配置见”基线配置”（关键项：<code>astar.use_back=true</code>、<code>max_turning_ratio=0.5</code> → 半径 ≈7.65m、<code>theta_size=120</code>）。三条关键发现：</p>
+<ul>
+<li>&#x3D;&#x3D;<code>astar.use_back</code> 必须为 true&#x3D;&#x3D;，否则侧方倒车段无解。</li>
+<li><code>theta_size</code>（70→120）配合 <code>astar.smoothness_weight</code>（0.5→1.0），轨迹更平滑、波动更小（见调参记录 #2）。</li>
+<li>收紧 <code>angle / lateral / longitudinal_goal_range</code> 并加大 <code>astar.goal_lat_distance_weight</code>（5.0→7.0），末点更贴近 goal（见调参记录 #3）。</li>
+</ul>
+<hr>
+<h2 id="测试问题与排查"><a href="#测试问题与排查" class="headerlink" title="测试问题与排查"></a>测试问题与排查</h2><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>根因</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>scenario 不切 PARKING（停在 LANE_DRIVING）</td>
+<td>起点没在 parking_lot 多边形内</td>
+<td>2D Pose Estimate 重新点进 A（W1 源码：<code>isInParkingLot</code> 查 <code>current_pose</code>）</td>
+</tr>
+<tr>
+<td><code>/planning/scenario_planning/trajectory</code> timeout、behavior_path_planner 不出 path</td>
+<td>自加的 <code>road_shoulder</code> lanelet 干扰规划</td>
+<td>撤掉路肩、回到干净 A+B，规划恢复正常</td>
+</tr>
+<tr>
+<td>出纯前进曲线、没有倒车段</td>
+<td><code>astar.use_back=false</code> 或 goal 朝向不需倒车</td>
+<td>确认 <code>use_back=true</code>；调 goal 朝向使其必须倒车入位</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="后续工作"><a href="#后续工作" class="headerlink" title="后续工作"></a>后续工作</h2><p><strong>后续工作</strong></p>
+<ul>
+<li><strong>W4 倒车入库</strong>：复用同一 RS 曲线 &#x2F; Hybrid A* 栈，正向驶入 + 倒车档；地图与调参经验直接迁移。</li>
+<li><strong>实车测试</strong>：在场地做侧方停车实车验证。</li>
+<li><strong>路肩 pull over &#x2F; out</strong>：地图路肩已暂撤，待侧方链路彻底稳定后重新加回 <code>road_shoulder</code> lanelet 并启用 pull-over 模块。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/07/08/Typora%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%BA%94%E5%9B%BE%E5%BA%8A%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/" rel="prev" title="Typora及其对应图床安装使用">
+                  <i class="fa fa-angle-left"></i> Typora及其对应图床安装使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

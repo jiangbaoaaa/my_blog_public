@@ -139,13 +139,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -174,6 +174,640 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/10/W3_%E4%BE%A7%E6%96%B9%E5%81%9C%E8%BD%A6%E4%BB%BF%E7%9C%9F%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/10/W3_%E4%BE%A7%E6%96%B9%E5%81%9C%E8%BD%A6%E4%BB%BF%E7%9C%9F%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/" class="post-title-link" itemprop="url">侧方位停车仿真测试报告</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-10 12:00:00 / 修改时间：16:55:05" itemprop="dateCreated datePublished" datetime="2026-07-10T12:00:00+08:00">2026-07-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">--</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="侧方停车仿真测试报告"><a href="#侧方停车仿真测试报告" class="headerlink" title="侧方停车仿真测试报告"></a>侧方停车仿真测试报告</h1><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>报告名称</td>
+<td>《侧方位停车仿真测试报告》（PARKING 触发条件 &#x2F; 仿真环境 &#x2F; 调参过程 &#x2F; 三条验收结果）</td>
+</tr>
+<tr>
+<td>姓名</td>
+<td>陈国庆</td>
+</tr>
+<tr>
+<td>模块</td>
+<td>规划</td>
+</tr>
+<tr>
+<td>模块负责人 &#x2F; 带教</td>
+<td>邬学维（带教：邬学维 &#x2F; 陈宇秋）</td>
+</tr>
+<tr>
+<td>入职日期 &#x2F; 考察期</td>
+<td>2026&#x2F;6&#x2F;23 &#x2F; 2 个月</td>
+</tr>
+<tr>
+<td>对应任务</td>
+<td>跟踪表【第一月】W3（7&#x2F;7–7&#x2F;11，权重 <strong>30%</strong>）</td>
+</tr>
+<tr>
+<td>评价标准 &#x2F; 交付物</td>
+<td>Planning Sim 跑通侧方位停车（验收①轨迹合理 &#x2F; ②数值校验 &#x2F; ③理想跟随）</td>
+</tr>
+<tr>
+<td>测试素材</td>
+<td>W3 Day1 仿真测试 + freespace_planner 调参记录</td>
+</tr>
+<tr>
+<td>日期</td>
+<td>2026&#x2F;07&#x2F;07</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>本报告是 W3 的核心交付物。</strong> 上游承接 W2 源码走读（<code>freespace_planner</code> &#x2F; Hybrid A* &#x2F; RS 的实现细节），下游支撑 W4 倒车入库（复用同一 RS 曲线栈）。W3 的三条仿真验收口径（① 轨迹不穿越障碍、② 曲率连续且最小转弯半径满足且末点停位误差达标、③ simple_planning_simulator 理想跟随跑通）。</p>
+<h2 id="文档说明与任务对齐"><a href="#文档说明与任务对齐" class="headerlink" title="文档说明与任务对齐"></a>文档说明与任务对齐</h2><h3 id="本报告在任务跟踪表中的位置"><a href="#本报告在任务跟踪表中的位置" class="headerlink" title="本报告在任务跟踪表中的位置"></a><strong>本报告在任务跟踪表中的位置</strong></h3><table>
+<thead>
+<tr>
+<th>周次</th>
+<th>计划周期</th>
+<th>权重</th>
+<th>任务目标</th>
+<th>交付物</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W2</td>
+<td>6&#x2F;30–7&#x2F;4</td>
+<td>20%</td>
+<td>Autoware 自由空间规划模块源码走读</td>
+<td>《源码走读报告》</td>
+<td>已交（上游）</td>
+</tr>
+<tr>
+<td><strong>W3</strong></td>
+<td><strong>7&#x2F;7–7&#x2F;11</strong></td>
+<td><strong>30%</strong></td>
+<td><strong>【侧方位停车】算法实现与仿真跑通</strong>（RS 曲线 &#x2F; 几何路径拼接，低速阿克曼约束）</td>
+<td><strong>Planning Sim 跑通侧方位停车</strong></td>
+<td><strong>进行中</strong></td>
+</tr>
+<tr>
+<td>W4</td>
+<td>7&#x2F;14–7&#x2F;18</td>
+<td>35%</td>
+<td>【倒车入库】算法实现与仿真跑通（复用侧方位 RS 曲线栈）</td>
+<td>跑通倒车入库 + 月末演示</td>
+<td>未启动（下游）</td>
+</tr>
+</tbody></table>
+<h3 id="测试范围-↔-验收-↔-章节-映射"><a href="#测试范围-↔-验收-↔-章节-映射" class="headerlink" title="测试范围 ↔ 验收 ↔ 章节 映射"></a>测试范围 ↔ 验收 ↔ 章节 映射</h3><table>
+<thead>
+<tr>
+<th>验收要求</th>
+<th>报告章节</th>
+<th>测试方法</th>
+<th>素材</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PARKING 场景是否正确触发</td>
+<td>第 1 章</td>
+<td>起点 &#x2F; goal 设进 parking_lot 多边形，查 scenario 话题</td>
+<td>scenario 切换截图</td>
+</tr>
+<tr>
+<td>仿真环境与测试场景</td>
+<td>第 2 章</td>
+<td>planning_simulator + 临空港地图</td>
+<td>启动录屏</td>
+</tr>
+<tr>
+<td>调参过程（轨迹形态）</td>
+<td>第 3 章</td>
+<td>逐参数调整 freespace_planner.param</td>
+<td>调参记录表 + 各组动图</td>
+</tr>
+<tr>
+<td>① 轨迹不穿越边界 &#x2F; 形状合理</td>
+<td>第 4 章</td>
+<td>Rviz 看轨迹与车位边界</td>
+<td>入库动图</td>
+</tr>
+<tr>
+<td>② 曲率 &#x2F; 半径 &#x2F; 末点误差</td>
+<td>第 4 章</td>
+<td>导出轨迹点算 $\kappa$、$r$、末点偏差</td>
+<td>数值表</td>
+</tr>
+<tr>
+<td>③ 理想跟随到终点</td>
+<td>第 4 章</td>
+<td>simple_planning_simulator 跟车</td>
+<td>跟随动图</td>
+</tr>
+</tbody></table>
+<h3 id="仿真环境与相关文件清单"><a href="#仿真环境与相关文件清单" class="headerlink" title="仿真环境与相关文件清单"></a>仿真环境与相关文件清单</h3><table>
+<thead>
+<tr>
+<th>项</th>
+<th>配置 &#x2F; 路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统</td>
+<td>WSL2 Ubuntu 22.04</td>
+</tr>
+<tr>
+<td>ROS2</td>
+<td>Humble</td>
+</tr>
+<tr>
+<td>Autoware</td>
+<td>autoware_0442（<code>~/autoware_0442/install/setup.bash</code>）</td>
+</tr>
+<tr>
+<td>地图</td>
+<td>临空港 <code>~/autoware_map/linkonggang_map/lanelet2_map.osm</code>（lanelet2，83 lanelet）</td>
+</tr>
+<tr>
+<td>测试车位</td>
+<td><code>parking_lot A</code></td>
+</tr>
+<tr>
+<td>算法</td>
+<td>freespace_planner，<code>planning_algorithm=astar</code>（Hybrid A*）</td>
+</tr>
+<tr>
+<td>相关源码</td>
+<td><code>scenario_selector_node.cpp</code>（W2 第 1 章）、<code>freespace_planner_node.cpp</code>、<code>astar_search.cpp</code>、<code>reeds_shepp.cpp</code>（W2 第 1–3 章）</td>
+</tr>
+</tbody></table>
+<h3 id="测试地图展示"><a href="#测试地图展示" class="headerlink" title="测试地图展示"></a>测试地图展示</h3><h4 id="osm地图"><a href="#osm地图" class="headerlink" title=".osm地图"></a>.osm地图</h4><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710104249082.png" alt="image-20260710104248891" style="zoom:50%;" />
+
+<p>图示红色区域为停车区(parking_lot)，是触发freespace_planner的关键。</p>
+<h4 id="pcd地图"><a href="#pcd地图" class="headerlink" title=".pcd地图"></a>.pcd地图</h4><p><img src="C:\Users\gen27\AppData\Roaming\Typora\typora-user-images\image-20260710104504297.png" alt="image-20260710104504297"></p>
+<hr>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>本报告在 Autoware planning_simulator 上测试侧方位停车。核心链路：车当前位姿落入 <code>parking_lot</code> 多边形内 → <code>scenario_selector</code> 切 PARKING（<code>scenario_selector_node.cpp:158</code>，<code>isInParkingLot</code> 查 <code>current_pose</code>）→ <code>freespace_planner</code> 经 <code>onTimer</code> 三重判定调用 <code>algo_-&gt;makePlan()</code>（<code>freespace_planner_node.cpp:487</code>），内核 Hybrid A* 以 RS 距离为启发搜出含倒车段的路径，按 <code>is_back</code> 标记分段发布为 <code>Trajectory</code>。通过逐参数调整 <code>freespace_planner.param</code>（重点是 <code>use_back</code>、<code>minimum_turning_radius</code>、<code>reverse_weight</code>、<code>goal_range</code>），在临空港地图的 <code>parking_lot A</code> 上跑通侧方入库，并按验收①②③量化轨迹质量。</p>
+<hr>
+<h2 id="PARKING-场景触发条件"><a href="#PARKING-场景触发条件" class="headerlink" title="PARKING 场景触发条件"></a>PARKING 场景触发条件</h2><h3 id="触发链路定位"><a href="#触发链路定位" class="headerlink" title="触发链路定位"></a>触发链路定位</h3><p>侧方停车由 <code>freespace_planner</code> 在 <strong>PARKING</strong> 场景下完成。场景是否激活由上游 <code>scenario_selector</code> 决定，判定依据来自源码（W2 走读）：</p>
+<p><code>scenario_selector_node.cpp:158</code> 的 <code>selectScenarioByPosition()</code>，其中 <code>isInParkingLot</code>（第 162 行）查的是&#x3D;&#x3D;车当前位姿 <code>current_pose</code> 是否落在 parking_lot 多边形内&#x3D;&#x3D;——不是看 goal 在不在车位里。车在多边形内 → 切 PARKING；否则保持 LANE_DRIVING，freespace_planner 不出泊车轨迹。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    P[&quot;设起点：2D Pose Estimate&lt;br&gt;点进 parking_lot A 内&quot;] --&gt; SS[&quot;scenario_selector&lt;br&gt;selectScenarioByPosition :158&quot;]</span><br><span class="line">    SS --&gt; CK&#123;&quot;isInParkingLot(current_pose)?&lt;br&gt;:162&quot;&#125;</span><br><span class="line">    CK --&gt;|&quot;是&quot;| PK[&quot;切 PARKING&quot;]</span><br><span class="line">    CK --&gt;|&quot;否&quot;| LD[&quot;LANE_DRIVING&lt;br&gt;不出泊车轨迹&quot;]</span><br><span class="line">    PK --&gt; FP[&quot;freespace_planner onTimer&lt;br&gt;三重判定：输入齐? isActive(PARKING)? 要重规划?&quot;]</span><br><span class="line">    FP --&gt; MM[&quot;planTrajectory → makePlan :487&lt;br&gt;Hybrid A* + RS&quot;]</span><br><span class="line">    MM --&gt; TR[&quot;含倒车段 Trajectory&lt;br&gt;/planning/scenario_planning/parking/trajectory&quot;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="节点激活后的执行链"><a href="#节点激活后的执行链" class="headerlink" title="节点激活后的执行链"></a>节点激活后的执行链</h3><p>PARKING 激活后，<code>freespace_planner</code> 的 <code>onTimer</code>（<code>freespace_planner_node.cpp:414</code>）经三重判定——输入齐全（L417）、当前场景为 PARKING（<code>isActive</code>，L421）、需要重规划（<code>isPlanRequired</code>，L438）——进入 <code>planTrajectory</code>（L468），调用 <code>algo_-&gt;makePlan(current, goal)</code>（L487）。<code>makePlan</code> 内核为 Hybrid A*：在 <code>(x,y,θ)</code> 三维网格上用运动基元扩展、以 RS 距离为启发搜出含倒车段的路径，按 <code>is_back</code> 标记分段发布为 <code>Trajectory</code>（倒车段 <code>velocity&lt;0</code>）。</p>
+<p>验证话题：<code>/planning/scenario_planning/scenario</code>（应显示 PARKING）与 <code>/planning/scenario_planning/parking/trajectory</code>（应有数据）。</p>
+<hr>
+<h2 id="仿真环境与测试场景"><a href="#仿真环境与测试场景" class="headerlink" title="仿真环境与测试场景"></a>仿真环境与测试场景</h2><h3 id="测试场景设计"><a href="#测试场景设计" class="headerlink" title="测试场景设计"></a>测试场景设计</h3><table>
+<thead>
+<tr>
+<th>项</th>
+<th>设置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>起点（2D Pose Estimate）</td>
+<td>parking_lot A 多边形内，朝向大致平行于路面</td>
+</tr>
+<tr>
+<td>目标（2D Goal Pose）</td>
+<td>A 内的最终停车位姿</td>
+</tr>
+<tr>
+<td>期望行为</td>
+<td>scenario 切 PARKING → freespace_planner 出”前进段 + 倒车段”轨迹 → 车侧方入库</td>
+</tr>
+<tr>
+<td>engage</td>
+<td>默认 auto-engage（<code>initial_engage_state=true</code>）</td>
+</tr>
+</tbody></table>
+<p>启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /opt/ros/humble/setup.bash</span><br><span class="line"><span class="built_in">source</span> ~/autoware_0442/install/setup.bash</span><br><span class="line">ros2 launch autoware_launch planning_simulator.launch.xml \</span><br><span class="line">  map_path:=/home/gen/autoware_map/linkonggang_map \</span><br><span class="line">  vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit</span><br></pre></td></tr></table></figure>
+
+<p>下图显示实际测试侧方停车图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710105403254.gif" alt="linkonggang_park_over"></p>
+<p>下图显示rqt中的结构</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710105624470.png" alt="image-20260710105624170"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 node info /planning/scenario_planning/parking/freespace_planner</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710105918543.png" alt="image-20260710105918373"></p>
+<p>可以测试需要订阅与发布哪些话题。</p>
+<hr>
+<h2 id="freespace-planner-调参"><a href="#freespace-planner-调参" class="headerlink" title="freespace_planner 调参"></a>freespace_planner 调参</h2><p>参数分三类（节点 &#x2F; 规划通用 &#x2F; A*），都在 <code>freespace_planner.param.yaml</code>。改完需重编：<code>colcon build --packages-select tier4_planning_launch</code>。</p>
+<h3 id="调参对象（速查）"><a href="#调参对象（速查）" class="headerlink" title="调参对象（速查）"></a>调参对象（速查）</h3><p><strong>节点级配置</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>planning_algorithm</code></td>
+<td><code>&quot;astar&quot;</code></td>
+<td>算法选择，泊车用 astar（Hybrid A*）；rrtstar 泊车不稳</td>
+</tr>
+<tr>
+<td><code>waypoints_velocity</code></td>
+<td><code>1.0</code></td>
+<td>输出轨迹恒速 [m&#x2F;s]</td>
+</tr>
+<tr>
+<td><code>vehicle_shape_margin_m</code></td>
+<td><code>0.5</code></td>
+<td>车体碰撞余量 [m]。调大→离障碍远但可通行空间变小易搜不出路；调小→贴边危险。</td>
+</tr>
+<tr>
+<td><code>th_arrived_distance_m</code></td>
+<td><code>0.5</code></td>
+<td>“到达终点”距离阈值 [m]，影响停车判定</td>
+</tr>
+<tr>
+<td><code>th_course_out_distance_m</code></td>
+<td><code>1.0</code></td>
+<td>“偏离轨迹”阈值 [m]，超过可能触发重规划</td>
+</tr>
+</tbody></table>
+<p><strong>规划通用配置（所有算法共用）</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>time_limit</code></td>
+<td><code>30000.0</code></td>
+<td>单次规划超时 [ms]，总搜不出路就调大（当前 30s 已很宽）</td>
+</tr>
+<tr>
+<td><code>max_turning_ratio</code></td>
+<td><code>0.5</code></td>
+<td>规划最大转向 &#x3D; 车实际最大转向 × 此比例。 0.5 → 最小转弯半径 ≈ 7.65m。调大(如 0.7)→允许更小半径更灵活但逼近极限。</td>
+</tr>
+<tr>
+<td><code>theta_size</code></td>
+<td><code>120</code></td>
+<td>整圈角度离散数。越大越平滑但搜索越慢；轨迹锯齿调大到 144</td>
+</tr>
+<tr>
+<td><code>lateral_goal_range</code></td>
+<td><code>0.5</code></td>
+<td>到达 goal 横向容差 [m]。收紧→停得准但难搜。</td>
+</tr>
+<tr>
+<td><code>longitudinal_goal_range</code></td>
+<td><code>1.0</code></td>
+<td>到达 goal 纵向容差 [m]</td>
+</tr>
+<tr>
+<td><code>angle_goal_range</code></td>
+<td><code>6.0</code></td>
+<td>到达 goal 航向容差 [deg]。</td>
+</tr>
+<tr>
+<td><code>curve_weight</code></td>
+<td><code>0.8</code></td>
+<td>转弯代价。调大→”能直就直”；调小→更短但弯多</td>
+</tr>
+<tr>
+<td><code>reverse_weight</code></td>
+<td><code>0.7</code></td>
+<td>倒车代价。侧方需要倒车，不能太大；倒车段过多再调大</td>
+</tr>
+<tr>
+<td><code>direction_change_weight</code></td>
+<td><code>2.0</code></td>
+<td>换向（前进↔倒车）代价。调大→减少来回揉库次数</td>
+</tr>
+<tr>
+<td><code>obstacle_threshold</code></td>
+<td><code>100</code></td>
+<td>costmap cell ≥ 多少算障碍 [0-255]。空地搜不出路→调高；漏障→调低</td>
+</tr>
+</tbody></table>
+<p><strong>A* 配置（<code>planning_algorithm=astar</code> 时生效）</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>astar.use_back</code></td>
+<td><code>true</code></td>
+<td>是否允许倒车。</td>
+</tr>
+<tr>
+<td><code>astar.search_method</code></td>
+<td><code>&quot;forward&quot;</code></td>
+<td>起步方向：forward（前进起步）&#x2F; backward（倒车起步）</td>
+</tr>
+<tr>
+<td><code>astar.adapt_expansion_distance</code></td>
+<td><code>true</code></td>
+<td>近 goal 时用 Reeds-Shepp 解析扩展，大幅加速终点收敛</td>
+</tr>
+<tr>
+<td><code>astar.near_goal_distance</code></td>
+<td><code>3.0</code></td>
+<td>距 goal 多少 [m] 内尝试 RS 直连。调大→更早连结(快但可能次优)</td>
+</tr>
+<tr>
+<td><code>astar.distance_heuristic_weight</code></td>
+<td><code>2.0</code></td>
+<td>启发权重（朝 goal 贪心程度）。调大→搜得快但可能次优</td>
+</tr>
+<tr>
+<td><code>astar.smoothness_weight</code></td>
+<td><code>0.5</code></td>
+<td>平滑度权重。调大→轨迹更平滑。</td>
+</tr>
+<tr>
+<td><code>astar.obstacle_distance_weight</code></td>
+<td><code>1.75</code></td>
+<td>离障碍距离权重。调大→轨迹远离障碍更安全。</td>
+</tr>
+<tr>
+<td><code>astar.goal_lat_distance_weight</code></td>
+<td><code>5.0</code></td>
+<td>横向贴近 goal 权重。调大→末点横向更准</td>
+</tr>
+</tbody></table>
+<h3 id="基线配置"><a href="#基线配置" class="headerlink" title="基线配置"></a>基线配置</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">waypoints_velocity:</span> <span class="number">1.0</span></span><br><span class="line"><span class="attr">vehicle_shape_margin_m:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">th_arrived_distance_m:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">time_limit:</span> <span class="number">30000</span></span><br><span class="line"><span class="attr">max_turning_ratio:</span> <span class="number">0.5</span>          <span class="comment"># 规划用最大转向比例，0.5 -&gt; 最小半径≈7.65m（&gt;真车4.5m，满足）</span></span><br><span class="line"><span class="attr">theta_size:</span> <span class="number">120</span></span><br><span class="line"><span class="attr">curve_weight:</span> <span class="number">0.8</span></span><br><span class="line"><span class="attr">reverse_weight:</span> <span class="number">0.7</span></span><br><span class="line"><span class="attr">lateral_goal_range:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">longitudinal_goal_range:</span> <span class="number">1.0</span></span><br><span class="line"><span class="attr">angle_goal_range:</span> <span class="number">6.0</span></span><br><span class="line"><span class="attr">obstacle_threshold:</span> <span class="number">100</span></span><br><span class="line"><span class="attr">use_back:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">distance_heuristic_weight:</span> <span class="number">2.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="调参记录表"><a href="#调参记录表" class="headerlink" title="调参记录表"></a>调参记录表</h3><p>为了保证就测试的规范性，选择采取固定起点、终点的位置的方式进行测试，每次修改一个参数，观察变化结果。图中白色部分为代价地图，白色表示可行。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710142029545.png" alt="image-20260710142029374"></p>
+<h4 id="轨迹形态合理性"><a href="#轨迹形态合理性" class="headerlink" title="轨迹形态合理性"></a>轨迹形态合理性</h4><blockquote>
+<p>每次修改参数，记下改前改后值与轨迹效果，并对应一组动图。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>参数</th>
+<th>改前</th>
+<th>改后</th>
+<th>现象 &#x2F; 效果</th>
+<th>对应动图_原参数</th>
+<th>对应动图现有参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>（基线）</td>
+<td>—</td>
+<td>见上</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>vehicle_shape_margin_m</td>
+<td>0.5</td>
+<td>1.0</td>
+<td>无明显变化，仿真中无障碍物参与，看不出效果</td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710145553803.gif" alt="vehicle_shape_margin_m_0.5-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710143748122.gif" alt="vehicle_shape_margin_m_0.5-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+</tr>
+<tr>
+<td>2</td>
+<td>theta_size；smoothness_weight</td>
+<td>70；0.5</td>
+<td>120；1.0</td>
+<td>轨迹更平滑，波动更小</td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164349385.gif" alt="theta_size70-smoothness_weight0.5-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164403879.gif" alt="theta_size120-smoothness_weight1.0-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+</tr>
+<tr>
+<td>3</td>
+<td>angle_goal_range；lateral_goal_range；longitudinal_goal_range；goal_lat_distance_weight</td>
+<td>6.0；0.5；1.0；5.0</td>
+<td>4.0；0.3；0.5；7.0</td>
+<td>轨迹更加贴近终点</td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164349385.gif" alt="theta_size70-smoothness_weight0.5-ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+<td><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710164555640.gif" alt="ezgif.com-video-to-gif-converter" style="zoom:25%;" /></td>
+</tr>
+</tbody></table>
+<h3 id="判断信号"><a href="#判断信号" class="headerlink" title="判断信号"></a>判断信号</h3><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>调参方向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>完全搜不出 trajectory</td>
+<td><code>use_back</code>&#x3D;true、<code>minimum_turning_radius</code>↓、<code>goal_range</code>↑、<code>time_limit</code>↑、<code>obstacle_threshold</code>↑</td>
+</tr>
+<tr>
+<td>轨迹压到车位边界 &#x2F; 障碍</td>
+<td><code>vehicle_shape_margin_m</code>↑、<code>obstacle_threshold</code>↓</td>
+</tr>
+<tr>
+<td>倒车段过多、来回揉</td>
+<td><code>reverse_weight</code>↑、<code>curve_weight</code>↑</td>
+</tr>
+<tr>
+<td>搜索慢 &#x2F; 偶发超时</td>
+<td><code>distance_heuristic_weight</code>↑、<code>theta_size</code>↓、<code>time_limit</code>↑</td>
+</tr>
+<tr>
+<td>停位不准</td>
+<td><code>goal_range</code>↓、<code>th_arrived_distance_m</code>↓</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="仿真结果（侧方停车）"><a href="#仿真结果（侧方停车）" class="headerlink" title="仿真结果（侧方停车）"></a>仿真结果（侧方停车）</h2><h3 id="验收①：轨迹不穿越车位边界-障碍、形状合理"><a href="#验收①：轨迹不穿越车位边界-障碍、形状合理" class="headerlink" title="验收①：轨迹不穿越车位边界 &#x2F; 障碍、形状合理"></a>验收①：轨迹不穿越车位边界 &#x2F; 障碍、形状合理</h3><p>下面分从前、从后方进入侧方停车位置，均未超过停车区域</p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710151523375.gif" alt="往前" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710151537367.gif" alt="往后" style="zoom:50%;" />
+
+<h3 id="验收②：数值校验"><a href="#验收②：数值校验" class="headerlink" title="验收②：数值校验"></a>验收②：数值校验</h3><p>测试按”建场景 → 触发 PARKING → 取泊车轨迹 → 数值校验”四步：前两步在 planning_simulator + RViz 手动操作——起点用 <code>2D Pose Estimate</code> 点进 parking_lot 多边形内，再用 <code>2D Goal Pose</code> 点进车位；后两步靠话题订阅与离线脚本。</p>
+<p><strong>取数：</strong> 离线脚本 <code>~/traj_eval.py</code> 订阅 <code>/planning/scenario_planning/parking/trajectory</code>（freespace 在 PARKING 下输出，含每个点的 <code>pose</code> 与 <code>longitudinal_velocity_mps</code>，后者 &lt;0 为倒车段）。三项指标计算如下：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>计算方法</th>
+<th>判定标准</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>最小转弯半径 $r_{\min}$</td>
+<td>三点 Menger 外接圆 $\kappa&#x3D;1&#x2F;r$，取所有三点组半径最小值（直线段跳过）</td>
+<td>$\geq$ 真车 &#x3D;&#x3D;4.5m&#x3D;&#x3D;（硬约束）</td>
+</tr>
+<tr>
+<td>曲率连续性</td>
+<td>相邻三点组曲率差 $\max\lvert\Delta\kappa\rvert$</td>
+<td>越小越平滑</td>
+</tr>
+<tr>
+<td>末点停位误差</td>
+<td>末点与 goal 的位置 $\sqrt{\Delta x^2+\Delta y^2}$、航向 $\lvert\Delta\psi\rvert$</td>
+<td>参考 ≤0.5m &#x2F; ≤5°</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>半径口径：&#x3D;&#x3D;验收标准按真车 4.5m&#x3D;&#x3D;（硬约束）；当前 <code>max_turning_ratio=0.5</code> 使规划搜索的最小半径 ≈7.65m，大于 4.5m，满足。实测值以 <code>traj_eval.py</code> 算出的 $r_{\min}$ 为准。</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710161509084.png" alt="image-20260710161508937"></p>
+<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/20260710161453889.png" alt="image-20260710161453689" style="zoom:50%;" />
+
+
+
+<h3 id="验收③：理想跟随到终点"><a href="#验收③：理想跟随到终点" class="headerlink" title="验收③：理想跟随到终点"></a>验收③：理想跟随到终点</h3><p>simple_planning_simulator 理想跟随含倒车段的泊车轨迹，车从起点运动并停在车位终点。验收①的前进 &#x2F; 后退入库动图（见上）即跟随过程的直接证据——车按规划轨迹完成侧方入库并停住；末点是否落在车位终点、是否停稳，以验收②的末点停位误差数据为据（参考 ≤0.5m &#x2F; ≤5°）。</p>
+<hr>
+<h2 id="测试链路总图"><a href="#测试链路总图" class="headerlink" title="测试链路总图"></a>测试链路总图</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    classDef env fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b</span><br><span class="line">    classDef trigger fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100</span><br><span class="line">    classDef plan fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20</span><br><span class="line">    classDef verify fill:#ffebee,stroke:#e53935,stroke-width:2px,color:#b71c1c</span><br><span class="line"></span><br><span class="line">    subgraph SG_ENV [&quot;🚗 测试环境&quot;]</span><br><span class="line">        MAP[&quot;临空港地图 + parking_lot A&lt;br&gt;planning_simulator (autoware_0442)&quot;]:::env</span><br><span class="line">    end</span><br><span class="line">    subgraph SG_TRG [&quot;🔑 触发 (scenario_selector)&quot;]</span><br><span class="line">        POSE[&quot;2D Pose Estimate 点进 A 内&quot;]:::trigger</span><br><span class="line">        SEL[&quot;isInParkingLot(current_pose) :162&lt;br&gt;切 PARKING&quot;]:::trigger</span><br><span class="line">    end</span><br><span class="line">    subgraph SG_PLAN [&quot;🧠 规划 (freespace_planner)&quot;]</span><br><span class="line">        ONT[&quot;onTimer 三重判定 :414&quot;]:::plan</span><br><span class="line">        MK[&quot;makePlan :487&lt;br&gt;Hybrid A* + RS&quot;]:::plan</span><br><span class="line">        TRAJ[&quot;含倒车段 Trajectory&lt;br&gt;velocity&lt;0&quot;]:::plan</span><br><span class="line">    end</span><br><span class="line">    subgraph SG_VF [&quot;🛡️ 验收&quot;]</span><br><span class="line">        V1[&quot;① 轨迹不穿边界/形状合理&quot;]:::verify</span><br><span class="line">        V2[&quot;② 曲率/半径/末点误差&quot;]:::verify</span><br><span class="line">        V3[&quot;③ 理想跟随到终点&quot;]:::verify</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    MAP --&gt; POSE --&gt; SEL --&gt; ONT --&gt; MK --&gt; TRAJ</span><br><span class="line">    TRAJ --&gt; V1</span><br><span class="line">    TRAJ --&gt; V2</span><br><span class="line">    TRAJ --&gt; V3</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="结论与总结"><a href="#结论与总结" class="headerlink" title="结论与总结"></a>结论与总结</h2><h3 id="三条验收达标判定"><a href="#三条验收达标判定" class="headerlink" title="三条验收达标判定"></a>三条验收达标判定</h3><table>
+<thead>
+<tr>
+<th>验收</th>
+<th>标准</th>
+<th>实测</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>① 轨迹不穿越车位边界 &#x2F; 障碍、形状合理</td>
+<td>不穿 A 边界、呈”前进 + 倒车”侧方形态</td>
+<td>前进 &#x2F; 后退两种入位均未越界（见验收①动图）</td>
+</tr>
+<tr>
+<td>② 曲率连续、最小转弯半径满足、末点停位误差达标</td>
+<td>$r_{\min}\geq$ 4.5m、$\max\lvert\Delta\kappa\rvert$ 小、末点 ≤0.5m &#x2F; ≤5°</td>
+<td>见Fig 16</td>
+</tr>
+<tr>
+<td>③ 理想跟随跑通到终点</td>
+<td>simple_planning_simulator 跟到车位终点</td>
+<td>车按轨迹入库停住（见验收①动图 + 验收②末点误差）</td>
+</tr>
+</tbody></table>
+<h3 id="链路跑通结论"><a href="#链路跑通结论" class="headerlink" title="链路跑通结论"></a>链路跑通结论</h3><p>侧方停车 PARKING 链路在临空港地图 parking_lot A 上&#x3D;&#x3D;跑通&#x3D;&#x3D;：起点落入 parking_lot 多边形 → <code>scenario_selector</code> 切 PARKING（<code>:158 / :162</code>）→ <code>freespace_planner</code> <code>makePlan</code>（<code>:487</code>）输出含倒车段轨迹 → 车侧方入库。</p>
+<h3 id="调参核心结论"><a href="#调参核心结论" class="headerlink" title="调参核心结论"></a>调参核心结论</h3><p>最终采用配置见”基线配置”（关键项：<code>astar.use_back=true</code>、<code>max_turning_ratio=0.5</code> → 半径 ≈7.65m、<code>theta_size=120</code>）。三条关键发现：</p>
+<ul>
+<li>&#x3D;&#x3D;<code>astar.use_back</code> 必须为 true&#x3D;&#x3D;，否则侧方倒车段无解。</li>
+<li><code>theta_size</code>（70→120）配合 <code>astar.smoothness_weight</code>（0.5→1.0），轨迹更平滑、波动更小（见调参记录 #2）。</li>
+<li>收紧 <code>angle / lateral / longitudinal_goal_range</code> 并加大 <code>astar.goal_lat_distance_weight</code>（5.0→7.0），末点更贴近 goal（见调参记录 #3）。</li>
+</ul>
+<hr>
+<h2 id="测试问题与排查"><a href="#测试问题与排查" class="headerlink" title="测试问题与排查"></a>测试问题与排查</h2><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>根因</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>scenario 不切 PARKING（停在 LANE_DRIVING）</td>
+<td>起点没在 parking_lot 多边形内</td>
+<td>2D Pose Estimate 重新点进 A（W1 源码：<code>isInParkingLot</code> 查 <code>current_pose</code>）</td>
+</tr>
+<tr>
+<td><code>/planning/scenario_planning/trajectory</code> timeout、behavior_path_planner 不出 path</td>
+<td>自加的 <code>road_shoulder</code> lanelet 干扰规划</td>
+<td>撤掉路肩、回到干净 A+B，规划恢复正常</td>
+</tr>
+<tr>
+<td>出纯前进曲线、没有倒车段</td>
+<td><code>astar.use_back=false</code> 或 goal 朝向不需倒车</td>
+<td>确认 <code>use_back=true</code>；调 goal 朝向使其必须倒车入位</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="后续工作"><a href="#后续工作" class="headerlink" title="后续工作"></a>后续工作</h2><p><strong>后续工作</strong></p>
+<ul>
+<li><strong>W4 倒车入库</strong>：复用同一 RS 曲线 &#x2F; Hybrid A* 栈，正向驶入 + 倒车档；地图与调参经验直接迁移。</li>
+<li><strong>实车测试</strong>：在场地做侧方停车实车验证。</li>
+<li><strong>路肩 pull over &#x2F; out</strong>：地图路肩已暂撤，待侧方链路彻底稳定后重新加回 <code>road_shoulder</code> lanelet 并启用 pull-over 模块。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -723,6 +1357,367 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/" class="post-title-link" itemprop="url">Reeds-Shepp 曲线生成逻辑</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:07:50" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="W2-Day2-·-Reeds-Shepp-曲线生成逻辑"><a href="#W2-Day2-·-Reeds-Shepp-曲线生成逻辑" class="headerlink" title="W2 Day2 · Reeds-Shepp 曲线生成逻辑"></a>W2 Day2 · Reeds-Shepp 曲线生成逻辑</h1><p>本文按<strong>报告第 2 章结构</strong>（2.1–2.6）组织，内容 + 行号都来自源码核实。报告里 Day2 负责”<strong>RS 曲线生成逻辑</strong>“这一交付物，同时贡献”关键类 &#x2F; 关键函数”的<strong>算法层</strong>部分：</p>
+<blockquote>
+<ul>
+<li><strong>关键类</strong> → 2.2 <code>ReedsSheppStateSpace</code></li>
+<li><strong>关键函数</strong> → 2.3（<code>reedsShepp</code> 取最短 + 5 个分组生成函数 + <code>distance</code>&#x2F;<code>interpolate</code>）</li>
+<li><strong>RS 曲线生成逻辑</strong> → 2.4（核心）</li>
+</ul>
+<p>源码：<a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/src/reeds_shepp.cpp">reeds_shepp.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/include/freespace_planning_algorithms/reeds_shepp.hpp">reeds_shepp.hpp</a></p>
+<p>上游衔接：Day1 的 <code>makePlan</code>(L487) → A* → <code>estimateCost</code> → 本节 RS。下游：Day3 Hybrid A* 深读。</p>
+</blockquote>
+<hr>
+<h2 id="RS-曲线在规划框架中的定位与功能"><a href="#RS-曲线在规划框架中的定位与功能" class="headerlink" title="RS 曲线在规划框架中的定位与功能"></a>RS 曲线在规划框架中的定位与功能</h2><p>汽车不能像机器人那样原地旋转，必须遵守非完整运动学约束，即受限于最小转弯半径。</p>
+<ul>
+<li><strong>RS功能：在</strong>最小转弯半径约束<strong>下、<strong>允许前进 + 倒车</strong>，连接两个位姿 <code>(x, y, θ)</code> 的</strong>最短路径**。是 Dubins 曲线推广。</li>
+<li><strong>为什么泊车要用它</strong>：侧方&#x2F;倒车入库必须倒车，普通几何曲线（只前进）做不到；RS 给出”前进段 + 倒车段”拼接的最短解。</li>
+<li><strong>在这个模块的作用</strong>：RS 是 <code>freespace_planning_algorithms</code> 算法库里的<strong>几何工具</strong>，RS曲线并非直接求解从起点到终点的最终路径，而是作为图搜索算法（A* RRT*）的节点拓展工具。主要负责两个功能：<ol>
+<li><strong>启发函数</strong>（heuristic）：估”从当前点到终点还多远”，引导 A* 往终点搜（<code>astar_search.cpp:227</code>）。</li>
+<li><strong>shoot &#x2F; 终结</strong>：搜到某点时用 RS 直奔终点，命中即接上**（Day3 详读）**。</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. FreespacePlannerNode&lt;br&gt;(处理ROS消息与状态机)&quot;] --&gt; Astar[&quot;2. AstarSearch 或 RRT*&lt;br&gt;(基于Costmap进行全局避障寻路)&quot;]</span><br><span class="line">    Astar -- &quot;A*尝试直达终点 / RRT*尝试向外生长&quot; --&gt; RS[&quot;3. ReedsSheppStateSpace&lt;br&gt;(输入 s0 和 s1 计算两点间最短曲线)&quot;]</span><br><span class="line">    RS -- &quot;返回离散点集与代价&quot; --&gt; Astar</span><br></pre></td></tr></table></figure>
+
+<p>在 <strong>Hybrid A</strong>* 中，RS 曲线常被用作 <strong>Shot Heuristic (解析解剪枝)</strong>：当算法探索到一个靠近终点的节点时，如果不考虑障碍物，直接用 RS 曲线连向终点。如果这条 RS 曲线在 Costmap 上不碰撞，搜索就直接宣告成功，极大地加速了计算。</p>
+<hr>
+<h2 id="关键类：ReedsSheppStateSpace（成员表）"><a href="#关键类：ReedsSheppStateSpace（成员表）" class="headerlink" title="关键类：ReedsSheppStateSpace（成员表）"></a>关键类：<code>ReedsSheppStateSpace</code>（成员表）</h2><blockquote>
+<p>类声明：<code>class ReedsSheppStateSpace</code>（hpp L93）。它<strong>不是 ROS 节点</strong>，是纯几何工具类（无订阅&#x2F;发布&#x2F;定时器）。读它看”持有什么状态 + 提供哪些几何方法”。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型 &#x2F; 签名</th>
+<th>行号</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rho_</code></td>
+<td><code>double</code></td>
+<td>hpp L138</td>
+<td><strong>转弯半径</strong>（唯一状态），所有弧的半径</td>
+</tr>
+<tr>
+<td>枚举 <code>ReedsSheppPathSegmentType</code></td>
+<td><code>{RS_NOP, RS_LEFT, RS_STRAIGHT, RS_RIGHT}</code></td>
+<td>hpp L97</td>
+<td><strong>段形状</strong>（4 种，注意：方向不在这里）</td>
+</tr>
+<tr>
+<td><code>reedsSheppPathType[18][5]</code></td>
+<td><code>static const</code> 表</td>
+<td>hpp L100 &#x2F; cpp L623</td>
+<td><strong>18 种路径类型</strong>（每类是一组段形状序列）</td>
+</tr>
+<tr>
+<td>内部类 <code>ReedsSheppPath</code></td>
+<td>—</td>
+<td>hpp L103</td>
+<td>一条路径的完整描述：<code>type_</code> + <code>length_[5]</code> + <code>totalLength_</code></td>
+</tr>
+<tr>
+<td><code>struct StateXYT</code></td>
+<td><code>{x, y, yaw}</code></td>
+<td>hpp L121</td>
+<td>输入位姿（位置 + 航向）</td>
+</tr>
+<tr>
+<td><code>distance(s0, s1)</code></td>
+<td>方法</td>
+<td>hpp L130 &#x2F; cpp L656</td>
+<td>返回两位姿的<strong>RS 最短距离</strong>（米）</td>
+</tr>
+<tr>
+<td><code>reedsShepp(s0, s1)</code></td>
+<td>方法</td>
+<td>hpp L133 &#x2F; cpp L661</td>
+<td>返回<strong>最短路径对象</strong></td>
+</tr>
+<tr>
+<td><code>interpolate(s0, path, seg)</code></td>
+<td>方法</td>
+<td>hpp L135 &#x2F; cpp L670</td>
+<td>沿路径<strong>采样</strong>一个点（给定弧长）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<ul>
+<li><strong>方向（前进&#x2F;倒车）不在枚举里</strong>，而在 <code>length_[i]</code> 的<strong>正负号</strong>：正&#x3D;前进，负&#x3D;倒车。枚举只编码”直&#x2F;左&#x2F;右”三种<strong>形状</strong>。</li>
+<li><strong>路径类型是 18 类</strong>（不是网上常说的 48）。<code>reedsSheppPathType[18][5]</code>（cpp L623），48 是对称展开的理论数，代码用 18 规范行 + 对称变换实现。数组大小是[18,5]因为一个RS曲线最多由5个运动段组成。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="关键函数"><a href="#关键函数" class="headerlink" title="关键函数"></a>关键函数</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>行号</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>reedsShepp(x,y,phi)</code>（匿名命名空间）</td>
+<td>cpp L608</td>
+<td><strong>★取最短入口</strong>：依次调 5 个分组生成器，全程保留最短路径</td>
+</tr>
+<tr>
+<td><code>CSC</code> &#x2F; <code>CCC</code> &#x2F; <code>CCCC</code> &#x2F; <code>CCSC</code> &#x2F; <code>CCSCC</code></td>
+<td>cpp L158 &#x2F; L235 &#x2F; L332 &#x2F; L430 &#x2F; L575</td>
+<td><strong>5 个分组生成器</strong>：各算一类候选路径，用对称变换翻倍后留最短</td>
+</tr>
+<tr>
+<td><code>distance(s0, s1)</code></td>
+<td>cpp L656</td>
+<td><code>rho_ * path.length()</code> —— 归一化长度 × 半径 &#x3D; 实际米数</td>
+</tr>
+<tr>
+<td><code>reedsShepp(s0, s1)</code>（类方法）</td>
+<td>cpp L661</td>
+<td>坐标转到起点系 + 除以 <code>rho_</code> 归一化 → 调匿名 <code>reedsShepp</code></td>
+</tr>
+<tr>
+<td><code>interpolate(s0, path, seg)</code></td>
+<td>cpp L670</td>
+<td>沿路径走 <code>seg</code> 弧长，逐段积分出目标点（见证曲率跳变）</td>
+</tr>
+<tr>
+<td>8 个公式函数 <code>LpSpLp</code> 等</td>
+<td>cpp L125–L555</td>
+<td>各对应 RS 论文一个 formula（8.1–8.11），算单一几何解</td>
+</tr>
+</tbody></table>
+<p>**核心数学结算：**CSC等生成器，内部会调用LpSpLp等函数，然后再接着被核心函数reedsShepp()依次调用，每次调用都会比较当前算出的路径长度与已有最短长度比较，保留最短的一条。</p>
+<p>**对外计算接口：**ReedsShepp,外界获取最短路径的方法，首相将起点与终点之间的相对差值，进行平移旋转，转化为相对于原点的目标点。除以最小转弯半径，把问题归一化到单位园的集合问题上，调用匿名函数reedsShepp结算最短路径。. </p>
+<p>**轨迹离散化：*<em>interpolate，会给定一条RS path 和一个长度 seg (通常是离散步长，如0.1米)，通过积分计算出在0.1米处，车辆实际坐标。这样，可以使得外层A</em>等全局算法，每隔0.1米采样一个点，然后去Costmap上确认是否撞墙。</p>
+<p>下面贴<strong>最关键的两个</strong>（<code>reedsShepp</code> 取最短 + <code>CSC</code> 分组生成器）带标注代码。</p>
+<h3 id="①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度"><a href="#①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度" class="headerlink" title="① reedsShepp 取最短入口（cpp L608）——整个 RS 生成的总调度"></a>① <code>reedsShepp</code> 取最短入口（cpp L608）——整个 RS 生成的总调度</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ReedsSheppStateSpace::ReedsSheppPath <span class="title">reedsShepp</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ReedsSheppStateSpace::ReedsSheppPath path;   <span class="comment">// 默认 length = max（“目前最短”初值设无穷大）</span></span><br><span class="line">  <span class="built_in">CSC</span>(x, y, phi, path);     <span class="comment">// L611  圆弧-直线-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCC</span>(x, y, phi, path);     <span class="comment">// L612  三圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCCC</span>(x, y, phi, path);    <span class="comment">// L613  四圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSC</span>(x, y, phi, path);    <span class="comment">// L614  圆弧-圆弧-直-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSCC</span>(x, y, phi, path);   <span class="comment">// L615  圆弧-圆弧-直-圆弧-圆弧类候选</span></span><br><span class="line">  <span class="keyword">return</span> path;              <span class="comment">// 全程只留最短，返回的就是最短路径</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p><code>path</code> 是<strong>引用传入</strong>每个分组函数，初值 <code>length=max</code>。每个分组里每算出一个候选 <code>L</code>，只要 <code>L &lt; path.length()</code> 就覆盖 <code>path</code>。<br>所以”取最短”不是最后比一次，而是<strong>边算边贪心更新</strong>——5 个分组跑完，<code>path</code> 自然就是全局最短。</p>
+</blockquote>
+<h3 id="②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板"><a href="#②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板" class="headerlink" title="② CSC 分组生成器（cpp L158）——对称变换翻倍的样板"></a>② <code>CSC</code> 分组生成器（cpp L158）——对称变换翻倍的样板</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CSC</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi, ReedsSheppStateSpace::ReedsSheppPath &amp; path)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">double</span> t, u, v, L_min = path.<span class="built_in">length</span>(), L;</span><br><span class="line">  <span class="comment">// 基本形 LpSpLp（左-直-左，全前进）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, y, phi, t, u, v) &amp;&amp; L_min &gt; (L = std::<span class="built_in">abs</span>(t)+std::<span class="built_in">abs</span>(u)+std::<span class="built_in">abs</span>(v))) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], t, u, v);   <span class="comment">// 类型行 14</span></span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip：坐标/符号取反 → 得到“全倒车”版本（同一条形状，方向全反）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], -t, -u, -v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// reflect：y、phi 取反 → 左右镜像（左转变右转）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, -y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], t, u, v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip + reflect：两者叠加</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, -y, phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], -t, -u, -v);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// …后面还有 LpSpRp（左-直-右）的同样 4 种对称，共 8 个候选</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="③-distance（cpp-L656）——A-启发函数最终调的就是它"><a href="#③-distance（cpp-L656）——A-启发函数最终调的就是它" class="headerlink" title="③ distance（cpp L656）——A* 启发函数最终调的就是它"></a>③ <code>distance</code>（cpp L656）——A* 启发函数最终调的就是它</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">ReedsSheppStateSpace::distance</span><span class="params">(<span class="type">const</span> StateXYT &amp; s0, <span class="type">const</span> StateXYT &amp; s1)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> rho_ * <span class="built_in">reedsShepp</span>(s0, s1).<span class="built_in">length</span>();   <span class="comment">// 归一化长度 × 半径 = 实际米数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这就是 Day1→Day2 的接口：A* 的 <code>estimateCost</code>(astar_search.cpp:227) → <code>calcReedsSheppDistance</code>(L31) → 本函数 → 给 A* 当”到终点还多远”的启发值。</p>
+</blockquote>
+<hr>
+<h2 id="RS-曲线生成逻辑"><a href="#RS-曲线生成逻辑" class="headerlink" title="RS 曲线生成逻辑"></a>RS 曲线生成逻辑</h2><h3 id="三种形状-×-两种方向-6-基元"><a href="#三种形状-×-两种方向-6-基元" class="headerlink" title="三种形状 × 两种方向 &#x3D; 6 基元"></a>三种形状 × 两种方向 &#x3D; 6 基元</h3><p>RS 把任意路径切成”段”，每段是下面 3 种<strong>形状</strong>之一，方向由长度正负决定：</p>
+<table>
+<thead>
+<tr>
+<th>形状</th>
+<th>枚举（hpp L97）</th>
+<th>曲率</th>
+<th>弧长正</th>
+<th>弧长负</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>直行</td>
+<td><code>RS_STRAIGHT</code></td>
+<td><code>0</code></td>
+<td>前进直行</td>
+<td>倒车直行</td>
+</tr>
+<tr>
+<td>左转弧</td>
+<td><code>RS_LEFT</code></td>
+<td><code>+1/rho_</code></td>
+<td>前进左转</td>
+<td>倒车左转</td>
+</tr>
+<tr>
+<td>右转弧</td>
+<td><code>RS_RIGHT</code></td>
+<td><code>−1/rho_</code></td>
+<td>前进右转</td>
+<td>倒车右转</td>
+</tr>
+<tr>
+<td>（占位）</td>
+<td><code>RS_NOP</code></td>
+<td>—</td>
+<td>未用段填这个</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p>→ <strong>3 形状 × 2 方向 &#x3D; 6 基元</strong>（S+&#x2F;S−&#x2F;L+&#x2F;L−&#x2F;R+&#x2F;R−）。<code>RS_NOP</code> 仅用于把不足 5 段的路径补齐。</p>
+<blockquote>
+<p>公式函数命名就是这个意思：<code>LpSpLp</code> &#x3D; Left-plus、Straight-plus、Left-plus（全前进的”左-直-左”）；<code>m</code>&#x3D;minus&#x3D;倒车，如 <code>LpRmL</code>&#x3D;左前-右倒-左前。</p>
+</blockquote>
+<h3 id="路径类型表：18-类（cpp-L623–642）"><a href="#路径类型表：18-类（cpp-L623–642）" class="headerlink" title="路径类型表：18 类（cpp L623–642）"></a>路径类型表：18 类（cpp L623–642）</h3><p>每类是一组”段形状序列”（最多 5 段，多的位填 <code>RS_NOP</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>类型行</th>
+<th>段形状序列</th>
+<th>举例含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CCC</td>
+<td>0 &#x2F; 1</td>
+<td>L-R-L &#x2F; R-L-R</td>
+<td>三圆弧（如 LRL）</td>
+</tr>
+<tr>
+<td>CCCC</td>
+<td>2 &#x2F; 3</td>
+<td>L-R-L-R &#x2F; R-L-R-S&#x2F;…</td>
+<td>四圆弧</td>
+</tr>
+<tr>
+<td>CCSC</td>
+<td>4–11</td>
+<td>含一段直线的 4 段组合</td>
+<td>圆-圆-直-圆 等</td>
+</tr>
+<tr>
+<td>CSC</td>
+<td>12–15</td>
+<td>L-S-R &#x2F; R-S-L &#x2F; L-S-L &#x2F; R-S-R</td>
+<td><strong>圆-直-圆</strong>（最常见，如 LSL&#x2F;LSR）</td>
+</tr>
+<tr>
+<td>CCSCC</td>
+<td>16 &#x2F; 17</td>
+<td>L-R-S-L-R &#x2F; R-L-S-R-L</td>
+<td>五段组合</td>
+</tr>
+</tbody></table>
+<h3 id="生成-取最短流程"><a href="#生成-取最短流程" class="headerlink" title="生成 + 取最短流程"></a>生成 + 取最短流程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Input[&quot;输入：两位姿 s0(x,y,yaw), s1(x,y,yaw)&quot;] --&gt; ClassMethod[&quot;外部类方法 reedsShepp(s0, s1)&quot;]</span><br><span class="line">    </span><br><span class="line">    ClassMethod --&gt; Trans1[&quot;① 坐标系转换：&lt;br&gt;将 s1 平移旋转到 s0 局部坐标系&quot;]</span><br><span class="line">    Trans1 --&gt; Trans2[&quot;② 空间归一化：&lt;br&gt;将 x, y 除以 rho_&lt;br&gt;(转入单位半径圆的数学空间计算)&quot;]</span><br><span class="line">    </span><br><span class="line">    Trans2 --&gt; AnonMethod[&quot;匿名核心函数 ::reedsShepp(x, y, phi)&lt;br&gt;初始化 path 容器 (length = MAX)&quot;]</span><br><span class="line">    </span><br><span class="line">    AnonMethod --&gt; CSC[&quot;1. CSC() (曲线-直线-曲线)&quot;]</span><br><span class="line">    CSC --&gt; CCC[&quot;2. CCC() (纯曲线)&quot;]</span><br><span class="line">    CCC --&gt; CCCC[&quot;3. CCCC()&quot;]</span><br><span class="line">    CCCC --&gt; CCSC[&quot;4. CCSC()&quot;]</span><br><span class="line">    CCSC --&gt; CCSCC[&quot;5. CCSCC()&quot;]</span><br><span class="line">    </span><br><span class="line">    subgraph GroupCalc [&quot;各组核心函数内的计算与穷举机制&quot;]</span><br><span class="line">        Step1[&quot;调用基础数学公式 (如 LpSpLp)&lt;br&gt;计算一个基准解&quot;] --&gt; Step2[&quot;应用几何对称性生成 4~8 个候选组合：&lt;br&gt;1. Time flip (时间翻转)&lt;br&gt;2. Reflect (镜像反射)&lt;br&gt;3. Backwards (反向倒车)&quot;]</span><br><span class="line">        Step2 --&gt; Step3&#123;&quot;计算组合总弧长 L = |t|+|u|+|v|...&lt;br&gt;L &lt; L_min ?&quot;&#125;</span><br><span class="line">        Step3 -- Yes --&gt; Step4[&quot;覆盖当前最优 path&lt;br&gt;更新最小长度 L_min&quot;]</span><br><span class="line">        Step3 -- No --&gt; Step1</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CSC -.-&gt; GroupCalc</span><br><span class="line">    </span><br><span class="line">    CCSCC --&gt; Return[&quot;返回 path (全局最优最短)：&lt;br&gt;type_ 指向 18 种曲线分类之一&lt;br&gt;length_[5] 记录各段弧长 (正负表示前进/倒车)&quot;]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="关键认知：分段常曲率，G1-连续但曲率不连续"><a href="#关键认知：分段常曲率，G1-连续但曲率不连续" class="headerlink" title="关键认知：分段常曲率，G1 连续但曲率不连续"></a>关键认知：分段常曲率，G1 连续但<strong>曲率不连续</strong></h3><p>看 <code>interpolate</code>（cpp L670）就懂——它<strong>逐段</strong>走，每段是<strong>恒定曲率</strong>的运动：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (path.type_[i]) &#123;</span><br><span class="line">  <span class="keyword">case</span> RS_LEFT:     ... yaw += v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 +1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_RIGHT:    ... yaw -= v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 -1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_STRAIGHT: ... 直线        <span class="keyword">break</span>;   <span class="comment">// 曲率 0</span></span><br><span class="line">  <span class="keyword">case</span> RS_NOP:      <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>含义：</p>
+<ul>
+<li><strong>每段内部曲率恒定</strong>（直&#x3D;0，弧&#x3D;±1&#x2F;rho_）。</li>
+<li><strong>段与段交界处曲率跳变</strong>（如 0 → 1&#x2F;rho_，或 +1&#x2F;rho_ → −1&#x2F;rho_）。</li>
+<li>所以 RS 路径是 <strong>G1 连续</strong>（位置 + 切向连续，车能不”瞬移”地跟），但<strong>不是 C² 曲率连续</strong>。</li>
+</ul>
+<blockquote>
+<p>若 W3&#x2F;W4 验收口径要求”<strong>曲率连续</strong>“，RS 单独<strong>不满足</strong>（段间曲率阶跃）——需要后接样条&#x2F;回旋曲线（clothoid）平滑，或由控制器做限幅。</p>
+</blockquote>
+<hr>
+<h2 id="关键参数"><a href="#关键参数" class="headerlink" title="关键参数"></a>关键参数</h2><p>RS 工具类本身只有 <strong>1 个参数</strong>：<code>rho_</code>（转弯半径，hpp L138）。它<strong>不是节点参数</strong>，而是由 A* 传进来的：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>来源</th>
+<th>Day1 默认值</th>
+<th>对 RS 的影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rho_</code>（turning radius）</td>
+<td>A* 的 <code>minimum_turning_radius</code> 传入（astar_search.cpp:227 的 <code>radius</code>）</td>
+<td><code>0.5</code> m</td>
+<td>半径越小，车能转的弯越急，RS 弧段越短</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><code>minimum_turning_radius</code> 是 Day1 参数表（cpp L295）里的算法参数，Day3 读 A* 时会看到它怎么传给 <code>ReedsSheppStateSpace</code>。Day2 只需知道：<strong><code>rho_</code> 决定 RS 所有弧的半径</strong>。</p>
+</blockquote>
+<h2 id="RS-在整条链路里的位置"><a href="#RS-在整条链路里的位置" class="headerlink" title="RS 在整条链路里的位置"></a>RS 在整条链路里的位置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. freespace_planner 节点&lt;br&gt;algo_-&gt;makePlan(current, goal)&quot;]</span><br><span class="line">    </span><br><span class="line">    Astar[&quot;2. AstarSearch::search()&lt;br&gt;A* 全局图搜索主循环&quot;]</span><br><span class="line">    </span><br><span class="line">    Node --&gt; Astar</span><br><span class="line">    </span><br><span class="line">    subgraph Astar_Internal [&quot;A* 内部调用逻辑&quot;]</span><br><span class="line">        EstCost[&quot;扩展节点时：&lt;br&gt;estimateCost(每个节点)&quot;]</span><br><span class="line">        Shoot[&quot;搜到终点附近时：&lt;br&gt;RS Shoot 直奔终点&quot;]</span><br><span class="line">        </span><br><span class="line">        CalcRS[&quot;calcReedsSheppDistance()&quot;]</span><br><span class="line">        </span><br><span class="line">        EstCost --&gt; CalcRS</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    Astar --&gt; EstCost</span><br><span class="line">    Astar -.-&gt;|&quot;条件触发&quot;| Shoot</span><br><span class="line">    </span><br><span class="line">    subgraph RS_Library [&quot;ReedsShepp 核心数学库&quot;]</span><br><span class="line">        RSDist[&quot;ReedsSheppStateSpace::distance()&quot;]</span><br><span class="line">        RSCore[&quot;ReedsSheppStateSpace::reedsShepp()&lt;br&gt;★ 获取最短 RS 曲线 ★&quot;]</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CalcRS --&gt; RSDist</span><br><span class="line">    Shoot --&gt; RSCore</span><br><span class="line">    RSDist --&gt; RSCore</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<ol>
+<li><strong>启发式代价计算</strong>：<code>estimateCost</code> 用 RS 快速估算当前点到终点的RS最短距离</li>
+<li><strong>解析展开</strong>（RS Shoot）：A* 搜到终点附近时，直接用 RS 接上终点</li>
+</ol>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/W2_Day3_Hybrid_A%E6%98%9F%E6%90%9C%E7%B4%A2_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1189,6 +2184,272 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/W2_Day4_%E5%B1%80%E9%83%A8%E9%81%BF%E9%9A%9C%E8%A7%A6%E5%8F%91_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/08/W2_Day4_%E5%B1%80%E9%83%A8%E9%81%BF%E9%9A%9C%E8%A7%A6%E5%8F%91_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/" class="post-title-link" itemprop="url">局部避障触发机制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:08:48" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="W2-Day4-·-局部避障触发机制"><a href="#W2-Day4-·-局部避障触发机制" class="headerlink" title="W2 Day4 · 局部避障触发机制"></a>W2 Day4 · 局部避障触发机制</h1><p>本文对应报告第 4 节，走读规划栈运行时的两层避障兜底。Day4 负责的交付物是<strong>局部避障触发机制</strong>：检测到障碍后，满足什么条件才触发停车或减速。</p>
+<p>源码：</p>
+<ul>
+<li><a href="../autoware/src/universe/autoware.universe/planning/surround_obstacle_checker/src/node.cpp">surround_obstacle_checker&#x2F;src&#x2F;node.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/surround_obstacle_checker/include/surround_obstacle_checker/node.hpp">node.hpp</a></li>
+<li><a href="../autoware/src/universe/autoware.universe/planning/obstacle_cruise_planner/src/node.cpp">obstacle_cruise_planner&#x2F;src&#x2F;node.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/obstacle_cruise_planner/src/planner_interface.cpp">planner_interface.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/obstacle_cruise_planner/include/obstacle_cruise_planner/common_structs.hpp">common_structs.hpp</a></li>
+</ul>
+<p>衔接：Day1–3 的 <code>freespace_planner</code> 产出一条理想轨迹；Day4 这两个节点在轨迹跑起来后做”遇障兜底”，对应验收口径①（轨迹不穿越障碍）。</p>
+<h2 id="为什么需要局部避障"><a href="#为什么需要局部避障" class="headerlink" title="为什么需要局部避障"></a>为什么需要局部避障</h2><p>Day1–3 产出的轨迹是基于规划时刻的地图算出来的。车开起来后环境是动态的：行人可能走进轨迹、前车可能减速、点云里突然冒出一根柱子。如果死守原轨迹，迟早撞。所以规划栈在 <code>freespace_planner</code> 之后挂了两层运行时兜底，分工按”速度区间”切：</p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>管什么场景</th>
+<th>检测什么</th>
+<th>触发动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>surround_obstacle_checker</code></td>
+<td>&#x3D;&#x3D;低速&#x2F;起步&#x3D;&#x3D;</td>
+<td>车身周围（360°）最近障碍</td>
+<td>离太近 → 限速 0，不让动</td>
+</tr>
+<tr>
+<td><code>obstacle_cruise_planner</code></td>
+<td>&#x3D;&#x3D;行驶中&#x3D;&#x3D;</td>
+<td>轨迹前方的障碍</td>
+<td>撞得上 → 插停车点 &#x2F; 限速跟车</td>
+</tr>
+</tbody></table>
+<p>一个管”别乱起步”，一个管”开起来别撞”。下面分开走读。</p>
+<h2 id="surround-obstacle-checker：车身周围有障碍-→-阻止起步"><a href="#surround-obstacle-checker：车身周围有障碍-→-阻止起步" class="headerlink" title="surround_obstacle_checker：车身周围有障碍 → 阻止起步"></a>surround_obstacle_checker：车身周围有障碍 → 阻止起步</h2><h3 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h3><p>这个节点订阅点云和动态物体，把车当成一个多边形（<code>createSelfPolygon</code>，node.cpp L123），用 Boost.Geometry 算车身到最近障碍的距离。距离太近就发一个 <code>max_velocity = 0</code> 的限速指令，让车<strong>不要起步</strong>。</p>
+<p>它内部是一个两态状态机（node.hpp L58）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    subgraph PASS_S [&quot;PASS 状态（正常）&quot;]</span><br><span class="line">        P1&#123;&quot;最近障碍距离 &lt; surround_check_distance?&lt;br&gt;默认 2.0m&quot;&#125; --&gt;|是 且 车已停| Act1[&quot;发 VelocityLimit&lt;br&gt;max_velocity = 0&quot;]</span><br><span class="line">        Act1 --&gt; SW1[&quot;state_ = STOP&quot;]</span><br><span class="line">        P1 --&gt;|否| P2[&quot;保持 PASS&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph STOP_S [&quot;STOP 状态（抑制起步）&quot;]</span><br><span class="line">        S1&#123;&quot;最近障碍距离 &lt; surround_check_recover_distance?&lt;br&gt;默认 2.5m&quot;&#125; --&gt;|是| S2[&quot;保持 STOP（防抖）&quot;]</span><br><span class="line">        S1 --&gt;|否 且 超过 state_clear_time| Act2[&quot;发 VelocityLimitClearCommand&lt;br&gt;解除限速&quot;]</span><br><span class="line">        Act2 --&gt; SW2[&quot;state_ = PASS&quot;]</span><br><span class="line">    end</span><br><span class="line">    SW1 --&gt; STOP_S</span><br><span class="line">    SW2 --&gt; PASS_S</span><br></pre></td></tr></table></figure>
+
+<p>注意触发用 2.0m、恢复用 2.5m，&#x3D;&#x3D;恢复阈值大于触发阈值&#x3D;&#x3D;，这是故意留的滞回（hysteresis），避免障碍在边界附近抖动时状态反复跳</p>
+<blockquote>
+<p>这个节点<strong>只在车已经停着的时候才触发</strong>（<code>isStopRequired</code> 里 <code>if (!is_vehicle_stopped) return false;</code>，node.cpp L428）。它的角色是”防止起步”，不是”刹停一辆开着的车”——行驶中的制动归下面那个 <code>obstacle_cruise_planner</code>。</p>
+</blockquote>
+<h3 id="关键类-SurroundObstacleCheckerNode"><a href="#关键类-SurroundObstacleCheckerNode" class="headerlink" title="关键类 SurroundObstacleCheckerNode"></a>关键类 <code>SurroundObstacleCheckerNode</code></h3><table>
+<thead>
+<tr>
+<th>成员</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>state_</code></td>
+<td><code>PASS</code> &#x2F; <code>STOP</code>，状态机当前态</td>
+</tr>
+<tr>
+<td><code>last_obstacle_found_time_</code></td>
+<td>上次发现障碍的时间，用于 <code>state_clear_time</code> 防抖</td>
+</tr>
+<tr>
+<td><code>vehicle_stop_checker_</code></td>
+<td>判断车是否停稳</td>
+</tr>
+<tr>
+<td><code>surround_check_distance</code> &#x2F; <code>surround_check_recover_distance</code></td>
+<td>触发 &#x2F; 恢复距离阈值（滞回）</td>
+</tr>
+<tr>
+<td><code>state_clear_time</code></td>
+<td>障碍消失后，多保持 STOP 多久再恢复</td>
+</tr>
+</tbody></table>
+<h3 id="触发逻辑"><a href="#触发逻辑" class="headerlink" title="触发逻辑"></a>触发逻辑</h3><p>距离怎么来的：<code>getNearestObstacle</code>（L305）分别用点云（L334）和动态物体（L367）各算一个最近距离，取更近的那个。每条路都是 <code>bg::distance(ego_polygon, obstacle)</code>（L356 &#x2F; L398）——车多边形到障碍的几何最短距离。</p>
+<p>状态机在 <code>onTimer</code>（L196，每 100ms 跑一次）里推进，核心两段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> State::PASS: &#123;</span><br><span class="line">  <span class="type">const</span> <span class="keyword">auto</span> is_obstacle_found =</span><br><span class="line">    !nearest_obstacle ? <span class="literal">false</span></span><br><span class="line">                      : nearest_obstacle.<span class="built_in">get</span>().first &lt; node_param_.surround_check_distance; <span class="comment">// L227</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">isStopRequired</span>(is_obstacle_found, is_vehicle_stopped)) <span class="keyword">break</span>;                        <span class="comment">// L229</span></span><br><span class="line">  state_ = State::STOP;</span><br><span class="line">  <span class="keyword">auto</span> velocity_limit = std::<span class="built_in">make_shared</span>&lt;VelocityLimit&gt;();</span><br><span class="line">  velocity_limit-&gt;max_velocity = <span class="number">0.0</span>;            <span class="comment">// L237 ← 限速 0，阻止起步</span></span><br><span class="line">  pub_velocity_limit_-&gt;<span class="built_in">publish</span>(*velocity_limit);</span><br><span class="line">  <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">case</span> State::STOP: &#123;</span><br><span class="line">  <span class="type">const</span> <span class="keyword">auto</span> is_obstacle_found =</span><br><span class="line">    !nearest_obstacle ? <span class="literal">false</span></span><br><span class="line">                      : nearest_obstacle.<span class="built_in">get</span>().first &lt; node_param_.surround_check_recover_distance; <span class="comment">// L253</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">isStopRequired</span>(is_obstacle_found, is_vehicle_stopped)) <span class="keyword">break</span>;</span><br><span class="line">  state_ = State::PASS;</span><br><span class="line">  <span class="comment">// 发 VelocityLimitClearCommand 解除限速（L261-266）</span></span><br><span class="line">  <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>isStopRequired</code>（L425）三段逻辑：车没停 → 不触发；发现障碍 → 触发并记下时间；障碍没了但在 <code>state_clear_time</code>（默认 2.0s）内 → 继续保持 STOP。最后这条是&#x3D;&#x3D;时间维度的防抖&#x3D;&#x3D;，配合距离滞回，双重去抖。</p>
+<h3 id="关键参数（node-cpp-L148–156）"><a href="#关键参数（node-cpp-L148–156）" class="headerlink" title="关键参数（node.cpp L148–156）"></a>关键参数（node.cpp L148–156）</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>surround_check_distance</code></td>
+<td>2.0</td>
+<td>触发距离(m)，车身到障碍 &lt; 此值 → 限速 0</td>
+</tr>
+<tr>
+<td><code>surround_check_recover_distance</code></td>
+<td>2.5</td>
+<td>恢复距离(m)，&gt; 此值才解除（&gt; 触发值，滞回）</td>
+</tr>
+<tr>
+<td><code>state_clear_time</code></td>
+<td>2.0</td>
+<td>障碍消失后保持 STOP 的时长(s)</td>
+</tr>
+<tr>
+<td><code>use_pointcloud</code> &#x2F; <code>use_dynamic_object</code></td>
+<td>true</td>
+<td>用点云 &#x2F; 动态物体哪个来源检测</td>
+</tr>
+</tbody></table>
+<h2 id="obstacle-cruise-planner：前方障碍-→-停车-或-减速跟车"><a href="#obstacle-cruise-planner：前方障碍-→-停车-或-减速跟车" class="headerlink" title="obstacle_cruise_planner：前方障碍 → 停车 或 减速跟车"></a>obstacle_cruise_planner：前方障碍 → 停车 或 减速跟车</h2><h3 id="定位与两层规划"><a href="#定位与两层规划" class="headerlink" title="定位与两层规划"></a>定位与两层规划</h3><p>行驶中，轨迹前方有障碍时由它处理。它把障碍分成两类，分别走两条规划路径：</p>
+<ul>
+<li><strong>要停的</strong>：障碍挡死，必须在障碍前插一个零速点 → <code>generateStopTrajectory</code></li>
+<li><strong>要跟的</strong>：障碍在动（前车），算一个安全跟车限速，减速跟着 → <code>generateCruiseTrajectory</code></li>
+</ul>
+<p><code>PlannerInterface</code> 是基类（planner_interface.hpp L41），巡航部分是纯虚函数 <code>generateCruiseTrajectory</code>（L72），有两个实现：<code>OptimizationBasedPlanner</code>（node.cpp L351，默认，用优化解速度）和 <code>PIDBasedPlanner</code>（L354，用 PID）。停车逻辑 <code>generateStopTrajectory</code> 写在基类里（L69），两种 planner 共用。</p>
+<p>整条触发链在 <code>onTrajectory</code>（node.cpp L533）里串起来：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    OT[&quot;onTrajectory 收到新轨迹 (L533)&quot;] --&gt; GTO[&quot;getTargetObstacles (L662)&quot;]</span><br><span class="line">    GTO -.-&gt;|&quot;对每个感知物体&lt;br&gt;polygon_utils 求轨迹与障碍的交点&quot;| DET[&quot;collision_points&lt;br&gt;(getCollisionPoints L769 /&lt;br&gt;willCollideWithSurroundObstacle L828)&quot;]</span><br><span class="line">    GTO --&gt; TOB[&quot;target_obstacles&lt;br&gt;(有交点的才留下)&quot;]</span><br><span class="line">    TOB --&gt; SD[&quot;createStopData (L597)&quot;]</span><br><span class="line">    TOB --&gt; CD[&quot;createCruiseData (L637)&quot;]</span><br><span class="line">    SD --&gt; GST[&quot;generateStopTrajectory (L86)&lt;br&gt;插停车点&quot;]</span><br><span class="line">    CD --&gt; GCT[&quot;generateCruiseTrajectory&lt;br&gt;算跟车限速&quot;]</span><br><span class="line">    GST --&gt; OUT[&quot;输出改写后的轨迹 + velocity_limit&quot;]</span><br><span class="line">    GCT --&gt; OUT</span><br></pre></td></tr></table></figure>
+
+<p><strong>障碍怎么变成 target：</strong> <code>getTargetObstacles</code>（L662）对每个感知物体，用 <code>polygon_utils</code> 算它的多边形和自车轨迹的交点（<code>collision_points</code>）。只有&#x3D;&#x3D;轨迹真的会穿过障碍&#x3D;&#x3D;（有 collision_points）的物体才进 <code>target_obstacles</code>。这一步是整个触发的总开关：没交点 &#x3D; 撞不上 &#x3D; 直接忽略。</p>
+<h3 id="停车触发：generateStopTrajectory（planner-interface-cpp-L86）"><a href="#停车触发：generateStopTrajectory（planner-interface-cpp-L86）" class="headerlink" title="停车触发：generateStopTrajectory（planner_interface.cpp L86）"></a>停车触发：<code>generateStopTrajectory</code>（planner_interface.cpp L86）</h3><p>从 <code>target_obstacles</code> 里挑最近的停车障碍，算到碰撞点的弧长距离，减掉安全 margin 和车头偏移，得到该停的位置，再用 <code>insertStopPoint</code>（L196）把一个零速点插进轨迹。</p>
+<p>里面有个关键的可行性检查 <code>calcMinimumDistanceToStop</code>（L75）——就是高中刹车距离公式：</p>
+<p>$$d_{brake} &#x3D; \frac{v_0^2}{2,|a_{min}|}$$</p>
+<p>含义：以当前车速 $v_0$、用极限制动 $a_{min}$，最少要多少距离才能停下。如果障碍比这个距离还近（<code>closest_obstacle_stop_dist &lt; feasible_stop_dist</code>，L186），说明&#x3D;&#x3D;按极限制动也停不住&#x3D;&#x3D;，会撞，于是置 <code>will_collide_with_obstacle = true</code> 发告警（L184-189）。这是个兜底的安全诊断，不是触发条件本身。</p>
+<h3 id="巡航触发：generateCruiseTrajectory-RSS-距离"><a href="#巡航触发：generateCruiseTrajectory-RSS-距离" class="headerlink" title="巡航触发：generateCruiseTrajectory + RSS 距离"></a>巡航触发：<code>generateCruiseTrajectory</code> + RSS 距离</h3><p>对于要”跟”的障碍（前车），用 RSS（Responsibility-Sensitive Safety）模型算安全跟车距离，定义在 <code>calcRSSDistance</code>（planner_interface.hpp L127）：</p>
+<p>$$d_{rss} &#x3D; v_{ego}\cdot t_{idle} + \frac{v_{ego}^2}{2,|a_{ego}|} - \frac{v_{obj}^2}{2,|a_{obj}|} + margin$$</p>
+<p>四项分别是：自车反应时间走的距离 + 自车制动距离 − 障碍自己的制动距离 + 余量。第三项减掉是因为前车也在减速，不需要给它留”完全停下”的整段距离。算出来的 $d_{rss}$ 用来定限速：跟车距离不够就降速，够就维持。输出是 <code>VelocityLimit</code>（限速指令），不是急停——和停车触发的区别就在这。</p>
+<h3 id="关键数据结构（common-structs-hpp）"><a href="#关键数据结构（common-structs-hpp）" class="headerlink" title="关键数据结构（common_structs.hpp）"></a>关键数据结构（common_structs.hpp）</h3><table>
+<thead>
+<tr>
+<th>结构</th>
+<th>行号</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TargetObstacle</code></td>
+<td>L49</td>
+<td>一个被锁定的障碍：位姿、速度、collision_points、是否已停</td>
+</tr>
+<tr>
+<td><code>ObstacleCruisePlannerData</code></td>
+<td>L87</td>
+<td>一次规划的输入包：轨迹、当前位姿&#x2F;速度&#x2F;加速度、target_obstacles</td>
+</tr>
+<tr>
+<td><code>LongitudinalInfo</code></td>
+<td>L98</td>
+<td>纵向约束：加减速度&#x2F;jerk 限制、safe_distance_margin、RSS 参数</td>
+</tr>
+<tr>
+<td><code>DebugData</code></td>
+<td>L115</td>
+<td>可视化用：检测多边形、碰撞点、停&#x2F;跟车障碍</td>
+</tr>
+</tbody></table>
+<h2 id="两个节点的触发对比"><a href="#两个节点的触发对比" class="headerlink" title="两个节点的触发对比"></a>两个节点的触发对比</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>surround_obstacle_checker</th>
+<th>obstacle_cruise_planner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>速度区间</td>
+<td>低速 &#x2F; 起步</td>
+<td>行驶中</td>
+</tr>
+<tr>
+<td>检测对象</td>
+<td>车身周围 360° 最近障碍</td>
+<td>轨迹前方会碰撞的障碍</td>
+</tr>
+<tr>
+<td>触发条件</td>
+<td>几何距离 &lt; 阈值（2.0m）</td>
+<td>轨迹与障碍有 collision_points</td>
+</tr>
+<tr>
+<td>动作</td>
+<td><code>max_velocity=0</code>（不让动）</td>
+<td>插停车点 &#x2F; 限速跟车</td>
+</tr>
+<tr>
+<td>防抖</td>
+<td>距离滞回 + <code>state_clear_time</code></td>
+<td><code>updateHasStopped</code> 跟踪障碍是否停</td>
+</tr>
+<tr>
+<td>输出话题</td>
+<td><code>~/output/max_velocity</code></td>
+<td>改写后的 trajectory + velocity_limit</td>
+</tr>
+</tbody></table>
+<h2 id="与前三天的衔接"><a href="#与前三天的衔接" class="headerlink" title="与前三天的衔接"></a>与前三天的衔接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    %% 自定义节点样式 (美观、护眼、专业)</span><br><span class="line">    classDef planner fill:#e3f2fd,stroke:#1e88e5,stroke-width:2px,color:#0d47a1</span><br><span class="line">    classDef cruise fill:#fff3e0,stroke:#fb8c00,stroke-width:2px,color:#e65100</span><br><span class="line">    classDef surround fill:#ffebee,stroke:#e53935,stroke-width:2px,color:#b71c1c</span><br><span class="line">    classDef control fill:#e8f5e9,stroke:#43a047,stroke-width:2px,color:#1b5e20</span><br><span class="line">    classDef note fill:#fafafa,stroke:#9e9e9e,stroke-dasharray: 5 5,color:#616161</span><br><span class="line"></span><br><span class="line">    %% --- 1. 核心规划层 ---</span><br><span class="line">    subgraph SG_Plan [&quot;🗺️ 全局/泊车规划层 (Day 1-3)&quot;]</span><br><span class="line">        FP[&quot;freespace_planner&lt;br&gt;生成理想 Trajectory&lt;br&gt;(含倒车打点)&quot;]:::planner</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    %% --- 2. 安全兜底层 ---</span><br><span class="line">    subgraph SG_Avoid [&quot;🛡️ 局部避障兜底层 (Day 4)&quot;]</span><br><span class="line">        </span><br><span class="line">        OCP[&quot;obstacle_cruise_planner&lt;br&gt;🚗 行驶中：前方障碍检测&lt;br&gt;👉 动作：插停车点 / 降速跟车&quot;]:::cruise</span><br><span class="line">        </span><br><span class="line">        SOC[&quot;surround_obstacle_checker&lt;br&gt;🛑 起步/低速：360°防碰撞&lt;br&gt;👉 动作：检测过近发限速指令&quot;]:::surround</span><br><span class="line">        </span><br><span class="line">        Accept1&gt;验收①：轨迹不穿越障碍]:::note</span><br><span class="line">        OCP -.-&gt;|&quot;确保轨迹自身安全&quot;| Accept1</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    %% --- 3. 控制执行层 ---</span><br><span class="line">    subgraph SG_Control [&quot;⚙️ 速度仲裁与执行层 (下游)&quot;]</span><br><span class="line">        Ctrl[&quot;Controller / Cmd Gate&lt;br&gt;轨迹跟踪 &amp; 限速仲裁&quot;]:::control</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    %% --- 数据流向连接 ---</span><br><span class="line">    %% 轨迹流 (主干线)</span><br><span class="line">    FP ==&gt;|&quot;1. 原始轨迹 (Trajectory)&quot;| OCP</span><br><span class="line">    OCP ==&gt;|&quot;2. 改写速度后的安全轨迹 (Trajectory)&quot;| Ctrl</span><br><span class="line">    </span><br><span class="line">    %% 状态/指令流 (旁路线)</span><br><span class="line">    SOC -.-&gt;|&quot;3. 独立系统限速指令 (VelocityLimit=0)&lt;br&gt;强制覆盖轨迹速度&quot;| Ctrl</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/chap2_0_%E8%AF%9D%E9%A2%98%E9%80%9A%E4%BF%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1490,633 +2751,6 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int64 num</span><br><span class="line">---</span><br><span class="line">int64 sum</span><br><span class="line">---</span><br><span class="line">float64 progress</span><br></pre></td></tr></table></figure>
 
 <p>文件中声明的数据被<code>---</code>分割为三部分，上半部分用于声明请求数据，中间部分用于声明响应数据，下半部分用于声明连续反馈数据。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/07/08/W2_Day2_RS%E6%9B%B2%E7%BA%BF%E7%94%9F%E6%88%90_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/" class="post-title-link" itemprop="url">Reeds-Shepp 曲线生成逻辑</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:07:50" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="W2-Day2-·-Reeds-Shepp-曲线生成逻辑"><a href="#W2-Day2-·-Reeds-Shepp-曲线生成逻辑" class="headerlink" title="W2 Day2 · Reeds-Shepp 曲线生成逻辑"></a>W2 Day2 · Reeds-Shepp 曲线生成逻辑</h1><p>本文按<strong>报告第 2 章结构</strong>（2.1–2.6）组织，内容 + 行号都来自源码核实。报告里 Day2 负责”<strong>RS 曲线生成逻辑</strong>“这一交付物，同时贡献”关键类 &#x2F; 关键函数”的<strong>算法层</strong>部分：</p>
-<blockquote>
-<ul>
-<li><strong>关键类</strong> → 2.2 <code>ReedsSheppStateSpace</code></li>
-<li><strong>关键函数</strong> → 2.3（<code>reedsShepp</code> 取最短 + 5 个分组生成函数 + <code>distance</code>&#x2F;<code>interpolate</code>）</li>
-<li><strong>RS 曲线生成逻辑</strong> → 2.4（核心）</li>
-</ul>
-<p>源码：<a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/src/reeds_shepp.cpp">reeds_shepp.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/freespace_planning_algorithms/include/freespace_planning_algorithms/reeds_shepp.hpp">reeds_shepp.hpp</a></p>
-<p>上游衔接：Day1 的 <code>makePlan</code>(L487) → A* → <code>estimateCost</code> → 本节 RS。下游：Day3 Hybrid A* 深读。</p>
-</blockquote>
-<hr>
-<h2 id="RS-曲线在规划框架中的定位与功能"><a href="#RS-曲线在规划框架中的定位与功能" class="headerlink" title="RS 曲线在规划框架中的定位与功能"></a>RS 曲线在规划框架中的定位与功能</h2><p>汽车不能像机器人那样原地旋转，必须遵守非完整运动学约束，即受限于最小转弯半径。</p>
-<ul>
-<li><strong>RS功能：在</strong>最小转弯半径约束<strong>下、<strong>允许前进 + 倒车</strong>，连接两个位姿 <code>(x, y, θ)</code> 的</strong>最短路径**。是 Dubins 曲线推广。</li>
-<li><strong>为什么泊车要用它</strong>：侧方&#x2F;倒车入库必须倒车，普通几何曲线（只前进）做不到；RS 给出”前进段 + 倒车段”拼接的最短解。</li>
-<li><strong>在这个模块的作用</strong>：RS 是 <code>freespace_planning_algorithms</code> 算法库里的<strong>几何工具</strong>，RS曲线并非直接求解从起点到终点的最终路径，而是作为图搜索算法（A* RRT*）的节点拓展工具。主要负责两个功能：<ol>
-<li><strong>启发函数</strong>（heuristic）：估”从当前点到终点还多远”，引导 A* 往终点搜（<code>astar_search.cpp:227</code>）。</li>
-<li><strong>shoot &#x2F; 终结</strong>：搜到某点时用 RS 直奔终点，命中即接上**（Day3 详读）**。</li>
-</ol>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. FreespacePlannerNode&lt;br&gt;(处理ROS消息与状态机)&quot;] --&gt; Astar[&quot;2. AstarSearch 或 RRT*&lt;br&gt;(基于Costmap进行全局避障寻路)&quot;]</span><br><span class="line">    Astar -- &quot;A*尝试直达终点 / RRT*尝试向外生长&quot; --&gt; RS[&quot;3. ReedsSheppStateSpace&lt;br&gt;(输入 s0 和 s1 计算两点间最短曲线)&quot;]</span><br><span class="line">    RS -- &quot;返回离散点集与代价&quot; --&gt; Astar</span><br></pre></td></tr></table></figure>
-
-<p>在 <strong>Hybrid A</strong>* 中，RS 曲线常被用作 <strong>Shot Heuristic (解析解剪枝)</strong>：当算法探索到一个靠近终点的节点时，如果不考虑障碍物，直接用 RS 曲线连向终点。如果这条 RS 曲线在 Costmap 上不碰撞，搜索就直接宣告成功，极大地加速了计算。</p>
-<hr>
-<h2 id="关键类：ReedsSheppStateSpace（成员表）"><a href="#关键类：ReedsSheppStateSpace（成员表）" class="headerlink" title="关键类：ReedsSheppStateSpace（成员表）"></a>关键类：<code>ReedsSheppStateSpace</code>（成员表）</h2><blockquote>
-<p>类声明：<code>class ReedsSheppStateSpace</code>（hpp L93）。它<strong>不是 ROS 节点</strong>，是纯几何工具类（无订阅&#x2F;发布&#x2F;定时器）。读它看”持有什么状态 + 提供哪些几何方法”。</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>成员</th>
-<th>类型 &#x2F; 签名</th>
-<th>行号</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>rho_</code></td>
-<td><code>double</code></td>
-<td>hpp L138</td>
-<td><strong>转弯半径</strong>（唯一状态），所有弧的半径</td>
-</tr>
-<tr>
-<td>枚举 <code>ReedsSheppPathSegmentType</code></td>
-<td><code>{RS_NOP, RS_LEFT, RS_STRAIGHT, RS_RIGHT}</code></td>
-<td>hpp L97</td>
-<td><strong>段形状</strong>（4 种，注意：方向不在这里）</td>
-</tr>
-<tr>
-<td><code>reedsSheppPathType[18][5]</code></td>
-<td><code>static const</code> 表</td>
-<td>hpp L100 &#x2F; cpp L623</td>
-<td><strong>18 种路径类型</strong>（每类是一组段形状序列）</td>
-</tr>
-<tr>
-<td>内部类 <code>ReedsSheppPath</code></td>
-<td>—</td>
-<td>hpp L103</td>
-<td>一条路径的完整描述：<code>type_</code> + <code>length_[5]</code> + <code>totalLength_</code></td>
-</tr>
-<tr>
-<td><code>struct StateXYT</code></td>
-<td><code>{x, y, yaw}</code></td>
-<td>hpp L121</td>
-<td>输入位姿（位置 + 航向）</td>
-</tr>
-<tr>
-<td><code>distance(s0, s1)</code></td>
-<td>方法</td>
-<td>hpp L130 &#x2F; cpp L656</td>
-<td>返回两位姿的<strong>RS 最短距离</strong>（米）</td>
-</tr>
-<tr>
-<td><code>reedsShepp(s0, s1)</code></td>
-<td>方法</td>
-<td>hpp L133 &#x2F; cpp L661</td>
-<td>返回<strong>最短路径对象</strong></td>
-</tr>
-<tr>
-<td><code>interpolate(s0, path, seg)</code></td>
-<td>方法</td>
-<td>hpp L135 &#x2F; cpp L670</td>
-<td>沿路径<strong>采样</strong>一个点（给定弧长）</td>
-</tr>
-</tbody></table>
-<blockquote>
-<ul>
-<li><strong>方向（前进&#x2F;倒车）不在枚举里</strong>，而在 <code>length_[i]</code> 的<strong>正负号</strong>：正&#x3D;前进，负&#x3D;倒车。枚举只编码”直&#x2F;左&#x2F;右”三种<strong>形状</strong>。</li>
-<li><strong>路径类型是 18 类</strong>（不是网上常说的 48）。<code>reedsSheppPathType[18][5]</code>（cpp L623），48 是对称展开的理论数，代码用 18 规范行 + 对称变换实现。数组大小是[18,5]因为一个RS曲线最多由5个运动段组成。</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="关键函数"><a href="#关键函数" class="headerlink" title="关键函数"></a>关键函数</h2><table>
-<thead>
-<tr>
-<th>函数</th>
-<th>行号</th>
-<th>职责</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>reedsShepp(x,y,phi)</code>（匿名命名空间）</td>
-<td>cpp L608</td>
-<td><strong>★取最短入口</strong>：依次调 5 个分组生成器，全程保留最短路径</td>
-</tr>
-<tr>
-<td><code>CSC</code> &#x2F; <code>CCC</code> &#x2F; <code>CCCC</code> &#x2F; <code>CCSC</code> &#x2F; <code>CCSCC</code></td>
-<td>cpp L158 &#x2F; L235 &#x2F; L332 &#x2F; L430 &#x2F; L575</td>
-<td><strong>5 个分组生成器</strong>：各算一类候选路径，用对称变换翻倍后留最短</td>
-</tr>
-<tr>
-<td><code>distance(s0, s1)</code></td>
-<td>cpp L656</td>
-<td><code>rho_ * path.length()</code> —— 归一化长度 × 半径 &#x3D; 实际米数</td>
-</tr>
-<tr>
-<td><code>reedsShepp(s0, s1)</code>（类方法）</td>
-<td>cpp L661</td>
-<td>坐标转到起点系 + 除以 <code>rho_</code> 归一化 → 调匿名 <code>reedsShepp</code></td>
-</tr>
-<tr>
-<td><code>interpolate(s0, path, seg)</code></td>
-<td>cpp L670</td>
-<td>沿路径走 <code>seg</code> 弧长，逐段积分出目标点（见证曲率跳变）</td>
-</tr>
-<tr>
-<td>8 个公式函数 <code>LpSpLp</code> 等</td>
-<td>cpp L125–L555</td>
-<td>各对应 RS 论文一个 formula（8.1–8.11），算单一几何解</td>
-</tr>
-</tbody></table>
-<p>**核心数学结算：**CSC等生成器，内部会调用LpSpLp等函数，然后再接着被核心函数reedsShepp()依次调用，每次调用都会比较当前算出的路径长度与已有最短长度比较，保留最短的一条。</p>
-<p>**对外计算接口：**ReedsShepp,外界获取最短路径的方法，首相将起点与终点之间的相对差值，进行平移旋转，转化为相对于原点的目标点。除以最小转弯半径，把问题归一化到单位园的集合问题上，调用匿名函数reedsShepp结算最短路径。. </p>
-<p>**轨迹离散化：*<em>interpolate，会给定一条RS path 和一个长度 seg (通常是离散步长，如0.1米)，通过积分计算出在0.1米处，车辆实际坐标。这样，可以使得外层A</em>等全局算法，每隔0.1米采样一个点，然后去Costmap上确认是否撞墙。</p>
-<p>下面贴<strong>最关键的两个</strong>（<code>reedsShepp</code> 取最短 + <code>CSC</code> 分组生成器）带标注代码。</p>
-<h3 id="①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度"><a href="#①-reedsShepp-取最短入口（cpp-L608）——整个-RS-生成的总调度" class="headerlink" title="① reedsShepp 取最短入口（cpp L608）——整个 RS 生成的总调度"></a>① <code>reedsShepp</code> 取最短入口（cpp L608）——整个 RS 生成的总调度</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ReedsSheppStateSpace::ReedsSheppPath <span class="title">reedsShepp</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ReedsSheppStateSpace::ReedsSheppPath path;   <span class="comment">// 默认 length = max（“目前最短”初值设无穷大）</span></span><br><span class="line">  <span class="built_in">CSC</span>(x, y, phi, path);     <span class="comment">// L611  圆弧-直线-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCC</span>(x, y, phi, path);     <span class="comment">// L612  三圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCCC</span>(x, y, phi, path);    <span class="comment">// L613  四圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSC</span>(x, y, phi, path);    <span class="comment">// L614  圆弧-圆弧-直-圆弧类候选</span></span><br><span class="line">  <span class="built_in">CCSCC</span>(x, y, phi, path);   <span class="comment">// L615  圆弧-圆弧-直-圆弧-圆弧类候选</span></span><br><span class="line">  <span class="keyword">return</span> path;              <span class="comment">// 全程只留最短，返回的就是最短路径</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p><code>path</code> 是<strong>引用传入</strong>每个分组函数，初值 <code>length=max</code>。每个分组里每算出一个候选 <code>L</code>，只要 <code>L &lt; path.length()</code> 就覆盖 <code>path</code>。<br>所以”取最短”不是最后比一次，而是<strong>边算边贪心更新</strong>——5 个分组跑完，<code>path</code> 自然就是全局最短。</p>
-</blockquote>
-<h3 id="②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板"><a href="#②-CSC-分组生成器（cpp-L158）——对称变换翻倍的样板" class="headerlink" title="② CSC 分组生成器（cpp L158）——对称变换翻倍的样板"></a>② <code>CSC</code> 分组生成器（cpp L158）——对称变换翻倍的样板</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CSC</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y, <span class="type">double</span> phi, ReedsSheppStateSpace::ReedsSheppPath &amp; path)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">double</span> t, u, v, L_min = path.<span class="built_in">length</span>(), L;</span><br><span class="line">  <span class="comment">// 基本形 LpSpLp（左-直-左，全前进）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, y, phi, t, u, v) &amp;&amp; L_min &gt; (L = std::<span class="built_in">abs</span>(t)+std::<span class="built_in">abs</span>(u)+std::<span class="built_in">abs</span>(v))) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], t, u, v);   <span class="comment">// 类型行 14</span></span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip：坐标/符号取反 → 得到“全倒车”版本（同一条形状，方向全反）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">14</span>], -t, -u, -v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// reflect：y、phi 取反 → 左右镜像（左转变右转）</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(x, -y, -phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], t, u, v);</span><br><span class="line">    L_min = L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// time flip + reflect：两者叠加</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">LpSpLp</span>(-x, -y, phi, t, u, v) &amp;&amp; L_min &gt; (L = ...)) &#123;</span><br><span class="line">    path = <span class="built_in">ReedsSheppPath</span>(reedsSheppPathType[<span class="number">15</span>], -t, -u, -v);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// …后面还有 LpSpRp（左-直-右）的同样 4 种对称，共 8 个候选</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="③-distance（cpp-L656）——A-启发函数最终调的就是它"><a href="#③-distance（cpp-L656）——A-启发函数最终调的就是它" class="headerlink" title="③ distance（cpp L656）——A* 启发函数最终调的就是它"></a>③ <code>distance</code>（cpp L656）——A* 启发函数最终调的就是它</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">ReedsSheppStateSpace::distance</span><span class="params">(<span class="type">const</span> StateXYT &amp; s0, <span class="type">const</span> StateXYT &amp; s1)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> rho_ * <span class="built_in">reedsShepp</span>(s0, s1).<span class="built_in">length</span>();   <span class="comment">// 归一化长度 × 半径 = 实际米数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这就是 Day1→Day2 的接口：A* 的 <code>estimateCost</code>(astar_search.cpp:227) → <code>calcReedsSheppDistance</code>(L31) → 本函数 → 给 A* 当”到终点还多远”的启发值。</p>
-</blockquote>
-<hr>
-<h2 id="RS-曲线生成逻辑"><a href="#RS-曲线生成逻辑" class="headerlink" title="RS 曲线生成逻辑"></a>RS 曲线生成逻辑</h2><h3 id="三种形状-×-两种方向-6-基元"><a href="#三种形状-×-两种方向-6-基元" class="headerlink" title="三种形状 × 两种方向 &#x3D; 6 基元"></a>三种形状 × 两种方向 &#x3D; 6 基元</h3><p>RS 把任意路径切成”段”，每段是下面 3 种<strong>形状</strong>之一，方向由长度正负决定：</p>
-<table>
-<thead>
-<tr>
-<th>形状</th>
-<th>枚举（hpp L97）</th>
-<th>曲率</th>
-<th>弧长正</th>
-<th>弧长负</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>直行</td>
-<td><code>RS_STRAIGHT</code></td>
-<td><code>0</code></td>
-<td>前进直行</td>
-<td>倒车直行</td>
-</tr>
-<tr>
-<td>左转弧</td>
-<td><code>RS_LEFT</code></td>
-<td><code>+1/rho_</code></td>
-<td>前进左转</td>
-<td>倒车左转</td>
-</tr>
-<tr>
-<td>右转弧</td>
-<td><code>RS_RIGHT</code></td>
-<td><code>−1/rho_</code></td>
-<td>前进右转</td>
-<td>倒车右转</td>
-</tr>
-<tr>
-<td>（占位）</td>
-<td><code>RS_NOP</code></td>
-<td>—</td>
-<td>未用段填这个</td>
-<td>—</td>
-</tr>
-</tbody></table>
-<p>→ <strong>3 形状 × 2 方向 &#x3D; 6 基元</strong>（S+&#x2F;S−&#x2F;L+&#x2F;L−&#x2F;R+&#x2F;R−）。<code>RS_NOP</code> 仅用于把不足 5 段的路径补齐。</p>
-<blockquote>
-<p>公式函数命名就是这个意思：<code>LpSpLp</code> &#x3D; Left-plus、Straight-plus、Left-plus（全前进的”左-直-左”）；<code>m</code>&#x3D;minus&#x3D;倒车，如 <code>LpRmL</code>&#x3D;左前-右倒-左前。</p>
-</blockquote>
-<h3 id="路径类型表：18-类（cpp-L623–642）"><a href="#路径类型表：18-类（cpp-L623–642）" class="headerlink" title="路径类型表：18 类（cpp L623–642）"></a>路径类型表：18 类（cpp L623–642）</h3><p>每类是一组”段形状序列”（最多 5 段，多的位填 <code>RS_NOP</code>）：</p>
-<table>
-<thead>
-<tr>
-<th>组</th>
-<th>类型行</th>
-<th>段形状序列</th>
-<th>举例含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>CCC</td>
-<td>0 &#x2F; 1</td>
-<td>L-R-L &#x2F; R-L-R</td>
-<td>三圆弧（如 LRL）</td>
-</tr>
-<tr>
-<td>CCCC</td>
-<td>2 &#x2F; 3</td>
-<td>L-R-L-R &#x2F; R-L-R-S&#x2F;…</td>
-<td>四圆弧</td>
-</tr>
-<tr>
-<td>CCSC</td>
-<td>4–11</td>
-<td>含一段直线的 4 段组合</td>
-<td>圆-圆-直-圆 等</td>
-</tr>
-<tr>
-<td>CSC</td>
-<td>12–15</td>
-<td>L-S-R &#x2F; R-S-L &#x2F; L-S-L &#x2F; R-S-R</td>
-<td><strong>圆-直-圆</strong>（最常见，如 LSL&#x2F;LSR）</td>
-</tr>
-<tr>
-<td>CCSCC</td>
-<td>16 &#x2F; 17</td>
-<td>L-R-S-L-R &#x2F; R-L-S-R-L</td>
-<td>五段组合</td>
-</tr>
-</tbody></table>
-<h3 id="生成-取最短流程"><a href="#生成-取最短流程" class="headerlink" title="生成 + 取最短流程"></a>生成 + 取最短流程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Input[&quot;输入：两位姿 s0(x,y,yaw), s1(x,y,yaw)&quot;] --&gt; ClassMethod[&quot;外部类方法 reedsShepp(s0, s1)&quot;]</span><br><span class="line">    </span><br><span class="line">    ClassMethod --&gt; Trans1[&quot;① 坐标系转换：&lt;br&gt;将 s1 平移旋转到 s0 局部坐标系&quot;]</span><br><span class="line">    Trans1 --&gt; Trans2[&quot;② 空间归一化：&lt;br&gt;将 x, y 除以 rho_&lt;br&gt;(转入单位半径圆的数学空间计算)&quot;]</span><br><span class="line">    </span><br><span class="line">    Trans2 --&gt; AnonMethod[&quot;匿名核心函数 ::reedsShepp(x, y, phi)&lt;br&gt;初始化 path 容器 (length = MAX)&quot;]</span><br><span class="line">    </span><br><span class="line">    AnonMethod --&gt; CSC[&quot;1. CSC() (曲线-直线-曲线)&quot;]</span><br><span class="line">    CSC --&gt; CCC[&quot;2. CCC() (纯曲线)&quot;]</span><br><span class="line">    CCC --&gt; CCCC[&quot;3. CCCC()&quot;]</span><br><span class="line">    CCCC --&gt; CCSC[&quot;4. CCSC()&quot;]</span><br><span class="line">    CCSC --&gt; CCSCC[&quot;5. CCSCC()&quot;]</span><br><span class="line">    </span><br><span class="line">    subgraph GroupCalc [&quot;各组核心函数内的计算与穷举机制&quot;]</span><br><span class="line">        Step1[&quot;调用基础数学公式 (如 LpSpLp)&lt;br&gt;计算一个基准解&quot;] --&gt; Step2[&quot;应用几何对称性生成 4~8 个候选组合：&lt;br&gt;1. Time flip (时间翻转)&lt;br&gt;2. Reflect (镜像反射)&lt;br&gt;3. Backwards (反向倒车)&quot;]</span><br><span class="line">        Step2 --&gt; Step3&#123;&quot;计算组合总弧长 L = |t|+|u|+|v|...&lt;br&gt;L &lt; L_min ?&quot;&#125;</span><br><span class="line">        Step3 -- Yes --&gt; Step4[&quot;覆盖当前最优 path&lt;br&gt;更新最小长度 L_min&quot;]</span><br><span class="line">        Step3 -- No --&gt; Step1</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CSC -.-&gt; GroupCalc</span><br><span class="line">    </span><br><span class="line">    CCSCC --&gt; Return[&quot;返回 path (全局最优最短)：&lt;br&gt;type_ 指向 18 种曲线分类之一&lt;br&gt;length_[5] 记录各段弧长 (正负表示前进/倒车)&quot;]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="关键认知：分段常曲率，G1-连续但曲率不连续"><a href="#关键认知：分段常曲率，G1-连续但曲率不连续" class="headerlink" title="关键认知：分段常曲率，G1 连续但曲率不连续"></a>关键认知：分段常曲率，G1 连续但<strong>曲率不连续</strong></h3><p>看 <code>interpolate</code>（cpp L670）就懂——它<strong>逐段</strong>走，每段是<strong>恒定曲率</strong>的运动：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (path.type_[i]) &#123;</span><br><span class="line">  <span class="keyword">case</span> RS_LEFT:     ... yaw += v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 +1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_RIGHT:    ... yaw -= v;   <span class="keyword">break</span>;   <span class="comment">// 恒定 -1/rho_ 转向</span></span><br><span class="line">  <span class="keyword">case</span> RS_STRAIGHT: ... 直线        <span class="keyword">break</span>;   <span class="comment">// 曲率 0</span></span><br><span class="line">  <span class="keyword">case</span> RS_NOP:      <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>含义：</p>
-<ul>
-<li><strong>每段内部曲率恒定</strong>（直&#x3D;0，弧&#x3D;±1&#x2F;rho_）。</li>
-<li><strong>段与段交界处曲率跳变</strong>（如 0 → 1&#x2F;rho_，或 +1&#x2F;rho_ → −1&#x2F;rho_）。</li>
-<li>所以 RS 路径是 <strong>G1 连续</strong>（位置 + 切向连续，车能不”瞬移”地跟），但<strong>不是 C² 曲率连续</strong>。</li>
-</ul>
-<blockquote>
-<p>若 W3&#x2F;W4 验收口径要求”<strong>曲率连续</strong>“，RS 单独<strong>不满足</strong>（段间曲率阶跃）——需要后接样条&#x2F;回旋曲线（clothoid）平滑，或由控制器做限幅。</p>
-</blockquote>
-<hr>
-<h2 id="关键参数"><a href="#关键参数" class="headerlink" title="关键参数"></a>关键参数</h2><p>RS 工具类本身只有 <strong>1 个参数</strong>：<code>rho_</code>（转弯半径，hpp L138）。它<strong>不是节点参数</strong>，而是由 A* 传进来的：</p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>来源</th>
-<th>Day1 默认值</th>
-<th>对 RS 的影响</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>rho_</code>（turning radius）</td>
-<td>A* 的 <code>minimum_turning_radius</code> 传入（astar_search.cpp:227 的 <code>radius</code>）</td>
-<td><code>0.5</code> m</td>
-<td>半径越小，车能转的弯越急，RS 弧段越短</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><code>minimum_turning_radius</code> 是 Day1 参数表（cpp L295）里的算法参数，Day3 读 A* 时会看到它怎么传给 <code>ReedsSheppStateSpace</code>。Day2 只需知道：<strong><code>rho_</code> 决定 RS 所有弧的半径</strong>。</p>
-</blockquote>
-<h2 id="RS-在整条链路里的位置"><a href="#RS-在整条链路里的位置" class="headerlink" title="RS 在整条链路里的位置"></a>RS 在整条链路里的位置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    Node[&quot;1. freespace_planner 节点&lt;br&gt;algo_-&gt;makePlan(current, goal)&quot;]</span><br><span class="line">    </span><br><span class="line">    Astar[&quot;2. AstarSearch::search()&lt;br&gt;A* 全局图搜索主循环&quot;]</span><br><span class="line">    </span><br><span class="line">    Node --&gt; Astar</span><br><span class="line">    </span><br><span class="line">    subgraph Astar_Internal [&quot;A* 内部调用逻辑&quot;]</span><br><span class="line">        EstCost[&quot;扩展节点时：&lt;br&gt;estimateCost(每个节点)&quot;]</span><br><span class="line">        Shoot[&quot;搜到终点附近时：&lt;br&gt;RS Shoot 直奔终点&quot;]</span><br><span class="line">        </span><br><span class="line">        CalcRS[&quot;calcReedsSheppDistance()&quot;]</span><br><span class="line">        </span><br><span class="line">        EstCost --&gt; CalcRS</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    Astar --&gt; EstCost</span><br><span class="line">    Astar -.-&gt;|&quot;条件触发&quot;| Shoot</span><br><span class="line">    </span><br><span class="line">    subgraph RS_Library [&quot;ReedsShepp 核心数学库&quot;]</span><br><span class="line">        RSDist[&quot;ReedsSheppStateSpace::distance()&quot;]</span><br><span class="line">        RSCore[&quot;ReedsSheppStateSpace::reedsShepp()&lt;br&gt;★ 获取最短 RS 曲线 ★&quot;]</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    CalcRS --&gt; RSDist</span><br><span class="line">    Shoot --&gt; RSCore</span><br><span class="line">    RSDist --&gt; RSCore</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<ol>
-<li><strong>启发式代价计算</strong>：<code>estimateCost</code> 用 RS 快速估算当前点到终点的RS最短距离</li>
-<li><strong>解析展开</strong>（RS Shoot）：A* 搜到终点附近时，直接用 RS 接上终点</li>
-</ol>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/W2_Day4_%E5%B1%80%E9%83%A8%E9%81%BF%E9%9A%9C%E8%A7%A6%E5%8F%91_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/07/08/W2_Day4_%E5%B1%80%E9%83%A8%E9%81%BF%E9%9A%9C%E8%A7%A6%E5%8F%91_%E6%A0%87%E6%B3%A8%E8%B5%B0%E8%AF%BB/" class="post-title-link" itemprop="url">局部避障触发机制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:08:48" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Autoware%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Autoware学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="W2-Day4-·-局部避障触发机制"><a href="#W2-Day4-·-局部避障触发机制" class="headerlink" title="W2 Day4 · 局部避障触发机制"></a>W2 Day4 · 局部避障触发机制</h1><p>本文对应报告第 4 节，走读规划栈运行时的两层避障兜底。Day4 负责的交付物是<strong>局部避障触发机制</strong>：检测到障碍后，满足什么条件才触发停车或减速。</p>
-<p>源码：</p>
-<ul>
-<li><a href="../autoware/src/universe/autoware.universe/planning/surround_obstacle_checker/src/node.cpp">surround_obstacle_checker&#x2F;src&#x2F;node.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/surround_obstacle_checker/include/surround_obstacle_checker/node.hpp">node.hpp</a></li>
-<li><a href="../autoware/src/universe/autoware.universe/planning/obstacle_cruise_planner/src/node.cpp">obstacle_cruise_planner&#x2F;src&#x2F;node.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/obstacle_cruise_planner/src/planner_interface.cpp">planner_interface.cpp</a> + <a href="../autoware/src/universe/autoware.universe/planning/obstacle_cruise_planner/include/obstacle_cruise_planner/common_structs.hpp">common_structs.hpp</a></li>
-</ul>
-<p>衔接：Day1–3 的 <code>freespace_planner</code> 产出一条理想轨迹；Day4 这两个节点在轨迹跑起来后做”遇障兜底”，对应验收口径①（轨迹不穿越障碍）。</p>
-<h2 id="为什么需要局部避障"><a href="#为什么需要局部避障" class="headerlink" title="为什么需要局部避障"></a>为什么需要局部避障</h2><p>Day1–3 产出的轨迹是基于规划时刻的地图算出来的。车开起来后环境是动态的：行人可能走进轨迹、前车可能减速、点云里突然冒出一根柱子。如果死守原轨迹，迟早撞。所以规划栈在 <code>freespace_planner</code> 之后挂了两层运行时兜底，分工按”速度区间”切：</p>
-<table>
-<thead>
-<tr>
-<th>节点</th>
-<th>管什么场景</th>
-<th>检测什么</th>
-<th>触发动作</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>surround_obstacle_checker</code></td>
-<td>&#x3D;&#x3D;低速&#x2F;起步&#x3D;&#x3D;</td>
-<td>车身周围（360°）最近障碍</td>
-<td>离太近 → 限速 0，不让动</td>
-</tr>
-<tr>
-<td><code>obstacle_cruise_planner</code></td>
-<td>&#x3D;&#x3D;行驶中&#x3D;&#x3D;</td>
-<td>轨迹前方的障碍</td>
-<td>撞得上 → 插停车点 &#x2F; 限速跟车</td>
-</tr>
-</tbody></table>
-<p>一个管”别乱起步”，一个管”开起来别撞”。下面分开走读。</p>
-<h2 id="surround-obstacle-checker：车身周围有障碍-→-阻止起步"><a href="#surround-obstacle-checker：车身周围有障碍-→-阻止起步" class="headerlink" title="surround_obstacle_checker：车身周围有障碍 → 阻止起步"></a>surround_obstacle_checker：车身周围有障碍 → 阻止起步</h2><h3 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h3><p>这个节点订阅点云和动态物体，把车当成一个多边形（<code>createSelfPolygon</code>，node.cpp L123），用 Boost.Geometry 算车身到最近障碍的距离。距离太近就发一个 <code>max_velocity = 0</code> 的限速指令，让车<strong>不要起步</strong>。</p>
-<p>它内部是一个两态状态机（node.hpp L58）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    subgraph PASS_S [&quot;PASS 状态（正常）&quot;]</span><br><span class="line">        P1&#123;&quot;最近障碍距离 &lt; surround_check_distance?&lt;br&gt;默认 2.0m&quot;&#125; --&gt;|是 且 车已停| Act1[&quot;发 VelocityLimit&lt;br&gt;max_velocity = 0&quot;]</span><br><span class="line">        Act1 --&gt; SW1[&quot;state_ = STOP&quot;]</span><br><span class="line">        P1 --&gt;|否| P2[&quot;保持 PASS&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph STOP_S [&quot;STOP 状态（抑制起步）&quot;]</span><br><span class="line">        S1&#123;&quot;最近障碍距离 &lt; surround_check_recover_distance?&lt;br&gt;默认 2.5m&quot;&#125; --&gt;|是| S2[&quot;保持 STOP（防抖）&quot;]</span><br><span class="line">        S1 --&gt;|否 且 超过 state_clear_time| Act2[&quot;发 VelocityLimitClearCommand&lt;br&gt;解除限速&quot;]</span><br><span class="line">        Act2 --&gt; SW2[&quot;state_ = PASS&quot;]</span><br><span class="line">    end</span><br><span class="line">    SW1 --&gt; STOP_S</span><br><span class="line">    SW2 --&gt; PASS_S</span><br></pre></td></tr></table></figure>
-
-<p>注意触发用 2.0m、恢复用 2.5m，&#x3D;&#x3D;恢复阈值大于触发阈值&#x3D;&#x3D;，这是故意留的滞回（hysteresis），避免障碍在边界附近抖动时状态反复跳</p>
-<blockquote>
-<p>这个节点<strong>只在车已经停着的时候才触发</strong>（<code>isStopRequired</code> 里 <code>if (!is_vehicle_stopped) return false;</code>，node.cpp L428）。它的角色是”防止起步”，不是”刹停一辆开着的车”——行驶中的制动归下面那个 <code>obstacle_cruise_planner</code>。</p>
-</blockquote>
-<h3 id="关键类-SurroundObstacleCheckerNode"><a href="#关键类-SurroundObstacleCheckerNode" class="headerlink" title="关键类 SurroundObstacleCheckerNode"></a>关键类 <code>SurroundObstacleCheckerNode</code></h3><table>
-<thead>
-<tr>
-<th>成员</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>state_</code></td>
-<td><code>PASS</code> &#x2F; <code>STOP</code>，状态机当前态</td>
-</tr>
-<tr>
-<td><code>last_obstacle_found_time_</code></td>
-<td>上次发现障碍的时间，用于 <code>state_clear_time</code> 防抖</td>
-</tr>
-<tr>
-<td><code>vehicle_stop_checker_</code></td>
-<td>判断车是否停稳</td>
-</tr>
-<tr>
-<td><code>surround_check_distance</code> &#x2F; <code>surround_check_recover_distance</code></td>
-<td>触发 &#x2F; 恢复距离阈值（滞回）</td>
-</tr>
-<tr>
-<td><code>state_clear_time</code></td>
-<td>障碍消失后，多保持 STOP 多久再恢复</td>
-</tr>
-</tbody></table>
-<h3 id="触发逻辑"><a href="#触发逻辑" class="headerlink" title="触发逻辑"></a>触发逻辑</h3><p>距离怎么来的：<code>getNearestObstacle</code>（L305）分别用点云（L334）和动态物体（L367）各算一个最近距离，取更近的那个。每条路都是 <code>bg::distance(ego_polygon, obstacle)</code>（L356 &#x2F; L398）——车多边形到障碍的几何最短距离。</p>
-<p>状态机在 <code>onTimer</code>（L196，每 100ms 跑一次）里推进，核心两段：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> State::PASS: &#123;</span><br><span class="line">  <span class="type">const</span> <span class="keyword">auto</span> is_obstacle_found =</span><br><span class="line">    !nearest_obstacle ? <span class="literal">false</span></span><br><span class="line">                      : nearest_obstacle.<span class="built_in">get</span>().first &lt; node_param_.surround_check_distance; <span class="comment">// L227</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">isStopRequired</span>(is_obstacle_found, is_vehicle_stopped)) <span class="keyword">break</span>;                        <span class="comment">// L229</span></span><br><span class="line">  state_ = State::STOP;</span><br><span class="line">  <span class="keyword">auto</span> velocity_limit = std::<span class="built_in">make_shared</span>&lt;VelocityLimit&gt;();</span><br><span class="line">  velocity_limit-&gt;max_velocity = <span class="number">0.0</span>;            <span class="comment">// L237 ← 限速 0，阻止起步</span></span><br><span class="line">  pub_velocity_limit_-&gt;<span class="built_in">publish</span>(*velocity_limit);</span><br><span class="line">  <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">case</span> State::STOP: &#123;</span><br><span class="line">  <span class="type">const</span> <span class="keyword">auto</span> is_obstacle_found =</span><br><span class="line">    !nearest_obstacle ? <span class="literal">false</span></span><br><span class="line">                      : nearest_obstacle.<span class="built_in">get</span>().first &lt; node_param_.surround_check_recover_distance; <span class="comment">// L253</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">isStopRequired</span>(is_obstacle_found, is_vehicle_stopped)) <span class="keyword">break</span>;</span><br><span class="line">  state_ = State::PASS;</span><br><span class="line">  <span class="comment">// 发 VelocityLimitClearCommand 解除限速（L261-266）</span></span><br><span class="line">  <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>isStopRequired</code>（L425）三段逻辑：车没停 → 不触发；发现障碍 → 触发并记下时间；障碍没了但在 <code>state_clear_time</code>（默认 2.0s）内 → 继续保持 STOP。最后这条是&#x3D;&#x3D;时间维度的防抖&#x3D;&#x3D;，配合距离滞回，双重去抖。</p>
-<h3 id="关键参数（node-cpp-L148–156）"><a href="#关键参数（node-cpp-L148–156）" class="headerlink" title="关键参数（node.cpp L148–156）"></a>关键参数（node.cpp L148–156）</h3><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>默认值</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>surround_check_distance</code></td>
-<td>2.0</td>
-<td>触发距离(m)，车身到障碍 &lt; 此值 → 限速 0</td>
-</tr>
-<tr>
-<td><code>surround_check_recover_distance</code></td>
-<td>2.5</td>
-<td>恢复距离(m)，&gt; 此值才解除（&gt; 触发值，滞回）</td>
-</tr>
-<tr>
-<td><code>state_clear_time</code></td>
-<td>2.0</td>
-<td>障碍消失后保持 STOP 的时长(s)</td>
-</tr>
-<tr>
-<td><code>use_pointcloud</code> &#x2F; <code>use_dynamic_object</code></td>
-<td>true</td>
-<td>用点云 &#x2F; 动态物体哪个来源检测</td>
-</tr>
-</tbody></table>
-<h2 id="obstacle-cruise-planner：前方障碍-→-停车-或-减速跟车"><a href="#obstacle-cruise-planner：前方障碍-→-停车-或-减速跟车" class="headerlink" title="obstacle_cruise_planner：前方障碍 → 停车 或 减速跟车"></a>obstacle_cruise_planner：前方障碍 → 停车 或 减速跟车</h2><h3 id="定位与两层规划"><a href="#定位与两层规划" class="headerlink" title="定位与两层规划"></a>定位与两层规划</h3><p>行驶中，轨迹前方有障碍时由它处理。它把障碍分成两类，分别走两条规划路径：</p>
-<ul>
-<li><strong>要停的</strong>：障碍挡死，必须在障碍前插一个零速点 → <code>generateStopTrajectory</code></li>
-<li><strong>要跟的</strong>：障碍在动（前车），算一个安全跟车限速，减速跟着 → <code>generateCruiseTrajectory</code></li>
-</ul>
-<p><code>PlannerInterface</code> 是基类（planner_interface.hpp L41），巡航部分是纯虚函数 <code>generateCruiseTrajectory</code>（L72），有两个实现：<code>OptimizationBasedPlanner</code>（node.cpp L351，默认，用优化解速度）和 <code>PIDBasedPlanner</code>（L354，用 PID）。停车逻辑 <code>generateStopTrajectory</code> 写在基类里（L69），两种 planner 共用。</p>
-<p>整条触发链在 <code>onTrajectory</code>（node.cpp L533）里串起来：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    OT[&quot;onTrajectory 收到新轨迹 (L533)&quot;] --&gt; GTO[&quot;getTargetObstacles (L662)&quot;]</span><br><span class="line">    GTO -.-&gt;|&quot;对每个感知物体&lt;br&gt;polygon_utils 求轨迹与障碍的交点&quot;| DET[&quot;collision_points&lt;br&gt;(getCollisionPoints L769 /&lt;br&gt;willCollideWithSurroundObstacle L828)&quot;]</span><br><span class="line">    GTO --&gt; TOB[&quot;target_obstacles&lt;br&gt;(有交点的才留下)&quot;]</span><br><span class="line">    TOB --&gt; SD[&quot;createStopData (L597)&quot;]</span><br><span class="line">    TOB --&gt; CD[&quot;createCruiseData (L637)&quot;]</span><br><span class="line">    SD --&gt; GST[&quot;generateStopTrajectory (L86)&lt;br&gt;插停车点&quot;]</span><br><span class="line">    CD --&gt; GCT[&quot;generateCruiseTrajectory&lt;br&gt;算跟车限速&quot;]</span><br><span class="line">    GST --&gt; OUT[&quot;输出改写后的轨迹 + velocity_limit&quot;]</span><br><span class="line">    GCT --&gt; OUT</span><br></pre></td></tr></table></figure>
-
-<p><strong>障碍怎么变成 target：</strong> <code>getTargetObstacles</code>（L662）对每个感知物体，用 <code>polygon_utils</code> 算它的多边形和自车轨迹的交点（<code>collision_points</code>）。只有&#x3D;&#x3D;轨迹真的会穿过障碍&#x3D;&#x3D;（有 collision_points）的物体才进 <code>target_obstacles</code>。这一步是整个触发的总开关：没交点 &#x3D; 撞不上 &#x3D; 直接忽略。</p>
-<h3 id="停车触发：generateStopTrajectory（planner-interface-cpp-L86）"><a href="#停车触发：generateStopTrajectory（planner-interface-cpp-L86）" class="headerlink" title="停车触发：generateStopTrajectory（planner_interface.cpp L86）"></a>停车触发：<code>generateStopTrajectory</code>（planner_interface.cpp L86）</h3><p>从 <code>target_obstacles</code> 里挑最近的停车障碍，算到碰撞点的弧长距离，减掉安全 margin 和车头偏移，得到该停的位置，再用 <code>insertStopPoint</code>（L196）把一个零速点插进轨迹。</p>
-<p>里面有个关键的可行性检查 <code>calcMinimumDistanceToStop</code>（L75）——就是高中刹车距离公式：</p>
-<p>$$d_{brake} &#x3D; \frac{v_0^2}{2,|a_{min}|}$$</p>
-<p>含义：以当前车速 $v_0$、用极限制动 $a_{min}$，最少要多少距离才能停下。如果障碍比这个距离还近（<code>closest_obstacle_stop_dist &lt; feasible_stop_dist</code>，L186），说明&#x3D;&#x3D;按极限制动也停不住&#x3D;&#x3D;，会撞，于是置 <code>will_collide_with_obstacle = true</code> 发告警（L184-189）。这是个兜底的安全诊断，不是触发条件本身。</p>
-<h3 id="巡航触发：generateCruiseTrajectory-RSS-距离"><a href="#巡航触发：generateCruiseTrajectory-RSS-距离" class="headerlink" title="巡航触发：generateCruiseTrajectory + RSS 距离"></a>巡航触发：<code>generateCruiseTrajectory</code> + RSS 距离</h3><p>对于要”跟”的障碍（前车），用 RSS（Responsibility-Sensitive Safety）模型算安全跟车距离，定义在 <code>calcRSSDistance</code>（planner_interface.hpp L127）：</p>
-<p>$$d_{rss} &#x3D; v_{ego}\cdot t_{idle} + \frac{v_{ego}^2}{2,|a_{ego}|} - \frac{v_{obj}^2}{2,|a_{obj}|} + margin$$</p>
-<p>四项分别是：自车反应时间走的距离 + 自车制动距离 − 障碍自己的制动距离 + 余量。第三项减掉是因为前车也在减速，不需要给它留”完全停下”的整段距离。算出来的 $d_{rss}$ 用来定限速：跟车距离不够就降速，够就维持。输出是 <code>VelocityLimit</code>（限速指令），不是急停——和停车触发的区别就在这。</p>
-<h3 id="关键数据结构（common-structs-hpp）"><a href="#关键数据结构（common-structs-hpp）" class="headerlink" title="关键数据结构（common_structs.hpp）"></a>关键数据结构（common_structs.hpp）</h3><table>
-<thead>
-<tr>
-<th>结构</th>
-<th>行号</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>TargetObstacle</code></td>
-<td>L49</td>
-<td>一个被锁定的障碍：位姿、速度、collision_points、是否已停</td>
-</tr>
-<tr>
-<td><code>ObstacleCruisePlannerData</code></td>
-<td>L87</td>
-<td>一次规划的输入包：轨迹、当前位姿&#x2F;速度&#x2F;加速度、target_obstacles</td>
-</tr>
-<tr>
-<td><code>LongitudinalInfo</code></td>
-<td>L98</td>
-<td>纵向约束：加减速度&#x2F;jerk 限制、safe_distance_margin、RSS 参数</td>
-</tr>
-<tr>
-<td><code>DebugData</code></td>
-<td>L115</td>
-<td>可视化用：检测多边形、碰撞点、停&#x2F;跟车障碍</td>
-</tr>
-</tbody></table>
-<h2 id="两个节点的触发对比"><a href="#两个节点的触发对比" class="headerlink" title="两个节点的触发对比"></a>两个节点的触发对比</h2><table>
-<thead>
-<tr>
-<th></th>
-<th>surround_obstacle_checker</th>
-<th>obstacle_cruise_planner</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>速度区间</td>
-<td>低速 &#x2F; 起步</td>
-<td>行驶中</td>
-</tr>
-<tr>
-<td>检测对象</td>
-<td>车身周围 360° 最近障碍</td>
-<td>轨迹前方会碰撞的障碍</td>
-</tr>
-<tr>
-<td>触发条件</td>
-<td>几何距离 &lt; 阈值（2.0m）</td>
-<td>轨迹与障碍有 collision_points</td>
-</tr>
-<tr>
-<td>动作</td>
-<td><code>max_velocity=0</code>（不让动）</td>
-<td>插停车点 &#x2F; 限速跟车</td>
-</tr>
-<tr>
-<td>防抖</td>
-<td>距离滞回 + <code>state_clear_time</code></td>
-<td><code>updateHasStopped</code> 跟踪障碍是否停</td>
-</tr>
-<tr>
-<td>输出话题</td>
-<td><code>~/output/max_velocity</code></td>
-<td>改写后的 trajectory + velocity_limit</td>
-</tr>
-</tbody></table>
-<h2 id="与前三天的衔接"><a href="#与前三天的衔接" class="headerlink" title="与前三天的衔接"></a>与前三天的衔接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    %% 自定义节点样式 (美观、护眼、专业)</span><br><span class="line">    classDef planner fill:#e3f2fd,stroke:#1e88e5,stroke-width:2px,color:#0d47a1</span><br><span class="line">    classDef cruise fill:#fff3e0,stroke:#fb8c00,stroke-width:2px,color:#e65100</span><br><span class="line">    classDef surround fill:#ffebee,stroke:#e53935,stroke-width:2px,color:#b71c1c</span><br><span class="line">    classDef control fill:#e8f5e9,stroke:#43a047,stroke-width:2px,color:#1b5e20</span><br><span class="line">    classDef note fill:#fafafa,stroke:#9e9e9e,stroke-dasharray: 5 5,color:#616161</span><br><span class="line"></span><br><span class="line">    %% --- 1. 核心规划层 ---</span><br><span class="line">    subgraph SG_Plan [&quot;🗺️ 全局/泊车规划层 (Day 1-3)&quot;]</span><br><span class="line">        FP[&quot;freespace_planner&lt;br&gt;生成理想 Trajectory&lt;br&gt;(含倒车打点)&quot;]:::planner</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    %% --- 2. 安全兜底层 ---</span><br><span class="line">    subgraph SG_Avoid [&quot;🛡️ 局部避障兜底层 (Day 4)&quot;]</span><br><span class="line">        </span><br><span class="line">        OCP[&quot;obstacle_cruise_planner&lt;br&gt;🚗 行驶中：前方障碍检测&lt;br&gt;👉 动作：插停车点 / 降速跟车&quot;]:::cruise</span><br><span class="line">        </span><br><span class="line">        SOC[&quot;surround_obstacle_checker&lt;br&gt;🛑 起步/低速：360°防碰撞&lt;br&gt;👉 动作：检测过近发限速指令&quot;]:::surround</span><br><span class="line">        </span><br><span class="line">        Accept1&gt;验收①：轨迹不穿越障碍]:::note</span><br><span class="line">        OCP -.-&gt;|&quot;确保轨迹自身安全&quot;| Accept1</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    %% --- 3. 控制执行层 ---</span><br><span class="line">    subgraph SG_Control [&quot;⚙️ 速度仲裁与执行层 (下游)&quot;]</span><br><span class="line">        Ctrl[&quot;Controller / Cmd Gate&lt;br&gt;轨迹跟踪 &amp; 限速仲裁&quot;]:::control</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    %% --- 数据流向连接 ---</span><br><span class="line">    %% 轨迹流 (主干线)</span><br><span class="line">    FP ==&gt;|&quot;1. 原始轨迹 (Trajectory)&quot;| OCP</span><br><span class="line">    OCP ==&gt;|&quot;2. 改写速度后的安全轨迹 (Trajectory)&quot;| Ctrl</span><br><span class="line">    </span><br><span class="line">    %% 状态/指令流 (旁路线)</span><br><span class="line">    SOC -.-&gt;|&quot;3. 独立系统限速指令 (VelocityLimit=0)&lt;br&gt;强制覆盖轨迹速度&quot;| Ctrl</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
@@ -3490,110 +4124,6 @@
 <h2 id="一张图看懂四个算法的”产物”差异"><a href="#一张图看懂四个算法的”产物”差异" class="headerlink" title="一张图看懂四个算法的”产物”差异"></a>一张图看懂四个算法的”产物”差异</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">    subgraph S1[A* 产物]</span><br><span class="line">        A1[&quot;栅格折线&lt;br/&gt;不能直接开&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph S2[Hybrid A* 产物]</span><br><span class="line">        A2[&quot;平滑曲线&lt;br/&gt;直接可执行&lt;br/&gt;满足运动学&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph S3[RRT 产物]</span><br><span class="line">        A3[&quot;随机曲折路径&lt;br/&gt;可行但不优&quot;]</span><br><span class="line">    end</span><br><span class="line">    subgraph S4[RRT* 产物]</span><br><span class="line">        A4[&quot;渐进平滑路径&lt;br/&gt;可行且越来越优&quot;]</span><br><span class="line">    end</span><br><span class="line">    S1 -. 需后处理 .-&gt; 车辆</span><br><span class="line">    S2 ==&gt; 车辆[直接给控制器]</span><br><span class="line">    S3 -. 需后处理 .-&gt; 车辆</span><br><span class="line">    S4 -. 后处理少 .-&gt; 车辆</span><br></pre></td></tr></table></figure>
 
 <hr>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/" class="post-title-link" itemprop="url">在WSL中部署Claude code</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2026-07-08 12:00:00 / 修改时间：14:25:59" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="在WSL中部署Claude-code"><a href="#在WSL中部署Claude-code" class="headerlink" title="在WSL中部署Claude code"></a>在WSL中部署Claude code</h1><p>以下操作均在WSL中完成</p>
-<h2 id="下载Node-js"><a href="#下载Node-js" class="headerlink" title="下载Node.js"></a>下载Node.js</h2><p>使用NPM安装，需要先安装<strong>Node.js</strong></p>
-<p>Linux</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu / Debian</span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
-
-<p>完成安装后验证</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node --version</span><br><span class="line">npm --version</span><br></pre></td></tr></table></figure>
-
-<h2 id="安装Claude-code"><a href="#安装Claude-code" class="headerlink" title="安装Claude code"></a>安装Claude code</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g @anthropic-ai/claude-code</span><br></pre></td></tr></table></figure>
-
-<h2 id="链接CCH服务"><a href="#链接CCH服务" class="headerlink" title="链接CCH服务"></a>链接CCH服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 创建隐藏的配置文件夹</span><br><span class="line">mkdir -p ~/.claude</span><br><span class="line"># 使用vscode打开并创建文件</span><br><span class="line">code ~/.claude/settings.json</span><br></pre></td></tr></table></figure>
-
-<p>复制并粘贴配置内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;env&quot;: &#123;</span><br><span class="line">    &quot;ANTHROPIC_AUTH_TOKEN&quot;: &quot;your key&quot;,</span><br><span class="line">    &quot;ANTHROPIC_BASE_URL&quot;: &quot;https://open.bigmodel.cn/api/anthropic&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;CLAUDE_CODE_EFFORT_LEVEL&quot;: &quot;max&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;includeCoAuthoredBy&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="保存并测试"><a href="#保存并测试" class="headerlink" title="保存并测试"></a>保存并测试</h2><p>在vscode中保存文件，打开终端测试</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Claude</span><br></pre></td></tr></table></figure>
-
-<h2 id="VS-Code拓展"><a href="#VS-Code拓展" class="headerlink" title="VS Code拓展"></a>VS Code拓展</h2><ul>
-<li>在VS Code 拓展市场搜索并按章Claude Code</li>
-<li>确认 settings.json或者环境变量已经配置完成</li>
-<li>如果接的是cch，保持自定义地址即可</li>
-</ul>
-<p>启动</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">claude</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
