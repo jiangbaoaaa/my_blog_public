@@ -139,13 +139,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -183,7 +183,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%85%AB%E7%AB%A0%EF%BC%9A%E7%B4%A7%E8%80%A6%E5%90%88LIO%E7%B3%BB%E7%BB%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
@@ -201,7 +201,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/" class="post-title-link" itemprop="url">第四章:预积分学</a>
+          <a href="/2025/11/03/%E7%AC%AC%E5%85%AB%E7%AB%A0%EF%BC%9A%E7%B4%A7%E8%80%A6%E5%90%88LIO%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">第八章：紧耦合LIO系统</a>
         </h2>
 
         <div class="post-meta-container">
@@ -241,109 +241,146 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="第四章-预积分学"><a href="#第四章-预积分学" class="headerlink" title="第四章:预积分学"></a>第四章:预积分学</h1><h2 id="IMU状态的预积分学"><a href="#IMU状态的预积分学" class="headerlink" title="IMU状态的预积分学"></a>IMU状态的预积分学</h2><p>为什么需要预积分?</p>
+          <h1 id="第八章：紧耦合LIO系统"><a href="#第八章：紧耦合LIO系统" class="headerlink" title="第八章：紧耦合LIO系统"></a>第八章：紧耦合LIO系统</h1><h2 id="紧耦合的原理和优点"><a href="#紧耦合的原理和优点" class="headerlink" title="紧耦合的原理和优点"></a>紧耦合的原理和优点</h2><p>紧耦合是一种传感器融合策略，不再是融合结果，而是融合“原始数据”或者“原始约束”</p>
+<p>优势：</p>
 <ol>
-<li>IMU采样频率极高:通常在100-200HZ之间，IMU提供关于运动的瞬时信息</li>
-<li>其他传感器频率低:通常在10HZ到30HZ之间，而GPS在1HZ到10HZ之间，这些传感器提供关于绝对姿态或者位置的修正信息</li>
+<li>极高的精度：松耦合在第一步计算里程计时，已经丢弃了原始点云信息，只保留了一个位姿估计，紧耦合利用了所有的原始信息，IMU与LiDAR双向校正</li>
+<li>更强的鲁棒性：当LiDAR 失效或者是IMU剧烈抖动时，可以受到其他传感器的约束，系统能够输出稳定、平滑的位姿。</li>
 </ol>
-<p>如果直接在卡尔曼滤波器中处理IMU数据，每次IMU测量会进行一次预测，这样会带来致命问题:</p>
+<h2 id="基于IEKF的LIO系统"><a href="#基于IEKF的LIO系统" class="headerlink" title="基于IEKF的LIO系统"></a>基于IEKF的LIO系统</h2><h3 id="IEKF状态变量与运动方程"><a href="#IEKF状态变量与运动方程" class="headerlink" title="IEKF状态变量与运动方程"></a>IEKF状态变量与运动方程</h3><p>在紧耦合LIO系统中，IMU与点云配准使用同样的状态模型、运动方程与观测方程。</p>
+<p>标准的EKF通过在当前状态估计点对非线性系统进行一次泰勒展开，然后应用标准卡尔曼滤波。但是对于LIO这种强非线性系统，一次线性化会引入巨大误差。IEKF是对EKF的重大改进，在更新步骤中，不只是线性化一次，而是进行多次迭代。每次迭代中，都围绕上一次迭代更新后的最新状态点重新进行线性化，允许IEKF逐步逼近非线性测量函数的真实最优解。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251029104924012.png" alt="image-20251029104924012"></p>
+<h2 id="实现基于IEKF的LIO系统"><a href="#实现基于IEKF的LIO系统" class="headerlink" title="实现基于IEKF的LIO系统"></a>实现基于IEKF的LIO系统</h2><p>紧耦合LIO系统的点云残差可以有多种计算方式：如点到线、点到面、NDT，等等。本次实现一个基于IEKF的NDT LIO，实现基于点到面ICP的LIO。</p>
+<h2 id="基于预积分的LIO系统"><a href="#基于预积分的LIO系统" class="headerlink" title="基于预积分的LIO系统"></a>基于预积分的LIO系统</h2><p>与组合导航一样，带有点云的LIO系统也可以通过预积分IMU因子加上雷达残差来实现。预积分因子可以更方便整合到现有的框架上。LIO-SAM把预积分因子与雷达里程计的因子结合，构成整个优化问题。</p>
 <ol>
-<li>巨大计算负担</li>
-<li>状态耦合与重复传播</li>
+<li><p>预积分因子通常关联两个关键帧的高维状态。在转换为图优化问题时，可以选择把各个顶点分开处理。</p>
+</li>
+<li><p>由于预积分因子关联的变量较多，并且观测量大部分是状态变量的差值，因此应该对状态变量有足够的观测和约束，否则整个状态变量容易在零空间内自由变动。</p>
+</li>
+<li><p>预积分的图优化模型如下图所示：</p>
+</li>
 </ol>
-<p>但是IMU测量频率太高，并不希望优化过程随着IMU数据进行调用，那样太浪费计算资源。更希望将这些IMU测量值组合在一起处理。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194137833.png" alt="image-20251016194137833"></p>
-<p>但是这种直接积分方法在图优化框架中存在一个巨大问题：<strong>图优化会不断调整所有关键帧的位姿</strong></p>
-<p>**核心矛盾：**IMU积分与图优化中的状态变量紧密耦合，导致优化效率低下。</p>
-<p><strong>核心思想：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194456232.png" alt="image-20251016194456232"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194623171.png" alt="image-20251016194623171"></p>
-<p>经过推导，得到两帧之间的运动约束方程，由预积分量构成：</p>
-<p>image-20251016195218687<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194910851.png" alt="image-20251016194910851"></p>
-<p><strong>偏置的处理</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016195218687.png" alt="image-20251016195218687"></p>
-<h2 id="实践：预积分的程序实现"><a href="#实践：预积分的程序实现" class="headerlink" title="实践：预积分的程序实现"></a>实践：预积分的程序实现</h2><p>图优化是一个后端优化框架，用于融合多传感器信息，消除累积误差，获得全局一致的机器人轨迹和地图。</p>
-<p><strong>原理</strong></p>
-<ol>
-<li>将SLAM问题建模成一个图，其中顶点是待优化的状态变量，边是来自传感器的测量约束</li>
-<li>为每一条边定义一个误差函数，衡量当前估计与测量的符合程度</li>
-<li>构建一个总代价函数（所有误差的平方和）</li>
-<li>使用非线性最小二乘的迭代算法（例如高斯-牛顿法）求解，找到使总代价函数最小化的状态变量</li>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030095913708.png" alt="image-20251030095913708"></p>
+<p>对两个关键帧进行优化时，为上一个关键帧添加一个先验因子，然后在两个帧之间添加预积分因子和零偏随机游走因子，最后在下一个关键帧中添加NDT观测的位姿约束。</p>
+<ol start="4">
+<li>雷达里程计的观测位姿是依赖预测数据的，与RTK的位姿观测有着本质区别。如果雷达里程计使用一个不准确的预测位姿，可能会使得整个LIO系统发散。</li>
+<li>将原先EKF处理的预测和观测部分变成预积分器的预测和观测部分。</li>
 </ol>
-<h3 id="实现基于预积分和图优化的GINS"><a href="#实现基于预积分和图优化的GINS" class="headerlink" title="实现基于预积分和图优化的GINS"></a>实现基于预积分和图优化的GINS</h3><p>终端输入： </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# python3 scripts/plot_ch3_state.py ./data/ch4/gins_preintg.txt </span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030100801103.png" alt="image-20251030100801103"></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016203459918.png" alt="image-20251016203459918"></p>
-<p>基于预积分和图优化的GINS的状态图与上一章相比，速度状态在预期之内，但是缺少GNSS时候，单纯的IMU预测依然会局部发散。</p>
-<table>
-<thead>
-<tr>
-<th><strong>特性维度</strong></th>
-<th><strong>基于ESKF的惯性导航</strong></th>
-<th><strong>基于图优化的GINS</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>数据处理范式</strong></td>
-<td><strong>滤波（Filtering）</strong></td>
-<td><strong>批量优化（Batch Optimization）</strong></td>
-</tr>
-<tr>
-<td></td>
-<td><strong>顺序、递归处理</strong>：一次只处理一个时刻的测量数据，更新当前状态。过去的状态被“<strong>边缘化</strong>”掉，信息被压缩到当前状态的均值和协方差中。</td>
-<td><strong>批次、迭代处理</strong>：同时处理一个时间窗口内（甚至所有历史）的状态和测量。保留了所有状态节点和它们之间的约束关系。</td>
-</tr>
-<tr>
-<td><strong>最优性</strong></td>
-<td><strong>局部最优</strong></td>
-<td><strong>全局最优（在窗口内）</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>在线性高斯假设下，KF是当前时刻的最优估计。但在非线性系统中，它只是一个近似，无法保证全局最优。</td>
-<td>通过反复迭代和重线性化，可以找到整个时间窗口内所有状态的<strong>最大后验估计</strong>，结果更接近全局最优解，轨迹的平滑性和一致性更好。</td>
-</tr>
-<tr>
-<td><strong>计算成本与延迟</strong></td>
-<td><strong>低且固定</strong></td>
-<td><strong>高且可变</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>每个更新步骤的计算量相对固定且较小。非常适合<strong>实时性要求高、计算资源受限</strong>的系统。延迟极低。</td>
-<td>计算成本随着图中顶点和边的数量（即窗口大小）增加而增加。求解大型非线性最小二乘问题开销大。<strong>延迟较高</strong>，因为需要等待数据累积成批次。</td>
-</tr>
-<tr>
-<td><strong>处理异常值</strong></td>
-<td><strong>脆弱</strong></td>
-<td><strong>鲁棒</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>一个错误的测量（Outlier）一旦被融合，其负面影响会永久性地污染后续的状态估计，很难恢复。</td>
-<td>更加鲁棒。异常值在图中会表现为一个具有巨大误差的边，可以通过<strong>鲁棒核函数（Robust Kernels）</strong>（如Huber Loss）来降低其在总代价函数中的权重，从而抵抗其影响。</td>
-</tr>
-<tr>
-<td><strong>处理延迟&#x2F;乱序数据</strong></td>
-<td><strong>困难</strong></td>
-<td><strong>简单、自然</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>标准的卡尔曼滤波框架假定测量是按时序到达的。处理延迟的测量（如GNSS）需要复杂的额外机制（如固定滞后平滑）。</td>
-<td><strong>天然支持</strong>。一个延迟到达的测量只是在图中增加了一条连接过去两个节点的边而已。在下一次优化时，这个信息会被自然地考虑进去，并修正相关的历史轨迹。</td>
-</tr>
-<tr>
-<td><strong>全局一致性&#x2F;回环</strong></td>
-<td><strong>不支持</strong></td>
-<td><strong>核心优势</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>无法处理回环检测（Loop Closure）。当系统回到原点时，滤波方法无法利用该信息来修正整个历史轨迹的累积误差。</td>
-<td>这是图优化的<strong>王牌优势</strong>。一个回环检测可以在图中两个相距很远的节点间建立一条强约束边。优化器会调整<strong>整条轨迹</strong>来满足这个约束，从而显著消除全局漂移，获得全局一致的地图和轨迹。</td>
-</tr>
-</tbody></table>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/11/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E8%BD%A6%E8%BE%86%E7%9A%84%E7%A6%BB%E7%BA%BF%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/" class="post-title-link" itemprop="url">第九章：自动驾驶车辆的离线地图构建</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="第九章：自动驾驶车辆的离线地图构建"><a href="#第九章：自动驾驶车辆的离线地图构建" class="headerlink" title="第九章：自动驾驶车辆的离线地图构建"></a>第九章：自动驾驶车辆的离线地图构建</h1><h2 id="点云建图的流程"><a href="#点云建图的流程" class="headerlink" title="点云建图的流程"></a>点云建图的流程</h2><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251030103644153.png" alt="image-20251030103644153"></p>
+<p>上图是整个建图流程：</p>
+<ol>
+<li>从给定的ROS数据包中解出IMU、RTK和激光雷达数据。使用IMU与激光雷达数据组成LIO系统。</li>
+<li>大部分自动驾驶车辆会携带RTK设备或者组合导航设备。按照RTK或者组合导航的位姿给每个关键帧赋一个RTK位姿，作为观测。</li>
+<li>使用LIO作为相邻帧运动观测，使用RTK位姿作为绝对坐标观测，优化整条轨迹并且判定各关键帧的RTK有效性。这是<strong>第一轮优化</strong>。</li>
+<li>在上一步的基础上对地图进行回环检测，可以使用简单的基于欧氏距离的检测，使用NDT或者常见的配准算法计算相对位姿。</li>
+<li>再把信息放到统一的位姿图中进行优化，消除累计误差带来的重影，同时移除失效区域。这是<strong>第二轮优化</strong>。确定位姿之后，可以按照这些位姿到处点云地图。为了方便地图加载和查看，可以对点云进行切片处理。处理之后的点云可以用来进行高精度定位或者地图标注。</li>
+</ol>
+<h2 id="前端实现"><a href="#前端实现" class="headerlink" title="前端实现"></a>前端实现</h2><ol>
+<li>将ROS数据包中的RTK数据提取出来，放在RTK消息队列中，按照采集时间排序</li>
+<li>用第一个有效的RTK数据作为地图原点，用其他的RTK读书减去原点，作为RTK位置观测</li>
+<li>用IMU和激光雷达输出数据运行LIO，按照距离和角度阈值抽取关键帧，再保存关键帧结果。抽取关键帧时，也会从LIO中获取它的位姿和点云</li>
+</ol>
+<p>后续的建图流程可以从前端的结果出发，不必解析ROS数据包。先使用RTK位姿和LIO位姿进行联合优化，在此基础上进行回环检测，消除累计误差。</p>
+<h2 id="后端位姿图优化和异常值检验"><a href="#后端位姿图优化和异常值检验" class="headerlink" title="后端位姿图优化和异常值检验"></a>后端位姿图优化和异常值检验</h2><p>我们希望最终优化的轨迹能够考虑到各种传感器的输入，因此后端图优化需要包含以下因子：</p>
+<ol>
+<li>RTK因子。这是一种绝对的位姿观测数据。</li>
+<li>雷达里程计信息，使用前面介绍的激光雷达里程计或者LIO作为局部连续性约束</li>
+<li>回环因子，执行回环检测就加载回环检测的相关信息，把它们放入图优化中。</li>
+</ol>
+<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>点云地图的质量很大程度上取决于回环检测是，设计回环检测的步骤如下：</p>
+<ol>
+<li>遍历第一轮优化轨迹中的关键帧。对每两个在空间上相隔较近，但是在时间上存在一定距离的关键帧进行一次回环检测。</li>
+<li>对于每个关键帧对，使用Scan to Map 的配准方法，在关键帧附近抽取一定数量的点云作为子地图，然后对扫描和子地图进行配准。</li>
+<li>由于每个检查点的计算都是独立的，使用并发编程让第二步能够在机器上并发执行，加快速度</li>
+<li>配准的实际执行由NDT完成，使用NDT的分值作为回环有效性的判断依据。</li>
+<li>记录所有成功的回环，并且在下次调用优化算法时读取回环检测的结果。</li>
+</ol>
+<h2 id="地图的导出"><a href="#地图的导出" class="headerlink" title="地图的导出"></a>地图的导出</h2><p>多数应用中，希望控制实时点云的载入规模，只加载自身周围200米范围内的点云，其他范围的点云视情况卸载，重新组织本章建立的点云，按照100米的边长进行分块，设计分块加载和卸载的接口。点云的切分实际上是根据每个点的坐标计算其所在的网格，然后将它投到对应的网格中。切分完地图之后，没快递图会独立到处一个PCD文件，程序可以快速读取到地图区块的位置。</p>
 
       
     </div>
@@ -553,6 +590,193 @@
 <h4 id="IMU与机器人里程计的融合问题"><a href="#IMU与机器人里程计的融合问题" class="headerlink" title="IMU与机器人里程计的融合问题"></a>IMU与机器人里程计的融合问题</h4><p>如果单纯使用激光雷达，在特征不明显的地方，如走廊可能会出现退化问题。可以引入其他传感器，如IMU、轮速器、里程计或GPS信息融入SLAM系统中。</p>
 <p>关于激光雷达的SLAM算法整理：</p>
 <p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/lTlRKPzj89Iicfl6sJiArQ">https://mp.weixin.qq.com/s/lTlRKPzj89Iicfl6sJiArQ</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/11/03/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E9%A2%84%E7%A7%AF%E5%88%86%E5%AD%A6/" class="post-title-link" itemprop="url">第四章:预积分学</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="第四章-预积分学"><a href="#第四章-预积分学" class="headerlink" title="第四章:预积分学"></a>第四章:预积分学</h1><h2 id="IMU状态的预积分学"><a href="#IMU状态的预积分学" class="headerlink" title="IMU状态的预积分学"></a>IMU状态的预积分学</h2><p>为什么需要预积分?</p>
+<ol>
+<li>IMU采样频率极高:通常在100-200HZ之间，IMU提供关于运动的瞬时信息</li>
+<li>其他传感器频率低:通常在10HZ到30HZ之间，而GPS在1HZ到10HZ之间，这些传感器提供关于绝对姿态或者位置的修正信息</li>
+</ol>
+<p>如果直接在卡尔曼滤波器中处理IMU数据，每次IMU测量会进行一次预测，这样会带来致命问题:</p>
+<ol>
+<li>巨大计算负担</li>
+<li>状态耦合与重复传播</li>
+</ol>
+<p>但是IMU测量频率太高，并不希望优化过程随着IMU数据进行调用，那样太浪费计算资源。更希望将这些IMU测量值组合在一起处理。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194137833.png" alt="image-20251016194137833"></p>
+<p>但是这种直接积分方法在图优化框架中存在一个巨大问题：<strong>图优化会不断调整所有关键帧的位姿</strong></p>
+<p>**核心矛盾：**IMU积分与图优化中的状态变量紧密耦合，导致优化效率低下。</p>
+<p><strong>核心思想：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194456232.png" alt="image-20251016194456232"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194623171.png" alt="image-20251016194623171"></p>
+<p>经过推导，得到两帧之间的运动约束方程，由预积分量构成：</p>
+<p>image-20251016195218687<img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016194910851.png" alt="image-20251016194910851"></p>
+<p><strong>偏置的处理</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016195218687.png" alt="image-20251016195218687"></p>
+<h2 id="实践：预积分的程序实现"><a href="#实践：预积分的程序实现" class="headerlink" title="实践：预积分的程序实现"></a>实践：预积分的程序实现</h2><p>图优化是一个后端优化框架，用于融合多传感器信息，消除累积误差，获得全局一致的机器人轨迹和地图。</p>
+<p><strong>原理</strong></p>
+<ol>
+<li>将SLAM问题建模成一个图，其中顶点是待优化的状态变量，边是来自传感器的测量约束</li>
+<li>为每一条边定义一个误差函数，衡量当前估计与测量的符合程度</li>
+<li>构建一个总代价函数（所有误差的平方和）</li>
+<li>使用非线性最小二乘的迭代算法（例如高斯-牛顿法）求解，找到使总代价函数最小化的状态变量</li>
+</ol>
+<h3 id="实现基于预积分和图优化的GINS"><a href="#实现基于预积分和图优化的GINS" class="headerlink" title="实现基于预积分和图优化的GINS"></a>实现基于预积分和图优化的GINS</h3><p>终端输入： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# python3 scripts/plot_ch3_state.py ./data/ch4/gins_preintg.txt </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251016203459918.png" alt="image-20251016203459918"></p>
+<p>基于预积分和图优化的GINS的状态图与上一章相比，速度状态在预期之内，但是缺少GNSS时候，单纯的IMU预测依然会局部发散。</p>
+<table>
+<thead>
+<tr>
+<th><strong>特性维度</strong></th>
+<th><strong>基于ESKF的惯性导航</strong></th>
+<th><strong>基于图优化的GINS</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>数据处理范式</strong></td>
+<td><strong>滤波（Filtering）</strong></td>
+<td><strong>批量优化（Batch Optimization）</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>顺序、递归处理</strong>：一次只处理一个时刻的测量数据，更新当前状态。过去的状态被“<strong>边缘化</strong>”掉，信息被压缩到当前状态的均值和协方差中。</td>
+<td><strong>批次、迭代处理</strong>：同时处理一个时间窗口内（甚至所有历史）的状态和测量。保留了所有状态节点和它们之间的约束关系。</td>
+</tr>
+<tr>
+<td><strong>最优性</strong></td>
+<td><strong>局部最优</strong></td>
+<td><strong>全局最优（在窗口内）</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>在线性高斯假设下，KF是当前时刻的最优估计。但在非线性系统中，它只是一个近似，无法保证全局最优。</td>
+<td>通过反复迭代和重线性化，可以找到整个时间窗口内所有状态的<strong>最大后验估计</strong>，结果更接近全局最优解，轨迹的平滑性和一致性更好。</td>
+</tr>
+<tr>
+<td><strong>计算成本与延迟</strong></td>
+<td><strong>低且固定</strong></td>
+<td><strong>高且可变</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>每个更新步骤的计算量相对固定且较小。非常适合<strong>实时性要求高、计算资源受限</strong>的系统。延迟极低。</td>
+<td>计算成本随着图中顶点和边的数量（即窗口大小）增加而增加。求解大型非线性最小二乘问题开销大。<strong>延迟较高</strong>，因为需要等待数据累积成批次。</td>
+</tr>
+<tr>
+<td><strong>处理异常值</strong></td>
+<td><strong>脆弱</strong></td>
+<td><strong>鲁棒</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>一个错误的测量（Outlier）一旦被融合，其负面影响会永久性地污染后续的状态估计，很难恢复。</td>
+<td>更加鲁棒。异常值在图中会表现为一个具有巨大误差的边，可以通过<strong>鲁棒核函数（Robust Kernels）</strong>（如Huber Loss）来降低其在总代价函数中的权重，从而抵抗其影响。</td>
+</tr>
+<tr>
+<td><strong>处理延迟&#x2F;乱序数据</strong></td>
+<td><strong>困难</strong></td>
+<td><strong>简单、自然</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>标准的卡尔曼滤波框架假定测量是按时序到达的。处理延迟的测量（如GNSS）需要复杂的额外机制（如固定滞后平滑）。</td>
+<td><strong>天然支持</strong>。一个延迟到达的测量只是在图中增加了一条连接过去两个节点的边而已。在下一次优化时，这个信息会被自然地考虑进去，并修正相关的历史轨迹。</td>
+</tr>
+<tr>
+<td><strong>全局一致性&#x2F;回环</strong></td>
+<td><strong>不支持</strong></td>
+<td><strong>核心优势</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>无法处理回环检测（Loop Closure）。当系统回到原点时，滤波方法无法利用该信息来修正整个历史轨迹的累积误差。</td>
+<td>这是图优化的<strong>王牌优势</strong>。一个回环检测可以在图中两个相距很远的节点间建立一条强约束边。优化器会调整<strong>整条轨迹</strong>来满足这个约束，从而显著消除全局漂移，获得全局一致的地图和轨迹。</td>
+</tr>
+</tbody></table>
 
       
     </div>
@@ -1442,244 +1666,6 @@
 </ul>
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="实现基本数据结构"><a href="#实现基本数据结构" class="headerlink" title="实现基本数据结构"></a>实现基本数据结构</h3><p>先实现帧、特征、路标点着三个类。对于基本的数据结构，通常设为struct，不用定义复杂的私有变量和接口。</p>
 <p>Fram结构设计如下：</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/09/24/%E9%85%8D%E7%BD%AEgazebo%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/09/24/%E9%85%8D%E7%BD%AEgazebo%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">配置gazebo仿真环境</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-09-24 00:00:00" itemprop="dateCreated datePublished" datetime="2025-09-24T00:00:00+08:00">2025-09-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="配置gazebo仿真环境"><a href="#配置gazebo仿真环境" class="headerlink" title="配置gazebo仿真环境"></a>配置gazebo仿真环境</h1><h2 id="配置仿真模型"><a href="#配置仿真模型" class="headerlink" title="配置仿真模型"></a>配置仿真模型</h2><ul>
-<li>下载velodyne仿真模型</li>
-</ul>
-<p><img src="/home/hita/.config/Typora/typora-user-images/image-20250919173450469.png" alt="image-20250919173450469"></p>
-<p>文件夹结构如上图所示，包含16线激光雷达的仿真模型。</p>
-<p>编译完成之后，只需要修改SCOUT_MINI的urdf文件即可。</p>
-<p>找到如下目录：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250919173913047.png" alt="image-20250919173913047"></p>
-<p>这样配置完成之后，就可以在gazebo中查看对应变化了。</p>
-<p><code>empty.urdf</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;robot xmlns:xacro=&quot;http://ros.org/wiki/xacro&quot;&gt;</span><br><span class="line"></span><br><span class="line">  &lt;xacro:include filename=&quot;$(find scout_description)/urdf/scout_sensors.urdf.xacro&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/robot&gt;</span><br></pre></td></tr></table></figure>
-
-<p><code>scout_sensors.urdf.xacro</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;robot xmlns:xacro=&quot;http://ros.org/wiki/xacro&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;xacro:include filename=&quot;$(find velodyne_description)/urdf/VLP-16.urdf.xacro&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;xacro:VLP-16 parent=&quot;box_link&quot; name=&quot;velodyne&quot; topic=&quot;/velodyne_points&quot; organize_cloud=&quot;false&quot; hz=&quot;10&quot; samples=&quot;440&quot; gpu=&quot;false&quot;&gt;</span><br><span class="line">        &lt;origin xyz=&quot;0 0 0.3&quot; rpy=&quot;0 0 0&quot; /&gt;</span><br><span class="line">    &lt;/xacro:VLP-16&gt;</span><br><span class="line"></span><br><span class="line">    &lt;link name=&quot;imu_link&quot;&gt;</span><br><span class="line">        &lt;inertial&gt;</span><br><span class="line">            &lt;mass value=&quot;0.01&quot;/&gt;</span><br><span class="line">            &lt;origin xyz=&quot;0 0 0&quot; rpy=&quot;0 0 0&quot;/&gt;</span><br><span class="line">            &lt;inertia ixx=&quot;0.0001&quot; ixy=&quot;0&quot; ixz=&quot;0&quot; iyy=&quot;0.0001&quot; iyz=&quot;0&quot; izz=&quot;0.0001&quot;/&gt;</span><br><span class="line">        &lt;/inertial&gt;</span><br><span class="line">        &lt;visual&gt;</span><br><span class="line">            &lt;origin xyz=&quot;0 0 0&quot; rpy=&quot;0 0 0&quot;/&gt;</span><br><span class="line">            &lt;geometry&gt;</span><br><span class="line">                &lt;box size=&quot;0.01 0.01 0.01&quot;/&gt;</span><br><span class="line">            &lt;/geometry&gt;</span><br><span class="line">        &lt;/visual&gt;</span><br><span class="line">        &lt;collision&gt;</span><br><span class="line">            &lt;origin xyz=&quot;0 0 0&quot; rpy=&quot;0 0 0&quot;/&gt;</span><br><span class="line">            &lt;geometry&gt;</span><br><span class="line">                &lt;box size=&quot;0.01 0.01 0.01&quot;/&gt;</span><br><span class="line">            &lt;/geometry&gt;</span><br><span class="line">        &lt;/collision&gt;</span><br><span class="line">    &lt;/link&gt;</span><br><span class="line"></span><br><span class="line">    &lt;joint name=&quot;imu_joint&quot; type=&quot;fixed&quot;&gt;</span><br><span class="line">        &lt;parent link=&quot;base_link&quot;/&gt;</span><br><span class="line">        &lt;child link=&quot;imu_link&quot;/&gt;</span><br><span class="line">        &lt;origin xyz=&quot;0 0 0.05&quot; rpy=&quot;0 0 0&quot;/&gt;</span><br><span class="line">    &lt;/joint&gt;</span><br><span class="line"></span><br><span class="line">    &lt;gazebo reference=&quot;imu_link&quot;&gt;</span><br><span class="line">        &lt;sensor type=&quot;imu&quot; name=&quot;imu_sensor&quot;&gt;</span><br><span class="line">            &lt;always_on&gt;true&lt;/always_on&gt;</span><br><span class="line">            &lt;update_rate&gt;100&lt;/update_rate&gt;</span><br><span class="line">            &lt;visualize&gt;true&lt;/visualize&gt;</span><br><span class="line">            &lt;topic&gt;__default_topic__&lt;/topic&gt;</span><br><span class="line">            &lt;plugin filename=&quot;libgazebo_ros_imu_sensor.so&quot; name=&quot;imu_plugin&quot;&gt;</span><br><span class="line">                &lt;topicName&gt;imu&lt;/topicName&gt;</span><br><span class="line">                &lt;bodyName&gt;imu_link&lt;/bodyName&gt;</span><br><span class="line">                &lt;updateRateHZ&gt;100.0&lt;/updateRateHZ&gt;</span><br><span class="line">                &lt;gaussianNoise&gt;0.0&lt;/gaussianNoise&gt;</span><br><span class="line">                &lt;xyzOffset&gt;0 0 0&lt;/xyzOffset&gt;</span><br><span class="line">                &lt;rpyOffset&gt;0 0 0&lt;/rpyOffset&gt;</span><br><span class="line">                &lt;frameName&gt;imu_link&lt;/frameName&gt;</span><br><span class="line">            &lt;/plugin&gt;</span><br><span class="line">            &lt;pose&gt;0 0 0 0 0 0&lt;/pose&gt;</span><br><span class="line">        &lt;/sensor&gt;</span><br><span class="line">    &lt;/gazebo&gt;</span><br><span class="line"></span><br><span class="line">&lt;/robot&gt;</span><br></pre></td></tr></table></figure>
-
-<p>打开容器，编译一下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@hita-JIGUANG-Series:~/catkin_ws# roslaunch scout_gazebo_sim scout_mini_playpen.launch </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20250919174934883.png" alt="image-20250919174934883"></p>
-<p>可以看到机器人添加了雷达组建，imu组建在机器人外壳内部。同时订阅激光雷达的话题，可以看到点云。这样模型就配置好了。</p>
-<p>至于后续的建图，考虑了性能有限，可以先录制好再来建图。下一篇再讲。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/09/06/%E8%A7%86%E8%A7%89SLAM14%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%90%8E%E7%AB%AF2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/09/06/%E8%A7%86%E8%A7%89SLAM14%E8%AE%B2%EF%BC%88%E7%AC%AC%E5%8D%81%E8%AE%B2%EF%BC%89%E2%80%94%E2%80%94%E5%90%8E%E7%AB%AF2/" class="post-title-link" itemprop="url">第十讲-后端2</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-09-06 00:00:00" itemprop="dateCreated datePublished" datetime="2025-09-06T00:00:00+08:00">2025-09-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-08 11:08:51" itemprop="dateModified" datetime="2026-07-08T11:08:51+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/" itemprop="url" rel="index"><span itemprop="name">视觉SLAM十四讲</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="视觉SLAM14讲（第十讲）——后端2"><a href="#视觉SLAM14讲（第十讲）——后端2" class="headerlink" title="视觉SLAM14讲（第十讲）——后端2"></a>视觉SLAM14讲（第十讲）——后端2</h1><h2 id="滑动窗口滤波和优化"><a href="#滑动窗口滤波和优化" class="headerlink" title="滑动窗口滤波和优化"></a>滑动窗口滤波和优化</h2><h3 id="实际环境下的BA结构"><a href="#实际环境下的BA结构" class="headerlink" title="实际环境下的BA结构"></a>实际环境下的BA结构</h3><p>如果规模太大的建图任务，使用BA会花费大量算力。所以必须控制计算规模，控制计算规模的做法有很多，比如从连续的视频中抽出一部分作为关键帧，但是即便如此，关键帧数量也会越来越多，计算效率会不断下降。所以最简单控制BA规模的思路，是保留当前时刻最近的N个关键帧，去掉时间上更早的关键帧。于是BA将被固定在一个时间窗口内，离开窗口的则会被丢弃，这个方法称为<strong>滑动窗口法</strong>。</p>
-<p>当然也有所谓的“共视图”的结构。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250901185535684.png" alt="image-20250901185535684"></p>
-<p>在滑动窗口中，当窗口结构发生改变，这些状态变量应该如何改变：</p>
-<ol>
-<li>需要在窗口新增一个关键帧，以及它观测的路标点</li>
-<li>需要把窗口中的一个旧的关键帧删除，也可能删除它观测的路标点</li>
-</ol>
-<p><strong>新增一个关键帧</strong></p>
-<p>在滑动窗口建立了N个关键帧之后，此时，新来一个关键帧，那么就需要把整个N+1个关键帧和更多路标点的集合作为变量，按照正常的BA流程处理即可，对所有的点进行边缘化，得到这个N+1个关键帧的高斯分布参数。</p>
-<p><strong>删除一个旧的关键帧</strong></p>
-<p>当考虑删除旧的关键帧的时候，一个问题是要删除的那个关键帧并非孤立的，会和其他帧观测到同样的路标，所以把旧的关键帧转化为一个先验约束，施加在窗口内与其相关的变量上。</p>
-<hr>
-<h2 id="位姿图"><a href="#位姿图" class="headerlink" title="位姿图"></a>位姿图</h2><h3 id="位姿图的意义"><a href="#位姿图的意义" class="headerlink" title="位姿图的意义"></a>位姿图的意义</h3><p>我们可以构建一个只有轨迹的图优化，位姿节点之间的边，可以由两个关键帧之间通过特殊匹配之后得到的运动估计来给定初始值。一旦初始估计完成，我们就不再优化那些路标点的位置，只关心所有的相机位姿之间的联系。省去大量的特征点优化的计算，只保留关键帧的轨迹，从而构建所谓的位姿图。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250901192345951.png" alt="image-20250901192345951"></p>
-<p>上图中三角形为位姿，圆形为路标点。可以把这个问题简化成为一个只关心相机轨迹本身一致性的问题。</p>
-<h3 id="位姿图的优化"><a href="#位姿图的优化" class="headerlink" title="位姿图的优化"></a>位姿图的优化</h3><p>位姿图优化中的节点表示相机位姿，边是两个位姿节点之间相对运动的估计。该估计可以来自于特征点或者直接法，也可以来自GPS或IMU积分。所有的位姿顶点和位姿——位姿边构成了一个图优化，本质上是一个最小二乘问题。也可以使用非线性优化的相关方法。</p>
-<h3 id="实践：位姿图优化"><a href="#实践：位姿图优化" class="headerlink" title="实践：位姿图优化"></a>实践：位姿图优化</h3><h3 id="g2o原生位姿图"><a href="#g2o原生位姿图" class="headerlink" title="g2o原生位姿图"></a>g2o原生位姿图</h3><p>首先运行g2o_viewer</p>
-<p>打开之前安装g2o的文件夹，我的位置在：<code>slambook/3rdparty/g2o/build/bin </code></p>
-<p>打开终端输入：<code>./g2o_viewer</code></p>
-<p>打开源文件中的：<code>sphere.g2o</code>文件，显示如下图所示。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250901200211301.png" alt="image-20250901200211301"></p>
-<p>点击优化之后，会生成一个球体。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250901200359505.png" alt="image-20250901200359505"></p>
-<p>新建文件夹及文件：<code>slambook/ch10/pose_graph_g2o_SE3.cpp</code></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span> <span class="comment">// 为了 std::unique_ptr</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;g2o/types/slam3d/types_slam3d.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;g2o/core/block_solver.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;g2o/core/optimization_algorithm_levenberg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;g2o/solvers/eigen/linear_solver_eigen.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/************************************************</span></span><br><span class="line"><span class="comment"> * 本程序演示如何用g2o solver进行位姿图优化</span></span><br><span class="line"><span class="comment"> * sphere.g2o是人工生成的一个Pose graph，我们来优化它。</span></span><br><span class="line"><span class="comment"> * 尽管可以直接通过load函数读取整个图，但我们还是自己来实现读取代码，以期获得更深刻的理解</span></span><br><span class="line"><span class="comment"> * 这里使用g2o/types/slam3d/中的SE3表示位姿，它实质上是四元数而非李代数.</span></span><br><span class="line"><span class="comment"> * **********************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Usage: pose_graph_g2o_SE3 sphere.g2o&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">ifstream <span class="title">fin</span><span class="params">(argv[<span class="number">1</span>])</span></span>;</span><br><span class="line">    <span class="keyword">if</span> (!fin) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;file &quot;</span> &lt;&lt; argv[<span class="number">1</span>] &lt;&lt; <span class="string">&quot; does not exist.&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// --- 设定g2o ---</span></span><br><span class="line">    <span class="comment">// 1. 定义求解器类型</span></span><br><span class="line">    <span class="keyword">typedef</span> g2o::BlockSolver&lt;g2o::BlockSolverTraits&lt;<span class="number">6</span>, <span class="number">6</span>&gt;&gt; BlockSolverType;</span><br><span class="line">    <span class="keyword">typedef</span> g2o::LinearSolverEigen&lt;BlockSolverType::PoseMatrixType&gt; LinearSolverType;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 创建求解器</span></span><br><span class="line">    <span class="comment">// 【修改点1】: 使用智能指针管理求解器，防止内存泄漏</span></span><br><span class="line"><span class="comment">// 正确的代码</span></span><br><span class="line">    <span class="keyword">auto</span> linearSolver = std::<span class="built_in">make_unique</span>&lt;LinearSolverType&gt;();</span><br><span class="line">    <span class="keyword">auto</span> blockSolver = std::<span class="built_in">make_unique</span>&lt;BlockSolverType&gt;(std::<span class="built_in">move</span>(linearSolver));</span><br><span class="line">    <span class="keyword">auto</span> solver = <span class="keyword">new</span> g2o::<span class="built_in">OptimizationAlgorithmLevenberg</span>(std::<span class="built_in">move</span>(blockSolver));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3. 创建图模型和设置求解器</span></span><br><span class="line">    g2o::SparseOptimizer optimizer;</span><br><span class="line">    optimizer.<span class="built_in">setAlgorithm</span>(solver);</span><br><span class="line">    optimizer.<span class="built_in">setVerbose</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> vertexCnt = <span class="number">0</span>, edgeCnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// --- 读取文件中的顶点和边 ---</span></span><br><span class="line">    <span class="comment">// 【修改点2】: 使用更健壮的文件读取循环</span></span><br><span class="line">    string name;</span><br><span class="line">    <span class="keyword">while</span> (fin &gt;&gt; name) &#123;</span><br><span class="line">        <span class="keyword">if</span> (name == <span class="string">&quot;VERTEX_SE3:QUAT&quot;</span>) &#123;</span><br><span class="line">            g2o::VertexSE3 *v = <span class="keyword">new</span> g2o::<span class="built_in">VertexSE3</span>();</span><br><span class="line">            <span class="type">int</span> index = <span class="number">0</span>;</span><br><span class="line">            fin &gt;&gt; index;</span><br><span class="line">            v-&gt;<span class="built_in">setId</span>(index);</span><br><span class="line">            v-&gt;<span class="built_in">read</span>(fin);</span><br><span class="line">            optimizer.<span class="built_in">addVertex</span>(v);</span><br><span class="line">            vertexCnt++;</span><br><span class="line">            <span class="keyword">if</span> (index == <span class="number">0</span>)</span><br><span class="line">                v-&gt;<span class="built_in">setFixed</span>(<span class="literal">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (name == <span class="string">&quot;EDGE_SE3:QUAT&quot;</span>) &#123;</span><br><span class="line">            g2o::EdgeSE3 *e = <span class="keyword">new</span> g2o::<span class="built_in">EdgeSE3</span>();</span><br><span class="line">            <span class="type">int</span> idx1, idx2;</span><br><span class="line">            fin &gt;&gt; idx1 &gt;&gt; idx2;</span><br><span class="line">            e-&gt;<span class="built_in">setId</span>(edgeCnt++);</span><br><span class="line">            <span class="comment">// 【可选优化】: 使用更安全的 vertex() 方法查找顶点</span></span><br><span class="line">            g2o::OptimizableGraph::Vertex* v1 = optimizer.<span class="built_in">vertex</span>(idx1);</span><br><span class="line">            g2o::OptimizableGraph::Vertex* v2 = optimizer.<span class="built_in">vertex</span>(idx2);</span><br><span class="line">            <span class="keyword">if</span> (!v1 || !v2) &#123;</span><br><span class="line">                 cerr &lt;&lt; <span class="string">&quot;Warning: Unable to find vertices &quot;</span> &lt;&lt; idx1 &lt;&lt; <span class="string">&quot; and/or &quot;</span> &lt;&lt; idx2 &lt;&lt; <span class="string">&quot; for edge &quot;</span> &lt;&lt; edgeCnt<span class="number">-1</span> &lt;&lt; endl;</span><br><span class="line">                 <span class="keyword">delete</span> e; <span class="comment">// 如果顶点没找到，这条边就没用了，需要释放内存</span></span><br><span class="line">                 <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            e-&gt;<span class="built_in">setVertex</span>(<span class="number">0</span>, v1);</span><br><span class="line">            e-&gt;<span class="built_in">setVertex</span>(<span class="number">1</span>, v2);</span><br><span class="line">            e-&gt;<span class="built_in">read</span>(fin);</span><br><span class="line">            optimizer.<span class="built_in">addEdge</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;read total &quot;</span> &lt;&lt; vertexCnt &lt;&lt; <span class="string">&quot; vertices, &quot;</span> &lt;&lt; edgeCnt &lt;&lt; <span class="string">&quot; edges.&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;optimizing ...&quot;</span> &lt;&lt; endl;</span><br><span class="line">    optimizer.<span class="built_in">initializeOptimization</span>();</span><br><span class="line">    optimizer.<span class="built_in">optimize</span>(<span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;saving optimization results ...&quot;</span> &lt;&lt; endl;</span><br><span class="line">    optimizer.<span class="built_in">save</span>(<span class="string">&quot;result.g2o&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>新建CMakeLists.txt</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 建议使用更新的CMake版本</span></span><br><span class="line">cmake_minimum_required(VERSION 3.10)</span><br><span class="line">project(pose_graph)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用变量设置C++标准，而不是直接修改 CXX_FLAGS</span></span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line">set(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在Release模式下自动添加优化选项</span></span><br><span class="line"><span class="comment"># set(CMAKE_BUILD_TYPE &quot;Release&quot;) # 可以通过 cmake -DCMAKE_BUILD_TYPE=Release 指定</span></span><br><span class="line"></span><br><span class="line">list(APPEND CMAKE_MODULE_PATH $&#123;PROJECT_SOURCE_DIR&#125;/cmake_modules)</span><br><span class="line"></span><br><span class="line"><span class="comment"># find_package 命令寻找依赖</span></span><br><span class="line">find_package(Eigen3 3.3 REQUIRED NO_MODULE)</span><br><span class="line">find_package(Sophus REQUIRED)</span><br><span class="line">find_package(g2o REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- Target: pose_graph_g2o_SE3 ---</span></span><br><span class="line">add_executable(pose_graph_g2o_SE3 pose_graph_g2o_SE3.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 target_... 的现代CMake语法</span></span><br><span class="line">target_include_directories(pose_graph_g2o_SE3 PUBLIC</span><br><span class="line">    $&#123;EIGEN3_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;Sophus_INCLUDE_DIRS&#125;</span><br><span class="line">    $&#123;g2o_INCLUDE_DIRS&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接到CMake目标，而不是库名。这会自动处理依赖和头文件路径。</span></span><br><span class="line"><span class="comment"># g2o::core, g2o::types_slam3d 等是g2o安装时导出的CMake目标。</span></span><br><span class="line">target_link_libraries(pose_graph_g2o_SE3 PRIVATE</span><br><span class="line">    g2o::core</span><br><span class="line">    g2o::stuff</span><br><span class="line">    g2o::types_slam3d</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- Target: pose_graph_g2o_lie ---</span></span><br><span class="line"><span class="comment"># add_executable(pose_graph_g2o_lie pose_graph_g2o_lie_algebra.cpp)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># target_include_directories(pose_graph_g2o_lie PUBLIC</span></span><br><span class="line"><span class="comment">#     $&#123;EIGEN3_INCLUDE_DIR&#125;</span></span><br><span class="line"><span class="comment">#     $&#123;Sophus_INCLUDE_DIRS&#125;</span></span><br><span class="line"><span class="comment">#     $&#123;G2O_INCLUDE_DIRS&#125;</span></span><br><span class="line"><span class="comment"># )</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># target_link_libraries(pose_graph_g2o_lie PRIVATE</span></span><br><span class="line"><span class="comment">#     g2o::core</span></span><br><span class="line"><span class="comment">#     g2o::stuff</span></span><br><span class="line"><span class="comment">#     Sophus::Sophus</span></span><br><span class="line"><span class="comment"># )</span></span><br></pre></td></tr></table></figure>
-
-<p>在终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch10/build$ ./pose_graph_g2o_SE3 ../sphere.g2o </span><br><span class="line">read total 2500 vertices, 9799 edges.</span><br><span class="line">optimizing ...</span><br><span class="line">iteration= 0     chi2= 1023011093.967642         time= 1.48151   cumTime= 1.48151        edges= 9799     schur= 0        lambda= 805.622433      levenbergIter= 1</span><br><span class="line">iteration= 1     chi2= 385118688.233188  time= 1.20841   cumTime= 2.68992        edges= 9799     schur= 0        lambda= 537.081622      levenbergIter= 1</span><br><span class="line">iteration= 2     chi2= 166223726.693658  time= 1.21449   cumTime= 3.90441        edges= 9799     schur= 0        lambda= 358.054415      levenbergIter= 1</span><br></pre></td></tr></table></figure>
-
-<p>这样会在build文件夹下新生成一个文件：result.g2o</p>
-<p>在g2o_viewer中打开结果如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20250901202546851.png" alt="image-20250901202546851"></p>
-<p>其实结果就是之前一样的。</p>
-<hr>
-<h3 id="李代数上的位姿图优化"><a href="#李代数上的位姿图优化" class="headerlink" title="李代数上的位姿图优化"></a>李代数上的位姿图优化</h3><p>新建文件<code>slambook/ch10/pose_graph_g20_lie_algebra.cpp</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;fstream&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;memory&gt; // 为了 std::unique_ptr</span><br><span class="line"></span><br><span class="line">#include &lt;Eigen/Core&gt;</span><br><span class="line"></span><br><span class="line">#include &lt;g2o/core/base_vertex.h&gt;</span><br><span class="line">#include &lt;g2o/core/base_binary_edge.h&gt;</span><br><span class="line">#include &lt;g2o/core/block_solver.h&gt;</span><br><span class="line">#include &lt;g2o/core/optimization_algorithm_levenberg.h&gt;</span><br><span class="line">#include &lt;g2o/solvers/eigen/linear_solver_eigen.h&gt;</span><br><span class="line"></span><br><span class="line">#include &lt;sophus/se3.hpp&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">using namespace Eigen;</span><br><span class="line">using Sophus::SE3d;</span><br><span class="line">using Sophus::SO3d;</span><br><span class="line"></span><br><span class="line">/************************************************</span><br><span class="line"> * 本程序演示如何用g2o solver进行位姿图优化</span><br><span class="line"> * sphere.g2o是人工生成的一个Pose graph，我们来优化它。</span><br><span class="line"> * 尽管可以直接通过load函数读取整个图，但我们还是自己来实现读取代码，以期获得更深刻的理解</span><br><span class="line"> * 本节使用李代数表达位姿图，节点和边的方式为自定义</span><br><span class="line"> * **********************************************/</span><br><span class="line"></span><br><span class="line">typedef Matrix&lt;double, 6, 6&gt; Matrix6d;</span><br><span class="line">typedef Matrix&lt;double, 6, 1&gt; Vector6d;</span><br><span class="line"></span><br><span class="line">// 给定误差 e, 计算右雅可比的逆 J_r(e)^&#123;-1&#125; 的近似</span><br><span class="line">// 在g2o中，雅可比矩阵的计算需要这个量</span><br><span class="line">Matrix6d JRInv(const SE3d &amp;e) &#123;</span><br><span class="line">    Matrix6d J;</span><br><span class="line">    J.block&lt;3, 3&gt;(0, 0) = SO3d::hat(e.so3().log());</span><br><span class="line">    J.block&lt;3, 3&gt;(0, 3) = SO3d::hat(e.translation());</span><br><span class="line">    J.block&lt;3, 3&gt;(3, 0) = Matrix3d::Zero(3, 3);</span><br><span class="line">    J.block&lt;3, 3&gt;(3, 3) = SO3d::hat(e.so3().log());</span><br><span class="line">    // 当误差 e 接近零时, J_r(e) 接近单位阵 I。</span><br><span class="line">    // 在优化后期，通常使用单位阵作为近似，可以加速计算。</span><br><span class="line">    return Matrix6d::Identity();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 李代数顶点</span><br><span class="line">class VertexSE3LieAlgebra : public g2o::BaseVertex&lt;6, SE3d&gt; &#123;</span><br><span class="line">public:</span><br><span class="line">    EIGEN_MAKE_ALIGNED_OPERATOR_NEW</span><br><span class="line"></span><br><span class="line">    // 从文件中读取数据</span><br><span class="line">    virtual bool read(istream &amp;is) override &#123;</span><br><span class="line">        double data[7];</span><br><span class="line">        for (int i = 0; i &lt; 7; i++)</span><br><span class="line">            is &gt;&gt; data[i];</span><br><span class="line">        // 注意g2o文件格式中四元数顺序是 qx, qy, qz, qw</span><br><span class="line">        // Eigen的构造函数需要 w, x, y, z</span><br><span class="line">        setEstimate(SE3d(</span><br><span class="line">            Quaterniond(data[6], data[3], data[4], data[5]),</span><br><span class="line">            Vector3d(data[0], data[1], data[2])</span><br><span class="line">        ));</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 将数据写入文件</span><br><span class="line">    virtual bool write(ostream &amp;os) const override &#123;</span><br><span class="line">        os &lt;&lt; id() &lt;&lt; &quot; &quot;;</span><br><span class="line">        Quaterniond q = _estimate.unit_quaternion();</span><br><span class="line">        os &lt;&lt; _estimate.translation().transpose() &lt;&lt; &quot; &quot;;</span><br><span class="line">        // Eigen四元数内部存储顺序是 x, y, z, w</span><br><span class="line">        os &lt;&lt; q.x() &lt;&lt; &quot; &quot; &lt;&lt; q.y() &lt;&lt; &quot; &quot; &lt;&lt; q.z() &lt;&lt; &quot; &quot; &lt;&lt; q.w() &lt;&lt; endl;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    virtual void setToOriginImpl() override &#123;</span><br><span class="line">        _estimate = SE3d();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 增量更新（左乘扰动模型）</span><br><span class="line">    virtual void oplusImpl(const double *update) override &#123;</span><br><span class="line">        Vector6d upd;</span><br><span class="line">        upd &lt;&lt; update[0], update[1], update[2], update[3], update[4], update[5];</span><br><span class="line">        _estimate = SE3d::exp(upd) * _estimate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 两个李代数节点之间的边</span><br><span class="line">class EdgeSE3LieAlgebra : public g2o::BaseBinaryEdge&lt;6, SE3d, VertexSE3LieAlgebra, VertexSE3LieAlgebra&gt; &#123;</span><br><span class="line">public:</span><br><span class="line">    EIGEN_MAKE_ALIGNED_OPERATOR_NEW</span><br><span class="line"></span><br><span class="line">    virtual bool read(istream &amp;is) override &#123;</span><br><span class="line">        double data[7];</span><br><span class="line">        for (int i = 0; i &lt; 7; i++)</span><br><span class="line">            is &gt;&gt; data[i];</span><br><span class="line">        Quaterniond q(data[6], data[3], data[4], data[5]);</span><br><span class="line">        q.normalize();</span><br><span class="line">        setMeasurement(SE3d(q, Vector3d(data[0], data[1], data[2])));</span><br><span class="line">        // 读取信息矩阵</span><br><span class="line">        for (int i = 0; i &lt; information().rows() &amp;&amp; is.good(); i++)</span><br><span class="line">            for (int j = i; j &lt; information().cols() &amp;&amp; is.good(); j++) &#123;</span><br><span class="line">                is &gt;&gt; information()(i, j);</span><br><span class="line">                if (i != j)</span><br><span class="line">                    information()(j, i) = information()(i, j);</span><br><span class="line">            &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    virtual bool write(ostream &amp;os) const override &#123;</span><br><span class="line">        auto v1 = static_cast&lt;const VertexSE3LieAlgebra *&gt;(_vertices[0]);</span><br><span class="line">        auto v2 = static_cast&lt;const VertexSE3LieAlgebra *&gt;(_vertices[1]);</span><br><span class="line">        os &lt;&lt; v1-&gt;id() &lt;&lt; &quot; &quot; &lt;&lt; v2-&gt;id() &lt;&lt; &quot; &quot;;</span><br><span class="line">        SE3d m = _measurement;</span><br><span class="line">        Eigen::Quaterniond q = m.unit_quaternion();</span><br><span class="line">        os &lt;&lt; m.translation().transpose() &lt;&lt; &quot; &quot;;</span><br><span class="line">        os &lt;&lt; q.x() &lt;&lt; &quot; &quot; &lt;&lt; q.y() &lt;&lt; &quot; &quot; &lt;&lt; q.z() &lt;&lt; &quot; &quot; &lt;&lt; q.w() &lt;&lt; &quot; &quot;;</span><br><span class="line"></span><br><span class="line">        // 写入信息矩阵</span><br><span class="line">        for (int i = 0; i &lt; information().rows(); i++)</span><br><span class="line">            for (int j = i; j &lt; information().cols(); j++) &#123;</span><br><span class="line">                os &lt;&lt; information()(i, j) &lt;&lt; &quot; &quot;;</span><br><span class="line">            &#125;</span><br><span class="line">        os &lt;&lt; endl;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 误差计算，与书中推导一致: e = ln( (T_ij * T_i)^&#123;-1&#125; * T_j )</span><br><span class="line">    virtual void computeError() override &#123;</span><br><span class="line">        SE3d v1 = (static_cast&lt;const VertexSE3LieAlgebra *&gt;(_vertices[0]))-&gt;estimate();</span><br><span class="line">        SE3d v2 = (static_cast&lt;const VertexSE3LieAlgebra *&gt;(_vertices[1]))-&gt;estimate();</span><br><span class="line">        _error = (_measurement.inverse() * v1.inverse() * v2).log();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 雅可比计算</span><br><span class="line">    // 【关键修正】: 修正了雅可比矩阵的计算公式</span><br><span class="line">    virtual void linearizeOplus() override &#123;</span><br><span class="line">        SE3d v1 = (static_cast&lt;const VertexSE3LieAlgebra *&gt;(_vertices[0]))-&gt;estimate();</span><br><span class="line">        SE3d v2 = (static_cast&lt;const VertexSE3LieAlgebra *&gt;(_vertices[1]))-&gt;estimate();</span><br><span class="line">        Matrix6d J = JRInv(SE3d::exp(_error));</span><br><span class="line">        // 根据左扰动模型的推导，雅可比矩阵为:</span><br><span class="line">        // de/d_delta_xi = -J_r(e)^&#123;-1&#125; * Adj(T_j^&#123;-1&#125; * T_i)</span><br><span class="line">        // de/d_delta_xj = J_r(e)^&#123;-1&#125;</span><br><span class="line">        // ...</span><br><span class="line">        _jacobianOplusXi = -J * v2.inverse().Adj(); // 修正后</span><br><span class="line">        _jacobianOplusXj = J * v2.inverse().Adj();  // 保持不变</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line">    if (argc != 2) &#123;</span><br><span class="line">        cout &lt;&lt; &quot;Usage: pose_graph_g2o_lie_algebra sphere.g2o&quot; &lt;&lt; endl;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    ifstream fin(argv[1]);</span><br><span class="line">    if (!fin) &#123;</span><br><span class="line">        cout &lt;&lt; &quot;file &quot; &lt;&lt; argv[1] &lt;&lt; &quot; does not exist.&quot; &lt;&lt; endl;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 设定g2o</span><br><span class="line">    typedef g2o::BlockSolver&lt;g2o::BlockSolverTraits&lt;6, 6&gt;&gt; BlockSolverType;</span><br><span class="line">    typedef g2o::LinearSolverEigen&lt;BlockSolverType::PoseMatrixType&gt; LinearSolverType;</span><br><span class="line">    </span><br><span class="line">    // 【修改点】: 使用 std::make_unique</span><br><span class="line">    auto linearSolver = std::make_unique&lt;LinearSolverType&gt;();</span><br><span class="line">    auto blockSolver = std::make_unique&lt;BlockSolverType&gt;(std::move(linearSolver));</span><br><span class="line">    auto solver = new g2o::OptimizationAlgorithmLevenberg(std::move(blockSolver));</span><br><span class="line">    </span><br><span class="line">    g2o::SparseOptimizer optimizer;</span><br><span class="line">    optimizer.setAlgorithm(solver);</span><br><span class="line">    optimizer.setVerbose(true);</span><br><span class="line"></span><br><span class="line">    int vertexCnt = 0, edgeCnt = 0;</span><br><span class="line"></span><br><span class="line">    // 【修改点】: 使用更健壮的文件读取循环</span><br><span class="line">    string name;</span><br><span class="line">    while (fin &gt;&gt; name) &#123;</span><br><span class="line">        if (name == &quot;VERTEX_SE3:QUAT&quot;) &#123;</span><br><span class="line">            VertexSE3LieAlgebra *v = new VertexSE3LieAlgebra();</span><br><span class="line">            int index = 0;</span><br><span class="line">            fin &gt;&gt; index;</span><br><span class="line">            v-&gt;setId(index);</span><br><span class="line">            v-&gt;read(fin);</span><br><span class="line">            optimizer.addVertex(v);</span><br><span class="line">            vertexCnt++;</span><br><span class="line">            if (index == 0)</span><br><span class="line">                v-&gt;setFixed(true);</span><br><span class="line">        &#125; else if (name == &quot;EDGE_SE3:QUAT&quot;) &#123;</span><br><span class="line">            EdgeSE3LieAlgebra *e = new EdgeSE3LieAlgebra();</span><br><span class="line">            int idx1, idx2;</span><br><span class="line">            fin &gt;&gt; idx1 &gt;&gt; idx2;</span><br><span class="line">            e-&gt;setId(edgeCnt++);</span><br><span class="line">            e-&gt;setVertex(0, optimizer.vertex(idx1));</span><br><span class="line">            e-&gt;setVertex(1, optimizer.vertex(idx2));</span><br><span class="line">            e-&gt;read(fin);</span><br><span class="line">            optimizer.addEdge(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; &quot;read total &quot; &lt;&lt; vertexCnt &lt;&lt; &quot; vertices, &quot; &lt;&lt; edgeCnt &lt;&lt; &quot; edges.&quot; &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; &quot;optimizing ...&quot; &lt;&lt; endl;</span><br><span class="line">    optimizer.initializeOptimization();</span><br><span class="line">    optimizer.optimize(30);</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; &quot;saving optimization results ...&quot; &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">    // 【修改点】: 保存结果时直接遍历optimizer，不再使用额外的vector</span><br><span class="line">    ofstream fout(&quot;result_lie.g2o&quot;);</span><br><span class="line">    // 保存顶点</span><br><span class="line">    for (auto const&amp; [id, v_ptr] : optimizer.vertices()) &#123;</span><br><span class="line">        fout &lt;&lt; &quot;VERTEX_SE3:QUAT &quot;;</span><br><span class="line">        // 需要将基类指针转换为派生类指针来调用write</span><br><span class="line">        auto v = static_cast&lt;VertexSE3LieAlgebra*&gt;(v_ptr);</span><br><span class="line">        v-&gt;write(fout);</span><br><span class="line">    &#125;</span><br><span class="line">    // 保存边</span><br><span class="line">    for (const auto&amp; edge_ptr : optimizer.edges()) &#123;</span><br><span class="line">        fout &lt;&lt; &quot;EDGE_SE3:QUAT &quot;;</span><br><span class="line">        auto e = static_cast&lt;EdgeSE3LieAlgebra*&gt;(edge_ptr);</span><br><span class="line">        e-&gt;write(fout);</span><br><span class="line">    &#125;</span><br><span class="line">    fout.close();</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; &quot;Done. Results saved to result_lie.g2o&quot; &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>修改CMakeLists.txt</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># 建议使用更新的CMake版本</span><br><span class="line">cmake_minimum_required(VERSION 3.10)</span><br><span class="line">project(pose_graph)</span><br><span class="line"></span><br><span class="line"># 使用变量设置C++标准，而不是直接修改 CXX_FLAGS</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line">set(CMAKE_CXX_STANDARD_REQUIRED ON)</span><br><span class="line"></span><br><span class="line"># 在Release模式下自动添加优化选项</span><br><span class="line"># set(CMAKE_BUILD_TYPE &quot;Release&quot;) # 可以通过 cmake -DCMAKE_BUILD_TYPE=Release 指定</span><br><span class="line"></span><br><span class="line">list(APPEND CMAKE_MODULE_PATH $&#123;PROJECT_SOURCE_DIR&#125;/cmake_modules)</span><br><span class="line"></span><br><span class="line"># find_package 命令寻找依赖</span><br><span class="line">find_package(Eigen3 3.3 REQUIRED NO_MODULE)</span><br><span class="line">find_package(Sophus REQUIRED)</span><br><span class="line">find_package(g2o REQUIRED)</span><br><span class="line"></span><br><span class="line"># --- Target: pose_graph_g2o_SE3 ---</span><br><span class="line">add_executable(pose_graph_g2o_SE3 pose_graph_g2o_SE3.cpp)</span><br><span class="line"></span><br><span class="line"># 使用 target_... 的现代CMake语法</span><br><span class="line">target_include_directories(pose_graph_g2o_SE3 PUBLIC</span><br><span class="line">    $&#123;EIGEN3_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;Sophus_INCLUDE_DIRS&#125;</span><br><span class="line">    $&#123;g2o_INCLUDE_DIRS&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># 链接到CMake目标，而不是库名。这会自动处理依赖和头文件路径。</span><br><span class="line"># g2o::core, g2o::types_slam3d 等是g2o安装时导出的CMake目标。</span><br><span class="line">target_link_libraries(pose_graph_g2o_SE3 PRIVATE</span><br><span class="line">    g2o::core</span><br><span class="line">    g2o::stuff</span><br><span class="line">    g2o::types_slam3d</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># --- Target: pose_graph_g2o_lie ---</span><br><span class="line">add_executable(pose_graph_g2o_lie pose_graph_g2o_lie_algebra.cpp)</span><br><span class="line"></span><br><span class="line">target_include_directories(pose_graph_g2o_lie PUBLIC</span><br><span class="line">    $&#123;EIGEN3_INCLUDE_DIR&#125;</span><br><span class="line">    $&#123;Sophus_INCLUDE_DIRS&#125;</span><br><span class="line">    $&#123;g2o_INCLUDE_DIRS&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">target_link_libraries(pose_graph_g2o_lie PRIVATE</span><br><span class="line">    g2o::core</span><br><span class="line">    g2o::stuff</span><br><span class="line">    Sophus::Sophus</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p>输出结果如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hita@hita-vm:~/slambook/ch10/build$ ./pose_graph_g2o_lie ../sphere.g2o </span><br><span class="line">read total 2500 vertices, 9799 edges.</span><br><span class="line">optimizing ...</span><br><span class="line">iteration= 0     chi2= 9525282235.918398         time= 10.4865   cumTime= 10.4865        edges= 9799     schur= 0        lambda= 306499924.174889        levenbergIter= 7</span><br><span class="line">iteration= 1     chi2= 9469638479.905460         time= 2.18911   cumTime= 12.6756        edges= 9799     schur= 0        lambda= 102166641.391630        levenbergIter= 1</span><br></pre></td></tr></table></figure>
-
-<p>同样会生成一个result_lie.g2o文件</p>
-<p>结果如下</p>
 
       
     </div>
