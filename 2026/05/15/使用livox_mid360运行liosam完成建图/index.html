@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="使用livox_mid360部署liosam（实物）硬件要求 安装Ubuntu20.04工控机 Livox_MID360 网线 12V直流电源  软件依赖 ROS Noetic Livox_SDK2 livox_ros_driver2 LIO-SAM GTSAM PCL Eigen3  安装步骤安装Noetic略 安装Livox_SDK2123456git clone https:&#x2F;&#x2F;github">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用livox_mid360部署liosam">
+<meta property="og:url" content="https://gen2710.netlify.app/2026/05/15/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="使用livox_mid360部署liosam（实物）硬件要求 安装Ubuntu20.04工控机 Livox_MID360 网线 12V直流电源  软件依赖 ROS Noetic Livox_SDK2 livox_ros_driver2 LIO-SAM GTSAM PCL Eigen3  安装步骤安装Noetic略 安装Livox_SDK2123456git clone https:&#x2F;&#x2F;github">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119191708927.png">
+<meta property="article:published_time" content="2026-05-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-17T06:49:39.420Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119191708927.png">
+
+
+<link rel="canonical" href="https://gen2710.netlify.app/2026/05/15/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gen2710.netlify.app/2026/05/15/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/","path":"2026/05/15/使用livox_mid360运行liosam完成建图/","title":"使用livox_mid360部署liosam"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用livox_mid360部署liosam | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8livox-mid360%E9%83%A8%E7%BD%B2liosam%EF%BC%88%E5%AE%9E%E7%89%A9%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">使用livox_mid360部署liosam（实物）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E8%A6%81%E6%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">硬件要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E4%BE%9D%E8%B5%96"><span class="nav-number">1.2.</span> <span class="nav-text">软件依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.3.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Noetic"><span class="nav-number">1.3.1.</span> <span class="nav-text">安装Noetic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Livox-SDK2"><span class="nav-number">1.3.2.</span> <span class="nav-text">安装Livox_SDK2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85livox-ros-driver2"><span class="nav-number">1.3.3.</span> <span class="nav-text">安装livox_ros_driver2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C"><span class="nav-number">1.3.4.</span> <span class="nav-text">配置网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%94%B5%E8%84%91%E9%9D%99%E6%80%81IP"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">设置电脑静态IP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9AMID360%E7%9A%84IP%E5%9C%B0%E5%9D%80"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">确定MID360的IP地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">修改配置文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85LIO-SAM"><span class="nav-number">1.3.5.</span> <span class="nav-text">安装LIO-SAM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%8E%E6%B5%8B%E8%AF%95"><span class="nav-number">1.4.</span> <span class="nav-text">运行与测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8MID360%E9%9B%B7%E8%BE%BE"><span class="nav-number">1.4.1.</span> <span class="nav-text">启动MID360雷达</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8LIO-SAM"><span class="nav-number">1.4.2.</span> <span class="nav-text">启动LIO-SAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E6%95%88%E6%9E%9C"><span class="nav-number">1.4.3.</span> <span class="nav-text">可视化效果</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/05/15/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用livox_mid360部署liosam | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用livox_mid360部署liosam
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-16T00:00:00+08:00">2026-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="使用livox-mid360部署liosam（实物）"><a href="#使用livox-mid360部署liosam（实物）" class="headerlink" title="使用livox_mid360部署liosam（实物）"></a>使用livox_mid360部署liosam（实物）</h1><h2 id="硬件要求"><a href="#硬件要求" class="headerlink" title="硬件要求"></a>硬件要求</h2><ul>
+<li>安装Ubuntu20.04工控机</li>
+<li>Livox_MID360</li>
+<li>网线</li>
+<li>12V直流电源</li>
+</ul>
+<h2 id="软件依赖"><a href="#软件依赖" class="headerlink" title="软件依赖"></a>软件依赖</h2><ul>
+<li>ROS Noetic</li>
+<li>Livox_SDK2</li>
+<li>livox_ros_driver2</li>
+<li>LIO-SAM</li>
+<li>GTSAM</li>
+<li>PCL</li>
+<li>Eigen3</li>
+</ul>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="安装Noetic"><a href="#安装Noetic" class="headerlink" title="安装Noetic"></a>安装Noetic</h3><p>略</p>
+<h3 id="安装Livox-SDK2"><a href="#安装Livox-SDK2" class="headerlink" title="安装Livox_SDK2"></a>安装Livox_SDK2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Livox-SDK/Livox-SDK2.git</span><br><span class="line">cd Livox-SDK2</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake .. &amp;&amp; make -j8</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装livox-ros-driver2"><a href="#安装livox-ros-driver2" class="headerlink" title="安装livox_ros_driver2"></a>安装livox_ros_driver2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/Livox-SDK/livox_ros_driver2.git</span><br><span class="line">cd livox_ros_driver2</span><br><span class="line">source /opt/ros/noetic/setup.sh</span><br><span class="line">./build.sh ROS1</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">echo &quot;source ~/liosam_2d_nav_ws/devel/setup.bash&quot; &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h3><h4 id="设置电脑静态IP"><a href="#设置电脑静态IP" class="headerlink" title="设置电脑静态IP"></a>设置电脑静态IP</h4><ol>
+<li>打开网络设置，选择有线连接</li>
+<li>设置 IPv4 为手动模式</li>
+<li>IP 地址：192.168.1.50</li>
+<li>子网掩码：255.255.255.0</li>
+<li>网关：192.168.1.1</li>
+</ol>
+<h4 id="确定MID360的IP地址"><a href="#确定MID360的IP地址" class="headerlink" title="确定MID360的IP地址"></a>确定MID360的IP地址</h4><p>MID360 的默认 IP 地址基于其序列号，规则如下：</p>
+<ul>
+<li>查看雷达底部的序列号（如 47MDM6J0020434）</li>
+<li>取序列号最后两位数字（38），则雷达 IP 为 192.168.1.134</li>
+</ul>
+<h4 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/livox_ros_driver2/config</span><br><span class="line">gedit MID360_config.json</span><br></pre></td></tr></table></figure>
+
+<p>修改以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;lidar_summary_info&quot; : &#123;</span><br><span class="line">    &quot;lidar_type&quot;: 8</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;MID360&quot;: &#123;</span><br><span class="line">    &quot;lidar_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_port&quot;: 56100,</span><br><span class="line">      &quot;push_msg_port&quot;: 56200,</span><br><span class="line">      &quot;point_data_port&quot;: 56300,</span><br><span class="line">      &quot;imu_data_port&quot;: 56400,</span><br><span class="line">      &quot;log_data_port&quot;: 56500</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;host_net_info&quot; : &#123;</span><br><span class="line">      &quot;cmd_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;cmd_data_port&quot;: 56101,</span><br><span class="line">      &quot;push_msg_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;push_msg_port&quot;: 56201,</span><br><span class="line">      &quot;point_data_ip&quot;: &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;point_data_port&quot;: 56301,</span><br><span class="line">      &quot;imu_data_ip&quot; : &quot;192.168.1.50&quot;,  // 本机IP</span><br><span class="line">      &quot;imu_data_port&quot;: 56401,</span><br><span class="line">      &quot;log_data_ip&quot; : &quot;&quot;,</span><br><span class="line">      &quot;log_data_port&quot;: 56501</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;lidar_configs&quot; : [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;ip&quot; : &quot;192.168.1.134&quot;,  // 雷达IP</span><br><span class="line">      &quot;pcl_data_type&quot; : 1,</span><br><span class="line">      &quot;pattern_mode&quot; : 0,</span><br><span class="line">      &quot;extrinsic_parameter&quot; : &#123;</span><br><span class="line">        &quot;roll&quot;: 0.0,</span><br><span class="line">        &quot;pitch&quot;: 0.0,</span><br><span class="line">        &quot;yaw&quot;: 0.0,</span><br><span class="line">        &quot;x&quot;: 0,</span><br><span class="line">        &quot;y&quot;: 0,</span><br><span class="line">        &quot;z&quot;: 0</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装LIO-SAM"><a href="#安装LIO-SAM" class="headerlink" title="安装LIO-SAM"></a>安装LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/liosam_2d_nav_ws/src</span><br><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/nkymzsy/LIO-SAM-MID360.git  # MID360适配版本</span><br><span class="line">cd LIO-SAM-MID360</span><br><span class="line">git submodule update --init</span><br><span class="line">cd ~/liosam_2d_nav_ws</span><br><span class="line">catkin_make</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>修改参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit params.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Sensor Settings</span><br><span class="line">sensor: livox                              # 设置为livox</span><br><span class="line">N_SCAN: 4                                  # MID360的线束数量</span><br><span class="line">Horizon_SCAN: 6000                         # 水平分辨率</span><br><span class="line">downsampleRate: 1                          # 下采样率</span><br><span class="line">lidarMinRange: 1.0                         # 最小雷达范围</span><br><span class="line">lidarMaxRange: 100.0                       # 最大雷达范围</span><br><span class="line"> </span><br><span class="line"># IMU参数 (如果使用内置IMU)</span><br><span class="line">imuTopic: &quot;/livox/imu&quot;                     # IMU话题</span><br><span class="line">imuAccNoise: 0.01                          # 加速度计噪声</span><br><span class="line">imuGyrNoise: 0.001                         # 陀螺仪噪声</span><br><span class="line">imuAccBiasN: 0.0002                        # 加速度计偏置噪声</span><br><span class="line">imuGyrBiasN: 0.00001                       # 陀螺仪偏置噪声</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src/LIO-SAM-MID360/config</span><br><span class="line">gedit paramsLivoxIMU.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  savePCDDirectory: &quot;/liosam_2d_nav_ws/PCD&quot;        # in your home folder, starts and ends with &quot;/&quot;. Warning: the code deletes &quot;LOAM&quot; folder then recreates it. See &quot;mapOptimization&quot; for implementation</span><br><span class="line">## 修改为对应保存地址</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行与测试"><a href="#运行与测试" class="headerlink" title="运行与测试"></a>运行与测试</h2><h3 id="启动MID360雷达"><a href="#启动MID360雷达" class="headerlink" title="启动MID360雷达"></a>启动MID360雷达</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch livox_ros_driver2 msg_MID360.launch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="启动LIO-SAM"><a href="#启动LIO-SAM" class="headerlink" title="启动LIO-SAM"></a>启动LIO-SAM</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roslaunch lio_sam run6axis.launch  # 使用内置六轴IMU</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="可视化效果"><a href="#可视化效果" class="headerlink" title="可视化效果"></a>可视化效果</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119191708927.png" alt="image-20260119191708927"></p>
+<p>后续可以通过控制小车底盘运动，开始建图，并且保存点云地图了</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/11/02/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/" rel="prev" title="第七章：3D SLAM">
+                  <i class="fa fa-angle-left"></i> 第七章：3D SLAM
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/05/15/%E4%BD%BF%E7%94%A8MID-360%E5%9F%BA%E4%BA%8Escout_mini%E5%AE%8C%E6%88%90move_base%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%8F%8A%E9%81%BF%E9%9A%9C/" rel="next" title="使用MID-360基于scout_mini完成move_base路径规划及避障">
+                  使用MID-360基于scout_mini完成move_base路径规划及避障 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

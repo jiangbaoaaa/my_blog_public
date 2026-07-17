@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gen2710.netlify.app","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":true,"height":100},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="使用MID-360基于scout_mini完成move_base路径规划及避障安装scout_mini底盘驱动以及sdk跟之前类似，不再赘述 1234567rosrun scout_bringup bringup_can2usb.bash# 测试通讯candump can0# 启动scout_mini节点roslaunch scout_bringup scout_mini_robot_base.l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用MID-360基于scout_mini完成move_base路径规划及避障">
+<meta property="og:url" content="https://gen2710.netlify.app/2026/05/15/%E4%BD%BF%E7%94%A8MID-360%E5%9F%BA%E4%BA%8Escout_mini%E5%AE%8C%E6%88%90move_base%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%8F%8A%E9%81%BF%E9%9A%9C/index.html">
+<meta property="og:site_name" content="U.N.O">
+<meta property="og:description" content="使用MID-360基于scout_mini完成move_base路径规划及避障安装scout_mini底盘驱动以及sdk跟之前类似，不再赘述 1234567rosrun scout_bringup bringup_can2usb.bash# 测试通讯candump can0# 启动scout_mini节点roslaunch scout_bringup scout_mini_robot_base.l">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119214303198.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260120112609425.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260310144250540.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260310144556770.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260310144723876.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260310151837052.png">
+<meta property="article:published_time" content="2026-05-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-17T06:49:39.420Z">
+<meta property="article:author" content="Hita">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119214303198.png">
+
+
+<link rel="canonical" href="https://gen2710.netlify.app/2026/05/15/%E4%BD%BF%E7%94%A8MID-360%E5%9F%BA%E4%BA%8Escout_mini%E5%AE%8C%E6%88%90move_base%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%8F%8A%E9%81%BF%E9%9A%9C/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gen2710.netlify.app/2026/05/15/%E4%BD%BF%E7%94%A8MID-360%E5%9F%BA%E4%BA%8Escout_mini%E5%AE%8C%E6%88%90move_base%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%8F%8A%E9%81%BF%E9%9A%9C/","path":"2026/05/15/使用MID-360基于scout_mini完成move_base路径规划及避障/","title":"使用MID-360基于scout_mini完成move_base路径规划及避障"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用MID-360基于scout_mini完成move_base路径规划及避障 | U.N.O</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">U.N.O</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8MID-360%E5%9F%BA%E4%BA%8Escout-mini%E5%AE%8C%E6%88%90move-base%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%8F%8A%E9%81%BF%E9%9A%9C"><span class="nav-number">1.</span> <span class="nav-text">使用MID-360基于scout_mini完成move_base路径规划及避障</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85scout-mini%E5%BA%95%E7%9B%98%E9%A9%B1%E5%8A%A8%E4%BB%A5%E5%8F%8Asdk"><span class="nav-number">1.1.</span> <span class="nav-text">安装scout_mini底盘驱动以及sdk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E5%9B%BE"><span class="nav-number">1.2.</span> <span class="nav-text">建图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAlaunch%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.1.</span> <span class="nav-text">创建launch文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%BB%BA%E5%9B%BE"><span class="nav-number">1.2.2.</span> <span class="nav-text">启动建图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%82%B9%E4%BA%91%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.2.3.</span> <span class="nav-text">查看点云地图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8pcd2pgm%E8%BD%AC%E6%8D%A2%E4%B8%BA2d%E5%9C%B0%E5%9B%BE"><span class="nav-number">1.2.4.</span> <span class="nav-text">使用pcd2pgm转换为2d地图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E8%88%AA%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">导航系统配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E4%BB%A5%E5%8F%8A%E7%9B%AE%E5%BD%95"><span class="nav-number">1.3.1.</span> <span class="nav-text">安装依赖以及目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E5%9B%9B%E4%B8%AAyaml%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.2.</span> <span class="nav-text">新建四个yaml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BAmove-base-launch%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.3.</span> <span class="nav-text">新建move_base.launch文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BAnav-launch"><span class="nav-number">1.3.4.</span> <span class="nav-text">新建nav.launch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%AF%BC%E8%88%AA"><span class="nav-number">1.4.</span> <span class="nav-text">启动导航</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%97%B6%E6%9F%A5%E7%9C%8BTF%E6%A0%91"><span class="nav-number">1.4.1.</span> <span class="nav-text">实时查看TF树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E5%8F%82"><span class="nav-number">1.4.2.</span> <span class="nav-text">动态调参</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hita"
+      src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+  <p class="site-author-name" itemprop="name">Hita</p>
+  <div class="site-description" itemprop="description">Gains Don't Stop!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangbaoaaa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangbaoaaa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:n13155609602@163.com" title="E-mail → mailto:n13155609602@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/05/15/%E4%BD%BF%E7%94%A8MID-360%E5%9F%BA%E4%BA%8Escout_mini%E5%AE%8C%E6%88%90move_base%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%8F%8A%E9%81%BF%E9%9A%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用MID-360基于scout_mini完成move_base路径规划及避障 | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用MID-360基于scout_mini完成move_base路径规划及避障
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-16T00:00:00+08:00">2026-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BESLAM/" itemprop="url" rel="index"><span itemprop="name">激光雷达SLAM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="使用MID-360基于scout-mini完成move-base路径规划及避障"><a href="#使用MID-360基于scout-mini完成move-base路径规划及避障" class="headerlink" title="使用MID-360基于scout_mini完成move_base路径规划及避障"></a>使用MID-360基于scout_mini完成move_base路径规划及避障</h1><h2 id="安装scout-mini底盘驱动以及sdk"><a href="#安装scout-mini底盘驱动以及sdk" class="headerlink" title="安装scout_mini底盘驱动以及sdk"></a>安装scout_mini底盘驱动以及sdk</h2><p>跟之前类似，不再赘述</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rosrun scout_bringup bringup_can2usb.bash</span><br><span class="line"># 测试通讯</span><br><span class="line">candump can0</span><br><span class="line"># 启动scout_mini节点</span><br><span class="line">roslaunch scout_bringup scout_mini_robot_base.launch</span><br><span class="line"># 启动键盘控制节点</span><br><span class="line">roslaunch scout_bringup scout_teleop_keyboard.launch</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以使用键盘控制小车运动。</p>
+<p>但是由于liosam以及scout_mini都会发布&#x2F;odom，所以需要修改底盘的TF,只保留liosam的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gedit ~/liosam_2d_nav_ws/src/scout_ros/scout_bringup/launch/scout_mini_robot_base.launch</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line"></span><br><span class="line">    &lt;arg name=&quot;port_name&quot; value=&quot;can0&quot; /&gt;</span><br><span class="line">    &lt;arg name=&quot;simulated_robot&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">    &lt;arg name=&quot;model_xacro&quot; default=&quot;$(find scout_description)/urdf/scout_v2.xacro&quot; /&gt;</span><br><span class="line">    &lt;arg name=&quot;odom_topic_name&quot; default=&quot;odom_scout_pub&quot; /&gt;</span><br><span class="line">    &lt;arg name=&quot;is_scout_mini&quot; default=&quot;true&quot; /&gt;</span><br><span class="line">    &lt;arg name=&quot;pub_tf&quot; default=&quot;false&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;include file=&quot;$(find scout_base)/launch/scout_base.launch&quot;&gt;</span><br><span class="line">        &lt;arg name=&quot;port_name&quot; default=&quot;$(arg port_name)&quot; /&gt;</span><br><span class="line">        &lt;arg name=&quot;simulated_robot&quot; default=&quot;$(arg simulated_robot)&quot; /&gt;</span><br><span class="line">        &lt;arg name=&quot;odom_topic_name&quot; default=&quot;$(arg odom_topic_name)&quot; /&gt;</span><br><span class="line">        &lt;arg name=&quot;is_scout_mini&quot; default=&quot;$(arg is_scout_mini)&quot; /&gt;</span><br><span class="line">        &lt;arg name=&quot;pub_tf&quot; default=&quot;$(arg pub_tf)&quot; /&gt;</span><br><span class="line">    &lt;/include&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--include file=&quot;$(find scout_description)/launch/description.launch&quot;&gt;</span><br><span class="line">        &lt;arg name=&quot;model_xacro&quot; default=&quot;$(arg model_xacro)&quot; /&gt;</span><br><span class="line">    &lt;/include--&gt;</span><br><span class="line"></span><br><span class="line">&lt;/launch&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="建图"><a href="#建图" class="headerlink" title="建图"></a>建图</h2><h3 id="创建launch文件"><a href="#创建launch文件" class="headerlink" title="创建launch文件"></a>创建launch文件</h3><p>与之前一样创建nav功能包，在功能包下面新建launch文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 进入功能包的 launch 目录</span><br><span class="line">cd ~/liosam_2d_nav_ws/src/nav/launch/  # 如果没有这个目录就新建一个</span><br><span class="line">touch start_mapping.launch</span><br><span class="line">gedit start_mapping.launch</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;include file=&quot;$(find scout_bringup)/launch/scout_mini_robot_base.launch&quot;&gt;</span><br><span class="line">        &lt;arg name=&quot;pub_tf&quot; value=&quot;false&quot; /&gt;</span><br><span class="line">    &lt;/include&gt;</span><br><span class="line"></span><br><span class="line">    &lt;include file=&quot;$(find livox_ros_driver2)/launch_ROS1/msg_MID360.launch&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;node pkg=&quot;tf2_ros&quot; type=&quot;static_transform_publisher&quot; name=&quot;base_link_to_livox&quot; </span><br><span class="line">          args=&quot;0.1 0 0.6 0 0 0 base_link livox_frame&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;include file=&quot;$(find lio_sam)/launch/run6axis.launch&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动建图"><a href="#启动建图" class="headerlink" title="启动建图"></a>启动建图</h3><ol>
+<li>启动建图文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source ~/liosam_2d_nav_ws/devel/setup.bash</span><br><span class="line">roslaunch nav start_mapping.launch</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>启动控制小车运动节点</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source ~/liosam_2d_nav_ws/devel/setup.bash</span><br><span class="line">roslaunch scout_bringup scout_teleop_keyboard.launch</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>保存地图</li>
+</ol>
+<p>虽然在params中设置了自动保存，但是为了安全，还是可以手动保存以下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosservice call /lio_sam/save_map 0.2 &quot;/home/neousys/liosam_2d_nav_ws/PCD/&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看点云地图"><a href="#查看点云地图" class="headerlink" title="查看点云地图"></a>查看点云地图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 安装pcl_tools</span><br><span class="line">sudo apt install pcl-tools</span><br><span class="line"># 查看地图</span><br><span class="line">cd /home/neousys/liosam_2d_nav_ws/PCD</span><br><span class="line">pcl_viewer GlobalMap.pcd</span><br></pre></td></tr></table></figure>
+
+<p><strong>左键拖动</strong>：旋转视角 (Rotate)。</p>
+<p><strong>中键 (滚轮) 按下拖动</strong>：平移视角 (Pan)。</p>
+<p><strong>滚轮滚动</strong>：缩放 (Zoom)。</p>
+<p><strong>右键拖动</strong>：缓慢缩放。</p>
+<ul>
+<li><strong><code>r</code></strong>：<strong>重置视角</strong> (Reset Camera)，当你把地图转丢了时按这个。</li>
+<li><strong><code>u</code></strong>：<strong>变大</strong>点的大小 (Scale Up)。<em>LIO-SAM 的点云有时候太稀疏，按几下 u 就能看清楚了。</em></li>
+<li><strong><code>j</code></strong>：<strong>变小</strong>点的大小 (Scale Down)。</li>
+</ul>
+<p><strong><code>1</code></strong>：按 <strong>RGB 颜色</strong>显示（如果点云自带颜色）。</p>
+<p><strong><code>2</code></strong>：按 <strong>X 轴</strong>坐标染色（红色渐变）。</p>
+<p><strong><code>3</code></strong>：按 <strong>Y 轴</strong>坐标染色（绿色渐变）。</p>
+<p><strong><code>4</code></strong>：按 <strong>Z 轴</strong>坐标染色（蓝色渐变，<strong>看高度变化最常用</strong>）。</p>
+<p><strong><code>5</code></strong>：按 <strong>强度 (Intensity)</strong> 染色（<strong>查看车道线、反光标志最常用</strong>）。</p>
+<p>操作之后如图所示</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260119214303198.png" alt="image-20260119214303198"></p>
+<h3 id="使用pcd2pgm转换为2d地图"><a href="#使用pcd2pgm转换为2d地图" class="headerlink" title="使用pcd2pgm转换为2d地图"></a>使用pcd2pgm转换为2d地图</h3><ol>
+<li>下载转换工具包</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd ~/liosam_2d_nav_ws/src</span><br><span class="line">git clone https://github.com/Hinson-A/pcd2pgm_package.git</span><br><span class="line"># 编译它</span><br><span class="line">cd ..</span><br><span class="line">catkin_make</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改转换参数</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">gedit ~/liosam_2d_nav_ws/src/pcd2pgm_package/pcd2pgm/launch/run.launch</span><br><span class="line"></span><br><span class="line">&lt;launch&gt;</span><br><span class="line">  &lt;node pkg=&quot;pcd2pgm&quot; name=&quot;pcd2pgm&quot; type=&quot;pcd2pgm&quot; output=&quot;screen&quot;&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;param name=&quot;file_directory&quot; value= &quot;/home/neousys/liosam_2d_nav_ws/PCD/&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;param name=&quot;file_name&quot; value= &quot;GlobalMap&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;param name=&quot;thre_z_min&quot; value= &quot;0.2&quot; /&gt;</span><br><span class="line">    &lt;param name=&quot;thre_z_max&quot; value= &quot;1.0&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;param name=&quot;flag_pass_through&quot; value= &quot;0&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;param name=&quot;thre_radius&quot; value= &quot;0.5&quot; /&gt;</span><br><span class="line">    &lt;param name=&quot;thres_point_count&quot; value= &quot;10&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;param name=&quot;map_resolution&quot; value= &quot;0.05&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;param name=&quot;map_topic_name&quot; value= &quot;map&quot; /&gt;</span><br><span class="line">  &lt;/node&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用map_server保存地图</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 新建launch文件 nav/launch/save_2d_map.launch</span><br><span class="line"></span><br><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;arg name=&quot;map_file&quot; default=&quot;/home/neousys/liosam_2d_nav_ws/src/nav/map/my_lab_map&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;node pkg=&quot;map_server&quot; type=&quot;map_saver&quot; name=&quot;map_saver&quot; args=&quot;-f $(arg map_file)&quot; output=&quot;screen&quot;&gt;</span><br><span class="line">        &lt;remap from=&quot;map&quot; to=&quot;/map&quot; /&gt;</span><br><span class="line">    &lt;/node&gt;</span><br><span class="line">&lt;/launch&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>执行转换步骤</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 1. </span><br><span class="line">source ~/liosam_2d_nav_ws/devel/setup.bash</span><br><span class="line">roslaunch pcd2pgm run.launch</span><br><span class="line"></span><br><span class="line"># 2. </span><br><span class="line">source ~/liosam_2d_nav_ws/devel/setup.bash</span><br><span class="line">roslaunch nav save_2d_map.launch </span><br></pre></td></tr></table></figure>
+
+<p>这样的话，就可以在对应文件夹中找到对应图片</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260120112609425.png" alt="image-20260120112609425"></p>
+<p>还有一个对应的yaml文件</p>
+<p>这样就完成了地图转换。</p>
+<h2 id="导航系统配置"><a href="#导航系统配置" class="headerlink" title="导航系统配置"></a>导航系统配置</h2><p>选择Base_move依赖包，使用DWA作为规划器</p>
+<h3 id="安装依赖以及目录"><a href="#安装依赖以及目录" class="headerlink" title="安装依赖以及目录"></a>安装依赖以及目录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ros-noetic-navigation</span><br><span class="line">sudo apt install ros-noetic-dwa-local-planner</span><br><span class="line"># </span><br><span class="line">mkdir -p ~/liosam_2d_nav_ws/src/nav/param/</span><br><span class="line">cd ~/liosam_2d_nav_ws/src/nav/param/</span><br></pre></td></tr></table></figure>
+
+<h3 id="新建四个yaml文件"><a href="#新建四个yaml文件" class="headerlink" title="新建四个yaml文件"></a>新建四个yaml文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">costmap_common_params.yaml</span><br><span class="line"></span><br><span class="line"># 1. 机器人形状 (Scout Mini 实际尺寸微调)</span><br><span class="line"># 格式: [x, y] - 相对于 base_link 中心</span><br><span class="line">footprint: [[0.315, 0.275], [0.315, -0.275], [-0.315, -0.275], [-0.315, 0.275]]</span><br><span class="line"># 或者简单点用半径 (二选一，footprint 更精确)</span><br><span class="line"># robot_radius: 0.35</span><br><span class="line"></span><br><span class="line"># 2. 障碍物层配置</span><br><span class="line">obstacle_layer:</span><br><span class="line">  enabled: true</span><br><span class="line">  obstacle_range: 3.0</span><br><span class="line">  raytrace_range: 3.5</span><br><span class="line">  inflation_radius: 0.55</span><br><span class="line">  track_unknown_space: true</span><br><span class="line">  combination_method: 1</span><br><span class="line">  </span><br><span class="line">  # 关键：数据源配置</span><br><span class="line">  observation_sources: pointcloud_source</span><br><span class="line">  pointcloud_source:</span><br><span class="line">    sensor_frame: base_link           # LIO-SAM 输出的点云通常已经转到了 body 坐标系</span><br><span class="line">    data_type: PointCloud2</span><br><span class="line">    topic: /lio_sam/deskew/cloud_deskewed  # 这是 LIO-SAM 去畸变后的点云，非常适合做避障</span><br><span class="line">    marking: true</span><br><span class="line">    clearing: true</span><br><span class="line">    min_obstacle_height: 0.05         # 忽略地面的杂点</span><br><span class="line">    max_obstacle_height: 1.5          # 太高的(比如天花板)不算障碍物</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># base_local_planner_params.yaml</span><br><span class="line"></span><br><span class="line">DWAPlannerROS:</span><br><span class="line"># 机器人速度限制 (Scout Mini)</span><br><span class="line">  max_vel_x: 1.0           # 最大前进速度 (米/秒)</span><br><span class="line">  min_vel_x: -0.5          # 允许倒车</span><br><span class="line">  max_vel_y: 0.0           # 差速车没有横向移动能力，必须为0</span><br><span class="line">  min_vel_y: 0.0</span><br><span class="line"></span><br><span class="line"># 旋转速度</span><br><span class="line">  max_vel_trans: 1.5</span><br><span class="line">  min_vel_trans: 0.1</span><br><span class="line">  max_vel_theta: 1.5       # 最大旋转角速度</span><br><span class="line">  min_vel_theta: 0.5</span><br><span class="line"></span><br><span class="line"># 加速度限制</span><br><span class="line">  acc_lim_x: 2.5</span><br><span class="line">  acc_lim_y: 0.0</span><br><span class="line">  acc_lim_theta: 3.2</span><br><span class="line"></span><br><span class="line"># 目标容差</span><br><span class="line">  xy_goal_tolerance: 0.15</span><br><span class="line">  yaw_goal_tolerance: 0.1</span><br><span class="line">  latch_xy_goal_tolerance: false</span><br><span class="line"></span><br><span class="line"># 正向模拟参数 (决定了规划出来的路径长什么样)</span><br><span class="line">  sim_time: 1.7</span><br><span class="line">  vx_samples: 10</span><br><span class="line">  vy_samples: 0            # 差速车设为0</span><br><span class="line">  vtheta_samples: 20</span><br><span class="line"></span><br><span class="line"># 评分参数 (决定走直线还是绕大圈)</span><br><span class="line">  path_distance_bias: 32.0</span><br><span class="line">  goal_distance_bias: 24.0</span><br><span class="line">  occdist_scale: 0.05</span><br><span class="line">  forward_point_distance: 0.325</span><br><span class="line">  stop_time_buffer: 0.2</span><br><span class="line">  scaling_speed: 0.25</span><br><span class="line">  max_scaling_factor: 0.2</span><br><span class="line"></span><br><span class="line"># 防振荡</span><br><span class="line">  oscillation_reset_dist: 0.05</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># global_costmap_params.yaml</span><br><span class="line"></span><br><span class="line">global_costmap:</span><br><span class="line">  global_frame: map</span><br><span class="line">  robot_base_frame: base_link</span><br><span class="line">  update_frequency: 2.0</span><br><span class="line">  publish_frequency: 2.0</span><br><span class="line">  transform_tolerance: 0.5</span><br><span class="line">  static_map: true</span><br><span class="line"></span><br><span class="line">  plugins:</span><br><span class="line">    - &#123;name: static_layer,    type: &quot;costmap_2d::StaticLayer&quot;&#125;</span><br><span class="line">    - &#123;name: obstacle_layer,  type: &quot;costmap_2d::ObstacleLayer&quot;&#125;</span><br><span class="line">    - &#123;name: inflation_layer, type: &quot;costmap_2d::InflationLayer&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># local_costmap_params.yaml</span><br><span class="line"></span><br><span class="line">local_costmap:</span><br><span class="line">  global_frame: odom</span><br><span class="line">  robot_base_frame: base_link</span><br><span class="line">  update_frequency: 5.0</span><br><span class="line">  publish_frequency: 5.0</span><br><span class="line">  transform_tolerance: 0.5</span><br><span class="line">  static_map: false</span><br><span class="line">  rolling_window: true</span><br><span class="line">  width: 3.0</span><br><span class="line">  height: 3.0</span><br><span class="line">  resolution: 0.05</span><br><span class="line"></span><br><span class="line">  plugins:</span><br><span class="line">    - &#123;name: obstacle_layer,  type: &quot;costmap_2d::ObstacleLayer&quot;&#125;</span><br><span class="line">    - &#123;name: inflation_layer, type: &quot;costmap_2d::InflationLayer&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="新建move-base-launch文件"><a href="#新建move-base-launch文件" class="headerlink" title="新建move_base.launch文件"></a>新建move_base.launch文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># nav/launch/move_base.launch</span><br><span class="line"></span><br><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;node pkg=&quot;move_base&quot; type=&quot;move_base&quot; respawn=&quot;false&quot; name=&quot;move_base&quot; output=&quot;screen&quot; clear_params=&quot;true&quot;&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;param name=&quot;base_local_planner&quot; value=&quot;dwa_local_planner/DWAPlannerROS&quot; /&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/costmap_common_params.yaml&quot; command=&quot;load&quot; ns=&quot;global_costmap&quot; /&gt;</span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/costmap_common_params.yaml&quot; command=&quot;load&quot; ns=&quot;local_costmap&quot; /&gt;</span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/local_costmap_params.yaml&quot; command=&quot;load&quot; /&gt;</span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/global_costmap_params.yaml&quot; command=&quot;load&quot; /&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;rosparam file=&quot;$(find nav)/param/base_local_planner_params.yaml&quot; command=&quot;load&quot; /&gt;</span><br><span class="line">    &lt;/node&gt;</span><br><span class="line">&lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="新建nav-launch"><a href="#新建nav-launch" class="headerlink" title="新建nav.launch"></a>新建nav.launch</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># nav/nav.launch</span><br><span class="line"></span><br><span class="line">&lt;launch&gt;</span><br><span class="line">    &lt;include file=&quot;$(find scout_mid360_nav)/launch/start_mapping.launch&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;arg name=&quot;map_file&quot; default=&quot;$(find nav)/maps/my_lab_map.yaml&quot;/&gt;</span><br><span class="line">    &lt;node name=&quot;map_server&quot; pkg=&quot;map_server&quot; type=&quot;map_server&quot; args=&quot;$(arg map_file)&quot;&gt;</span><br><span class="line">        &lt;param name=&quot;frame_id&quot; value=&quot;map&quot;/&gt;</span><br><span class="line">    &lt;/node&gt;</span><br><span class="line"></span><br><span class="line">    &lt;include file=&quot;$(find nav)/launch/move_base.launch&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/launch&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动导航"><a href="#启动导航" class="headerlink" title="启动导航"></a>启动导航</h2><p>完成所有配置之后，就可以启动导航了，当然，我们在使用liosam纯定位功能的时候，需要关闭地图保存功能，可以选择在原来的配置文件上修改，也可以新建一个专门用于定位的文件，这里不再赘述。我们直接启动nav.launch即可开始导航</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source ~/liosam_2d_nav_ws/devel/setup.bash</span><br><span class="line">roslaunch nav nav.launch</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260310144250540.png" alt="image-20260310144250540"></p>
+<p>配置所需的组件</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260310144556770.png" alt="image-20260310144556770"></p>
+<p>配置好rviz之后，就可以看到小车使用2d Nav Goal顺利运行了。</p>
+<h3 id="实时查看TF树"><a href="#实时查看TF树" class="headerlink" title="实时查看TF树"></a>实时查看TF树</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun rqt_tf_tree rqt_tf_tree</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260310144723876.png" alt="image-20260310144723876"></p>
+<p>可以生成tf文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun tf view_frames</span><br></pre></td></tr></table></figure>
+
+<p>监听5秒之后会生成一个frame.pdf文件。</p>
+<h3 id="动态调参"><a href="#动态调参" class="headerlink" title="动态调参"></a>动态调参</h3><p>在导航系统正常运行的情况下，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun rqt_reconfigure rqt_reconfigure</span><br></pre></td></tr></table></figure>
+
+<p>这样会弹出一个图形化窗口，在该窗口可以动态调节move_base参数。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/image-20260310151837052.png" alt="image-20260310151837052"></p>
+<p>动态调节参数之后，需要手动把参数填回参数表中。</p>
+<hr>
+<p>这样，初始阶段的导航就完成了，后续可以加入避障算法来优化。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/05/15/%E4%BD%BF%E7%94%A8livox_mid360%E8%BF%90%E8%A1%8Cliosam%E5%AE%8C%E6%88%90%E5%BB%BA%E5%9B%BE/" rel="prev" title="使用livox_mid360部署liosam">
+                  <i class="fa fa-angle-left"></i> 使用livox_mid360部署liosam
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/07/08/%E8%87%AA%E7%94%B1%E7%A9%BA%E9%97%B4%E8%A7%84%E5%88%92%E4%B8%8E%E5%B1%80%E9%83%A8%E6%89%A7%E8%A1%8C%E6%A8%A1%E5%9D%97%E6%BA%90%E7%A0%81%E8%B5%B0%E8%AF%BB%E6%8A%A5%E5%91%8A_v1/" rel="next" title="自由空间规划与局部执行模块源码走读报告">
+                  自由空间规划与局部执行模块源码走读报告 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hita</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
