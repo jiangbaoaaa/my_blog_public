@@ -139,13 +139,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -219,7 +219,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1045,116 +1045,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/" class="post-title-link" itemprop="url">在WSL中部署Claude code</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-07-08 12:00:00" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="在WSL中部署Claude-code"><a href="#在WSL中部署Claude-code" class="headerlink" title="在WSL中部署Claude code"></a>在WSL中部署Claude code</h1><p>以下操作均在WSL中完成</p>
-<h2 id="下载Node-js"><a href="#下载Node-js" class="headerlink" title="下载Node.js"></a>下载Node.js</h2><p>使用NPM安装，需要先安装<strong>Node.js</strong></p>
-<p>Linux</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu / Debian</span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
-
-<p>完成安装后验证</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node --version</span><br><span class="line">npm --version</span><br></pre></td></tr></table></figure>
-
-<h2 id="安装Claude-code"><a href="#安装Claude-code" class="headerlink" title="安装Claude code"></a>安装Claude code</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g @anthropic-ai/claude-code</span><br></pre></td></tr></table></figure>
-
-<h2 id="链接CCH服务"><a href="#链接CCH服务" class="headerlink" title="链接CCH服务"></a>链接CCH服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 创建隐藏的配置文件夹</span><br><span class="line">mkdir -p ~/.claude</span><br><span class="line"># 使用vscode打开并创建文件</span><br><span class="line">code ~/.claude/settings.json</span><br></pre></td></tr></table></figure>
-
-<p>复制并粘贴配置内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;env&quot;: &#123;</span><br><span class="line">    &quot;ANTHROPIC_AUTH_TOKEN&quot;: &quot;your key&quot;,</span><br><span class="line">    &quot;ANTHROPIC_BASE_URL&quot;: &quot;https://open.bigmodel.cn/api/anthropic&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;CLAUDE_CODE_EFFORT_LEVEL&quot;: &quot;max&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;includeCoAuthoredBy&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="保存并测试"><a href="#保存并测试" class="headerlink" title="保存并测试"></a>保存并测试</h2><p>在vscode中保存文件，打开终端测试</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Claude</span><br></pre></td></tr></table></figure>
-
-<h2 id="VS-Code拓展"><a href="#VS-Code拓展" class="headerlink" title="VS Code拓展"></a>VS Code拓展</h2><ul>
-<li>在VS Code 拓展市场搜索并按章Claude Code</li>
-<li>确认 settings.json或者环境变量已经配置完成</li>
-<li>如果接的是cch，保持自定义地址即可</li>
-</ul>
-<p>启动</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">claude</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E5%85%A8%E5%B1%80%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1191,7 +1081,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1678,6 +1568,116 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/07/08/%E5%9C%A8WSL%E4%B8%AD%E9%83%A8%E7%BD%B2Claude%20code/" class="post-title-link" itemprop="url">在WSL中部署Claude code</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-07-08 12:00:00" itemprop="dateCreated datePublished" datetime="2026-07-08T12:00:00+08:00">2026-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">工具学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="在WSL中部署Claude-code"><a href="#在WSL中部署Claude-code" class="headerlink" title="在WSL中部署Claude code"></a>在WSL中部署Claude code</h1><p>以下操作均在WSL中完成</p>
+<h2 id="下载Node-js"><a href="#下载Node-js" class="headerlink" title="下载Node.js"></a>下载Node.js</h2><p>使用NPM安装，需要先安装<strong>Node.js</strong></p>
+<p>Linux</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu / Debian</span><br><span class="line">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+
+<p>完成安装后验证</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node --version</span><br><span class="line">npm --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Claude-code"><a href="#安装Claude-code" class="headerlink" title="安装Claude code"></a>安装Claude code</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g @anthropic-ai/claude-code</span><br></pre></td></tr></table></figure>
+
+<h2 id="链接CCH服务"><a href="#链接CCH服务" class="headerlink" title="链接CCH服务"></a>链接CCH服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 创建隐藏的配置文件夹</span><br><span class="line">mkdir -p ~/.claude</span><br><span class="line"># 使用vscode打开并创建文件</span><br><span class="line">code ~/.claude/settings.json</span><br></pre></td></tr></table></figure>
+
+<p>复制并粘贴配置内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;env&quot;: &#123;</span><br><span class="line">    &quot;ANTHROPIC_AUTH_TOKEN&quot;: &quot;your key&quot;,</span><br><span class="line">    &quot;ANTHROPIC_BASE_URL&quot;: &quot;https://open.bigmodel.cn/api/anthropic&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_FABLE_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_OPUS_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_DEFAULT_SONNET_MODEL_NAME&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;ANTHROPIC_MODEL&quot;: &quot;glm-5.1&quot;,</span><br><span class="line">    &quot;CLAUDE_CODE_EFFORT_LEVEL&quot;: &quot;max&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;includeCoAuthoredBy&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="保存并测试"><a href="#保存并测试" class="headerlink" title="保存并测试"></a>保存并测试</h2><p>在vscode中保存文件，打开终端测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Claude</span><br></pre></td></tr></table></figure>
+
+<h2 id="VS-Code拓展"><a href="#VS-Code拓展" class="headerlink" title="VS Code拓展"></a>VS Code拓展</h2><ul>
+<li>在VS Code 拓展市场搜索并按章Claude Code</li>
+<li>确认 settings.json或者环境变量已经配置完成</li>
+<li>如果接的是cch，保持自定义地址即可</li>
+</ul>
+<p>启动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2026/07/08/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%88%9D%E4%BD%93%E9%AA%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1714,7 +1714,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1913,7 +1913,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -3241,7 +3241,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -3434,7 +3434,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -3536,295 +3536,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/02/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
-      <meta itemprop="name" content="Hita">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="U.N.O">
-      <meta itemprop="description" content="Gains Don't Stop!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | U.N.O">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/02/%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A3D%20SLAM/" class="post-title-link" itemprop="url">第七章：3D SLAM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="第七章：3D-SLAM"><a href="#第七章：3D-SLAM" class="headerlink" title="第七章：3D SLAM"></a>第七章：3D SLAM</h1><p>三维激光雷达的信息比二维激光雷达的信息更丰富，不容易被遮挡，能够更好地重建场地的三维结构，既可以对三维点云直接进行匹配，也可以提取一些几何特征之后再配准。</p>
-<h2 id="多线激光雷达的工作原理"><a href="#多线激光雷达的工作原理" class="headerlink" title="多线激光雷达的工作原理"></a>多线激光雷达的工作原理</h2><h3 id="机械旋转激光雷达"><a href="#机械旋转激光雷达" class="headerlink" title="机械旋转激光雷达"></a>机械旋转激光雷达</h3><p>多线激光雷达的工作原理可以概括为：</p>
-<p>在垂直方向上同时发射多数不同角度的激光，通过整体的水平旋转，将这些线扫描成为面，最终利用ToF测距原理，实时绘制出周围环境的三维点云地图。</p>
-<p><img src="https://th.bing.com/th/id/R.e1d76dadbb311a3597eb73f8e4a89ce0?rik=sRlyuHN3R9XJvg&riu=http://i1.kknews.cc/_XWGNGVBB_5H2gKMUxYdfwZXWkAlvyU/0.jpg&ehk=b8dr7KH6Qs9Z43OuvjvdTA2WIH6/Wyr3l87Rc+DWENU=&risl=&pid=ImgRaw&r=0" alt="一文看懂激光雷達 - 每日頭條"></p>
-<h3 id="固态激光雷达"><a href="#固态激光雷达" class="headerlink" title="固态激光雷达"></a>固态激光雷达</h3><p>机械旋转式激光雷达必须让激光探头转动起来，才能探测周身360°范围内的距离，所以，它们不可避免地要内置一套精密的运动机构。所以在车辆震动等恶劣条件下容易损坏。所以就出现了固态激光雷达。</p>
-<table>
-<thead>
-<tr>
-<th><strong>类型</strong></th>
-<th><strong>扫描方式</strong></th>
-<th><strong>运动部件</strong></th>
-<th><strong>关键优势</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>传统机械式</strong></td>
-<td>马达带动整体旋转</td>
-<td>有（宏观）</td>
-<td>360°扫描，技术成熟</td>
-</tr>
-<tr>
-<td><strong>MEMS（半固态）</strong></td>
-<td>微振镜高速摆动</td>
-<td>有（微观）</td>
-<td>体积小，成本可控</td>
-</tr>
-<tr>
-<td><strong>OPA（真固态）</strong></td>
-<td>光学相控阵（相位干涉）</td>
-<td>无</td>
-<td>扫描极快，无磨损</td>
-</tr>
-<tr>
-<td><strong>Flash（真固态）</strong></td>
-<td>瞬间照亮整个场景</td>
-<td>无</td>
-<td>瞬时成像，无运动模糊</td>
-</tr>
-</tbody></table>
-<p>其核心就是通过一个高速旋转的马达，带动整个激光收发阵列进行360°扫描，这种设计包含宏观的、高速运动的机械部件。</p>
-<hr>
-<h2 id="多线激光雷达的扫描匹配"><a href="#多线激光雷达的扫描匹配" class="headerlink" title="多线激光雷达的扫描匹配"></a>多线激光雷达的扫描匹配</h2><p>多线激光雷达的扫描匹配效果通常好于单线激光雷达，所以后端的处理更加简单，大多数多线激光雷达的SLAM系统不使用子地图的概念，直接管理点云本身，点云的配准主要以Scan to Scan 或者Scan to Map 为主。扫描匹配在多线激光雷达的背景下，也常常被称为点云配准。</p>
-<h3 id="点到点ICP"><a href="#点到点ICP" class="headerlink" title="点到点ICP"></a>点到点ICP</h3><p>算法目标是找到一个旋转矩阵R和平移向量t，使得所有最近点之间的平方和距离最小</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024184941235.png" alt="image-20251024184941235"></p>
-<p>实现基础的ICP算法，可以使用优化的思路，也可以使用解析的方法。如果利用线性代数的求解，可以使用SVD方法，如果利用非线性优化的方式求解，则可以考虑以迭代的方式去寻找最优值。</p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@83f6f3e78c3d:/sad# bin/test_icp </span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">I1024 11:02:09.837949 293437 icp_3d.h:54] source center: 0.0903871 00.407958 00.251414</span><br><span class="line">I1024 11:02:09.901722 293437 icp_3d.h:45] target center: 0.0338123 00.285905 00.280259</span><br><span class="line">I1024 11:02:09.901753 293437 icp_3d.cc:13] aligning with point to point</span><br><span class="line">I1024 11:02:09.914196 293437 icp_3d.cc:96] iter 0 total res: 11.5422, eff: 44501, mean res: 0.00025937, dxn: 0.0271865</span><br><span class="line">I1024 11:02:09.915769 293437 icp_3d.cc:101] iter 0 pose error: 0.0689076</span><br><span class="line">I1024 11:02:09.921993 293437 icp_3d.cc:96] iter 1 total res: 6.14814, eff: 44515, mean res: 0.000138114, dxn: 0.0208751</span><br><span class="line">I1024 11:02:09.922013 293437 icp_3d.cc:101] iter 1 pose error: 0.0481971</span><br><span class="line">I1024 11:02:09.927600 293437 icp_3d.cc:96] iter 2 total res: 3.09009, eff: 44515, mean res: 6.94168e-05, dxn: 0.0151436</span><br><span class="line">I1024 11:02:09.927616 293437 icp_3d.cc:101] iter 2 pose error: 0.0331746</span><br><span class="line">I1024 11:02:09.932889 293437 icp_3d.cc:96] iter 3 total res: 1.53134, eff: 44515, mean res: 3.44006e-05, dxn: 0.0106258</span><br><span class="line">I1024 11:02:09.932904 293437 icp_3d.cc:101] iter 3 pose error: 0.0226408</span><br><span class="line">I1024 11:02:09.937976 293437 icp_3d.cc:96] iter 4 total res: 0.771583, eff: 44515, mean res: 1.73331e-05, dxn: 0.00738089</span><br><span class="line">I1024 11:02:09.937989 293437 icp_3d.cc:101] iter 4 pose error: 0.0153396</span><br><span class="line">I1024 11:02:09.937992 293437 icp_3d.cc:105] converged, dx = 000.00535585 0-0.00211399 0-0.00348329 -0.000894436 000.00178088 0-0.00228441</span><br><span class="line">I1024 11:02:09.938019 293437 test_icp.cc:55] icp p2p align success, pose: 00.0265482 -0.0107408 0-0.023479 000.999314, -0.0688918 0-0.103293 0.00503468</span><br><span class="line">I1024 11:02:09.996821 293437 sys_utils.h:32] 方法 ICP P2P 平均调用时间/次数: 159.098/1 毫秒.</span><br><span class="line">......</span><br><span class="line">I1024 11:02:11.607481 293437 test_icp.cc:162] pose from ndt pcl: 0-0.0276939 -0.00399581 0-0.0326939 0000.999074, 0-0.0370633 -0.00879984 000.033367518530452800.301441</span><br><span class="line">I1024 11:02:11.643512 293437 test_icp.cc:165] score: 0.301441</span><br><span class="line">I1024 11:02:11.643522 293437 test_icp.cc:169] NDT PCL pose error: 0.160315</span><br><span class="line">I1024 11:02:11.643736 293437 sys_utils.h:32] 方法 NDT PCL 平均调用时间/次数: 272.092/1 毫秒.</span><br></pre></td></tr></table></figure>
-
-<p>在计算机显示这几个模型</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@83f6f3e78c3d:/sad# pcl_viewer ./data/ch7/icp_trans.pcd ./data/ch7/EPFL/kneeling_lady_target.pcd </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024191417393.png" alt="image-20251024191417393"></p>
-<p>虽然点到点的ICP是基础，但是当它在处理稀疏、有噪声的多线LIDAR数据时有严重缺陷：</p>
-<ol>
-<li>最近点≠对应点：有可能一个点在下一帧真正的对应点没有被扫描到，这样错误的匹配可能会将点云错误拉向最近点，使得点云平移估计不准</li>
-<li>对离群点较为敏感：SVD求解的是最小二乘问题，对于所有点的误差平方求和，如果离群点太多，会产生巨大的误差，导致整个结果被带偏</li>
-<li>收敛性：容易陷入局部最小值，这个跟初始的齐次变换有很大关系，如果偏差过大，可能会找到一个错误的对齐方式，并且卡住</li>
-</ol>
-<p>所以可以进行改进，得到点到线或者点到面的ICP、NDT方法</p>
-<h3 id="点到线、点到面ICP"><a href="#点到线、点到面ICP" class="headerlink" title="点到线、点到面ICP"></a>点到线、点到面ICP</h3><p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024195936967.png" alt="image-20251024195936967"></p>
-<p>点到面ICP与点到点的ICP思路基本一致，有两个小的差异点：</p>
-<ol>
-<li>需要给最近邻点拟合平面，因此需要查找多个最近邻，然后进行局部平面拟合。可以使用第五章提到的方法</li>
-<li>需要添加一些阈值检查来判定平面是否合理，然后用平面参数计算高斯-牛顿函数的雅可比矩阵</li>
-</ol>
-<p>点到面ICP的测试程序与先前点到点的程序一样，点到面ICP在精度和效率上都有一定的优势</p>
-<h3 id="NDT方法"><a href="#NDT方法" class="headerlink" title="NDT方法"></a>NDT方法</h3><p>NDT (Normal Distributions Transform，正态分布变换) 是一种与ICP（迭代最近点）截然不同的点云配准（Scan Matching）算法。NDT不关注单个点，关心的是点云的局部统计特性和形状。利用这些统计信息进行匹配就可以了。一组点云中最基本的统计信息就是均值和方差。</p>
-<p>NDT算法核心是：</p>
-<ol>
-<li>建模：将目标点云转换为一个连续的、分段的概率密度函数（PDF）</li>
-<li>配准：调整源点云的位姿，使得源点云上的点在目标点云的概率模型下，其总似然最大。</li>
-</ol>
-<p>算法详解：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024202520289.png" alt="image-20251024202520289"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024202533861.png" alt="image-20251024202533861"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251024202547361.png" alt="image-20251024202547361"></p>
-<p>与所有配准算法一样，NDT同样存在依靠初始估计的问题，另外，NDT也依赖体素大小，所有以来体素大小的算法会存在体素离散化的问题。</p>
-<p>综合比对各种配准算法的位姿收敛曲线：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027105306682.png" alt="image-20251027105306682"></p>
-<p>点到面的ICP能够取得最好的位姿精度，也有最快的收敛速度，如果按照最近领方法进行细分，还可以区分基于K-d 树和基于体素最近邻的各种配准算法。</p>
-<hr>
-<h2 id="直接法激光雷达里程计"><a href="#直接法激光雷达里程计" class="headerlink" title="直接法激光雷达里程计"></a>直接法激光雷达里程计</h2><p>有了配准方法，可以配准多个点云，然后将它们拼在一起，形成局部地图，最终构建一个激光雷达里程计（Lidar Odometry）模块。在3D SLAM中，点云之间可以很容易进行合并，也可以将过去一段时间内的点云组成一个局部地图，然后将当前帧和这个局部地图进行配准。这种不需要提取特征的激光雷达里程计被称为直接法激光雷达里程计。其核心原理是：对齐-迭代-优化。而特征法则是将里程计求解分为：提取-匹配-优化三个步骤。</p>
-<p>根据使用的配准方法不同，可以写出两种实现激光雷达里程计的思路</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027111019917.png" alt="image-20251027111019917"></p>
-<p>这两种思路的核心都是：扫描-地图匹配（Scan-to-Map）即使用当前的激光扫描去和一个已经建立的历史地图进行匹配，从而计算当前位姿。</p>
-<p>最核心的区别就是历史地图的表示方式和更新方式。</p>
-<p>左图的思路的历史地图是由原始点云构成的。通常使用ICP作为配准算法。当然也可以使用NDT作为配准算法。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027112332703.png" alt="image-20251027112332703"></p>
-<p>右图思路的历史地图是由概率分布构成，明确使用NDT算法</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027112434926.png" alt="image-20251027112434926"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027112609495.png"></p>
-<h3 id="使用NDT构建激光雷达里程计"><a href="#使用NDT构建激光雷达里程计" class="headerlink" title="使用NDT构建激光雷达里程计"></a>使用NDT构建激光雷达里程计</h3><p>如果两种算法都是用NDT来作为配准算法，左图会一直对当前的扫描数据和局部地图进行NDT配准，每隔一段距离或者一定角度就取一个关键帧，再把最近的若干个关键帧拼成一个局部地图，作为NDT算法的配准目标。配准的时候用上两帧的相对运动作为运动模型，预测当前帧的位姿，然后将它作为NDT的位姿初值。<strong>局部地图的合并、地图对应的体素、K-d树构建是里程计模块中主要消耗算力的部分。</strong></p>
-<p>使用这个算法，每次增加关键帧，都需要重新建立局部地图，同时要重置所有NDT体素。可以把当前的扫描数据直接放到NDT的体素中，同时对体素增加一个时间队列处理，让它自动丢弃很久没用到的那些体素，这个方法称为<strong>增量式NDT</strong>。</p>
-<h3 id="增量式NDT里程计"><a href="#增量式NDT里程计" class="headerlink" title="增量式NDT里程计"></a>增量式NDT里程计</h3><p>实现增量式NDT需要解决两个问题：</p>
-<ol>
-<li>如何维护不断增加的体素</li>
-<li>每个体素内的高斯参数应该如何改变</li>
-</ol>
-<p>首先解决第一个问题</p>
-<p>应该将体素数量限制在一定的范围内，那些很久之前建立的体素应该定期删除，需要维护一个近期使用的缓存机制（Least Recently Used Cache, LRU）。设置一个队列模型，把最近更新的体素放到最前面。当整个队列超出预期容量，就删除最旧的那部分体素。</p>
-<p><strong>高斯分布的增量式更新</strong></p>
-<p>不存储点本身，只需要存储计算均值还有协方差所需的累加值。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027160346422.png" alt="image-20251027160346422"></p>
-<p>这样，实现的逻辑比之前的里程计更简单，只需要取一些关键帧，不断维护，往NDT内部添加新关键帧，然后调用配准函数既可。局部地图被放到NDT内部维护，不必再去拼接关键帧点云了。</p>
-<h2 id="特征法激光雷达里程计"><a href="#特征法激光雷达里程计" class="headerlink" title="特征法激光雷达里程计"></a>特征法激光雷达里程计</h2><h3 id="特征的提取"><a href="#特征的提取" class="headerlink" title="特征的提取"></a>特征的提取</h3><p>先提取特征再做配准的激光雷达里程计，称为特征法激光雷达里程计（间接法）。在特征法里程计中，LOAM系列，和后续的各种改进版本，是自动驾驶行业中常用的开源方案，也是后续很多LIO系统的基础。</p>
-<p>实时SLAM对特征有以下几个要求：</p>
-<ol>
-<li>特征能反映点云的特点。我们不必直接对整个点云提取特征，而可以对单个线条上的扫描数据提取特征</li>
-<li>在提取特征之后，应该很容易对这些特征点进行几何配准，可以使用前面的ICP和NDT方法。</li>
-<li>特征提取不应该占用太多CPU或者GPU资源</li>
-<li>整个激光雷达里程计或SLAM系统必须使用同样的计算结构，不是一部分运行在CPU上，一部分运行在GPU上。</li>
-</ol>
-<h3 id="基于激光雷达线束的特征提取"><a href="#基于激光雷达线束的特征提取" class="headerlink" title="基于激光雷达线束的特征提取"></a>基于激光雷达线束的特征提取</h3><p>多线激光雷达带有线束信息，以及额外的信息：</p>
-<ol>
-<li>某个激光点来自哪一条扫描线</li>
-<li>同一条线上的激光点的先后顺序关系</li>
-<li>有的可以输出各点的极坐标角度、扫描时间等精确信息</li>
-</ol>
-<p>根据这些点的先后顺序，可以计算曲率：沿着同一根线束的曲率，如果曲率较大，就认为是角点，否则就认为是平面点。这样可以一定限度地提取特征，有助于进一步优化配准结果。</p>
-<h3 id="特征提取部分的实现"><a href="#特征提取部分的实现" class="headerlink" title="特征提取部分的实现"></a>特征提取部分的实现</h3><p>特征提取算法主要步骤：</p>
-<ol>
-<li>计算每个点的线束并且归类。</li>
-<li>依次计算线束中每个点的曲率</li>
-<li>把点云按照一周分为若干区间，选择其中曲率最大的若干点座位角点，其余作为平面点</li>
-</ol>
-<h3 id="特征法激光里程计的实现"><a href="#特征法激光里程计的实现" class="headerlink" title="特征法激光里程计的实现"></a>特征法激光里程计的实现</h3><p>为角点和平面点分别构建两个局部地图，两者的ICP会放在同一个优化问题中，从原理上来看，特征类算法对原始点云进行简单的特征分类，，再针对不同特征构建不同的优化问题。可以将地面、天花板分离出来单独处理，按照线束曲率的大小，把点云进一步分为角点、不尖锐的角点、平面点、不那么平的平面点。</p>
-<hr>
-<h2 id="松耦合LIO系统"><a href="#松耦合LIO系统" class="headerlink" title="松耦合LIO系统"></a>松耦合LIO系统</h2><p>很多激光雷达里程计算法都会使用IMU来知道激光匹配的预测方向。这种Lidar-inertial Odometry 系统被称为LIO系统或者LINS系统。是激光雷达和IMU进行耦合的系统。按照两个耦合的方法来分，可以分为紧耦合和松耦合。</p>
-<p>在松耦合LIO系统中，依然是一个状态估计器来计算车辆自身的状态。IMU和轮速为这个估计器提供惯性和速度方面的观测源。点云匹配结果为这个系统提供位姿数据的观测源。估计器中的卡尔曼滤波部分和点云配准部分是相对解耦的，<strong>可以任意选择一个里程计位姿作为观测源</strong>。点云配准时，也可以使用状态估计器的预测输出，作为初始位姿估计进行配准。相对的，紧耦合LIO系统就是把点云的残差方程直接作为观测方程，写入观测模型，这种做法相当于在滤波器或者优化算法中内置一个ICP或者NDT，将各种配准方法以及惯导的递推方法结合，就得到了一种LIO方案。</p>
-<table>
-<thead>
-<tr>
-<th><strong>对比维度</strong></th>
-<th><strong>🤖 松耦合 (Loosely-Coupled)</strong></th>
-<th><strong>🚀 紧耦合 (Tightly-Coupled)</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>融合数据</strong></td>
-<td>融合<strong>状态估计结果</strong>  (LiDAR位姿 $\leftrightarrow$ IMU位姿)</td>
-<td>融合<strong>原始测量数据</strong>  (LiDAR点云 $\leftrightarrow$ IMU读数)</td>
-</tr>
-<tr>
-<td><strong>核心思想</strong></td>
-<td>两个系统<strong>独立求解</strong>，再由第三方融合</td>
-<td>两个系统<strong>联合求解</strong>，构建一个统一的优化问题</td>
-</tr>
-<tr>
-<td><strong>信息利用</strong></td>
-<td><strong>信息有损</strong>。LiDAR模块只输出了一个位姿，丢弃了原始点云中的所有几何结构信息。</td>
-<td><strong>信息无损</strong>。优化器能看到所有原始信息，利用率高。</td>
-</tr>
-<tr>
-<td><strong>系统鲁棒性</strong></td>
-<td><strong>较差</strong>。如果LiDAR模块失效（例如在走廊里），它会输出一个坏的位姿，导致整个系统崩溃。</td>
-<td><strong>较好</strong>。如果LiDAR在走廊里特征退化，IMU的原始读数仍能在优化中提供强大约束，帮助LiDAR渡过难关。</td>
-</tr>
-<tr>
-<td><strong>系统复杂度</strong></td>
-<td><strong>较低</strong>。模块化，实现和调试相对简单。</td>
-<td><strong>非常高</strong>。需要处理IMU预积分、传感器时钟同步、复杂的非线性优化。</td>
-</tr>
-<tr>
-<td><strong>典型算法</strong></td>
-<td>基于EKF的融合（例如 <code>robot_pose_ekf</code>）</td>
-<td><strong>LIO-SAM</strong>, <strong>LINS</strong>, LVI-SAM, VINS-Mono</td>
-</tr>
-</tbody></table>
-<hr>
-<h3 id="坐标系说明"><a href="#坐标系说明" class="headerlink" title="坐标系说明"></a>坐标系说明</h3><p>由于引入IMU，现在有三个坐标系：世界坐标系（W）IMU坐标系（I）雷达坐标系（L）。IMU坐标系与雷达坐标系并不重合，他们之间存在一个转换关系，记为TIL。由于IMU的运动模型是在IMU坐标系下推导的，因此希望它们尽量保持不变，不要再引入其他变量。于是通过外参将点云转换到IMU坐标系下。整个系统将以IMU为中心来实现定位与建图效果。如果某个被雷达扫到的点为pL,那么IMU坐标系下这个点为：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251027203307046.png" alt="image-20251027203307046"></p>
-<h3 id="松耦合LIO系统的运动与观测方程"><a href="#松耦合LIO系统的运动与观测方程" class="headerlink" title="松耦合LIO系统的运动与观测方程"></a>松耦合LIO系统的运动与观测方程</h3><p>整个松耦合LIO系统在IMU坐标系中运行，激光雷达里程计输出的位姿可以直接视为对状态变量R ,p的<strong>观测</strong>。</p>
-<h3 id="松耦合LIO系统的数据准备"><a href="#松耦合LIO系统的数据准备" class="headerlink" title="松耦合LIO系统的数据准备"></a>松耦合LIO系统的数据准备</h3><p>松耦合LIO系统的代码实现主要分为三步：</p>
-<ol>
-<li>将IMU数据与雷达数据同步</li>
-<li>处理雷达的运动补偿</li>
-<li>从ESKF中拿到预测的位姿数据，交给里程计算法，再将里程计配准之后的位姿放入ESKF中。</li>
-</ol>
-<h3 id="松耦合LIO系统的主要流程"><a href="#松耦合LIO系统的主要流程" class="headerlink" title="松耦合LIO系统的主要流程"></a>松耦合LIO系统的主要流程</h3><p>其<strong>核心思想</strong>是：LiDAR和IMU各自独立地计算出一个状态估计（里程计），然后将两个估计结果进行融合。</p>
-<p>松耦合系统通常可以分为两个并行的子系统和一个融合模块：</p>
-<ol>
-<li>LiDAR里程计</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028102354937.png" alt="image-20251028102354937"></p>
-<ol start="2">
-<li>IMU里程计</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028102433586.png" alt="image-20251028102433586"></p>
-<ol start="3">
-<li>状态融合</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028102528075.png" alt="image-20251028102528075"></p>
-<p><strong>使用IMU预测位姿进行运动补偿</strong></p>
-<p>由于松耦合LIO系统中有IMU位姿，因此可以使用IMU预测的位姿对点云进行运动补偿。所谓运动补偿，就是指补偿车辆运动带来的扫描数据畸变。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028103951387.png" alt="image-20251028103951387"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028104757650.png" alt="image-20251028104757650"></p>
-<p>可以运行test_loosely_lio程序来测试程序的表现。</p>
-<p>数据集下载地址：<a target="_blank" rel="noopener" href="https://1drv.ms/u/s!AgNFVSzSYXMahcEZejoUwCaHRcactQ?e=YsOYy2">https://1drv.ms/u/s!AgNFVSzSYXMahcEZejoUwCaHRcactQ?e=YsOYy2</a></p>
-<p>终端输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/test_loosely_lio --bag_path ./dataset/sad/nclt/20120429.bag --dataset_type NCLT --config ./config/velodyne_nclt.yaml</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251028105346791.png" alt="image-20251028105346791"></p>
-<p>内存不够，这里不下载了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/02/%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%83%AF%E6%80%A7%E5%AF%BC%E8%88%AA%E4%B8%8E%E7%BB%84%E5%90%88%E5%AF%BC%E8%88%AA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3861,7 +3572,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -4072,7 +3783,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-07-17 14:49:39" itemprop="dateModified" datetime="2026-07-17T14:49:39+08:00">2026-07-17</time>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -4124,6 +3835,207 @@
 <li>记录所有成功的回环，并且在下次调用优化算法时读取回环检测的结果。</li>
 </ol>
 <h2 id="地图的导出"><a href="#地图的导出" class="headerlink" title="地图的导出"></a>地图的导出</h2><p>多数应用中，希望控制实时点云的载入规模，只加载自身周围200米范围内的点云，其他范围的点云视情况卸载，重新组织本章建立的点云，按照100米的边长进行分块，设计分块加载和卸载的接口。点云的切分实际上是根据每个点的坐标计算其所在的网格，然后将它投到对应的网格中。切分完地图之后，没快递图会独立到处一个PCD文件，程序可以快速读取到地图区块的位置。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://gen2710.netlify.app/2025/11/02/%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9A%E5%9F%BA%E7%A1%80%E7%82%B9%E4%BA%91%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/slef.jpg">
+      <meta itemprop="name" content="Hita">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="U.N.O">
+      <meta itemprop="description" content="Gains Don't Stop!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | U.N.O">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/11/02/%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9A%E5%9F%BA%E7%A1%80%E7%82%B9%E4%BA%91%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">第五章：基础点云处理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2025-11-03T00:00:00+08:00">2025-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-21 11:41:34" itemprop="dateModified" datetime="2026-07-21T11:41:34+08:00">2026-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD%E7%9A%84SLAM%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">自动驾驶与机器人中的SLAM技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="第五章：基础点云处理"><a href="#第五章：基础点云处理" class="headerlink" title="第五章：基础点云处理"></a>第五章：基础点云处理</h1><h2 id="激光雷达传感器与点云的数学模型"><a href="#激光雷达传感器与点云的数学模型" class="headerlink" title="激光雷达传感器与点云的数学模型"></a>激光雷达传感器与点云的数学模型</h2><h3 id="激光雷达传感器的分类与数学模型"><a href="#激光雷达传感器的分类与数学模型" class="headerlink" title="激光雷达传感器的分类与数学模型"></a>激光雷达传感器的分类与数学模型</h3><p>Lidar(Light detection and ranging)即激光雷达，与其他领域Radar(radio detection and ranging）表述的雷达有所不同，其中自动驾驶中还有一种毫米波雷达被称为Radar.</p>
+<p>自动驾驶使用的激光雷达主要分为机械旋转式激光雷达和固态激光雷达两种</p>
+<ol>
+<li>机械旋转式激光雷达（Spining Lidar）:可以看成是一列以固定频率旋转的激光探头。每个探头都能够快速探测外部物体离自身的距离。每旋转一周就可以完成一次对周围场景的扫描。可以根据线数进一步细分，常见包括4、8、16、32、64、80、128线等。</li>
+<li>固态激光雷达（Solid State Lidar）：固态激光雷达本身不会进行360°扫描，只能探测约120°视野范围的3D信息，与RGBD相机十分相似。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>机械旋转式激光雷达</strong></th>
+<th><strong>固态激光雷达</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>扫描方式</strong></td>
+<td>整体宏观机械旋转</td>
+<td>微观镜片偏转 (MEMS) 或 无机械运动 (OPA&#x2F;Flash)</td>
+</tr>
+<tr>
+<td><strong>核心部件</strong></td>
+<td>电机、旋转结构、多个激光收发单元</td>
+<td>MEMS振镜、光学相控阵、面阵传感器等</td>
+</tr>
+<tr>
+<td><strong>视场角</strong></td>
+<td>单个可实现360°水平覆盖</td>
+<td>单个视场角有限（如120°），需多个拼接</td>
+</tr>
+<tr>
+<td><strong>可靠性&#x2F;寿命</strong></td>
+<td>较低（有磨损，不耐振动）</td>
+<td>很高（无&#x2F;微运动部件，抗振性好）</td>
+</tr>
+<tr>
+<td><strong>成本</strong></td>
+<td>非常高</td>
+<td>量产后有潜力变得很低</td>
+</tr>
+<tr>
+<td><strong>体积&#x2F;重量</strong></td>
+<td>大、重</td>
+<td>小、轻，易于集成</td>
+</tr>
+<tr>
+<td><strong>技术成熟度</strong></td>
+<td>非常成熟</td>
+<td>发展中，MEMS相对成熟</td>
+</tr>
+<tr>
+<td><strong>主要应用</strong></td>
+<td>自动驾驶原型车、机器人、高精度地图测绘</td>
+<td>大规模量产的乘用车、工业自动化、消费电子</td>
+</tr>
+</tbody></table>
+<h3 id="点云的表达"><a href="#点云的表达" class="headerlink" title="点云的表达"></a>点云的表达</h3><p>最简单、最原始的点云表达方式就是数组：把一些点放在数组里即可。也可以携带其他信息，如反射率、所属的线束、RGB的颜色信息等。</p>
+<p>通过一个程序实例说明基础点云的读写和可视化。可以使用pcl_viewer指令查看：</p>
+<p>终端输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 安装pcl-tool</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install pcl-tools</span><br><span class="line"></span><br><span class="line">pcl_viewer ./data/ch5/map_example.pcd</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251017153253606.png" alt="image-20251017153253606"></p>
+<p>终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# pcl_viewer ./data/ch5/map_example.pcd </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251017154334468.png" alt="image-20251017154334468"></p>
+<p>这个是使用高度着色进行渲染。</p>
+<h3 id="Packet-的表达"><a href="#Packet-的表达" class="headerlink" title="Packet 的表达"></a>Packet 的表达</h3><p>在激光雷达传感器中，雷达的旋转速率、各个探头相对于雷达中心的俯仰角等参数，都是在雷达设计时或者运行时已知的参数，被称为雷达的内参数。于是在数据存储时就可以将他们存放在固定的参数文件中，对于真正的测量数据，只记录运行时发生变化的部分，下面展示Velodyne HDL-64S3的Packet 格式。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251017160822857.png" alt="image-20251017160822857"></p>
+<h3 id="俯视图与距离图"><a href="#俯视图与距离图" class="headerlink" title="俯视图与距离图"></a>俯视图与距离图</h3><p>终端输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ca1c92ebac5d:/sad# bin/pcd_to_bird_eye --pcd_path ./data/ch5/map_example.pcd </span><br></pre></td></tr></table></figure>
+
+<p>会生成一个png文件</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251017162927383.png" alt="image-20251017162927383"></p>
+<p>大多数路径规划算法是基于栅格地图实现的，A  * 、 D*。大部分障碍物信息可以保存下来，但是某些动态物体在地图中出现了拖影，可以通过栅格地图的概率机制，有效抑制动态物体的影响。</p>
+<p>还有一种图对算法比较有用，就是距离图，取图像的横坐标是激光雷达的方位角，纵坐标取俯仰角。用HSV色彩空间显示距离信息，这样会让距离信息的变化的视觉上更明显。</p>
+<p>终端输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/scan_to_range_image</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/range_image.png" alt="range_image"></p>
+<hr>
+<h2 id="最近邻问题"><a href="#最近邻问题" class="headerlink" title="最近邻问题"></a>最近邻问题</h2><p>在实际应用中，不止关心最近的一个点，而是更关心以下两种扩展形式</p>
+<ol>
+<li>k-最近邻（K-Nearest Neighbors）：找到距离查询点最近的k个点，例如找到距离最近的5个点</li>
+<li>半径最近邻（Radius Neighbors Search）:找到距离查询点某个半径r 范围内所有的特征点，如找到发哦周围100米 内所有邻居</li>
+</ol>
+<p>一个点的特性必须通过分析它和周围邻近点的关系体现，因此，最近邻搜索几乎是所有点云处理算法的基石和第一步，有很多处理思路</p>
+<h3 id="暴力最近邻"><a href="#暴力最近邻" class="headerlink" title="暴力最近邻"></a>暴力最近邻</h3><p>暴力最近邻（Brute-force Nearest Neighbour Search）是最简单直观的最近邻搜索。遍历每一个点，找到最近的那一个，至于暴力K近邻则是找到最近的K个。</p>
+<h3 id="栅格与体素方法"><a href="#栅格与体素方法" class="headerlink" title="栅格与体素方法"></a>栅格与体素方法</h3><p><strong>栅格核心思想</strong>： 将一个2D平面分割成一个由许多个大小相同的小方块（单元格或像素） 组成的规则网格。每个小方块（Cell）都有一个唯一的坐标（如行号和列号），并被赋予一个值来表示该区域的某种属性。</p>
+<p><strong>体素核心思想</strong>：将一个3D空间分割成一个由许多个大小相同的小立方体（体素） 组成的规则网格。每个小立方体就是一个体素，它也有一个唯一的3D坐标（如X, Y, Z索引），并被赋予一个值来表示该3D空间区域的属性。</p>
+<h3 id="二分树与K-d树"><a href="#二分树与K-d树" class="headerlink" title="二分树与K-d树"></a>二分树与K-d树</h3><p>二分树可以看成一个猜字游戏，每次搜索都会缩小搜索范围。而K-D树则是</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251017193430491.png" alt="image-20251017193430491"></p>
+<h3 id="四叉树和八叉树"><a href="#四叉树和八叉树" class="headerlink" title="四叉树和八叉树"></a>四叉树和八叉树</h3><p>四叉树主要用于组织和管理二维空间数据。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251017194923162.png" alt="image-20251017194923162"></p>
+<p>八叉树是在三维空间中的对应物</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251017195041870.png" alt="image-20251017195041870"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251017195159818.png" alt="image-20251017195159818"></p>
+<p>栅格法不适合稠密的点云，可以认为，在点云增加到一定规模时，K-D树、八叉树等方法会更优。</p>
+<h2 id="拟合问题"><a href="#拟合问题" class="headerlink" title="拟合问题"></a>拟合问题</h2><p>在传统SLAM应用中，关心的元素是基本的、静态的，更关心如何使用这些元素帮助我们进行点云之间的匹配和配准。在配准问题中，常见的做法是先利用最近邻结构找到一个点的若干最近邻，再对这些最近邻进行拟合。</p>
+<h3 id="平面拟合"><a href="#平面拟合" class="headerlink" title="平面拟合"></a>平面拟合</h3><p>简单来说，就是从一个三维空间中的点云集合中，找出一个“最理想”的平面，使得这个平面能够最好代表这些点的整体分布趋势，而最理想通常意味着<strong>所有点到这个平面的总距离之和最小</strong>。</p>
+<p>解决平面拟合问题最主流的方法：</p>
+<ol>
+<li>最小二乘：适用于当点云数据相对干净，大部分点都确实分布在一个平面附近，只有少量高斯噪声的情况下。这个问题可以使用的技术是主成分分析（Principal Component Analysis, PCA）</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251017202757222.png" alt="image-20251017202757222"></p>
+<ol start="2">
+<li>RANSAC（Random Sample Consensus 随机采样一致性）：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jiangbaoaaa/my_blog_img@main/img/image-20251018102450113.png"></p>
+<p>在实际应用中，通常会将两者结合：</p>
+<ol>
+<li><p>首先使用RANSAC从包含各种物体和噪声的原始点云中，稳健识别属于某个平台的内点集合</p>
+</li>
+<li><p>然后，对于只包含内点的集合应用PCA，精确计算出最终平面方程。</p>
+</li>
+</ol>
+<p>这样利用了RANSAC鲁棒性，又利用最小二乘的精确性。</p>
+<h3 id="直线拟合"><a href="#直线拟合" class="headerlink" title="直线拟合"></a>直线拟合</h3><p>与平面拟合一样，仍然可以使用RANSAC和最小二乘法来拟合直线，使用参数方程来描述直线，而用一个一般方程描述平面。</p>
 
       
     </div>
